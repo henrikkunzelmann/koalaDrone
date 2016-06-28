@@ -109,15 +109,15 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.PitchPid.Kp = 0.5f;
+	config.PitchPid.Kp = 0.2f;
 	config.PitchPid.Ki = 0;
 	config.PitchPid.Kd = 0;
 
-	config.RollPid.Kp = 0.5f;
+	config.RollPid.Kp = 0.2f;
 	config.RollPid.Ki = 0;
 	config.RollPid.Kd = 0;
 
-	config.YawPid.Kp = 1;
+	config.YawPid.Kp = 0.3f;
 	config.YawPid.Ki = 0;
 	config.YawPid.Kd = 0;
 

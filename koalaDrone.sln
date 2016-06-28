@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneLibrary", "DroneLib\DroneLibrary.csproj", "{6E3FCA3A-367D-4A00-BC85-00C767C16C80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneLibrary", "DroneLibrary\DroneLibrary.csproj", "{6E3FCA3A-367D-4A00-BC85-00C767C16C80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneControl", "DroneControl\DroneControl.csproj", "{C219A8E5-3A59-4E6F-9E16-D921ABC9659C}"
 EndProject

@@ -159,7 +159,4 @@
       <Filter>Source Files\math</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="README.txt" />
-  </ItemGroup>
 </Project>
