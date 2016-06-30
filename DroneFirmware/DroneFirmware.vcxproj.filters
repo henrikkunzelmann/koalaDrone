@@ -93,9 +93,6 @@
     <ClInclude Include="Gyro6050.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Gyro9150.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mpu9150.h">
       <Filter>Header Files\mpu9150</Filter>
     </ClInclude>
@@ -150,9 +147,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Gyro6050.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Gyro9150.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PID.cpp">

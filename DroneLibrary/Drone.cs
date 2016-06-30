@@ -326,7 +326,6 @@ namespace DroneLibrary
 
                 SendGetInfo();
                 SendPacket(new PacketResetRevision(), true);
-                SendPacket(new PacketCalibrateGyro(), true);
                 SendPacket(new PacketSubscribeDataFeed(), true);
             };
         }

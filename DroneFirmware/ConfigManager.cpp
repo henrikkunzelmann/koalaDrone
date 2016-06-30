@@ -101,7 +101,6 @@ Config ConfigManager::getDefault() {
 	config.ServoMin = 1000;
 	config.ServoMax = 2000;
 	config.ServoIdle = 1000;
-	config.ServoHover = 1100;
 
 	config.PinFrontLeft = 12;
 	config.PinFrontRight = 13;
@@ -131,10 +130,6 @@ Config ConfigManager::getDefault() {
 
 	config.MaxThrustForFlying = 50;
 	config.OnlyArmWhenStill = false;
-
-	config.GyroUseDMP = false;
-	config.GyroUseRaw = true;
-	config.EngineUseGyro = true;
 
 	config.CalibrateServos = false;
 

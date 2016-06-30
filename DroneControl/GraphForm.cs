@@ -63,7 +63,7 @@ namespace DroneControl
 
         private void UpdateSettings(DroneSettings settings)
         {
-            servoGraph.BaseLine = settings.ServoHover;
+            servoGraph.BaseLine = settings.ServoIdle;
             servoGraph.ValueMin = 0;
             servoGraph.ValueMax = settings.ServoMax;
         }

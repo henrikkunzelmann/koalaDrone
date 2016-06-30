@@ -41,7 +41,6 @@ namespace DroneControl
 
             Bind(minValueTextBox, "data.ServoMin");
             Bind(idleValueTextBox, "data.ServoIdle");
-            Bind(hoverValueTextBox, "data.ServoHover");
             Bind(maxValueTextBox, "data.ServoMax");
 
             Bind(safeMotorValueTextBox, "data.SafeServoValue");
@@ -70,7 +69,6 @@ namespace DroneControl
 
             Bind(gyroUseDmpCheckBox, "data.GyroUseDMP");
             Bind(gyroUseRawCheckBox, "data.GyroUseRaw");
-            Bind(engineUseGyroCheckBox, "data.EngineUseGyro");
 
             drone.OnSettingsChange += Drone_OnSettingsChange;
             drone.OnInfoChange += Drone_OnInfoChange;

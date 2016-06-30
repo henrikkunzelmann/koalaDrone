@@ -8,6 +8,8 @@ namespace DroneLibrary
 {
     public struct GyroData
     {
+        public bool InCalibration { get; }
+
         public float Roll { get; }
         public float Pitch { get; }
         public float Yaw { get; }
@@ -28,6 +30,8 @@ namespace DroneLibrary
 
         public GyroData(PacketBuffer buffer)
         {
+            this.InCalibration = buffer.ReadBoolean();
+
             this.Roll = buffer.ReadFloat();
             this.Pitch = buffer.ReadFloat();
             this.Yaw = buffer.ReadFloat();
@@ -45,16 +49,6 @@ namespace DroneLibrary
             this.MagnetZ = buffer.ReadFloat();
 
             this.Temperature = buffer.ReadFloat();
-        }
-
-        public static bool operator ==(GyroData a, GyroData b)
-        {
-            return a.Equals(b);
-        }
-
-        public static bool operator !=(GyroData a, GyroData b)
-        {
-            return !(a == b);
         }
     }
 }

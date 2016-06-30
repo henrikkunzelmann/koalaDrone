@@ -29,21 +29,23 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox sensorGroupBox;
+            this.magnetLabel = new System.Windows.Forms.Label();
+            this.rotationLabel = new System.Windows.Forms.Label();
             this.batteryVoltageLabel = new System.Windows.Forms.Label();
             this.orientationLabel = new System.Windows.Forms.Label();
             this.temperatureLabel = new System.Windows.Forms.Label();
             this.accelerationLabel = new System.Windows.Forms.Label();
-            this.calibrateGyroButton = new System.Windows.Forms.Button();
-            this.rotationLabel = new System.Windows.Forms.Label();
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
+            this.calibrateGyroButton = new System.Windows.Forms.Button();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
-            this.magnetLabel = new System.Windows.Forms.Label();
+            this.calibrationRunningText = new System.Windows.Forms.Label();
             sensorGroupBox = new System.Windows.Forms.GroupBox();
             sensorGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // sensorGroupBox
             // 
+            sensorGroupBox.Controls.Add(this.calibrationRunningText);
             sensorGroupBox.Controls.Add(this.magnetLabel);
             sensorGroupBox.Controls.Add(this.rotationLabel);
             sensorGroupBox.Controls.Add(this.batteryVoltageLabel);
@@ -60,6 +62,24 @@
             sensorGroupBox.TabIndex = 0;
             sensorGroupBox.TabStop = false;
             sensorGroupBox.Text = "Sensors";
+            // 
+            // magnetLabel
+            // 
+            this.magnetLabel.AutoSize = true;
+            this.magnetLabel.Location = new System.Drawing.Point(6, 227);
+            this.magnetLabel.Name = "magnetLabel";
+            this.magnetLabel.Size = new System.Drawing.Size(43, 13);
+            this.magnetLabel.TabIndex = 22;
+            this.magnetLabel.Text = "Magnet";
+            // 
+            // rotationLabel
+            // 
+            this.rotationLabel.AutoSize = true;
+            this.rotationLabel.Location = new System.Drawing.Point(6, 214);
+            this.rotationLabel.Name = "rotationLabel";
+            this.rotationLabel.Size = new System.Drawing.Size(47, 13);
+            this.rotationLabel.TabIndex = 21;
+            this.rotationLabel.Text = "Rotation";
             // 
             // batteryVoltageLabel
             // 
@@ -97,25 +117,6 @@
             this.accelerationLabel.TabIndex = 17;
             this.accelerationLabel.Text = "Acceleration";
             // 
-            // calibrateGyroButton
-            // 
-            this.calibrateGyroButton.Location = new System.Drawing.Point(186, 19);
-            this.calibrateGyroButton.Name = "calibrateGyroButton";
-            this.calibrateGyroButton.Size = new System.Drawing.Size(23, 23);
-            this.calibrateGyroButton.TabIndex = 15;
-            this.calibrateGyroButton.Text = "0";
-            this.calibrateGyroButton.UseVisualStyleBackColor = true;
-            this.calibrateGyroButton.Click += new System.EventHandler(this.calibrateGyroButton_Click);
-            // 
-            // rotationLabel
-            // 
-            this.rotationLabel.AutoSize = true;
-            this.rotationLabel.Location = new System.Drawing.Point(6, 214);
-            this.rotationLabel.Name = "rotationLabel";
-            this.rotationLabel.Size = new System.Drawing.Size(47, 13);
-            this.rotationLabel.TabIndex = 21;
-            this.rotationLabel.Text = "Rotation";
-            // 
             // headingIndicator
             // 
             this.headingIndicator.CausesValidation = false;
@@ -126,6 +127,16 @@
             this.headingIndicator.TabIndex = 16;
             this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
             // 
+            // calibrateGyroButton
+            // 
+            this.calibrateGyroButton.Location = new System.Drawing.Point(186, 19);
+            this.calibrateGyroButton.Name = "calibrateGyroButton";
+            this.calibrateGyroButton.Size = new System.Drawing.Size(23, 23);
+            this.calibrateGyroButton.TabIndex = 15;
+            this.calibrateGyroButton.Text = "0";
+            this.calibrateGyroButton.UseVisualStyleBackColor = true;
+            this.calibrateGyroButton.Click += new System.EventHandler(this.calibrateGyroButton_Click);
+            // 
             // artificialHorizon
             // 
             this.artificialHorizon.Location = new System.Drawing.Point(6, 19);
@@ -134,14 +145,15 @@
             this.artificialHorizon.TabIndex = 14;
             this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
             // 
-            // magnetLabel
+            // calibrationRunningText
             // 
-            this.magnetLabel.AutoSize = true;
-            this.magnetLabel.Location = new System.Drawing.Point(6, 227);
-            this.magnetLabel.Name = "magnetLabel";
-            this.magnetLabel.Size = new System.Drawing.Size(43, 13);
-            this.magnetLabel.TabIndex = 22;
-            this.magnetLabel.Text = "Magnet";
+            this.calibrationRunningText.AutoSize = true;
+            this.calibrationRunningText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.calibrationRunningText.Location = new System.Drawing.Point(6, 240);
+            this.calibrationRunningText.Name = "calibrationRunningText";
+            this.calibrationRunningText.Size = new System.Drawing.Size(103, 13);
+            this.calibrationRunningText.TabIndex = 23;
+            this.calibrationRunningText.Text = "Calibration running...";
             // 
             // SensorControl
             // 
@@ -167,5 +179,6 @@
         private System.Windows.Forms.Label batteryVoltageLabel;
         private System.Windows.Forms.Label rotationLabel;
         private System.Windows.Forms.Label magnetLabel;
+        private System.Windows.Forms.Label calibrationRunningText;
     }
 }

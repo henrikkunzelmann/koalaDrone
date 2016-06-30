@@ -2,7 +2,7 @@
 #define _BUILD_h
 
 #define BUILD_VERSION 1
-#define MODEL_NAME "Drone r1"
+#define MODEL_NAME "koalaDrone r1"
 #define BUILD_NAME "build_" __DATE__ "_" __TIME__
 
 #include <stdio.h>

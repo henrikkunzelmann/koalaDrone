@@ -78,10 +78,6 @@ namespace DroneLibrary
         [Description("Value when the servo motors begin to start")]
         public ushort ServoIdle;
 
-        [Category("Motors")]
-        [Description("Value when the drone begins to hover")]
-        public ushort ServoHover;
-
         [Category("Pins")]
         [Description("The pin of the front-left motor")]
         public byte PinFrontLeft;
@@ -138,18 +134,6 @@ namespace DroneLibrary
         [MarshalAs(UnmanagedType.U1)]
         [Category("Flying")]
         public bool OnlyArmWhenStill;
-
-        [MarshalAs(UnmanagedType.U1)]
-        [Category("Flyingg")]
-        public bool GyroUseDMP;
-
-        [MarshalAs(UnmanagedType.U1)]
-        [Category("Flying")]
-        public bool GyroUseRaw;
-
-        [MarshalAs(UnmanagedType.U1)]
-        [Category("Flying")]
-        public bool EngineUseGyro;
 
         [MarshalAs(UnmanagedType.U1)]
         [Category("Motors")]

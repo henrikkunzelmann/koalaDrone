@@ -29,7 +29,6 @@ class DroneEngine
  private:
 	long lastMovementUpdate;
 	long lastHeartbeat;
-	long armTime;
 
 	float maxTilt;
 	float maxRotationSpeed;

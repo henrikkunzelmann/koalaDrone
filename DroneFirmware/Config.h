@@ -52,8 +52,6 @@ struct Config {
 	uint16_t ServoMax;
 	//The output value for the ESC's, at which they start to turn
 	uint16_t ServoIdle;
-	//The output value for the ESC's, at which the drone hovers
-	uint16_t ServoHover;
 
 	//The pin of the front-left motor
 	byte PinFrontLeft;
@@ -80,10 +78,6 @@ struct Config {
 
 	int MaxThrustForFlying;
 	boolean OnlyArmWhenStill;
-
-	boolean GyroUseDMP;
-	boolean GyroUseRaw;
-	boolean EngineUseGyro;
 
 	boolean CalibrateServos;
 };

@@ -40,7 +40,6 @@
             System.Windows.Forms.Label gyroSensorLabel;
             System.Windows.Forms.GroupBox motorsGroupBox;
             System.Windows.Forms.Label minValueLabel;
-            System.Windows.Forms.Label hoverValueLabel;
             System.Windows.Forms.Label maxValueLabel;
             System.Windows.Forms.Label idleValueLabel;
             System.Windows.Forms.GroupBox safetyGroupBox;
@@ -74,7 +73,6 @@
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.calibrateButton = new System.Windows.Forms.Button();
             this.minValueTextBox = new System.Windows.Forms.TextBox();
-            this.hoverValueTextBox = new System.Windows.Forms.TextBox();
             this.idleValueTextBox = new System.Windows.Forms.TextBox();
             this.maxValueTextBox = new System.Windows.Forms.TextBox();
             this.safeMotorValueTextBox = new System.Windows.Forms.TextBox();
@@ -92,7 +90,6 @@
             this.yawKpTextBox = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.flyingPage = new System.Windows.Forms.TabPage();
-            this.engineUseGyroCheckBox = new System.Windows.Forms.CheckBox();
             this.gyroUseRawCheckBox = new System.Windows.Forms.CheckBox();
             this.gyroUseDmpCheckBox = new System.Windows.Forms.CheckBox();
             this.onlyArmWhenStillCheckBox = new System.Windows.Forms.CheckBox();
@@ -113,7 +110,6 @@
             gyroSensorLabel = new System.Windows.Forms.Label();
             motorsGroupBox = new System.Windows.Forms.GroupBox();
             minValueLabel = new System.Windows.Forms.Label();
-            hoverValueLabel = new System.Windows.Forms.Label();
             maxValueLabel = new System.Windows.Forms.Label();
             idleValueLabel = new System.Windows.Forms.Label();
             safetyGroupBox = new System.Windows.Forms.GroupBox();
@@ -350,16 +346,14 @@
             // 
             motorsGroupBox.Controls.Add(this.calibrateButton);
             motorsGroupBox.Controls.Add(this.minValueTextBox);
-            motorsGroupBox.Controls.Add(this.hoverValueTextBox);
             motorsGroupBox.Controls.Add(minValueLabel);
-            motorsGroupBox.Controls.Add(hoverValueLabel);
             motorsGroupBox.Controls.Add(maxValueLabel);
             motorsGroupBox.Controls.Add(this.idleValueTextBox);
             motorsGroupBox.Controls.Add(this.maxValueTextBox);
             motorsGroupBox.Controls.Add(idleValueLabel);
             motorsGroupBox.Location = new System.Drawing.Point(8, 6);
             motorsGroupBox.Name = "motorsGroupBox";
-            motorsGroupBox.Size = new System.Drawing.Size(258, 162);
+            motorsGroupBox.Size = new System.Drawing.Size(258, 124);
             motorsGroupBox.TabIndex = 17;
             motorsGroupBox.TabStop = false;
             motorsGroupBox.Text = "Motors";
@@ -367,7 +361,7 @@
             // calibrateButton
             // 
             this.calibrateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.calibrateButton.Location = new System.Drawing.Point(144, 136);
+            this.calibrateButton.Location = new System.Drawing.Point(143, 98);
             this.calibrateButton.Name = "calibrateButton";
             this.calibrateButton.Size = new System.Drawing.Size(108, 20);
             this.calibrateButton.TabIndex = 11;
@@ -382,13 +376,6 @@
             this.minValueTextBox.Size = new System.Drawing.Size(142, 20);
             this.minValueTextBox.TabIndex = 3;
             // 
-            // hoverValueTextBox
-            // 
-            this.hoverValueTextBox.Location = new System.Drawing.Point(109, 71);
-            this.hoverValueTextBox.Name = "hoverValueTextBox";
-            this.hoverValueTextBox.Size = new System.Drawing.Size(142, 20);
-            this.hoverValueTextBox.TabIndex = 15;
-            // 
             // minValueLabel
             // 
             minValueLabel.AutoSize = true;
@@ -398,19 +385,10 @@
             minValueLabel.TabIndex = 2;
             minValueLabel.Text = "Min Value";
             // 
-            // hoverValueLabel
-            // 
-            hoverValueLabel.AutoSize = true;
-            hoverValueLabel.Location = new System.Drawing.Point(8, 74);
-            hoverValueLabel.Name = "hoverValueLabel";
-            hoverValueLabel.Size = new System.Drawing.Size(66, 13);
-            hoverValueLabel.TabIndex = 14;
-            hoverValueLabel.Text = "Hover Value";
-            // 
             // maxValueLabel
             // 
             maxValueLabel.AutoSize = true;
-            maxValueLabel.Location = new System.Drawing.Point(9, 100);
+            maxValueLabel.Location = new System.Drawing.Point(9, 77);
             maxValueLabel.Name = "maxValueLabel";
             maxValueLabel.Size = new System.Drawing.Size(57, 13);
             maxValueLabel.TabIndex = 8;
@@ -425,7 +403,7 @@
             // 
             // maxValueTextBox
             // 
-            this.maxValueTextBox.Location = new System.Drawing.Point(109, 97);
+            this.maxValueTextBox.Location = new System.Drawing.Point(109, 74);
             this.maxValueTextBox.Name = "maxValueTextBox";
             this.maxValueTextBox.Size = new System.Drawing.Size(143, 20);
             this.maxValueTextBox.TabIndex = 9;
@@ -449,7 +427,7 @@
             safetyGroupBox.Controls.Add(this.safePitchTextBox);
             safetyGroupBox.Controls.Add(this.safeTemperatureTextBox);
             safetyGroupBox.Controls.Add(safePitchLabel);
-            safetyGroupBox.Location = new System.Drawing.Point(8, 174);
+            safetyGroupBox.Location = new System.Drawing.Point(8, 136);
             safetyGroupBox.Name = "safetyGroupBox";
             safetyGroupBox.Size = new System.Drawing.Size(258, 129);
             safetyGroupBox.TabIndex = 18;
@@ -830,7 +808,6 @@
             // 
             // flyingPage
             // 
-            this.flyingPage.Controls.Add(this.engineUseGyroCheckBox);
             this.flyingPage.Controls.Add(this.gyroUseRawCheckBox);
             this.flyingPage.Controls.Add(this.gyroUseDmpCheckBox);
             this.flyingPage.Controls.Add(this.onlyArmWhenStillCheckBox);
@@ -850,16 +827,6 @@
             this.flyingPage.Size = new System.Drawing.Size(698, 412);
             this.flyingPage.TabIndex = 1;
             this.flyingPage.Text = "Flying";
-            // 
-            // engineUseGyroCheckBox
-            // 
-            this.engineUseGyroCheckBox.AutoSize = true;
-            this.engineUseGyroCheckBox.Location = new System.Drawing.Point(283, 305);
-            this.engineUseGyroCheckBox.Name = "engineUseGyroCheckBox";
-            this.engineUseGyroCheckBox.Size = new System.Drawing.Size(102, 17);
-            this.engineUseGyroCheckBox.TabIndex = 31;
-            this.engineUseGyroCheckBox.Text = "Engine use gyro";
-            this.engineUseGyroCheckBox.UseVisualStyleBackColor = true;
             // 
             // gyroUseRawCheckBox
             // 
@@ -1006,7 +973,6 @@
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Button calibrateButton;
         private System.Windows.Forms.TextBox minValueTextBox;
-        private System.Windows.Forms.TextBox hoverValueTextBox;
         private System.Windows.Forms.TextBox idleValueTextBox;
         private System.Windows.Forms.TextBox maxValueTextBox;
         private System.Windows.Forms.TextBox safeMotorValueTextBox;
@@ -1029,7 +995,6 @@
         private System.Windows.Forms.CheckBox enableStabilizationCheckBox;
         private System.Windows.Forms.NumericUpDown maxThrustForFlyingTextBox;
         private System.Windows.Forms.CheckBox onlyArmWhenStillCheckBox;
-        private System.Windows.Forms.CheckBox engineUseGyroCheckBox;
         private System.Windows.Forms.CheckBox gyroUseRawCheckBox;
         private System.Windows.Forms.CheckBox gyroUseDmpCheckBox;
     }

@@ -21,7 +21,6 @@
 #include "VoltageInputReader.h"
 #include "Profiler.h"
 #include "Gyro6050.h"
-#include "Gyro9150.h"
 #include "PID.h"
 #include "CycleTimes.h"
 
@@ -91,8 +90,8 @@ void setup() {
 
 	// WiFi Einstellungen setzen
 	WiFi.persistent(false);
-	WiFi.hostname(name); 
-	WiFi.setOutputPower(20.5f); 
+	WiFi.hostname(name);
+	WiFi.setOutputPower(20.5f);
 	WiFi.setPhyMode(WIFI_PHY_MODE_11N);
 
 	// versuchen mit dem in der Config gespeicherten AP zu verbinden
@@ -105,7 +104,7 @@ void setup() {
 			Log::error("Boot", "WiFi.begin() failed");
 
 		// auf Verbindung warten
-		openOwnNetwork = WiFi.waitForConnectResult() != WL_CONNECTED; 
+		openOwnNetwork = WiFi.waitForConnectResult() != WL_CONNECTED;
 
 		if (openOwnNetwork) {
 			Log::error("Boot", "Could not connect to the access point!");
@@ -130,14 +129,9 @@ void setup() {
 
 
 	// Gyro Sensor initialisieren
-	gyro = new Gyro9150(&config);
-	if (!gyro->init()) { // Gyro9150 Init fehlgeschlagen
-		delete gyro;
-
-		// versuchen Gyro6050 zu initalisieren
-		gyro = new Gyro6050(&config);
-		gyro->init();
-	}
+	gyro = new Gyro6050(&config);
+	gyro->init();
+	gyro->calibrate();
 
 	Log::info("Boot", "Gyro sensor: \"%s\"", gyro->name());
 	Log::info("Boot", "Magnetometer: \"%s\"", gyro->magnetometerName());

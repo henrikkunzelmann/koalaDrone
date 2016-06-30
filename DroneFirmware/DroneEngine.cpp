@@ -9,7 +9,6 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 	this->servos = servos;
 	this->config = config;
 
-	this->armTime = 0;
 	this->lastHeartbeat = 0;
 	this->lastMovementUpdate = 0;
 
@@ -54,6 +53,11 @@ bool DroneEngine::isGyroSafe() {
 
 void DroneEngine::arm() {
 	if (_state == StateIdle) {
+		if (gyro->inCalibration()) {
+			blinkLED(5, 300);
+			Log::info("Engine", "Can not arm motors, gyro is in calibration");
+			return;
+		}
 		if (!isGyroSafe()) {
 			blinkLED(5, 300);
 			Log::info("Engine", "Can not arm motors, gyro is not safe");
@@ -65,7 +69,7 @@ void DroneEngine::arm() {
 			return;
 		}
 
-		armTime = millis();
+		servos->setAllServos(config->ServoMin);
 		_state = StateArmed;
 		blinkLED(3, 600);
 
@@ -147,11 +151,6 @@ void DroneEngine::endOTA() {
 void DroneEngine::handle() {
 	Profiler::begin("DroneEngine::handle()");
 
-	if (_state == StateArmed && armTime > 0 && millis() - armTime > 250) {
-		setRawServoValues(config->ServoIdle);
-		armTime = 0;
-	}
-
 	if (_state == StateArmed || _state == StateFlying) {
 		blinkLED(1, 800);
 
@@ -184,15 +183,10 @@ void DroneEngine::handleInternal() {
 	int values[4];
 
 	if (config->EnableStabilization) {
-		if (config->EngineUseGyro) {
-			calculatePID(rollPID, gyro->getGyroX(), targetRoll);
-			calculatePID(pitchPID, gyro->getGyroY(), targetPitch);
-		}
-		else {
-			calculatePID(pitchPID, gyro->getPitch(), targetPitch);
-			calculatePID(rollPID, gyro->getRoll(), targetRoll);
-		}
-		calculatePID(yawPID, gyro->getGyroZ(), targetRotationalSpeed);
+		GyroValues values = gyro->getValues();
+		calculatePID(rollPID, values.RawGyroX, targetRoll);
+		calculatePID(pitchPID, values.RawGyroY, targetPitch);
+		calculatePID(yawPID, values.RawGyroZ, targetRotationalSpeed);
 	}
 	else {
 		calculatePID(pitchPID, -targetPitch, 0);

@@ -330,7 +330,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 	case CalibrateGyro:
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
-			gyro->setAsZero();
+			gyro->calibrate();
 		break;
 
 	case Reset:
@@ -467,21 +467,25 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 		writeBuffer->write(uint16_t(servos->BL()));
 		writeBuffer->write(uint16_t(servos->BR()));
 
+		writeBuffer->write(gyro->inCalibration());
+
 		writeBuffer->write(gyro->getRoll());
 		writeBuffer->write(gyro->getPitch());
 		writeBuffer->write(gyro->getYaw());
 
-		writeBuffer->write(gyro->getGyroX());
-		writeBuffer->write(gyro->getGyroY());
-		writeBuffer->write(gyro->getGyroZ());
+		GyroValues values = gyro->getValues();
 
-		writeBuffer->write(gyro->getAccelerationX());
-		writeBuffer->write(gyro->getAccelerationY());
-		writeBuffer->write(gyro->getAccelerationZ());
+		writeBuffer->write(values.GyroX);
+		writeBuffer->write(values.GyroY);
+		writeBuffer->write(values.GyroZ);
 
-		writeBuffer->write(gyro->getMagnetX());
-		writeBuffer->write(gyro->getMagnetY());
-		writeBuffer->write(gyro->getMagnetZ());
+		writeBuffer->write(values.AccX);
+		writeBuffer->write(values.AccY);
+		writeBuffer->write(values.AccZ);
+
+		writeBuffer->write(values.MagnetX);
+		writeBuffer->write(values.MagnetY);
+		writeBuffer->write(values.MagnetZ);
 
 		writeBuffer->write(gyro->getTemperature());
 		writeBuffer->write(voltageReader->readVoltage());
