@@ -93,7 +93,7 @@ namespace DroneControl.Input
             TargetData target = new TargetData();
             target.Roll = DeadZone.Compute(currentState.X - maxValue, maxValue, deadZone);
             target.Pitch = DeadZone.Compute(currentState.Y - maxValue, maxValue, deadZone);
-            target.RotationalSpeed = DeadZone.Compute(currentState.RotationZ - maxValue, maxValue, deadZone);
+            target.Yaw = DeadZone.Compute(currentState.RotationZ - maxValue, maxValue, deadZone);
             target.Thrust = DeadZone.Compute(UInt16.MaxValue - currentState.Z, UInt16.MaxValue, deadZone);
 
             manager.SendTargetData(target);

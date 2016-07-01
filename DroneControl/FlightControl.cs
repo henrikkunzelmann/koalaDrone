@@ -213,17 +213,17 @@ namespace DroneControl
             bool deviceConnected = InputManager.CurrentDevice != null && InputManager.CurrentDevice.IsConnected;
             rollLabel.Visible = deviceConnected;
             pitchLabel.Visible = deviceConnected;
-            rotationalSpeedLabel.Visible = deviceConnected;
+            yawLabel.Visible = deviceConnected;
             thrustLabel.Visible = deviceConnected;
 
             if (deviceConnected)
             {
                 rollLabel.Text = string.Format("Roll: {0}",
-                    Formatting.FormatDecimal(InputManager.TargetData.Roll, 2, 2));
+                    Formatting.FormatDecimal(InputManager.TargetData.Roll, 0, 4));
                 pitchLabel.Text = string.Format("Pitch: {0}",
-                    Formatting.FormatDecimal(InputManager.TargetData.Pitch, 2, 2));
-                rotationalSpeedLabel.Text = string.Format("Rotational Speed: {0}",
-                    Formatting.FormatDecimal(InputManager.TargetData.RotationalSpeed, 2, 2));
+                    Formatting.FormatDecimal(InputManager.TargetData.Pitch, 0, 4));
+                yawLabel.Text = string.Format("Yaw: {0}",
+                    Formatting.FormatDecimal(InputManager.TargetData.Yaw, 0, 4));
                 thrustLabel.Text = string.Format("Thrust: {0}", 
                     Formatting.FormatDecimal(InputManager.TargetData.Thrust, 0, 4));
             }
@@ -233,24 +233,7 @@ namespace DroneControl
 
         private void UpdateInputConfig()
         {
-            InputManager.MaxPitch = (float)maxPitchNumeric.Value;
-            InputManager.MaxRoll = (float)maxRollNumeric.Value;
-            InputManager.MaxRotationalSpeed = (float)maxRotationalSpeedNumeric.Value;
-
-            InputManager.PitchOffset = (float)pitchOffsetNumeric.Value;
-            InputManager.RollOffset = (float)rollOffsetNumeric.Value;
-            InputManager.RotationalOffset = (float)rotationalOffsetNumeric.Value;
-
             InputManager.DeadZone = deadZoneCheckBox.Checked;
-
-            InputManager.MaxThrust = (int)thrustTextBox.Value;
-
-            if (invertPitchCheckBox.Checked)
-                InputManager.MaxPitch *= -1;
-            if (invertRollCheckBox.Checked)
-                InputManager.MaxRoll *= -1;
-            if (invertRotationalCheckBox.Checked)
-                InputManager.MaxRotationalSpeed *= -1;
         }
 
         private void calibrateButton_Click(object sender, EventArgs e)

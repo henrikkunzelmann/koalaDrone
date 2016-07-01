@@ -213,15 +213,15 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		lastMovementRevision = revision;
 
-		float pitch = readBuffer->readFloat();
-		float roll = readBuffer->readFloat();
-		float rotationalSpeed = readBuffer->readFloat();
-		int thrust = readBuffer->readInt32();
+		int16_t roll = readBuffer->readInt16();
+		int16_t pitch = readBuffer->readInt16();
+		int16_t yaw = readBuffer->readInt16();
+		int16_t thrust = readBuffer->readInt16();
 
 		if (readBuffer->getError())
 			return;
 
-		engine->setTargetMovement(pitch, roll, rotationalSpeed, thrust);
+		engine->setTargetMovement(roll, pitch, yaw, thrust);
 		break;
 	}
 						 

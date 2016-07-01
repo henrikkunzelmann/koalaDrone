@@ -44,10 +44,10 @@ class DroneEngine
 	 Gyro* gyro;
 	 ServoManager* servos;
 
-	 double targetPitch;
-	 double targetRoll;
-	 float targetRotationalSpeed;
-	 int thrust;
+	 int16_t targetRoll;
+	 int16_t targetPitch;
+	 int16_t targetYaw;
+	 int16_t thrust;
 
 	 double pidInput;
 	 double pidSetpoint;
@@ -92,17 +92,11 @@ class DroneEngine
 	void setRawServoValues(int fl, int fr, int bl, int br) const;
 	void setRawServoValues(int all) const;
 
-	void setMaxTilt(float tilt);
-	void setMaxRotationSpeed(float rotaionSpeed);
+	void setTargetMovement(int16_t roll, int16_t pitch, int16_t yaw, int16_t thrust);
 
-	float getMaxTilt() const;
-	float getMaxRotationSpeed() const;
-
-	void setTargetMovement(float pitch, float roll, float rotationalSpeed, int thrust);
-
-	float getTargetPitch() const;
-	float getTargetRoll() const;
-	float getTargetRotationalSpeed() const;
+	int getTargetRoll() const;
+	int getTargetPitch() const;
+	int getTargetYaw() const;
 	int getThrust() const;
 
 	float getPitchOutput() const;

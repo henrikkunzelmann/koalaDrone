@@ -18,9 +18,6 @@ DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
 
 	createPID();
 
-	setMaxTilt(30);
-	setMaxRotationSpeed(60);
-
 	_state = StateReset;
 	_stopReason = None;
 	servos->setAllServos(config->ServoMin);
@@ -182,17 +179,10 @@ void DroneEngine::handle() {
 void DroneEngine::handleInternal() {
 	int values[4];
 
-	if (config->EnableStabilization) {
-		GyroValues values = gyro->getValues();
-		calculatePID(rollPID, values.RawGyroX, targetRoll);
-		calculatePID(pitchPID, values.RawGyroY, targetPitch);
-		calculatePID(yawPID, values.RawGyroZ, targetRotationalSpeed);
-	}
-	else {
-		calculatePID(pitchPID, -targetPitch, 0);
-		calculatePID(rollPID, -targetRoll, 0);
-		calculatePID(yawPID, -targetRotationalSpeed, 0);
-	}
+	GyroValues gyroValues = gyro->getValues();
+	calculatePID(rollPID, gyroValues.RawGyroX, targetRoll << 1);
+	calculatePID(pitchPID, gyroValues.RawGyroY, targetPitch << 1);
+	calculatePID(yawPID, gyroValues.RawGyroZ, targetYaw << 1);
 
 	uint16_t minServo = config->ServoMin;
 	if (config->KeepMotorsOn)
@@ -244,31 +234,15 @@ StopReason DroneEngine::getStopReason() const {
 	return _stopReason;
 }
 
-void DroneEngine::setMaxTilt(float tilt) {
-	maxTilt = abs(tilt);
-}
 
-void DroneEngine::setMaxRotationSpeed(float rotaionSpeed) {
-	maxRotationSpeed = abs(rotaionSpeed);
-}
-
-float DroneEngine::getMaxTilt() const {
-	return maxTilt;
-}
-
-float DroneEngine::getMaxRotationSpeed() const {
-	return maxRotationSpeed;
-}
-
-
-void DroneEngine::setTargetMovement(float pitch, float roll, float rotationalSpeed, int thrust) {
+void DroneEngine::setTargetMovement(int16_t roll, int16_t pitch, int16_t yaw, int16_t thrust) {
 	if (_state != StateArmed && _state != StateFlying)
 		return;
 
 	// Werte in richtigen Bereich bringen und setzen
-	this->targetPitch = MathHelper::clampValue(pitch, -maxTilt, maxTilt);
-	this->targetRoll = MathHelper::clampValue(roll, -maxTilt, maxTilt);
-	this->targetRotationalSpeed = MathHelper::clampValue(rotationalSpeed, -maxRotationSpeed, maxRotationSpeed);
+	this->targetPitch = MathHelper::clampValue(pitch, -500, 500);
+	this->targetRoll = MathHelper::clampValue(roll, -500, 500);
+	this->targetYaw = MathHelper::clampValue(yaw, -500, 500);
 	this->thrust = MathHelper::clampValue(thrust, 0, config->ServoMax - config->ServoMin);
 
 	// in den Fliegen Modus gehen
@@ -278,16 +252,16 @@ void DroneEngine::setTargetMovement(float pitch, float roll, float rotationalSpe
 	Profiler::restart("DroneEngine::input()");
 }
 
-float DroneEngine::getTargetPitch() const {
-	return targetPitch;
-}
-
-float DroneEngine::getTargetRoll() const {
+int DroneEngine::getTargetRoll() const {
 	return targetRoll;
 }
 
-float DroneEngine::getTargetRotationalSpeed() const {
-	return targetRotationalSpeed;
+int DroneEngine::getTargetPitch() const {
+	return targetPitch;
+}
+
+int DroneEngine::getTargetYaw() const {
+	return targetYaw;
 }
 
 int DroneEngine::getThrust() const {

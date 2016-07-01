@@ -475,12 +475,12 @@ namespace DroneLibrary
             SendPacket(new PacketArm(false), true);
         }
 
-        public void SendMovementData(float pitch, float roll, float rotationalSpeed, int thrust)
+        public void SendMovementData(short roll, short pitch, short yaw, short thrust)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            SendPacket(new PacketSetMovement(pitch, roll, rotationalSpeed, thrust), false);
+            SendPacket(new PacketSetMovement(roll, pitch, yaw, thrust), false);
         }
 
         public void SendBlink()

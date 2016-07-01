@@ -20,7 +20,7 @@ float MathHelper::fixValue(float value, float begin, float end) {
 	float range = end - begin;
 	while (value < begin)
 		value += range;
-	while (value > end)
+	while (value >= end)
 		value -= range;
 	return value;
 }

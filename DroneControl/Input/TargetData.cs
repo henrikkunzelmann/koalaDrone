@@ -8,16 +8,16 @@ namespace DroneControl.Input
 {
     public struct TargetData
     {
-        public float Pitch;
         public float Roll;
-        public float RotationalSpeed;
+        public float Pitch;
+        public float Yaw;
         public float Thrust;
 
-        public TargetData(float pitch, float roll, float rotationalSpeed, float thrust)
+        public TargetData(float roll, float pitch, float yaw, float thrust)
         {
-            this.Pitch = pitch;
             this.Roll = roll;
-            this.RotationalSpeed = rotationalSpeed;
+            this.Pitch = pitch;
+            this.Yaw = yaw;
             this.Thrust = thrust;
         }
     }

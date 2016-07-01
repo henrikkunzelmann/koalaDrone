@@ -111,7 +111,7 @@ namespace DroneControl
 
                     inputManager.TargetData.Pitch,
                     inputManager.TargetData.Roll,
-                    inputManager.TargetData.RotationalSpeed,
+                    inputManager.TargetData.Yaw,
                     inputManager.TargetData.Thrust,
 
                     drone.DebugData.PitchOutput,

@@ -22,19 +22,9 @@ namespace DroneControl.Input
         public IInputDevice CurrentDevice { get; set; }
 
         /// <summary>
-        /// Gibt aktuelle Ziel Daten 
+        /// Gibt aktuelle Ziel Daten zurück.
         /// </summary>
         public TargetData TargetData { get; set; }
-
-        public float MaxPitch { get; set; } = 10;
-        public float MaxRoll { get; set; } = 10;
-        public float MaxRotationalSpeed { get; set; } = 30;
-
-        public float PitchOffset { get; set; } = 0;
-        public float RollOffset { get; set; } = 0;
-        public float RotationalOffset { get; set; } = 0;
-
-        public int MaxThrust { get; set; } = 500;
 
         public bool DeadZone { get; set; } = true;
 
@@ -109,25 +99,17 @@ namespace DroneControl.Input
         /// <param name="data"></param>
         public void SendTargetData(TargetData data)
         {
-            // Rohe Daten umwandeln in richtigen Interval
-            data.Pitch *= MaxPitch;
-            data.Roll *= MaxRoll;
-            data.RotationalSpeed *= MaxRotationalSpeed;
-
-            // Offset hinzufügen
-            data.Pitch += PitchOffset;
-            data.Roll += RollOffset;
-            data.RotationalSpeed += RotationalOffset;
-
-            data.Thrust *= MaxThrust;
+            data.Roll *= 500;
+            data.Pitch *= 500;
+            data.Yaw *= 500;
+            data.Thrust *= 1000;
 
             // Daten setzen und senden
             TargetData = data;
-            if (OnTargetDataChanged != null)
-                OnTargetDataChanged(this, EventArgs.Empty);
+            OnTargetDataChanged?.Invoke(this, EventArgs.Empty);
 
             if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
-                drone.SendMovementData(data.Pitch, data.Roll, data.RotationalSpeed, (int)data.Thrust);
+                drone.SendMovementData((short)data.Roll, (short)data.Pitch, (short)data.Yaw, (short)data.Thrust);
         }
 
         public void ToogleArmStatus()
