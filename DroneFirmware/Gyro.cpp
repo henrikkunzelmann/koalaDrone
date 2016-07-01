@@ -5,9 +5,11 @@ Gyro::Gyro(Config* config) {
 
 	memset(&last, 0, sizeof(GyroValues));
 	memset(&values, 0, sizeof(GyroValues));
-	this->gyroOffset[0] = 0;
-	this->gyroOffset[1] = 0; 
-	this->gyroOffset[2] = 0;
+	for (int i = 0; i < 3; i++) {
+		gyroOffset[i] = 0;
+		minGyro[i] = 0;
+		maxGyro[i] = 0;
+	}
 	this->lastSample = micros();
 }
 
@@ -22,18 +24,30 @@ void Gyro::update() {
 	Profiler::begin("Gyro::update()");
 
 	if (calibration) {
-		GyroValues calibrationValues;
-		getValues(&calibrationValues);
+		getValues(&values);
 
-		gyroOffset[0] += calibrationValues.RawGyroX;
-		gyroOffset[1] += calibrationValues.RawGyroY;
-		gyroOffset[2] += calibrationValues.RawGyroZ;
+		gyroOffset[0] += values.RawGyroX;
+		gyroOffset[1] += values.RawGyroY;
+		gyroOffset[2] += values.RawGyroZ;
+
+		minGyro[0] = min(minGyro[0], values.RawGyroX);
+		minGyro[1] = min(minGyro[1], values.RawGyroY);
+		minGyro[2] = min(minGyro[2], values.RawGyroZ);
+
+		maxGyro[0] = max(maxGyro[0], values.RawGyroX);
+		maxGyro[1] = max(maxGyro[1], values.RawGyroY);
+		maxGyro[2] = max(maxGyro[2], values.RawGyroZ);
 
 		if (++calibrationCount > 5000 / CYCLE_GYRO) {
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 3; i++) {
 				gyroOffset[i] /= calibrationCount;
+				minGyro[i] *= 2;
+				maxGyro[i] *= 2;
+			}
 
 			calibration = false;
+			calibrationOrientation = true;
+			calibrationCount = 0;
 		}
 	}
 	else {
@@ -55,6 +69,20 @@ void Gyro::update() {
 		if (!hasIMU())
 			calculateIMU();
 
+		if (calibrationOrientation) {
+			rollOffset += roll;
+			pitchOffset += pitch;
+			yawOffset += yaw;
+
+			if (++calibrationCount > 2000 / CYCLE_GYRO) {
+				rollOffset /= calibrationCount;
+				pitchOffset /= calibrationCount;
+				yawOffset /= calibrationCount;
+
+				calibrationOrientation = false;
+			}
+		}
+
 		// Data Interval messen
 		if (memcmp(&last, &values, sizeof(GyroValues)) != 0) {
 			Profiler::restart("Gyro::data()");
@@ -69,10 +97,11 @@ void Gyro::calculateIMU() {
 	Profiler::begin("Gyro::calculateIMU()");
 	float dt = CYCLE_GYRO / 1000.f;
 
-	pitch -= values.GyroX * dt;
-	roll += values.GyroY * dt;
-
-	if (values.GyroZ > 0.5f) 
+	if (values.RawGyroX < minGyro[0] || values.RawGyroX > maxGyro[0])
+		pitch -= values.GyroX * dt;
+	if (values.RawGyroY < minGyro[1] || values.RawGyroY > maxGyro[1])
+		roll += values.GyroY * dt;
+	if (values.RawGyroZ < minGyro[2] || values.RawGyroZ > maxGyro[2])
 		yaw += values.GyroZ * dt;
 
 	float fastAccLen = abs(values.AccX) + abs(values.AccY) + abs(values.AccZ);
@@ -90,15 +119,18 @@ void Gyro::calculateIMU() {
 
 void Gyro::calibrate() {
 	calibration = true;
+	calibrationOrientation = false;
 	calibrationCount = 0;
 
-	gyroOffset[0] = 0;
-	gyroOffset[1] = 0;
-	gyroOffset[2] = 0;
+	for (int i = 0; i < 3; i++) {
+		gyroOffset[i] = 0;
+		minGyro[i] = 0;
+		maxGyro[i] = 0;
+	}
 }
 
 bool Gyro::inCalibration() {
-	return calibration;
+	return calibration || calibrationOrientation;
 }
 
 GyroValues Gyro::getValues() const {
@@ -106,15 +138,15 @@ GyroValues Gyro::getValues() const {
 }
 
 float Gyro::getRoll() const {
-	return MathHelper::fixValue(roll, -90, 90);
+	return MathHelper::fixValue(roll - (calibrationOrientation ? 0 : rollOffset), -90, 90);
 }
 
 float Gyro::getPitch() const {
-	return MathHelper::fixValue(pitch, -90, 90);
+	return MathHelper::fixValue(pitch - (calibrationOrientation ? 0 : pitchOffset), -90, 90);
 }
 
 float Gyro::getYaw() const {
-	return MathHelper::fixValue(yaw, 0, 360);
+	return MathHelper::fixValue(yaw - (calibrationOrientation ? 0 : yawOffset), 0, 360);
 }
 
 #define GYRO_MOVING(x) (abs(x) > 4.0f)

@@ -24,6 +24,7 @@ private:
 	GyroValues last;
 
 	bool calibration = false;
+	bool calibrationOrientation = false;
 	uint32_t calibrationCount;
 
 	float rollOffset = 0;
@@ -31,6 +32,8 @@ private:
 	float yawOffset = 0;
 
 	int64_t gyroOffset[3];
+	int16_t minGyro[3];
+	int16_t maxGyro[3];
 
 protected:
 	Config* config;

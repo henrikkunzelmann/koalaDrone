@@ -67,9 +67,6 @@ namespace DroneControl
             Bind(maxThrustForFlyingTextBox, "data.MaxThrustForFlying");
             Bind(onlyArmWhenStillCheckBox, "data.OnlyArmWhenStill");
 
-            Bind(gyroUseDmpCheckBox, "data.GyroUseDMP");
-            Bind(gyroUseRawCheckBox, "data.GyroUseRaw");
-
             drone.OnSettingsChange += Drone_OnSettingsChange;
             drone.OnInfoChange += Drone_OnInfoChange;
         }
