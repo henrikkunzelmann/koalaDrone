@@ -79,6 +79,15 @@ namespace DroneLibrary
             return values.GetEnumerator();
         }
 
+        public void Clear()
+        {
+            values.Clear();
+            average = 0;
+            min = 0;
+            max = 0;
+            dirty = true;
+        }
+
         private void Update()
         {
             min = values.Min();

@@ -41,7 +41,7 @@ namespace DroneControl
             set { rightBottom.Titel = value; }
         }
 
-        private bool showBaseLine;
+        private bool showBaseLine = false;
 
         public bool ShowBaseLine
         {
@@ -54,6 +54,22 @@ namespace DroneControl
                 rightTop.ShowBaseLine = showBaseLine;
                 leftBottom.ShowBaseLine = showBaseLine;
                 rightBottom.ShowBaseLine = showBaseLine;
+            }
+        }
+
+        private bool showHalfScaling = true;
+
+        public bool ShowHalfScaling
+        {
+            get { return showHalfScaling; }
+            set
+            {
+                showHalfScaling = value;
+
+                leftTop.ShowHalfScaling = showHalfScaling;
+                rightTop.ShowHalfScaling = showHalfScaling;
+                leftBottom.ShowHalfScaling = showHalfScaling;
+                rightBottom.ShowHalfScaling = showHalfScaling;
             }
         }
 

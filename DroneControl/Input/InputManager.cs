@@ -21,10 +21,16 @@ namespace DroneControl.Input
         /// </summary>
         public IInputDevice CurrentDevice { get; set; }
 
+        public float RollExp { get; set; } = 1;
+        public float PitchExp { get; set; } = 1;
+        public float YawExp { get; set; } = 1;
+
         /// <summary>
         /// Gibt aktuelle Ziel Daten zurück.
         /// </summary>
         public TargetData TargetData { get; set; }
+
+        public TargetData RawTargetData { get; set; }
 
         public bool DeadZone { get; set; } = true;
 
@@ -99,6 +105,12 @@ namespace DroneControl.Input
         /// <param name="data"></param>
         public void SendTargetData(TargetData data)
         {
+            RawTargetData = data;
+
+            data.Roll = (float)(Math.Pow(Math.Abs(data.Roll), RollExp) * Math.Sign(data.Roll));
+            data.Pitch = (float)(Math.Pow(Math.Abs(data.Pitch), PitchExp) * Math.Sign(data.Pitch));
+            data.Yaw = (float)(Math.Pow(Math.Abs(data.Yaw), YawExp) * Math.Sign(data.Yaw));
+
             data.Roll *= 500;
             data.Pitch *= 500;
             data.Yaw *= 500;

@@ -226,6 +226,8 @@ namespace DroneControl
                     Formatting.FormatDecimal(InputManager.TargetData.Yaw, 0, 4));
                 thrustLabel.Text = string.Format("Thrust: {0}", 
                     Formatting.FormatDecimal(InputManager.TargetData.Thrust, 0, 4));
+
+                HighlightInputGraph(InputManager.RawTargetData);
             }
 
             ResumeLayout();
@@ -234,6 +236,57 @@ namespace DroneControl
         private void UpdateInputConfig()
         {
             InputManager.DeadZone = deadZoneCheckBox.Checked;
+            InputManager.RollExp = (float)rollExpTextBox.Value;
+            InputManager.PitchExp = (float)pitchExpTextBox.Value;
+            InputManager.YawExp = (float)yawExpTextBox.Value;
+
+            CreateInputGraph(inputCurves.LeftTop.History, InputManager.RollExp);
+            CreateInputGraph(inputCurves.LeftBottom.History, InputManager.PitchExp);
+            CreateInputGraph(inputCurves.RightTop.History, InputManager.YawExp);
+
+            inputCurves.RightBottom.ValueMin = 0;
+            inputCurves.RightBottom.ValueMax = 1000;
+            inputCurves.RightBottom.ShowHalfScaling = true;
+            inputCurves.RightBottom.BaseLine = 500;
+            CreateThrustGraph(inputCurves.RightBottom.History);
+        }
+
+        private void HighlightInputGraph(TargetData data)
+        {
+            HighlightInputGraph(inputCurves.LeftTop, data.Roll);
+            HighlightInputGraph(inputCurves.RightTop, data.Pitch);
+            HighlightInputGraph(inputCurves.LeftBottom, data.Yaw);
+            HighlightInputGraph(inputCurves.RightBottom, data.Thrust * 2 - 1f);
+            inputCurves.Invalidate();
+        }
+
+        private void HighlightInputGraph(Graph graph, float value)
+        {
+            value += 1;
+            value /= 2;
+
+            graph.HighlightX = (int)(value * (graph.History.ValueCount - 1));
+        }
+
+        private void CreateInputGraph(DataHistory data, float exp)
+        {
+            data.Clear();
+
+            float scale = 1000.0f / (data.Count - 1);
+            for (float x = -500; x <= 500.0f; x += scale)
+            {
+                double v = 500.0f * Math.Pow(Math.Abs(x) / 500.0f, exp);
+                v *= Math.Sign(x);
+                data.UpdateValue(v);
+            }
+        }
+
+        private void CreateThrustGraph(DataHistory data)
+        {
+            data.Clear();
+            float scale = 1000.0f / (data.Count - 1);
+            for (float x = 0; x <= 1000.0f; x += scale)
+                data.UpdateValue(x);
         }
 
         private void calibrateButton_Click(object sender, EventArgs e)

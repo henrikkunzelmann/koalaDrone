@@ -26,6 +26,10 @@ namespace DroneControl
             set { History.FullMax = value; }
         }
 
+        public bool ShowHalfScaling { get; set; } = true;
+
+        public int HighlightX { get; set; } = -1;
+
         private const int gridSize = 30;
         private int offsetX = 15;
         private const int offsetY = 15;
@@ -94,12 +98,13 @@ namespace DroneControl
                 int baseLineValue = ConvertValue(BaseLine);
                 e.Graphics.DrawLine(baseLinePen, 0, baseLineValue, Width, baseLineValue);
 
-                DrawValue(e.Graphics, valueFont, BaseLine, true);
+                DrawValue(e.Graphics, valueFont, BaseLine, 0.5f);
             }
 
             if (!DesignMode && History != null)
             {
                 Pen pen = new Pen(Color.Black);
+                Brush highlightBrush = new SolidBrush(Color.SkyBlue);
 
                 int lastY = 0;
                 for (int i = 0; i < History.ValueCount; i++)
@@ -114,10 +119,22 @@ namespace DroneControl
                     lastY = y;
                 }
 
-                DrawHistoryValue(e.Graphics, valueFont, 0);
-                DrawHistoryValue(e.Graphics, valueFont, 0.25);
-                DrawHistoryValue(e.Graphics, valueFont, 0.75);
-                DrawHistoryValue(e.Graphics, valueFont, 1);
+                if (HighlightX >= 0 && HighlightX < History.ValueCount)
+                {
+                    int y = ConvertValue(History[HighlightX]);
+
+                    const int size = 8;
+                    RectangleF highlight = new RectangleF(HighlightX - size / 2, y - size / 2, size, size);
+                    e.Graphics.FillEllipse(highlightBrush, highlight);
+                }
+
+                DrawHistoryValue(e.Graphics, valueFont, 0, 1);
+                if (ShowHalfScaling)
+                {
+                    DrawHistoryValue(e.Graphics, valueFont, 0.25, 0.5f);
+                    DrawHistoryValue(e.Graphics, valueFont, 0.75, 0.5f);
+                }
+                DrawHistoryValue(e.Graphics, valueFont, 1, 0);
             }
 
             
@@ -126,17 +143,15 @@ namespace DroneControl
             base.OnPaint(e);
         }
 
-        private void DrawHistoryValue(Graphics graphics, Font font, double value, bool center = false)
+        private void DrawHistoryValue(Graphics graphics, Font font, double value, float alignFactor = 0)
         {
             double realValue = History.FullMin + (History.FullMax - History.FullMin) * value;
-            DrawValue(graphics, font, realValue, center);
+            DrawValue(graphics, font, realValue, alignFactor);
         }
 
-        private void DrawValue(Graphics graphics, Font font, double value, bool center = false)
+        private void DrawValue(Graphics graphics, Font font, double value, float alignFactor = 0)
         {
-            float offsetY = 0;
-            if (center)
-                offsetY = graphics.MeasureString(value.ToString(), font).Height / 2;
+            float offsetY = graphics.MeasureString(value.ToString(), font).Height * alignFactor;
             graphics.DrawString(value.ToString(), font, new SolidBrush(Color.DarkGray), 4, ConvertValue(value) - offsetY);
         }
 

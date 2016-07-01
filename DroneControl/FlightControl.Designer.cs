@@ -27,6 +27,10 @@
             System.Windows.Forms.GroupBox deviceGroupBox;
             System.Windows.Forms.GroupBox dataGroupBox;
             System.Windows.Forms.GroupBox inputConfigGroupBox;
+            System.Windows.Forms.GroupBox inputGraphsGroupBox;
+            System.Windows.Forms.Label rollExpText;
+            System.Windows.Forms.Label label1;
+            System.Windows.Forms.Label yawExpText;
             this.calibrateButton = new System.Windows.Forms.Button();
             this.searchDeviceButton = new System.Windows.Forms.Button();
             this.deviceBatteryLabel = new System.Windows.Forms.Label();
@@ -40,12 +44,25 @@
             this.searchTimer = new System.Windows.Forms.Timer(this.components);
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.deadZoneCheckBox = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.rollExpTextBox = new System.Windows.Forms.NumericUpDown();
+            this.pitchExpTextBox = new System.Windows.Forms.NumericUpDown();
+            this.yawExpTextBox = new System.Windows.Forms.NumericUpDown();
+            this.inputCurves = new DroneControl.QuadGraphControl();
             deviceGroupBox = new System.Windows.Forms.GroupBox();
             dataGroupBox = new System.Windows.Forms.GroupBox();
             inputConfigGroupBox = new System.Windows.Forms.GroupBox();
+            inputGraphsGroupBox = new System.Windows.Forms.GroupBox();
+            rollExpText = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
+            yawExpText = new System.Windows.Forms.Label();
             deviceGroupBox.SuspendLayout();
             dataGroupBox.SuspendLayout();
             inputConfigGroupBox.SuspendLayout();
+            inputGraphsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rollExpTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchExpTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yawExpTextBox)).BeginInit();
             this.SuspendLayout();
             // 
             // deviceGroupBox
@@ -210,30 +227,196 @@
             // 
             // inputConfigGroupBox
             // 
+            inputConfigGroupBox.Controls.Add(this.yawExpTextBox);
+            inputConfigGroupBox.Controls.Add(yawExpText);
+            inputConfigGroupBox.Controls.Add(this.pitchExpTextBox);
+            inputConfigGroupBox.Controls.Add(label1);
+            inputConfigGroupBox.Controls.Add(this.rollExpTextBox);
+            inputConfigGroupBox.Controls.Add(rollExpText);
             inputConfigGroupBox.Controls.Add(this.deadZoneCheckBox);
             inputConfigGroupBox.Location = new System.Drawing.Point(10, 174);
             inputConfigGroupBox.Name = "inputConfigGroupBox";
-            inputConfigGroupBox.Size = new System.Drawing.Size(444, 169);
+            inputConfigGroupBox.Size = new System.Drawing.Size(444, 127);
             inputConfigGroupBox.TabIndex = 27;
             inputConfigGroupBox.TabStop = false;
             inputConfigGroupBox.Text = "Input Config";
+            // 
+            // inputGraphsGroupBox
+            // 
+            inputGraphsGroupBox.Controls.Add(this.inputCurves);
+            inputGraphsGroupBox.Controls.Add(this.checkBox1);
+            inputGraphsGroupBox.Location = new System.Drawing.Point(10, 307);
+            inputGraphsGroupBox.Name = "inputGraphsGroupBox";
+            inputGraphsGroupBox.Size = new System.Drawing.Size(400, 400);
+            inputGraphsGroupBox.TabIndex = 28;
+            inputGraphsGroupBox.TabStop = false;
+            inputGraphsGroupBox.Text = "Input Graphs";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(11, 19);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(80, 17);
+            this.checkBox1.TabIndex = 36;
+            this.checkBox1.Text = "Dead Zone";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // rollExpText
+            // 
+            rollExpText.AutoSize = true;
+            rollExpText.Location = new System.Drawing.Point(131, 18);
+            rollExpText.Name = "rollExpText";
+            rollExpText.Size = new System.Drawing.Size(45, 13);
+            rollExpText.TabIndex = 38;
+            rollExpText.Text = "Roll exp";
+            // 
+            // rollExpTextBox
+            // 
+            this.rollExpTextBox.DecimalPlaces = 2;
+            this.rollExpTextBox.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.rollExpTextBox.Location = new System.Drawing.Point(182, 16);
+            this.rollExpTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.rollExpTextBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.rollExpTextBox.Name = "rollExpTextBox";
+            this.rollExpTextBox.Size = new System.Drawing.Size(62, 20);
+            this.rollExpTextBox.TabIndex = 39;
+            this.rollExpTextBox.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.rollExpTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // pitchExpTextBox
+            // 
+            this.pitchExpTextBox.DecimalPlaces = 2;
+            this.pitchExpTextBox.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.pitchExpTextBox.Location = new System.Drawing.Point(182, 42);
+            this.pitchExpTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.pitchExpTextBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.pitchExpTextBox.Name = "pitchExpTextBox";
+            this.pitchExpTextBox.Size = new System.Drawing.Size(62, 20);
+            this.pitchExpTextBox.TabIndex = 41;
+            this.pitchExpTextBox.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.pitchExpTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(131, 44);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(51, 13);
+            label1.TabIndex = 40;
+            label1.Text = "Pitch exp";
+            // 
+            // yawExpTextBox
+            // 
+            this.yawExpTextBox.DecimalPlaces = 2;
+            this.yawExpTextBox.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.yawExpTextBox.Location = new System.Drawing.Point(182, 68);
+            this.yawExpTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.yawExpTextBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.yawExpTextBox.Name = "yawExpTextBox";
+            this.yawExpTextBox.Size = new System.Drawing.Size(62, 20);
+            this.yawExpTextBox.TabIndex = 43;
+            this.yawExpTextBox.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.yawExpTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // yawExpText
+            // 
+            yawExpText.AutoSize = true;
+            yawExpText.Location = new System.Drawing.Point(131, 70);
+            yawExpText.Name = "yawExpText";
+            yawExpText.Size = new System.Drawing.Size(48, 13);
+            yawExpText.TabIndex = 42;
+            yawExpText.Text = "Yaw exp";
+            // 
+            // inputCurves
+            // 
+            this.inputCurves.BaseLine = 0D;
+            this.inputCurves.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.inputCurves.LeftBottomName = "Yaw";
+            this.inputCurves.LeftTopName = "Roll";
+            this.inputCurves.Location = new System.Drawing.Point(3, 16);
+            this.inputCurves.Name = "inputCurves";
+            this.inputCurves.RightBottomName = "Thrust";
+            this.inputCurves.RightTopName = "Pitch";
+            this.inputCurves.ShowBaseLine = true;
+            this.inputCurves.ShowHalfScaling = false;
+            this.inputCurves.Size = new System.Drawing.Size(394, 381);
+            this.inputCurves.TabIndex = 37;
+            this.inputCurves.ValueMax = 500D;
+            this.inputCurves.ValueMin = -500D;
             // 
             // FlightControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(inputConfigGroupBox);
+            this.Controls.Add(inputGraphsGroupBox);
             this.Controls.Add(dataGroupBox);
             this.Controls.Add(deviceGroupBox);
             this.DoubleBuffered = true;
             this.Name = "FlightControl";
-            this.Size = new System.Drawing.Size(457, 360);
+            this.Size = new System.Drawing.Size(464, 719);
             deviceGroupBox.ResumeLayout(false);
             deviceGroupBox.PerformLayout();
             dataGroupBox.ResumeLayout(false);
             dataGroupBox.PerformLayout();
             inputConfigGroupBox.ResumeLayout(false);
             inputConfigGroupBox.PerformLayout();
+            inputGraphsGroupBox.ResumeLayout(false);
+            inputGraphsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rollExpTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchExpTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yawExpTextBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -252,5 +435,10 @@
         private System.Windows.Forms.Timer updateTimer;
         private System.Windows.Forms.Button calibrateButton;
         private System.Windows.Forms.CheckBox deadZoneCheckBox;
+        private QuadGraphControl inputCurves;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.NumericUpDown yawExpTextBox;
+        private System.Windows.Forms.NumericUpDown pitchExpTextBox;
+        private System.Windows.Forms.NumericUpDown rollExpTextBox;
     }
 }
