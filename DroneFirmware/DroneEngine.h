@@ -1,5 +1,3 @@
-// DroneEngine.h
-
 #ifndef _DRONEENGINE_h
 #define _DRONEENGINE_h
 
@@ -55,10 +53,16 @@ class DroneEngine
 	 double pitchOutput;
 	 double rollOutput;
 	 double yawOutput;
+
+	 double anglePitchOutput;
+	 double angleRollOutput;
 	 
 	 PID* pitchPID;
 	 PID* rollPID;
 	 PID* yawPID;
+
+	 PID* anglePitchPID;
+	 PID* angleRollPID;
 
 	 void createPID();
 	 PID* createPID(PIDSettings settings, double* output);

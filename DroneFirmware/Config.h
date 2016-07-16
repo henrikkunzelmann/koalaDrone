@@ -73,11 +73,14 @@ struct Config {
 	int SafeServoValue;
 
 	boolean EnableStabilization;
+	boolean EnableAngleStabilization;
 	boolean NegativeMixing;
 	boolean KeepMotorsOn;
 
 	int MaxThrustForFlying;
 	boolean OnlyArmWhenStill;
+
+	PIDSettings AngleStabilization;
 
 	boolean CalibrateServos;
 };

@@ -60,6 +60,10 @@
             System.Windows.Forms.Label label5;
             System.Windows.Forms.Label label6;
             System.Windows.Forms.Label label1;
+            System.Windows.Forms.GroupBox groupBox1;
+            System.Windows.Forms.Label label2;
+            System.Windows.Forms.Label label3;
+            System.Windows.Forms.Label label7;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.updateFirmwareButton = new System.Windows.Forms.Button();
             this.firmwareVersionTextBox = new System.Windows.Forms.TextBox();
@@ -96,6 +100,9 @@
             this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
             this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
             this.applyButton = new System.Windows.Forms.Button();
+            this.angleKdTextBox = new System.Windows.Forms.NumericUpDown();
+            this.angleKiTextBox = new System.Windows.Forms.NumericUpDown();
+            this.angleKpTextBox = new System.Windows.Forms.NumericUpDown();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -128,6 +135,10 @@
             label5 = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            label2 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            label7 = new System.Windows.Forms.Label();
             firmwareGroupBox.SuspendLayout();
             quadrocopterPage.SuspendLayout();
             hardwareGroupBox.SuspendLayout();
@@ -148,6 +159,10 @@
             this.tabControl1.SuspendLayout();
             this.flyingPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).BeginInit();
+            groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.angleKdTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.angleKiTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.angleKpTextBox)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -787,7 +802,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(280, 189);
+            label1.Location = new System.Drawing.Point(281, 184);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(90, 13);
             label1.TabIndex = 25;
@@ -806,6 +821,7 @@
             // 
             // flyingPage
             // 
+            this.flyingPage.Controls.Add(groupBox1);
             this.flyingPage.Controls.Add(this.onlyArmWhenStillCheckBox);
             this.flyingPage.Controls.Add(this.maxThrustForFlyingTextBox);
             this.flyingPage.Controls.Add(label1);
@@ -827,7 +843,7 @@
             // onlyArmWhenStillCheckBox
             // 
             this.onlyArmWhenStillCheckBox.AutoSize = true;
-            this.onlyArmWhenStillCheckBox.Location = new System.Drawing.Point(283, 213);
+            this.onlyArmWhenStillCheckBox.Location = new System.Drawing.Point(283, 208);
             this.onlyArmWhenStillCheckBox.Name = "onlyArmWhenStillCheckBox";
             this.onlyArmWhenStillCheckBox.Size = new System.Drawing.Size(113, 17);
             this.onlyArmWhenStillCheckBox.TabIndex = 27;
@@ -841,7 +857,7 @@
             0,
             0,
             0});
-            this.maxThrustForFlyingTextBox.Location = new System.Drawing.Point(376, 187);
+            this.maxThrustForFlyingTextBox.Location = new System.Drawing.Point(377, 182);
             this.maxThrustForFlyingTextBox.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -891,6 +907,102 @@
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(this.angleKdTextBox);
+            groupBox1.Controls.Add(this.angleKiTextBox);
+            groupBox1.Controls.Add(this.angleKpTextBox);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(label7);
+            groupBox1.Location = new System.Drawing.Point(518, 113);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new System.Drawing.Size(117, 101);
+            groupBox1.TabIndex = 22;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "PID Angle";
+            // 
+            // angleKdTextBox
+            // 
+            this.angleKdTextBox.DecimalPlaces = 2;
+            this.angleKdTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            131072});
+            this.angleKdTextBox.Location = new System.Drawing.Point(34, 72);
+            this.angleKdTextBox.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.angleKdTextBox.Name = "angleKdTextBox";
+            this.angleKdTextBox.Size = new System.Drawing.Size(70, 20);
+            this.angleKdTextBox.TabIndex = 15;
+            // 
+            // angleKiTextBox
+            // 
+            this.angleKiTextBox.DecimalPlaces = 2;
+            this.angleKiTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            131072});
+            this.angleKiTextBox.Location = new System.Drawing.Point(34, 46);
+            this.angleKiTextBox.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.angleKiTextBox.Name = "angleKiTextBox";
+            this.angleKiTextBox.Size = new System.Drawing.Size(70, 20);
+            this.angleKiTextBox.TabIndex = 14;
+            // 
+            // angleKpTextBox
+            // 
+            this.angleKpTextBox.DecimalPlaces = 2;
+            this.angleKpTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            131072});
+            this.angleKpTextBox.Location = new System.Drawing.Point(34, 18);
+            this.angleKpTextBox.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.angleKpTextBox.Name = "angleKpTextBox";
+            this.angleKpTextBox.Size = new System.Drawing.Size(70, 20);
+            this.angleKpTextBox.TabIndex = 13;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(8, 22);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(20, 13);
+            label2.TabIndex = 2;
+            label2.Text = "Kp";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(8, 48);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(16, 13);
+            label3.TabIndex = 8;
+            label3.Text = "Ki";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(8, 74);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(20, 13);
+            label7.TabIndex = 12;
+            label7.Text = "Kd";
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -930,6 +1042,11 @@
             this.flyingPage.ResumeLayout(false);
             this.flyingPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.angleKdTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.angleKiTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.angleKpTextBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -971,5 +1088,8 @@
         private System.Windows.Forms.CheckBox enableStabilizationCheckBox;
         private System.Windows.Forms.NumericUpDown maxThrustForFlyingTextBox;
         private System.Windows.Forms.CheckBox onlyArmWhenStillCheckBox;
+        private System.Windows.Forms.NumericUpDown angleKdTextBox;
+        private System.Windows.Forms.NumericUpDown angleKiTextBox;
+        private System.Windows.Forms.NumericUpDown angleKpTextBox;
     }
 }

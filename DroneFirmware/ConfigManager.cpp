@@ -1,7 +1,3 @@
-// 
-// 
-// 
-
 #include "ConfigManager.h"
 
 Config ConfigManager::loadConfig() {
@@ -131,6 +127,10 @@ Config ConfigManager::getDefault() {
 	config.MaxThrustForFlying = 50;
 	config.OnlyArmWhenStill = false;
 
+	config.AngleStabilization.Kp = 5.0f;
+	config.AngleStabilization.Ki = 0;
+	config.AngleStabilization.Kd = 0;
+	
 	config.CalibrateServos = false;
 
 	Log::info("Config", "Using default config");

@@ -120,7 +120,7 @@ namespace DroneLibrary
         [Category("Flying")]
         public bool EnableStabilization;
 
-	    [MarshalAs(UnmanagedType.U1)]
+        [MarshalAs(UnmanagedType.U1)]
         [Category("Flying")]
         public bool NegativeMixing;
 
@@ -134,6 +134,9 @@ namespace DroneLibrary
         [MarshalAs(UnmanagedType.U1)]
         [Category("Flying")]
         public bool OnlyArmWhenStill;
+
+        [Category("PID Flying")]
+        public PidSettings AngleStabilization;
 
         [MarshalAs(UnmanagedType.U1)]
         [Category("Motors")]

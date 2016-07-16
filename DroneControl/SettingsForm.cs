@@ -67,6 +67,10 @@ namespace DroneControl
             Bind(maxThrustForFlyingTextBox, "data.MaxThrustForFlying");
             Bind(onlyArmWhenStillCheckBox, "data.OnlyArmWhenStill");
 
+            Bind(angleKpTextBox, "data.AngleStabilization.Kp");
+            Bind(angleKiTextBox, "data.AngleStabilization.Ki");
+            Bind(angleKdTextBox, "data.AngleStabilization.Kd");
+
             drone.OnSettingsChange += Drone_OnSettingsChange;
             drone.OnInfoChange += Drone_OnInfoChange;
         }
