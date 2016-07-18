@@ -15,8 +15,6 @@ struct GyroValues {
 	float MagnetX, MagnetY, MagnetZ;
 };
 
-#define FILTER(x, y, w) ((1.0f - w) * x + w * y)
-
 class Gyro
 {
 private:
@@ -47,6 +45,9 @@ protected:
 	virtual void getValues(GyroValues* values) = 0;
 	void calculateIMU();
 
+	boolean isAccMoving() const;
+	boolean isGyroMoving() const;
+
 public:
 	explicit Gyro(Config* config);
 
@@ -59,8 +60,8 @@ public:
 	void update();
 	virtual float getTemperature() = 0;
 
-	virtual bool hasMagnetometer() = 0;
-	virtual bool hasIMU() = 0;
+	virtual bool hasMagnetometer() const = 0;
+	virtual bool hasIMU() const = 0;
 
 	void calibrate();
 	bool inCalibration();

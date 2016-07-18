@@ -1,10 +1,13 @@
+#include <helper_3dmath.h>
 #include <Wire.h>
 #include <I2Cdev.h>
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
-#include <MPU6050_6Axis_MotionApps20.h>
 #include <Servo.h>
 #include <EEPROM.h>
+#include <MPU6050.h>
+#include <MPU9250.h>
+#include <BME280.h>
 
 #include "Build.h"
 #include "Log.h"
@@ -20,14 +23,20 @@
 #include "LED.h"
 #include "VoltageInputReader.h"
 #include "Profiler.h"
+#include "Gyro.h"
 #include "Gyro6050.h"
+#include "Gyro9250.h"
 #include "PID.h"
 #include "CycleTimes.h"
+#include "Baro.h"
+#include "Baro280.h"
 
 Config config;
 
 VoltageInputReader* voltageReader;
 Gyro* gyro;
+Baro* baro;
+
 ServoManager* servos;
 DroneEngine* engine;
 NetworkManager* network;
@@ -128,13 +137,28 @@ void setup() {
 	}
 
 
+	// I2C initialisieren
+	Wire.begin(SDA, SCL);
+	Wire.setClock(400000L);
+
 	// Gyro Sensor initialisieren
 	gyro = new Gyro6050(&config);
-	gyro->init();
+	if (!gyro->init()) {
+		delete gyro;
+
+		gyro = new Gyro9250(&config);
+		gyro->init();
+	}
 	gyro->calibrate();
 
 	Log::info("Boot", "Gyro sensor: \"%s\"", gyro->name());
 	Log::info("Boot", "Magnetometer: \"%s\"", gyro->magnetometerName());
+
+	// Baro Sensor initialisieren
+	baro = new Baro280(&config);
+	baro->init();
+
+	Log::info("Boot", "Baro sensor: \"%s\"", baro->name());
 
 	// Batterie Voltage Reader laden
 	voltageReader = new VoltageInputReader(A0, 17, 1);
@@ -148,6 +172,7 @@ void setup() {
 
 	// Profiler laden
 	Profiler::init();
+	
 
 	Log::info("Boot", "done booting. ready.");
 }
@@ -163,12 +188,14 @@ void loop() {
 	if (engine->state() != StateOTA)
 	{
 		gyro->update();
+		baro->update();
 		engine->handle();
 	}
 	handleBlink();
 
 	if (engine->state() == StateArmed)
 		servos->handleTick();
+
 
 	network->handleData();
 	Profiler::end();

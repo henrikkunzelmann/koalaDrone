@@ -16,13 +16,10 @@ char* Gyro6050::magnetometerName() {
 bool Gyro6050::init() {
 	Log::info("Gyro6050", "init()");
 
-	Wire.begin(SDA, SCL);
-	Wire.setClock(400000L); // gotta go fast
-
 	if (!mpu.testConnection()) {
 		Log::error("Gyro6050", "Connection failed");
 		mpuOK = false;
-		return false;
+		return mpuOK;
 	}
 
 	Log::debug("Gyro6050", "mpu.reset()");
@@ -36,11 +33,11 @@ bool Gyro6050::init() {
 	mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_2000);
 	mpu.setDLPFMode(0);
 
-	float accRange[4] = { 2, 4, 8, 16 }; // g
-	float gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
+	double accRange[4] = { 2, 4, 8, 16 }; // g
+	double gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
 
-	accRes = accRange[mpu.getFullScaleAccelRange()] / 32768.0f;
-	gyroRes = gyroRange[mpu.getFullScaleGyroRange()] / 32768.0f;
+	accRes = accRange[mpu.getFullScaleAccelRange()] / 32768.0;
+	gyroRes = gyroRange[mpu.getFullScaleGyroRange()] / 32768.0;
 
 	Log::info("Gyro6050", "done with init");
 
@@ -54,18 +51,17 @@ void Gyro6050::getValues(GyroValues* values) {
 
 	Profiler::begin("Gyro6050::getValues()");
 
-	int16_t x, y, z;
-	mpu.getAcceleration(&x, &y, &z);
+	int16_t ax, ay, az;
+	int16_t gx, gy, gz;
+	mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 
-	values->AccX = -x * accRes;
-	values->AccY = -y * accRes;
-	values->AccZ = -z * accRes;
+	values->AccX = -ax * accRes;
+	values->AccY = -ay * accRes;
+	values->AccZ = -az * accRes;
 
-	mpu.getRotation(&x, &y, &z);
-
-	values->RawGyroX = -(x >> 2);
-	values->RawGyroY = -(y >> 2);
-	values->RawGyroZ = -(z >> 2);
+	values->RawGyroX = -(gx >> 2);
+	values->RawGyroY = -(gy >> 2);
+	values->RawGyroZ = -(gz >> 2);
 
 	Profiler::end();
 }
@@ -81,10 +77,10 @@ float Gyro6050::getTemperature() {
 	return 0;
 }
 
-bool Gyro6050::hasMagnetometer() {
+bool Gyro6050::hasMagnetometer() const {
 	return false;
 }
 
-bool Gyro6050::hasIMU() {
+bool Gyro6050::hasIMU() const {
 	return false;
 }
