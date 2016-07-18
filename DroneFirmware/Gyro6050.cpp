@@ -63,18 +63,14 @@ void Gyro6050::getValues(GyroValues* values) {
 	values->RawGyroY = -(gy >> 2);
 	values->RawGyroZ = -(gz >> 2);
 
+	values->Temperature = mpu.getTemperature() / 340.00 + 36.53;
+
 	Profiler::end();
 }
 
 void Gyro6050::reset() {
 	if (mpuOK)
 		mpu.resetSensors();
-}
-
-float Gyro6050::getTemperature() {
-	if (mpuOK)
-		return mpu.getTemperature() / 340.00 + 36.53;
-	return 0;
 }
 
 bool Gyro6050::hasMagnetometer() const {

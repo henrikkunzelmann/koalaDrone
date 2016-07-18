@@ -56,13 +56,19 @@ void Gyro::update() {
 		values.RawGyroZ -= gyroOffset[2];
 
 		float gyroRes = 2000.0f / 8196.0f;
-		values.GyroX = FILTER(last.RawGyroX, values.RawGyroX, 0.05f) * gyroRes;
-		values.GyroY = FILTER(last.RawGyroY, values.RawGyroY, 0.05f) * gyroRes;
-		values.GyroZ = FILTER(last.RawGyroZ, values.RawGyroZ, 0.05f) * gyroRes;
+		values.GyroX = FILTER(last.RawGyroX, values.RawGyroX, 0.025f) * gyroRes;
+		values.GyroY = FILTER(last.RawGyroY, values.RawGyroY, 0.025f) * gyroRes;
+		values.GyroZ = FILTER(last.RawGyroZ, values.RawGyroZ, 0.025f) * gyroRes;
 
-		values.AccX = FILTER(last.AccX, values.AccX, 0.05f);
-		values.AccY = FILTER(last.AccY, values.AccY, 0.05f);
-		values.AccZ = FILTER(last.AccZ, values.AccZ, 0.05f);
+		values.AccX = FILTER(last.AccX, values.AccX, 0.025f);
+		values.AccY = FILTER(last.AccY, values.AccY, 0.025f);
+		values.AccZ = FILTER(last.AccZ, values.AccZ, 0.025f);
+
+		values.MagnetX = FILTER(last.MagnetX, values.MagnetX, 0.025f);
+		values.MagnetY = FILTER(last.MagnetY, values.MagnetY, 0.025f);
+		values.MagnetZ = FILTER(last.MagnetZ, values.MagnetZ, 0.025f);
+
+		values.Temperature = FILTER(last.Temperature, values.Temperature, 0.025f);
 
 		// IMU
 		if (!hasIMU())

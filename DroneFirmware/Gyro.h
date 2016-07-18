@@ -13,6 +13,8 @@ struct GyroValues {
 	float AccX, AccY, AccZ;
 	float GyroX, GyroY, GyroZ;
 	float MagnetX, MagnetY, MagnetZ;
+
+	float Temperature;
 };
 
 class Gyro
@@ -58,7 +60,6 @@ public:
 	virtual void reset() = 0;
 
 	void update();
-	virtual float getTemperature() = 0;
 
 	virtual bool hasMagnetometer() const = 0;
 	virtual bool hasIMU() const = 0;

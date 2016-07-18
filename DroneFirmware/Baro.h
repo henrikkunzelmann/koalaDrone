@@ -16,6 +16,7 @@ struct BaroValues {
 class Baro
 {
 private:
+	boolean firstSample;
 	uint32_t lastSample;
 	BaroValues last;
 

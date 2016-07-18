@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox sensorGroupBox;
+            this.calibrationRunningText = new System.Windows.Forms.Label();
             this.magnetLabel = new System.Windows.Forms.Label();
             this.rotationLabel = new System.Windows.Forms.Label();
             this.batteryVoltageLabel = new System.Windows.Forms.Label();
@@ -38,13 +39,20 @@
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.calibrateGyroButton = new System.Windows.Forms.Button();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
-            this.calibrationRunningText = new System.Windows.Forms.Label();
+            this.pressureLabel = new System.Windows.Forms.Label();
+            this.humidityLabel = new System.Windows.Forms.Label();
+            this.altitudeLabel = new System.Windows.Forms.Label();
+            this.temperatureBaroLabel = new System.Windows.Forms.Label();
             sensorGroupBox = new System.Windows.Forms.GroupBox();
             sensorGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // sensorGroupBox
             // 
+            sensorGroupBox.Controls.Add(this.temperatureBaroLabel);
+            sensorGroupBox.Controls.Add(this.altitudeLabel);
+            sensorGroupBox.Controls.Add(this.humidityLabel);
+            sensorGroupBox.Controls.Add(this.pressureLabel);
             sensorGroupBox.Controls.Add(this.calibrationRunningText);
             sensorGroupBox.Controls.Add(this.magnetLabel);
             sensorGroupBox.Controls.Add(this.rotationLabel);
@@ -58,10 +66,20 @@
             sensorGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             sensorGroupBox.Location = new System.Drawing.Point(0, 0);
             sensorGroupBox.Name = "sensorGroupBox";
-            sensorGroupBox.Size = new System.Drawing.Size(410, 262);
+            sensorGroupBox.Size = new System.Drawing.Size(410, 312);
             sensorGroupBox.TabIndex = 0;
             sensorGroupBox.TabStop = false;
             sensorGroupBox.Text = "Sensors";
+            // 
+            // calibrationRunningText
+            // 
+            this.calibrationRunningText.AutoSize = true;
+            this.calibrationRunningText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.calibrationRunningText.Location = new System.Drawing.Point(6, 240);
+            this.calibrationRunningText.Name = "calibrationRunningText";
+            this.calibrationRunningText.Size = new System.Drawing.Size(103, 13);
+            this.calibrationRunningText.TabIndex = 23;
+            this.calibrationRunningText.Text = "Calibration running...";
             // 
             // magnetLabel
             // 
@@ -145,15 +163,41 @@
             this.artificialHorizon.TabIndex = 14;
             this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
             // 
-            // calibrationRunningText
+            // pressureLabel
             // 
-            this.calibrationRunningText.AutoSize = true;
-            this.calibrationRunningText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.calibrationRunningText.Location = new System.Drawing.Point(6, 240);
-            this.calibrationRunningText.Name = "calibrationRunningText";
-            this.calibrationRunningText.Size = new System.Drawing.Size(103, 13);
-            this.calibrationRunningText.TabIndex = 23;
-            this.calibrationRunningText.Text = "Calibration running...";
+            this.pressureLabel.AutoSize = true;
+            this.pressureLabel.Location = new System.Drawing.Point(6, 267);
+            this.pressureLabel.Name = "pressureLabel";
+            this.pressureLabel.Size = new System.Drawing.Size(48, 13);
+            this.pressureLabel.TabIndex = 24;
+            this.pressureLabel.Text = "Pressure";
+            // 
+            // humidityLabel
+            // 
+            this.humidityLabel.AutoSize = true;
+            this.humidityLabel.Location = new System.Drawing.Point(212, 267);
+            this.humidityLabel.Name = "humidityLabel";
+            this.humidityLabel.Size = new System.Drawing.Size(47, 13);
+            this.humidityLabel.TabIndex = 25;
+            this.humidityLabel.Text = "Humidity";
+            // 
+            // altitudeLabel
+            // 
+            this.altitudeLabel.AutoSize = true;
+            this.altitudeLabel.Location = new System.Drawing.Point(6, 280);
+            this.altitudeLabel.Name = "altitudeLabel";
+            this.altitudeLabel.Size = new System.Drawing.Size(42, 13);
+            this.altitudeLabel.TabIndex = 26;
+            this.altitudeLabel.Text = "Altitude";
+            // 
+            // temperatureBaroLabel
+            // 
+            this.temperatureBaroLabel.AutoSize = true;
+            this.temperatureBaroLabel.Location = new System.Drawing.Point(211, 280);
+            this.temperatureBaroLabel.Name = "temperatureBaroLabel";
+            this.temperatureBaroLabel.Size = new System.Drawing.Size(91, 13);
+            this.temperatureBaroLabel.TabIndex = 27;
+            this.temperatureBaroLabel.Text = "Temperature baro";
             // 
             // SensorControl
             // 
@@ -161,7 +205,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(sensorGroupBox);
             this.Name = "SensorControl";
-            this.Size = new System.Drawing.Size(410, 262);
+            this.Size = new System.Drawing.Size(410, 312);
             sensorGroupBox.ResumeLayout(false);
             sensorGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -180,5 +224,9 @@
         private System.Windows.Forms.Label rotationLabel;
         private System.Windows.Forms.Label magnetLabel;
         private System.Windows.Forms.Label calibrationRunningText;
+        private System.Windows.Forms.Label altitudeLabel;
+        private System.Windows.Forms.Label humidityLabel;
+        private System.Windows.Forms.Label pressureLabel;
+        private System.Windows.Forms.Label temperatureBaroLabel;
     }
 }

@@ -128,7 +128,7 @@ namespace DroneLibrary
                 bool changed;
                 lock (dataLock)
                 {
-                    changed = value != data;
+                    changed = !value.Equals(data);
                     if (changed)
                         data = value;
                 }
@@ -162,7 +162,7 @@ namespace DroneLibrary
                 bool changed;
                 lock (infoLock)
                 {
-                    changed = value != info;
+                    changed = !value.Equals(info);
                     if (changed)
                         info = value;
                 }
@@ -787,15 +787,13 @@ namespace DroneLibrary
                             return;
 
                         DroneState state = (DroneState)buffer.ReadByte();
-
                         QuadMotorValues motorValues = new QuadMotorValues(buffer);
                         GyroData gyro = new GyroData(buffer);
-
+                        BaroData baro = new BaroData(buffer);
                         float batteryVoltage = buffer.ReadFloat();
-
                         int wifiRssi = buffer.ReadInt();
 
-                        Data = new DroneData(state, motorValues, gyro, batteryVoltage, wifiRssi);
+                        Data = new DroneData(state, motorValues, gyro, baro, batteryVoltage, wifiRssi);
 
                         lastDataDroneRevision = revision;
                         break;

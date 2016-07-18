@@ -1,11 +1,8 @@
-// 
-// 
-// 
-
 #include "NetworkManager.h"
 
-NetworkManager::NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader) {
+NetworkManager::NetworkManager(Gyro* gyro, Baro* baro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader) {
 	this->gyro = gyro;
+	this->baro = baro;
 	this->servos = servos;
 	this->engine = engine;
 	this->config = config;
@@ -309,6 +306,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		writeBuffer->writeString(gyro->name());
 		writeBuffer->writeString(gyro->magnetometerName());
+		writeBuffer->writeString(baro->name());
 
 		writeBuffer->write((uint8_t*)config, sizeof(Config));
 
@@ -487,7 +485,14 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 		writeBuffer->write(values.MagnetY);
 		writeBuffer->write(values.MagnetZ);
 
-		writeBuffer->write(gyro->getTemperature());
+		writeBuffer->write(values.Temperature);
+
+		BaroValues baroValues = baro->getValues();
+		writeBuffer->write(baroValues.Pressure);
+		writeBuffer->write(baroValues.Humidity);
+		writeBuffer->write(baroValues.Temperature);
+		writeBuffer->write(baro->getAltitude());
+
 		writeBuffer->write(voltageReader->readVoltage());
 		writeBuffer->write(WiFi.RSSI());
 

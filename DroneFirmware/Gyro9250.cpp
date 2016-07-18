@@ -76,18 +76,14 @@ void Gyro9250::getValues(GyroValues* values) {
 	values->MagnetY = my * magRes;
 	values->MagnetZ = mz * magRes;
 
+	values->Temperature = mpu.getTemperature() / 333.87 + 21;
+
 	Profiler::end();
 }
 
 void Gyro9250::reset() {
 	if (mpuOK)
 		mpu.resetSensors();
-}
-
-float Gyro9250::getTemperature() {
-	if (mpuOK)
-		return mpu.getTemperature() / 333.87 + 21;
-	return 0;
 }
 
 bool Gyro9250::hasMagnetometer() const {

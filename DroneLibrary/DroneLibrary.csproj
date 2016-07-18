@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaroData.cs" />
     <Compile Include="BinaryHelper.cs" />
     <Compile Include="DataChangedEventArgs.cs" />
     <Compile Include="DataHistory.cs" />

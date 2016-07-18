@@ -29,8 +29,6 @@ public:
 	bool init();
 	void reset();
 
-	float getTemperature();
-
 	bool hasMagnetometer() const;
 	bool hasIMU() const;
 };

@@ -38,6 +38,7 @@ namespace DroneControl
             Bind(idTextBox, "info.SerialCode");
             Bind(gyroSensorTextBox, "info.GyroSensor");
             Bind(magnetometerTextBox, "info.Magnetometer");
+            Bind(baroSensorTextBox, "info.BaroSensor");
 
             Bind(minValueTextBox, "data.ServoMin");
             Bind(idleValueTextBox, "data.ServoIdle");

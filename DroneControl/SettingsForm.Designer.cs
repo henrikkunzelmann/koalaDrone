@@ -64,6 +64,7 @@
             System.Windows.Forms.Label label2;
             System.Windows.Forms.Label label3;
             System.Windows.Forms.Label label7;
+            System.Windows.Forms.Label label8;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.updateFirmwareButton = new System.Windows.Forms.Button();
             this.firmwareVersionTextBox = new System.Windows.Forms.TextBox();
@@ -92,6 +93,9 @@
             this.yawKdTextBox = new System.Windows.Forms.NumericUpDown();
             this.yawKiTextBox = new System.Windows.Forms.NumericUpDown();
             this.yawKpTextBox = new System.Windows.Forms.NumericUpDown();
+            this.angleKdTextBox = new System.Windows.Forms.NumericUpDown();
+            this.angleKiTextBox = new System.Windows.Forms.NumericUpDown();
+            this.angleKpTextBox = new System.Windows.Forms.NumericUpDown();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.flyingPage = new System.Windows.Forms.TabPage();
             this.onlyArmWhenStillCheckBox = new System.Windows.Forms.CheckBox();
@@ -100,9 +104,7 @@
             this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
             this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
             this.applyButton = new System.Windows.Forms.Button();
-            this.angleKdTextBox = new System.Windows.Forms.NumericUpDown();
-            this.angleKiTextBox = new System.Windows.Forms.NumericUpDown();
-            this.angleKpTextBox = new System.Windows.Forms.NumericUpDown();
+            this.baroSensorTextBox = new System.Windows.Forms.TextBox();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -139,6 +141,7 @@
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
+            label8 = new System.Windows.Forms.Label();
             firmwareGroupBox.SuspendLayout();
             quadrocopterPage.SuspendLayout();
             hardwareGroupBox.SuspendLayout();
@@ -156,13 +159,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.yawKdTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawKiTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawKpTextBox)).BeginInit();
-            this.tabControl1.SuspendLayout();
-            this.flyingPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.angleKdTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.angleKiTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.angleKpTextBox)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.flyingPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -275,6 +278,8 @@
             // 
             // hardwareGroupBox
             // 
+            hardwareGroupBox.Controls.Add(this.baroSensorTextBox);
+            hardwareGroupBox.Controls.Add(label8);
             hardwareGroupBox.Controls.Add(this.restartButton);
             hardwareGroupBox.Controls.Add(this.modelTextBox);
             hardwareGroupBox.Controls.Add(this.magnetometerTextBox);
@@ -286,7 +291,7 @@
             hardwareGroupBox.Controls.Add(gyroSensorLabel);
             hardwareGroupBox.Location = new System.Drawing.Point(11, 156);
             hardwareGroupBox.Name = "hardwareGroupBox";
-            hardwareGroupBox.Size = new System.Drawing.Size(258, 161);
+            hardwareGroupBox.Size = new System.Drawing.Size(258, 189);
             hardwareGroupBox.TabIndex = 16;
             hardwareGroupBox.TabStop = false;
             hardwareGroupBox.Text = "Hardware";
@@ -294,7 +299,7 @@
             // restartButton
             // 
             this.restartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.restartButton.Location = new System.Drawing.Point(144, 135);
+            this.restartButton.Location = new System.Drawing.Point(144, 163);
             this.restartButton.Name = "restartButton";
             this.restartButton.Size = new System.Drawing.Size(108, 20);
             this.restartButton.TabIndex = 11;
@@ -808,6 +813,102 @@
             label1.TabIndex = 25;
             label1.Text = "Max Thrust Flying";
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(this.angleKdTextBox);
+            groupBox1.Controls.Add(this.angleKiTextBox);
+            groupBox1.Controls.Add(this.angleKpTextBox);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(label7);
+            groupBox1.Location = new System.Drawing.Point(518, 113);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new System.Drawing.Size(117, 101);
+            groupBox1.TabIndex = 22;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "PID Angle";
+            // 
+            // angleKdTextBox
+            // 
+            this.angleKdTextBox.DecimalPlaces = 2;
+            this.angleKdTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            131072});
+            this.angleKdTextBox.Location = new System.Drawing.Point(34, 72);
+            this.angleKdTextBox.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.angleKdTextBox.Name = "angleKdTextBox";
+            this.angleKdTextBox.Size = new System.Drawing.Size(70, 20);
+            this.angleKdTextBox.TabIndex = 15;
+            // 
+            // angleKiTextBox
+            // 
+            this.angleKiTextBox.DecimalPlaces = 2;
+            this.angleKiTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            131072});
+            this.angleKiTextBox.Location = new System.Drawing.Point(34, 46);
+            this.angleKiTextBox.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.angleKiTextBox.Name = "angleKiTextBox";
+            this.angleKiTextBox.Size = new System.Drawing.Size(70, 20);
+            this.angleKiTextBox.TabIndex = 14;
+            // 
+            // angleKpTextBox
+            // 
+            this.angleKpTextBox.DecimalPlaces = 2;
+            this.angleKpTextBox.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            131072});
+            this.angleKpTextBox.Location = new System.Drawing.Point(34, 18);
+            this.angleKpTextBox.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.angleKpTextBox.Name = "angleKpTextBox";
+            this.angleKpTextBox.Size = new System.Drawing.Size(70, 20);
+            this.angleKpTextBox.TabIndex = 13;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(8, 22);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(20, 13);
+            label2.TabIndex = 2;
+            label2.Text = "Kp";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(8, 48);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(16, 13);
+            label3.TabIndex = 8;
+            label3.Text = "Ki";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(8, 74);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(20, 13);
+            label7.TabIndex = 12;
+            label7.Text = "Kd";
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(quadrocopterPage);
@@ -907,101 +1008,21 @@
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
             // 
-            // groupBox1
+            // baroSensorTextBox
             // 
-            groupBox1.Controls.Add(this.angleKdTextBox);
-            groupBox1.Controls.Add(this.angleKiTextBox);
-            groupBox1.Controls.Add(this.angleKpTextBox);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(label3);
-            groupBox1.Controls.Add(label7);
-            groupBox1.Location = new System.Drawing.Point(518, 113);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(117, 101);
-            groupBox1.TabIndex = 22;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "PID Angle";
+            this.baroSensorTextBox.Location = new System.Drawing.Point(110, 124);
+            this.baroSensorTextBox.Name = "baroSensorTextBox";
+            this.baroSensorTextBox.Size = new System.Drawing.Size(142, 20);
+            this.baroSensorTextBox.TabIndex = 17;
             // 
-            // angleKdTextBox
+            // label8
             // 
-            this.angleKdTextBox.DecimalPlaces = 2;
-            this.angleKdTextBox.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            131072});
-            this.angleKdTextBox.Location = new System.Drawing.Point(34, 72);
-            this.angleKdTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.angleKdTextBox.Name = "angleKdTextBox";
-            this.angleKdTextBox.Size = new System.Drawing.Size(70, 20);
-            this.angleKdTextBox.TabIndex = 15;
-            // 
-            // angleKiTextBox
-            // 
-            this.angleKiTextBox.DecimalPlaces = 2;
-            this.angleKiTextBox.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            131072});
-            this.angleKiTextBox.Location = new System.Drawing.Point(34, 46);
-            this.angleKiTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.angleKiTextBox.Name = "angleKiTextBox";
-            this.angleKiTextBox.Size = new System.Drawing.Size(70, 20);
-            this.angleKiTextBox.TabIndex = 14;
-            // 
-            // angleKpTextBox
-            // 
-            this.angleKpTextBox.DecimalPlaces = 2;
-            this.angleKpTextBox.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            131072});
-            this.angleKpTextBox.Location = new System.Drawing.Point(34, 18);
-            this.angleKpTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.angleKpTextBox.Name = "angleKpTextBox";
-            this.angleKpTextBox.Size = new System.Drawing.Size(70, 20);
-            this.angleKpTextBox.TabIndex = 13;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(8, 22);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(20, 13);
-            label2.TabIndex = 2;
-            label2.Text = "Kp";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(8, 48);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(16, 13);
-            label3.TabIndex = 8;
-            label3.Text = "Ki";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(8, 74);
-            label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(20, 13);
-            label7.TabIndex = 12;
-            label7.Text = "Kd";
+            label8.AutoSize = true;
+            label8.Location = new System.Drawing.Point(9, 127);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(65, 13);
+            label8.TabIndex = 16;
+            label8.Text = "Baro Sensor";
             // 
             // SettingsForm
             // 
@@ -1038,15 +1059,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.yawKdTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawKiTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yawKpTextBox)).EndInit();
-            this.tabControl1.ResumeLayout(false);
-            this.flyingPage.ResumeLayout(false);
-            this.flyingPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.angleKdTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.angleKiTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.angleKpTextBox)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.flyingPage.ResumeLayout(false);
+            this.flyingPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1091,5 +1112,6 @@
         private System.Windows.Forms.NumericUpDown angleKdTextBox;
         private System.Windows.Forms.NumericUpDown angleKiTextBox;
         private System.Windows.Forms.NumericUpDown angleKpTextBox;
+        private System.Windows.Forms.TextBox baroSensorTextBox;
     }
 }

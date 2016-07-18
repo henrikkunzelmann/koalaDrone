@@ -88,6 +88,18 @@ namespace DroneControl
             batteryVoltageLabel.Text = string.Format("Battery voltage: {0} V",
                 Formatting.FormatDecimal(e.Data.BatteryVoltage, 2));
 
+            pressureLabel.Text = string.Format("Pressure: {0} hPa",
+                Formatting.FormatDecimal(e.Data.Baro.Pressure, 2, 4));
+
+            humidityLabel.Text = string.Format("Humidity: {0} %RH",
+                Formatting.FormatDecimal(e.Data.Baro.Humidity, 2, 3));
+
+            temperatureBaroLabel.Text = string.Format("Temperature: {0}°C",
+                Formatting.FormatDecimal(e.Data.Baro.Temperature, 2));
+
+            altitudeLabel.Text = string.Format("Altitude: {0} m",
+                Formatting.FormatDecimal(e.Data.Baro.Altitude, 2, 4));
+
             ResumeLayout();
         }
 

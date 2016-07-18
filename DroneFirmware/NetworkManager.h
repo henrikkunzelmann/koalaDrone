@@ -1,11 +1,10 @@
-// NetworkManager.h
-
 #ifndef _NETWORKMANAGER_h
 #define _NETWORKMANAGER_h
 
 #include "arduino.h"
 #include "Config.h"
 #include "Gyro.h"
+#include "Baro.h"
 #include "ServoManager.h"
 #include "DroneEngine.h"
 #include "PacketBuffer.h"
@@ -27,6 +26,7 @@ class NetworkManager
 {
 protected:
 	Gyro* gyro;
+	Baro* baro;
 	ServoManager* servos;
 	DroneEngine* engine;
 	Config* config;
@@ -76,7 +76,7 @@ protected:
 	void sendLog(WiFiUDP udp);
 	void sendDebugData(WiFiUDP udp);
 public:
-	explicit NetworkManager(Gyro* gyro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader);
+	explicit NetworkManager(Gyro* gyro, Baro* baro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader);
 	
 	void beginSaveConfig();
 

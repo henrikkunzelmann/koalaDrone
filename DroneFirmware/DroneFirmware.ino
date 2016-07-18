@@ -166,7 +166,7 @@ void setup() {
 	engine = new DroneEngine(gyro, servos, &config);
 
 	// Netzwerkmanager starten
-	network = new NetworkManager(gyro, servos, engine, &config, voltageReader);
+	network = new NetworkManager(gyro, baro, servos, engine, &config, voltageReader);
 	if (saveConfig)
 		network->beginSaveConfig();
 
