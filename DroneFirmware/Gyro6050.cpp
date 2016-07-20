@@ -63,6 +63,10 @@ void Gyro6050::getValues(GyroValues* values) {
 	values->RawGyroY = -(gy >> 2);
 	values->RawGyroZ = -(gz >> 2);
 
+	values->MagnetX = 0;
+	values->MagnetY = 0;
+	values->MagnetZ = 0;
+
 	values->Temperature = mpu.getTemperature() / 340.00 + 36.53;
 
 	Profiler::end();

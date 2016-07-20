@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox sensorGroupBox;
+            this.temperatureBaroLabel = new System.Windows.Forms.Label();
+            this.altitudeLabel = new System.Windows.Forms.Label();
+            this.humidityLabel = new System.Windows.Forms.Label();
+            this.pressureLabel = new System.Windows.Forms.Label();
             this.calibrationRunningText = new System.Windows.Forms.Label();
             this.magnetLabel = new System.Windows.Forms.Label();
             this.rotationLabel = new System.Windows.Forms.Label();
@@ -39,16 +43,14 @@
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.calibrateGyroButton = new System.Windows.Forms.Button();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
-            this.pressureLabel = new System.Windows.Forms.Label();
-            this.humidityLabel = new System.Windows.Forms.Label();
-            this.altitudeLabel = new System.Windows.Forms.Label();
-            this.temperatureBaroLabel = new System.Windows.Forms.Label();
+            this.calibrateMagnetButton = new System.Windows.Forms.Button();
             sensorGroupBox = new System.Windows.Forms.GroupBox();
             sensorGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // sensorGroupBox
             // 
+            sensorGroupBox.Controls.Add(this.calibrateMagnetButton);
             sensorGroupBox.Controls.Add(this.temperatureBaroLabel);
             sensorGroupBox.Controls.Add(this.altitudeLabel);
             sensorGroupBox.Controls.Add(this.humidityLabel);
@@ -70,6 +72,42 @@
             sensorGroupBox.TabIndex = 0;
             sensorGroupBox.TabStop = false;
             sensorGroupBox.Text = "Sensors";
+            // 
+            // temperatureBaroLabel
+            // 
+            this.temperatureBaroLabel.AutoSize = true;
+            this.temperatureBaroLabel.Location = new System.Drawing.Point(211, 280);
+            this.temperatureBaroLabel.Name = "temperatureBaroLabel";
+            this.temperatureBaroLabel.Size = new System.Drawing.Size(91, 13);
+            this.temperatureBaroLabel.TabIndex = 27;
+            this.temperatureBaroLabel.Text = "Temperature baro";
+            // 
+            // altitudeLabel
+            // 
+            this.altitudeLabel.AutoSize = true;
+            this.altitudeLabel.Location = new System.Drawing.Point(6, 280);
+            this.altitudeLabel.Name = "altitudeLabel";
+            this.altitudeLabel.Size = new System.Drawing.Size(42, 13);
+            this.altitudeLabel.TabIndex = 26;
+            this.altitudeLabel.Text = "Altitude";
+            // 
+            // humidityLabel
+            // 
+            this.humidityLabel.AutoSize = true;
+            this.humidityLabel.Location = new System.Drawing.Point(212, 267);
+            this.humidityLabel.Name = "humidityLabel";
+            this.humidityLabel.Size = new System.Drawing.Size(47, 13);
+            this.humidityLabel.TabIndex = 25;
+            this.humidityLabel.Text = "Humidity";
+            // 
+            // pressureLabel
+            // 
+            this.pressureLabel.AutoSize = true;
+            this.pressureLabel.Location = new System.Drawing.Point(6, 267);
+            this.pressureLabel.Name = "pressureLabel";
+            this.pressureLabel.Size = new System.Drawing.Size(48, 13);
+            this.pressureLabel.TabIndex = 24;
+            this.pressureLabel.Text = "Pressure";
             // 
             // calibrationRunningText
             // 
@@ -163,41 +201,15 @@
             this.artificialHorizon.TabIndex = 14;
             this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
             // 
-            // pressureLabel
+            // calibrateMagnetButton
             // 
-            this.pressureLabel.AutoSize = true;
-            this.pressureLabel.Location = new System.Drawing.Point(6, 267);
-            this.pressureLabel.Name = "pressureLabel";
-            this.pressureLabel.Size = new System.Drawing.Size(48, 13);
-            this.pressureLabel.TabIndex = 24;
-            this.pressureLabel.Text = "Pressure";
-            // 
-            // humidityLabel
-            // 
-            this.humidityLabel.AutoSize = true;
-            this.humidityLabel.Location = new System.Drawing.Point(212, 267);
-            this.humidityLabel.Name = "humidityLabel";
-            this.humidityLabel.Size = new System.Drawing.Size(47, 13);
-            this.humidityLabel.TabIndex = 25;
-            this.humidityLabel.Text = "Humidity";
-            // 
-            // altitudeLabel
-            // 
-            this.altitudeLabel.AutoSize = true;
-            this.altitudeLabel.Location = new System.Drawing.Point(6, 280);
-            this.altitudeLabel.Name = "altitudeLabel";
-            this.altitudeLabel.Size = new System.Drawing.Size(42, 13);
-            this.altitudeLabel.TabIndex = 26;
-            this.altitudeLabel.Text = "Altitude";
-            // 
-            // temperatureBaroLabel
-            // 
-            this.temperatureBaroLabel.AutoSize = true;
-            this.temperatureBaroLabel.Location = new System.Drawing.Point(211, 280);
-            this.temperatureBaroLabel.Name = "temperatureBaroLabel";
-            this.temperatureBaroLabel.Size = new System.Drawing.Size(91, 13);
-            this.temperatureBaroLabel.TabIndex = 27;
-            this.temperatureBaroLabel.Text = "Temperature baro";
+            this.calibrateMagnetButton.Location = new System.Drawing.Point(187, 48);
+            this.calibrateMagnetButton.Name = "calibrateMagnetButton";
+            this.calibrateMagnetButton.Size = new System.Drawing.Size(23, 23);
+            this.calibrateMagnetButton.TabIndex = 28;
+            this.calibrateMagnetButton.Text = "M";
+            this.calibrateMagnetButton.UseVisualStyleBackColor = true;
+            this.calibrateMagnetButton.Click += new System.EventHandler(this.calibrateMagnetButton_Click);
             // 
             // SensorControl
             // 
@@ -228,5 +240,6 @@
         private System.Windows.Forms.Label humidityLabel;
         private System.Windows.Forms.Label pressureLabel;
         private System.Windows.Forms.Label temperatureBaroLabel;
+        private System.Windows.Forms.Button calibrateMagnetButton;
     }
 }

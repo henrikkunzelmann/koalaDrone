@@ -327,8 +327,17 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		Log::debug("Network", "Client %s unsubscribed data", udp.remoteIP().toString().c_str());
 		break;
 	case CalibrateGyro:
-		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
-			gyro->calibrate();
+		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle) {
+
+			boolean calibrateMagnet = readBuffer->readBoolean();
+			if (readBuffer->getError())
+				return;
+
+			if (calibrateMagnet)
+				gyro->calibrateMagnet();
+			else
+				gyro->calibrate();
+		}
 		break;
 
 	case Reset:

@@ -20,11 +20,13 @@ struct GyroValues {
 class Gyro
 {
 private:
+	bool firstSample = true;
 	uint32_t lastSample;
 	GyroValues last;
 
 	bool calibration = false;
 	bool calibrationOrientation = false;
+	bool calibrationMagnet = false;
 	uint32_t calibrationCount;
 
 	float rollOffset = 0;
@@ -34,6 +36,9 @@ private:
 	int64_t gyroOffset[3];
 	int16_t minGyro[3];
 	int16_t maxGyro[3];
+
+	float minMagnet[3];
+	float maxMagnet[3];
 
 protected:
 	Config* config;
@@ -65,6 +70,7 @@ public:
 	virtual bool hasIMU() const = 0;
 
 	void calibrate();
+	void calibrateMagnet();
 	bool inCalibration();
 
 	GyroValues getValues() const;

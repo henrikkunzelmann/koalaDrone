@@ -83,6 +83,7 @@ struct Config {
 	PIDSettings AngleStabilization;
 
 	boolean CalibrateServos;
+	float MagnetOffset[3];
 };
 
 #endif

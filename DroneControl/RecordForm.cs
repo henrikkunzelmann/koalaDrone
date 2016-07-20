@@ -76,6 +76,7 @@ namespace DroneControl
             "Temp", "Pitch", "Roll", "Yaw",
             "GyroX", "GyroY", "GyroZ",
             "AccX", "AccY", "AccZ",
+            "MagX", "MagY", "MagZ",
             "Target Pitch",
             "Target Roll",
             "Target Yaw",
@@ -102,12 +103,17 @@ namespace DroneControl
                     drone.Data.Gyro.Pitch,
                     drone.Data.Gyro.Roll,
                     drone.Data.Gyro.Yaw,
+
                     drone.Data.Gyro.GyroX,
                     drone.Data.Gyro.GyroY,
                     drone.Data.Gyro.GyroZ,
                     drone.Data.Gyro.AccelerationX,
                     drone.Data.Gyro.AccelerationY,
                     drone.Data.Gyro.AccelerationZ,
+
+                    drone.Data.Gyro.MagnetX,
+                    drone.Data.Gyro.MagnetY,
+                    drone.Data.Gyro.MagnetZ,
 
                     inputManager.TargetData.Pitch,
                     inputManager.TargetData.Roll,

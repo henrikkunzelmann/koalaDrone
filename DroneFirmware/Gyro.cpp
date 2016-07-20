@@ -49,11 +49,50 @@ void Gyro::update() {
 			calibrationCount = 0;
 		}
 	}
+	else if (calibrationMagnet) {
+		getValues(&values);
+
+		if (calibrationCount == 0) {
+			minMagnet[0] = values.MagnetX;
+			minMagnet[1] = values.MagnetY;
+			minMagnet[2] = values.MagnetZ;
+
+			maxMagnet[0] = values.MagnetX;
+			maxMagnet[1] = values.MagnetY;
+			maxMagnet[2] = values.MagnetZ;
+		}
+		else {
+			minMagnet[0] = min(minMagnet[0], values.MagnetX);
+			minMagnet[1] = min(minMagnet[1], values.MagnetY);
+			minMagnet[2] = min(minMagnet[2], values.MagnetZ);
+
+			maxMagnet[0] = max(maxMagnet[0], values.MagnetX);
+			maxMagnet[1] = max(maxMagnet[1], values.MagnetY);
+			maxMagnet[2] = max(maxMagnet[2], values.MagnetZ);
+		}
+
+		if (++calibrationCount > 20000 / CYCLE_GYRO) {
+			for (int i = 0; i < 3; i++)
+				config->MagnetOffset[i] = (minMagnet[i] + maxMagnet[i]) / 2.0f;
+
+			calibrationMagnet = false;
+			calibrationCount = 0;
+		}
+	}
 	else {
 		getValues(&values);
 		values.RawGyroX -= gyroOffset[0];
 		values.RawGyroY -= gyroOffset[1];
 		values.RawGyroZ -= gyroOffset[2];
+
+		values.MagnetX -= config->MagnetOffset[0];
+		values.MagnetY -= config->MagnetOffset[1];
+
+		if (firstSample) {
+			last = values;
+			firstSample = false;
+			return;
+		}
 
 		float gyroRes = 2000.0f / 8196.0f;
 		values.GyroX = FILTER(last.RawGyroX, values.RawGyroX, 0.025f) * gyroRes;
@@ -110,8 +149,8 @@ void Gyro::calculateIMU() {
 		yaw += values.GyroZ * dt;
 
 	if (!isAccMoving()) {
-		float accPitch = atan(values.AccX / sqrt(values.AccY*values.AccY + values.AccZ*values.AccZ)) * 180 / PI;
-		float accRoll = atan(values.AccY / sqrt(values.AccX*values.AccX + values.AccZ*values.AccZ)) * 180 / PI;
+		float accPitch = MathHelper::toDegress(atan(values.AccX / sqrt(values.AccY*values.AccY + values.AccZ*values.AccZ)));
+		float accRoll = MathHelper::toDegress(atan(values.AccY / sqrt(values.AccX*values.AccX + values.AccZ*values.AccZ)));
 
 		pitch = FILTER(pitch, accPitch, 0.05f);
 		roll = FILTER(roll, accRoll, 0.05f);
@@ -121,10 +160,11 @@ void Gyro::calculateIMU() {
 		float magRoll = MathHelper::toDegress(atan(values.MagnetY / sqrt(values.MagnetX*values.MagnetX + values.MagnetZ*values.MagnetZ)));
 		float magYaw = MathHelper::toDegress(atan2(values.MagnetY, values.MagnetX));
 
+		yaw = FILTER(yaw, magYaw, 0.025f);
 		pitch = FILTER(pitch, magPitch, 0.025f);
 		roll = FILTER(roll, magRoll, 0.025f);
-		yaw = FILTER(roll, magYaw, 0.025f);
 	}
+
 	Profiler::end();
 }
 
@@ -140,8 +180,21 @@ void Gyro::calibrate() {
 	}
 }
 
+void Gyro::calibrateMagnet() {
+	if (!hasMagnetometer())
+		return;
+
+	calibrationMagnet = true;
+	calibrationCount = 0;
+
+	for (int i = 0; i < 3; i++) {
+		minMagnet[i] = 0;
+		maxMagnet[i] = 0;
+	}
+}
+
 bool Gyro::inCalibration() {
-	return calibration || calibrationOrientation;
+	return calibration || calibrationMagnet || calibrationOrientation;
 }
 
 GyroValues Gyro::getValues() const {

@@ -142,6 +142,14 @@ namespace DroneLibrary
         [Category("Motors")]
         public bool CalibrateServos;
 
+        [Category("Gyro")]
+        public float MagnetXOffset;
+        [Category("Gyro")]
+        public float MagnetYOffset;
+        [Category("Gyro")]
+        public float MagnetZOffset;
+
+
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {
             int size = Marshal.SizeOf(typeof(DroneSettings));

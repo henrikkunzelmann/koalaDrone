@@ -64,17 +64,17 @@ void Gyro9250::getValues(GyroValues* values) {
 
 	mpu.getMotion9(&ax, &ay, &az, &gx, &gy, &gz, &mx, &my, &mz);
 
-	values->AccX = -ax * accRes;
-	values->AccY = -ay * accRes;
-	values->AccZ = -az * accRes;
+	values->AccX = ax * accRes;
+	values->AccY = ay * accRes;
+	values->AccZ = az * accRes;
 
-	values->RawGyroX = -(gx >> 2);
-	values->RawGyroY = -(gy >> 2);
-	values->RawGyroZ = -(gz >> 2);
+	values->RawGyroX = gx >> 2;
+	values->RawGyroY = gy >> 2;
+	values->RawGyroZ = gz >> 2;
 
-	values->MagnetX = mx * magRes;
-	values->MagnetY = my * magRes;
-	values->MagnetZ = mz * magRes;
+	values->MagnetX = my * magRes;
+	values->MagnetY = mx * magRes;
+	values->MagnetZ = -mz * magRes;
 
 	values->Temperature = mpu.getTemperature() / 333.87 + 21;
 

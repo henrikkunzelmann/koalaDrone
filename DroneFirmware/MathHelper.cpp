@@ -17,7 +17,7 @@ float MathHelper::toDegress(float radians) {
 }
 
 float MathHelper::toRadians(float degress) {
-	return degress / PI * 180;
+	return degress * PI / 180;
 }
 
 float MathHelper::fixValue(float value, float begin, float end) {

@@ -105,7 +105,12 @@ namespace DroneControl
 
         private void calibrateGyroButton_Click(object sender, EventArgs e)
         {
-            Drone.SendPacket(new PacketCalibrateGyro(), true);
+            Drone.SendPacket(new PacketCalibrateGyro(false), true);
+        }
+
+        private void calibrateMagnetButton_Click(object sender, EventArgs e)
+        {
+            Drone.SendPacket(new PacketCalibrateGyro(true), true);
         }
     }
 }
