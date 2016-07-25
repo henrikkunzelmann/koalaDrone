@@ -49,7 +49,7 @@ namespace DroneControl
 
             startButton.Text = "Stop";
 
-            System.IO.File.AppendAllText(file, string.Join(", ", columns) + Environment.NewLine);
+            System.IO.File.AppendAllText(file, string.Join(", ", columns.Select(s => '"' + s + '"')) + Environment.NewLine);
 
             timer.Enabled = true;
         }
@@ -136,11 +136,16 @@ namespace DroneControl
                     if (i > 0)
                         line.Append(", ");
 
+
+                    line.Append('"');
+
                     object value = values[i];
                     if (value is float)
-                        line.Append(((float)value).ToString("F").Replace(',', '.'));
+                        line.Append(((float)value).ToString("F"));
                     else
                         line.Append(values[i].ToString());
+
+                    line.Append('"');
                 }
                 line.AppendLine();
 

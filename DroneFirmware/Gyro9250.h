@@ -19,15 +19,18 @@ protected:
 	double gyroRes;
 	double magRes;
 
+	float sx, sy, sz;
+
 	void getValues(GyroValues* values);
 public:
-	explicit Gyro9250(Config* config);
+	explicit Gyro9250(SensorCalibration* calibration);
 
 	char* name();
 	char* magnetometerName();
 
 	bool init();
 	void reset();
+	void resetMagnet();
 
 	bool hasMagnetometer() const;
 	bool hasIMU() const;

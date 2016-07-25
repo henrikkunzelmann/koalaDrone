@@ -4,7 +4,7 @@
 #include "arduino.h"
 #include "CycleTimes.h"
 #include "ServoManager.h"
-#include "Gyro.h"
+#include "SensorHAL.h"
 #include "MathHelper.h"
 #include "Log.h"
 #include "LED.h"
@@ -39,7 +39,7 @@ class DroneEngine
 	 DroneState _state;
 	 StopReason _stopReason;
 
-	 Gyro* gyro;
+	 SensorHAL* sensor;
 	 ServoManager* servos;
 
 	 int16_t targetRoll;
@@ -72,7 +72,7 @@ class DroneEngine
 	 bool isGyroSafe();
 
  public:
-	explicit DroneEngine(Gyro* gyro, ServoManager* servos, Config* config);
+	explicit DroneEngine(SensorHAL* sensor, ServoManager* servos, Config* config);
 
 	void arm();
 	void disarm();

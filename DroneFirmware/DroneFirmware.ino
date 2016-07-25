@@ -23,6 +23,7 @@
 #include "LED.h"
 #include "VoltageInputReader.h"
 #include "Profiler.h"
+#include "SensorHAL.h"
 #include "Gyro.h"
 #include "Gyro6050.h"
 #include "Gyro9250.h"
@@ -34,8 +35,7 @@
 Config config;
 
 VoltageInputReader* voltageReader;
-Gyro* gyro;
-Baro* baro;
+SensorHAL* sensor;
 
 ServoManager* servos;
 DroneEngine* engine;
@@ -138,41 +138,27 @@ void setup() {
 
 
 	// I2C initialisieren
+	Log::info("Boot", "Init I2C...");
 	Wire.begin(SDA, SCL);
 	Wire.setClock(400000L);
-
-	// Gyro Sensor initialisieren
-	gyro = new Gyro6050(&config);
-	if (!gyro->init()) {
-		delete gyro;
-
-		gyro = new Gyro9250(&config);
-		gyro->init();
-	}
-	gyro->calibrate();
-
-	Log::info("Boot", "Gyro sensor: \"%s\"", gyro->name());
-	Log::info("Boot", "Magnetometer: \"%s\"", gyro->magnetometerName());
-
-	// Baro Sensor initialisieren
-	baro = new Baro280(&config);
-	baro->init();
-
-	Log::info("Boot", "Baro sensor: \"%s\"", baro->name());
 
 	// Batterie Voltage Reader laden
 	voltageReader = new VoltageInputReader(A0, 17, 1);
 
-	engine = new DroneEngine(gyro, servos, &config);
+	Log::info("Boot", "Init sensor hal...");
+	sensor = new SensorHAL(&config);
+
+	Log::info("Boot", "Init drone engine...");
+	engine = new DroneEngine(sensor, servos, &config);
 
 	// Netzwerkmanager starten
-	network = new NetworkManager(gyro, baro, servos, engine, &config, voltageReader);
+	Log::info("Boot", "Init network manager..");
+	network = new NetworkManager(sensor, servos, engine, &config, voltageReader);
 	if (saveConfig)
 		network->beginSaveConfig();
 
 	// Profiler laden
 	Profiler::init();
-	
 
 	Log::info("Boot", "done booting. ready.");
 }
@@ -187,8 +173,7 @@ void loop() {
 
 	if (engine->state() != StateOTA)
 	{
-		gyro->update();
-		baro->update();
+		sensor->update();
 		engine->handle();
 	}
 	handleBlink();

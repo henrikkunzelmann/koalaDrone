@@ -132,7 +132,7 @@ Config ConfigManager::getDefault() {
 	config.AngleStabilization.Kd = 0;
 	
 	config.CalibrateServos = false;
-	memset(config.MagnetOffset, 0, sizeof(config.MagnetOffset));
+	memset(&config.SensorCalibrationData, 0, sizeof(SensorCalibration));
 
 	Log::info("Config", "Using default config");
 	return config;

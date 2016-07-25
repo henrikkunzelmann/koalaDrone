@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.GroupBox sensorGroupBox;
+            this.calibrateMagnetButton = new System.Windows.Forms.Button();
             this.temperatureBaroLabel = new System.Windows.Forms.Label();
             this.altitudeLabel = new System.Windows.Forms.Label();
             this.humidityLabel = new System.Windows.Forms.Label();
@@ -40,10 +41,9 @@
             this.orientationLabel = new System.Windows.Forms.Label();
             this.temperatureLabel = new System.Windows.Forms.Label();
             this.accelerationLabel = new System.Windows.Forms.Label();
-            this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.calibrateGyroButton = new System.Windows.Forms.Button();
+            this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
-            this.calibrateMagnetButton = new System.Windows.Forms.Button();
             sensorGroupBox = new System.Windows.Forms.GroupBox();
             sensorGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -73,10 +73,20 @@
             sensorGroupBox.TabStop = false;
             sensorGroupBox.Text = "Sensors";
             // 
+            // calibrateMagnetButton
+            // 
+            this.calibrateMagnetButton.Location = new System.Drawing.Point(187, 48);
+            this.calibrateMagnetButton.Name = "calibrateMagnetButton";
+            this.calibrateMagnetButton.Size = new System.Drawing.Size(23, 23);
+            this.calibrateMagnetButton.TabIndex = 28;
+            this.calibrateMagnetButton.Text = "M";
+            this.calibrateMagnetButton.UseVisualStyleBackColor = true;
+            this.calibrateMagnetButton.Click += new System.EventHandler(this.calibrateMagnetButton_Click);
+            // 
             // temperatureBaroLabel
             // 
             this.temperatureBaroLabel.AutoSize = true;
-            this.temperatureBaroLabel.Location = new System.Drawing.Point(211, 280);
+            this.temperatureBaroLabel.Location = new System.Drawing.Point(210, 294);
             this.temperatureBaroLabel.Name = "temperatureBaroLabel";
             this.temperatureBaroLabel.Size = new System.Drawing.Size(91, 13);
             this.temperatureBaroLabel.TabIndex = 27;
@@ -85,7 +95,7 @@
             // altitudeLabel
             // 
             this.altitudeLabel.AutoSize = true;
-            this.altitudeLabel.Location = new System.Drawing.Point(6, 280);
+            this.altitudeLabel.Location = new System.Drawing.Point(5, 294);
             this.altitudeLabel.Name = "altitudeLabel";
             this.altitudeLabel.Size = new System.Drawing.Size(42, 13);
             this.altitudeLabel.TabIndex = 26;
@@ -94,7 +104,7 @@
             // humidityLabel
             // 
             this.humidityLabel.AutoSize = true;
-            this.humidityLabel.Location = new System.Drawing.Point(212, 267);
+            this.humidityLabel.Location = new System.Drawing.Point(211, 281);
             this.humidityLabel.Name = "humidityLabel";
             this.humidityLabel.Size = new System.Drawing.Size(47, 13);
             this.humidityLabel.TabIndex = 25;
@@ -103,7 +113,7 @@
             // pressureLabel
             // 
             this.pressureLabel.AutoSize = true;
-            this.pressureLabel.Location = new System.Drawing.Point(6, 267);
+            this.pressureLabel.Location = new System.Drawing.Point(5, 281);
             this.pressureLabel.Name = "pressureLabel";
             this.pressureLabel.Size = new System.Drawing.Size(48, 13);
             this.pressureLabel.TabIndex = 24;
@@ -113,7 +123,7 @@
             // 
             this.calibrationRunningText.AutoSize = true;
             this.calibrationRunningText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.calibrationRunningText.Location = new System.Drawing.Point(6, 240);
+            this.calibrationRunningText.Location = new System.Drawing.Point(5, 254);
             this.calibrationRunningText.Name = "calibrationRunningText";
             this.calibrationRunningText.Size = new System.Drawing.Size(103, 13);
             this.calibrationRunningText.TabIndex = 23;
@@ -173,16 +183,6 @@
             this.accelerationLabel.TabIndex = 17;
             this.accelerationLabel.Text = "Acceleration";
             // 
-            // headingIndicator
-            // 
-            this.headingIndicator.CausesValidation = false;
-            this.headingIndicator.Location = new System.Drawing.Point(215, 18);
-            this.headingIndicator.Name = "headingIndicator";
-            this.headingIndicator.RotateAircraft = true;
-            this.headingIndicator.Size = new System.Drawing.Size(175, 175);
-            this.headingIndicator.TabIndex = 16;
-            this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
-            // 
             // calibrateGyroButton
             // 
             this.calibrateGyroButton.Location = new System.Drawing.Point(186, 19);
@@ -193,6 +193,16 @@
             this.calibrateGyroButton.UseVisualStyleBackColor = true;
             this.calibrateGyroButton.Click += new System.EventHandler(this.calibrateGyroButton_Click);
             // 
+            // headingIndicator
+            // 
+            this.headingIndicator.CausesValidation = false;
+            this.headingIndicator.Location = new System.Drawing.Point(215, 18);
+            this.headingIndicator.Name = "headingIndicator";
+            this.headingIndicator.RotateAircraft = true;
+            this.headingIndicator.Size = new System.Drawing.Size(175, 175);
+            this.headingIndicator.TabIndex = 16;
+            this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
+            // 
             // artificialHorizon
             // 
             this.artificialHorizon.Location = new System.Drawing.Point(6, 19);
@@ -200,16 +210,6 @@
             this.artificialHorizon.Size = new System.Drawing.Size(175, 175);
             this.artificialHorizon.TabIndex = 14;
             this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
-            // 
-            // calibrateMagnetButton
-            // 
-            this.calibrateMagnetButton.Location = new System.Drawing.Point(187, 48);
-            this.calibrateMagnetButton.Name = "calibrateMagnetButton";
-            this.calibrateMagnetButton.Size = new System.Drawing.Size(23, 23);
-            this.calibrateMagnetButton.TabIndex = 28;
-            this.calibrateMagnetButton.Text = "M";
-            this.calibrateMagnetButton.UseVisualStyleBackColor = true;
-            this.calibrateMagnetButton.Click += new System.EventHandler(this.calibrateMagnetButton_Click);
             // 
             // SensorControl
             // 

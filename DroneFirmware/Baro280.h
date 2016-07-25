@@ -18,7 +18,7 @@ protected:
 
 	void getValues(BaroValues* values);
 public:
-	explicit Baro280(Config* config);
+	explicit Baro280(SensorCalibration* calibration);
 
 	char* name();
 

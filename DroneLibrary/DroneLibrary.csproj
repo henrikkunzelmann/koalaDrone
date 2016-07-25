@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="BaroData.cs" />
     <Compile Include="BinaryHelper.cs" />
+    <Compile Include="CalibrationData.cs" />
     <Compile Include="DataChangedEventArgs.cs" />
     <Compile Include="DataHistory.cs" />
     <Compile Include="DebugData.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Range.cs" />
     <Compile Include="ResetException.cs" />
     <Compile Include="ResetReason.cs" />
+    <Compile Include="SensorCalibration.cs" />
     <Compile Include="SettingsChangedEventArgs.cs" />
     <Compile Include="StopReason.cs" />
   </ItemGroup>

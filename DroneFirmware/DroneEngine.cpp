@@ -1,7 +1,7 @@
 #include "DroneEngine.h"
 
-DroneEngine::DroneEngine(Gyro* gyro, ServoManager* servos, Config* config) {
-	this->gyro = gyro;
+DroneEngine::DroneEngine(SensorHAL* sensor, ServoManager* servos, Config* config) {
+	this->sensor = sensor;
 	this->servos = servos;
 	this->config = config;
 
@@ -51,12 +51,12 @@ PID* DroneEngine::createPID(PIDSettings settings, double* output) {
 }
 
 bool DroneEngine::isGyroSafe() {
-	return abs(gyro->getRoll()) <= config->SafeRoll && abs(gyro->getPitch()) <= config->SafePitch;
+	return abs(sensor->getGyro()->getRoll()) <= config->SafeRoll && abs(sensor->getGyro()->getPitch()) <= config->SafePitch;
 }
 
 void DroneEngine::arm() {
 	if (_state == StateIdle) {
-		if (gyro->inCalibration()) {
+		if (sensor->getGyro()->inCalibration()) {
 			blinkLED(5, 300);
 			Log::info("Engine", "Can not arm motors, gyro is in calibration");
 			return;
@@ -66,7 +66,7 @@ void DroneEngine::arm() {
 			Log::info("Engine", "Can not arm motors, gyro is not safe");
 			return;
 		}
-		if (config->OnlyArmWhenStill && (gyro->isMoving() || !gyro->isFlat())) {
+		if (config->OnlyArmWhenStill && (sensor->getGyro()->isMoving() || !sensor->getGyro()->isFlat())) {
 			blinkLED(5, 300);
 			Log::info("Engine", "Can not arm motors, not still");
 			return;
@@ -127,7 +127,7 @@ void DroneEngine::stop(StopReason reason) {
 void DroneEngine::clearStatus() {
 	if (_state == StateStopped) {
 		Log::info("Engine", "Resetting gyro, because clearStatus()");
-		gyro->reset();
+		sensor->getGyro()->reset();
 	}
 
 	if (_state == StateReset || _state == StateStopped) {
@@ -188,14 +188,14 @@ void DroneEngine::handle() {
 void DroneEngine::handleInternal() {
 	int values[4];
 
-	GyroValues gyroValues = gyro->getValues();
+	GyroValues gyroValues = sensor->getGyro()->getValues();
 
     float pitchCmd = targetPitch << 1;
 	float rollCmd = targetRoll << 1;
 
 	if (config->EnableStabilization) {
-		calculatePID(anglePitchPID, gyro->getPitch(), targetPitch / 50.0f);
-		calculatePID(angleRollPID, gyro->getRoll(), targetRoll / 50.0f);
+		calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetPitch / 50.0f);
+		calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetRoll / 50.0f);
 
 		pitchCmd = -pitchOutput;
 		rollCmd = -rollOutput;

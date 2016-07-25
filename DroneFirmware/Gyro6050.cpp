@@ -1,6 +1,6 @@
 #include "Gyro6050.h"
 
-Gyro6050::Gyro6050(Config* config) : Gyro(config) {
+Gyro6050::Gyro6050(SensorCalibration* calibration) : Gyro(calibration) {
 }
 
 char* Gyro6050::name() {
@@ -75,6 +75,9 @@ void Gyro6050::getValues(GyroValues* values) {
 void Gyro6050::reset() {
 	if (mpuOK)
 		mpu.resetSensors();
+}
+
+void Gyro6050::resetMagnet() {
 }
 
 bool Gyro6050::hasMagnetometer() const {

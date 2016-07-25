@@ -1,10 +1,8 @@
-// Config.h
-
 #ifndef _CONFIG_h
 #define _CONFIG_h
 
 #include "arduino.h"
-
+#include "SensorCalibration.h"
 struct PIDSettings {
 	float Kp;
 	float Ki;
@@ -83,7 +81,7 @@ struct Config {
 	PIDSettings AngleStabilization;
 
 	boolean CalibrateServos;
-	float MagnetOffset[3];
+	SensorCalibration SensorCalibrationData;
 };
 
 #endif

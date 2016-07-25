@@ -1,7 +1,7 @@
 #include "Baro.h"
 
-Baro::Baro(Config* config) {
-	this->config = config;
+Baro::Baro(SensorCalibration* calibration) {
+	this->calibration = calibration;
 }
 
 void Baro::update() {

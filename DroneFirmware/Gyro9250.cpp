@@ -1,6 +1,6 @@
 #include "Gyro9250.h"
 
-Gyro9250::Gyro9250(Config* config) : Gyro(config) {
+Gyro9250::Gyro9250(SensorCalibration* calibration) : Gyro(calibration) {
 }
 
 char* Gyro9250::name() {
@@ -38,6 +38,8 @@ bool Gyro9250::init() {
 	if (!mpu.magCheckConnection())
 		Log::error("Gyro9250", "Mag connection failed");
 
+	mpu.magGetAxisSensitivity(&sx, &sy, &sz);
+
 	double accRange[4] = { 2, 4, 8, 16 }; // g
 	double gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
 	double magRange[2] = { 0.6, 0.15 }; // microT
@@ -72,9 +74,9 @@ void Gyro9250::getValues(GyroValues* values) {
 	values->RawGyroY = gy >> 2;
 	values->RawGyroZ = gz >> 2;
 
-	values->MagnetX = my * magRes;
-	values->MagnetY = mx * magRes;
-	values->MagnetZ = -mz * magRes;
+	values->MagnetX = my * sx * magRes;
+	values->MagnetY = mx * sy * magRes;
+	values->MagnetZ = -mz * sz * magRes;
 
 	values->Temperature = mpu.getTemperature() / 333.87 + 21;
 
@@ -84,6 +86,13 @@ void Gyro9250::getValues(GyroValues* values) {
 void Gyro9250::reset() {
 	if (mpuOK)
 		mpu.resetSensors();
+}
+
+void Gyro9250::resetMagnet() {
+	if (mpuOK) {
+		mpu.magSoftReset();
+		mpu.magInit();
+	}
 }
 
 bool Gyro9250::hasMagnetometer() const {

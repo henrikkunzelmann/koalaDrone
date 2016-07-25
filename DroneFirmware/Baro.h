@@ -3,7 +3,7 @@
 
 #include "arduino.h"
 #include "MathHelper.h"
-#include "Config.h"
+#include "SensorCalibration.h"
 #include "Log.h"
 #include "Profiler.h"
 
@@ -13,6 +13,8 @@ struct BaroValues {
 	float Humidity;
 };
 
+class SensorHAL;
+
 class Baro
 {
 private:
@@ -20,16 +22,16 @@ private:
 	uint32_t lastSample;
 	BaroValues last;
 
-protected:
-	Config* config;
-
 	BaroValues values;
 	float altitude;
+
+protected:
+	SensorCalibration* calibration;
 
 	virtual void getValues(BaroValues* values) = 0;
 
 public:
-	explicit Baro(Config* config);
+	explicit Baro(SensorCalibration* calibration);
 
 	virtual char* name() = 0;
 

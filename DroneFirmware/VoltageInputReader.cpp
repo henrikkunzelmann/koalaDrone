@@ -1,7 +1,3 @@
-// 
-// 
-// 
-
 #include "VoltageInputReader.h"
 
 

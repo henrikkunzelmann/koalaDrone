@@ -142,12 +142,8 @@ namespace DroneLibrary
         [Category("Motors")]
         public bool CalibrateServos;
 
-        [Category("Gyro")]
-        public float MagnetXOffset;
-        [Category("Gyro")]
-        public float MagnetYOffset;
-        [Category("Gyro")]
-        public float MagnetZOffset;
+        [Category("Sensor")]
+        public SensorCalibration CalibrationData;
 
 
         public static DroneSettings Read(PacketBuffer packetBuffer)

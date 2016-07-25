@@ -20,13 +20,14 @@ protected:
 
 	void getValues(GyroValues* values);
 public:
-	explicit Gyro6050(Config* config);
+	explicit Gyro6050(SensorCalibration* calibration);
 
 	char* name();
 	char* magnetometerName();
 
 	bool init();
 	void reset();
+	void resetMagnet();
 
 	bool hasMagnetometer() const;
 	bool hasIMU() const;

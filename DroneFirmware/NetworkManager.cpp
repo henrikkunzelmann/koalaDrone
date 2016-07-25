@@ -1,8 +1,7 @@
 #include "NetworkManager.h"
 
-NetworkManager::NetworkManager(Gyro* gyro, Baro* baro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader) {
-	this->gyro = gyro;
-	this->baro = baro;
+NetworkManager::NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader) {
+	this->sensor = sensor;
 	this->servos = servos;
 	this->engine = engine;
 	this->config = config;
@@ -304,9 +303,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		writeBuffer->write(uint8_t(engine->getStopReason()));
 
-		writeBuffer->writeString(gyro->name());
-		writeBuffer->writeString(gyro->magnetometerName());
-		writeBuffer->writeString(baro->name());
+		writeBuffer->writeString(sensor->getGyroName());
+		writeBuffer->writeString(sensor->getMagnetometerName());
+		writeBuffer->writeString(sensor->getBaroName());
 
 		writeBuffer->write((uint8_t*)config, sizeof(Config));
 
@@ -334,9 +333,9 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 				return;
 
 			if (calibrateMagnet)
-				gyro->calibrateMagnet();
+				sensor->getGyro()->beginMagnetCalibration();
 			else
-				gyro->calibrate();
+				sensor->getGyro()->beginCalibration();
 		}
 		break;
 
@@ -474,13 +473,13 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 		writeBuffer->write(uint16_t(servos->BL()));
 		writeBuffer->write(uint16_t(servos->BR()));
 
-		writeBuffer->write(gyro->inCalibration());
+		writeBuffer->write(sensor->getGyro()->inCalibration());
 
-		writeBuffer->write(gyro->getRoll());
-		writeBuffer->write(gyro->getPitch());
-		writeBuffer->write(gyro->getYaw());
+		writeBuffer->write(sensor->getGyro()->getRoll());
+		writeBuffer->write(sensor->getGyro()->getPitch());
+		writeBuffer->write(sensor->getGyro()->getYaw());
 
-		GyroValues values = gyro->getValues();
+		GyroValues values = sensor->getGyro()->getValues();
 
 		writeBuffer->write(values.GyroX);
 		writeBuffer->write(values.GyroY);
@@ -496,11 +495,11 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 
 		writeBuffer->write(values.Temperature);
 
-		BaroValues baroValues = baro->getValues();
+		BaroValues baroValues = sensor->getBaro()->getValues();
 		writeBuffer->write(baroValues.Pressure);
 		writeBuffer->write(baroValues.Humidity);
 		writeBuffer->write(baroValues.Temperature);
-		writeBuffer->write(baro->getAltitude());
+		writeBuffer->write(sensor->getBaro()->getAltitude());
 
 		writeBuffer->write(voltageReader->readVoltage());
 		writeBuffer->write(WiFi.RSSI());

@@ -71,16 +71,22 @@ namespace DroneControl
             float az = e.Data.Gyro.AccelerationZ;
 
             float len = (float)Math.Sqrt(ax * ax + ay * ay + az * az);
-            accelerationLabel.Text = string.Format("Acceleration x: {0} y: {1} z: {2} len: {3}",
+            accelerationLabel.Text = string.Format("Acceleration x: {0} y: {1} z: {2} len: {3} g",
                 Formatting.FormatDecimal(ax, 2),
                 Formatting.FormatDecimal(ay, 2),
                 Formatting.FormatDecimal(az, 2),
                 Formatting.FormatDecimal(len, 2));
 
-            magnetLabel.Text = string.Format("Magnet x: {0} y: {1} z: {2}",
-                Formatting.FormatDecimal(e.Data.Gyro.MagnetX, 2),
-                Formatting.FormatDecimal(e.Data.Gyro.MagnetY, 2),
-                Formatting.FormatDecimal(e.Data.Gyro.MagnetZ, 2));
+            float mx = e.Data.Gyro.MagnetX;
+            float my = e.Data.Gyro.MagnetY;
+            float mz = e.Data.Gyro.MagnetZ;
+            float magLen = (float)Math.Sqrt(mx * mx + my * my + mz * mz);
+            magnetLabel.Text = string.Format("Magnet x: {0} y: {1} z: {2}{3}Magnet strengh: {4} µT",
+                Formatting.FormatDecimal(mx, 2),
+                Formatting.FormatDecimal(my, 2),
+                Formatting.FormatDecimal(mz, 2),
+                Environment.NewLine,
+                Formatting.FormatDecimal(magLen, 2));
 
             temperatureLabel.Text = string.Format("Temperature: {0}°C",
                 Formatting.FormatDecimal(e.Data.Gyro.Temperature, 2));

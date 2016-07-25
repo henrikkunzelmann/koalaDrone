@@ -25,8 +25,7 @@
 class NetworkManager
 {
 protected:
-	Gyro* gyro;
-	Baro* baro;
+	SensorHAL* sensor;
 	ServoManager* servos;
 	DroneEngine* engine;
 	Config* config;
@@ -76,7 +75,7 @@ protected:
 	void sendLog(WiFiUDP udp);
 	void sendDebugData(WiFiUDP udp);
 public:
-	explicit NetworkManager(Gyro* gyro, Baro* baro, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader);
+	explicit NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader);
 	
 	void beginSaveConfig();
 
