@@ -197,8 +197,8 @@ void DroneEngine::handleInternal() {
 		calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetPitch / 50.0f);
 		calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetRoll / 50.0f);
 
-		pitchCmd = -pitchOutput;
-		rollCmd = -rollOutput;
+		pitchCmd = -anglePitchOutput;
+		rollCmd = -angleRollOutput;
 	}
 
 	calculatePID(rollPID, gyroValues.RawGyroX, rollCmd);
