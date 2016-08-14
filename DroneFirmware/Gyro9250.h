@@ -21,7 +21,7 @@ protected:
 
 	float sx, sy, sz;
 
-	void getValues(GyroValues* values);
+	bool getValues(GyroValues* values);
 public:
 	explicit Gyro9250(SensorCalibration* calibration);
 

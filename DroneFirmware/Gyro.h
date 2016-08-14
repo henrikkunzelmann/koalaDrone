@@ -62,7 +62,7 @@ private:
 
 protected:
 	SensorCalibration* calibration;
-	virtual void getValues(GyroValues* values) = 0;
+	virtual bool getValues(GyroValues* values) = 0;
 
 public:
 	explicit Gyro(SensorCalibration* calibration);

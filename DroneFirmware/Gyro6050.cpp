@@ -45,9 +45,9 @@ bool Gyro6050::init() {
 	return mpuOK;
 }
 
-void Gyro6050::getValues(GyroValues* values) {
+bool Gyro6050::getValues(GyroValues* values) {
 	if (!mpuOK)
-		return;
+		return false;
 
 	Profiler::begin("Gyro6050::getValues()");
 
@@ -70,6 +70,7 @@ void Gyro6050::getValues(GyroValues* values) {
 	values->Temperature = mpu.getTemperature() / 340.00 + 36.53;
 
 	Profiler::end();
+	return true;
 }
 
 void Gyro6050::reset() {

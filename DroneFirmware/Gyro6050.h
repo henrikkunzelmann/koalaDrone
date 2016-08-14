@@ -6,8 +6,8 @@
 #include "CycleTimes.h"
 
 #include <Wire.h>
-#include <MPU6050.h>
 #include <I2Cdev.h>
+#include <MPU6050.h>
 
 class Gyro6050 : public Gyro
 {
@@ -18,7 +18,7 @@ protected:
 	double accRes;
 	double gyroRes;
 
-	void getValues(GyroValues* values);
+	bool getValues(GyroValues* values);
 public:
 	explicit Gyro6050(SensorCalibration* calibration);
 

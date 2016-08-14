@@ -28,7 +28,7 @@ private:
 protected:
 	SensorCalibration* calibration;
 
-	virtual void getValues(BaroValues* values) = 0;
+	virtual bool getValues(BaroValues* values) = 0;
 
 public:
 	explicit Baro(SensorCalibration* calibration);

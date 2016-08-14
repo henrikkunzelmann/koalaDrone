@@ -13,7 +13,7 @@ void SensorHAL::initSensors() {
 	if (!gyroInit)
 		gyroInit = initGyro(new Gyro9250(getCalibrationData()));
 	if (!gyroInit)
-		gyroInit = initGyro(new Gyro9250(getCalibrationData()));
+		gyroInit = initGyro(new Gyro6050(getCalibrationData()));
 
 	initBaro(new Baro280(getCalibrationData()));
 

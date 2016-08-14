@@ -19,10 +19,18 @@ bool Baro280::init() {
 	}
 
 	Log::debug("Baro280", "bme.reset()");
-	bme.reset();
+	if (!bme.reset()) {
+		Log::error("Baro280", "Reset failed");
+		ok = false;
+		return ok;
+	}
 
 	Log::debug("Baro280", "bme.init()");
-	bme.init();
+	if (!bme.init()) {
+		Log::error("Baro280", "Init failed");
+		ok = false;
+		return ok;
+	}
 
 	Log::info("Baro280", "done with init");
 
@@ -30,15 +38,16 @@ bool Baro280::init() {
 	return ok;
 }
 
-void Baro280::getValues(BaroValues* values) {
+bool Baro280::getValues(BaroValues* values) {
 	if (!ok)
-		return;
+		return false;
 
 	Profiler::begin("Baro280::getValues()");
 
-	bme.getValues(&values->Temperature, &values->Pressure, &values->Humidity);
+	bool success = bme.getValues(&values->Temperature, &values->Pressure, &values->Humidity);
 
 	Profiler::end();
+	return success;
 }
 
 void Baro280::reset() {

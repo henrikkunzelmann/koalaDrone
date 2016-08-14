@@ -16,7 +16,7 @@ protected:
 
 	BME280 bme;
 
-	void getValues(BaroValues* values);
+	bool getValues(BaroValues* values);
 public:
 	explicit Baro280(SensorCalibration* calibration);
 

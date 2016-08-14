@@ -54,9 +54,9 @@ bool Gyro9250::init() {
 	return mpuOK;
 }
 
-void Gyro9250::getValues(GyroValues* values) {
+bool Gyro9250::getValues(GyroValues* values) {
 	if (!mpuOK)
-		return;
+		return false;
 
 	Profiler::begin("Gyro9250::getValues()");
 
@@ -64,7 +64,10 @@ void Gyro9250::getValues(GyroValues* values) {
 	int16_t gx, gy, gz;
 	int16_t mx, my, mz;
 
-	mpu.getMotion9(&ax, &ay, &az, &gx, &gy, &gz, &mx, &my, &mz);
+	if (!mpu.getMotion9(&ax, &ay, &az, &gx, &gy, &gz, &mx, &my, &mz)) {
+		Profiler::end();
+		return false;
+	}
 
 	values->AccX = ax * accRes;
 	values->AccY = ay * accRes;
@@ -79,10 +82,14 @@ void Gyro9250::getValues(GyroValues* values) {
 	values->MagnetZ = -mz * sz * magRes;
 
 	int16_t temp;
-	if (mpu.getTemperature(&temp))
-		values->Temperature = temp / 333.87 + 21;
+	if (!mpu.getTemperature(&temp)) {
+		Profiler::end();
+		return false;
+	}
 
+	values->Temperature = temp / 333.87 + 21;
 	Profiler::end();
+	return true;
 }
 
 void Gyro9250::reset() {
