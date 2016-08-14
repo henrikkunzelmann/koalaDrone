@@ -96,7 +96,7 @@ Config ConfigManager::getDefault() {
 
 	config.ServoMin = 1000;
 	config.ServoMax = 2000;
-	config.ServoIdle = 1000;
+	config.ServoIdle = 1040;
 
 	config.PinFrontLeft = 12;
 	config.PinFrontRight = 13;
