@@ -38,7 +38,6 @@
             this.leftBackTick = new System.Windows.Forms.CheckBox();
             this.leftFrontTick = new System.Windows.Forms.CheckBox();
             this.valueTrackBar = new System.Windows.Forms.TrackBar();
-            this.setValuesButton = new System.Windows.Forms.Button();
             this.servoValueNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.rightBackTextBox = new System.Windows.Forms.NumericUpDown();
             this.rightFrontTextBox = new System.Windows.Forms.NumericUpDown();
@@ -100,7 +99,6 @@
             this.motorsGroupBox.Controls.Add(this.leftBackTick);
             this.motorsGroupBox.Controls.Add(this.leftFrontTick);
             this.motorsGroupBox.Controls.Add(this.valueTrackBar);
-            this.motorsGroupBox.Controls.Add(this.setValuesButton);
             this.motorsGroupBox.Controls.Add(this.servoValueNumericUpDown);
             this.motorsGroupBox.Controls.Add(this.rightBackTextBox);
             this.motorsGroupBox.Controls.Add(rightBackLabel);
@@ -171,16 +169,6 @@
             this.valueTrackBar.TickFrequency = 50;
             this.valueTrackBar.ValueChanged += new System.EventHandler(this.valueTrackBar_ValueChanged);
             // 
-            // setValuesButton
-            // 
-            this.setValuesButton.Location = new System.Drawing.Point(305, 49);
-            this.setValuesButton.Name = "setValuesButton";
-            this.setValuesButton.Size = new System.Drawing.Size(52, 22);
-            this.setValuesButton.TabIndex = 9;
-            this.setValuesButton.Text = "Set";
-            this.setValuesButton.UseVisualStyleBackColor = true;
-            this.setValuesButton.Click += new System.EventHandler(this.setValuesButton_Click);
-            // 
             // servoValueNumericUpDown
             // 
             this.servoValueNumericUpDown.Location = new System.Drawing.Point(305, 23);
@@ -192,7 +180,7 @@
             this.servoValueNumericUpDown.Name = "servoValueNumericUpDown";
             this.servoValueNumericUpDown.Size = new System.Drawing.Size(52, 20);
             this.servoValueNumericUpDown.TabIndex = 8;
-            this.servoValueNumericUpDown.KeyUp += new System.Windows.Forms.KeyEventHandler(this.servoValueNumericUpDown_KeyUp);
+            this.servoValueNumericUpDown.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnAllEnter);
             // 
             // rightBackTextBox
             // 
@@ -273,7 +261,6 @@
         private System.Windows.Forms.NumericUpDown leftBackTextBox;
         private System.Windows.Forms.NumericUpDown leftFrontTextBox;
         private System.Windows.Forms.NumericUpDown servoValueNumericUpDown;
-        private System.Windows.Forms.Button setValuesButton;
         private System.Windows.Forms.TrackBar valueTrackBar;
         private System.Windows.Forms.CheckBox rightBackTick;
         private System.Windows.Forms.CheckBox rightFrontTick;

@@ -127,7 +127,7 @@ namespace DroneControl
             }
         }
 
-        private void servoValueNumericUpDown_KeyUp(object sender, KeyEventArgs e)
+        private void OnAllEnter(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter && !changingValues)
             {
@@ -150,10 +150,10 @@ namespace DroneControl
 
         private void UpdateEnabled(DroneState state)
         {
-            UpdateEnabled(state == DroneState.Armed, state != DroneState.Flying);
+            UpdateEnabled(state == DroneState.Armed);
         }
 
-        private void UpdateEnabled(bool enabled, bool enabledSet)
+        private void UpdateEnabled(bool enabled)
         {
             leftFrontTextBox.Enabled = enabled;
             rightFrontTextBox.Enabled = enabled;
@@ -167,17 +167,20 @@ namespace DroneControl
 
             servoValueNumericUpDown.Enabled = enabled;
             valueTrackBar.Enabled = enabled;
-
-            setValuesButton.Enabled = enabledSet;
         }
 
         private void UpdateValueBounds(DroneSettings settings)
         {
             changingValues = true;
-            valueTrackBar.Minimum = settings.ServoMin;
-            valueTrackBar.Maximum = settings.ServoMax;
-            valueTrackBar.Value = settings.ServoMin;
-            servoValueNumericUpDown.Value = settings.ServoMin;
+
+            int min = drone.Settings.ServoMin;
+            int max = Math.Min(drone.Settings.ServoMax, drone.Settings.SafeServoValue);
+
+            valueTrackBar.Minimum = min;
+            valueTrackBar.Maximum = max;
+            valueTrackBar.Value = min;
+
+            servoValueNumericUpDown.Value = min;
             SetServoValueToAll();
             changingValues = false;
         }
@@ -256,10 +259,8 @@ namespace DroneControl
         private void CheckNumericUpDown(NumericUpDown box)
         {
             int max = Math.Min(drone.Settings.ServoMax, drone.Settings.SafeServoValue);
-            if (box.Value < drone.Settings.ServoMin)
+            if (box.Value < drone.Settings.ServoMin || box.Value > max)
                 box.Value = drone.Settings.ServoMin;
-            if (box.Value > max)
-                box.Value = max;
         }
     }
 }
