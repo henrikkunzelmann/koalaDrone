@@ -73,13 +73,19 @@ namespace DroneControl
         private static string[] columns = new string[]
         {
             "State", "RSSI", "BatteryV",
-            "Temp", "Pitch", "Roll", "Yaw",
+            "GyroTemp", "Pitch", "Roll", "Yaw",
+
             "GyroX", "GyroY", "GyroZ",
             "AccX", "AccY", "AccZ",
             "MagX", "MagY", "MagZ",
+
+            "Pressure", "Altitude",
+            "Humidity", "BaroTemp",
+
             "Target Pitch",
             "Target Roll",
             "Target Yaw",
+
             "Thrust",
             "PID Pitch",
             "PID Roll",
@@ -107,6 +113,7 @@ namespace DroneControl
                     drone.Data.Gyro.GyroX,
                     drone.Data.Gyro.GyroY,
                     drone.Data.Gyro.GyroZ,
+
                     drone.Data.Gyro.AccelerationX,
                     drone.Data.Gyro.AccelerationY,
                     drone.Data.Gyro.AccelerationZ,
@@ -114,6 +121,11 @@ namespace DroneControl
                     drone.Data.Gyro.MagnetX,
                     drone.Data.Gyro.MagnetY,
                     drone.Data.Gyro.MagnetZ,
+
+                    drone.Data.Baro.Pressure,
+                    drone.Data.Baro.Altitude,
+                    drone.Data.Baro.Humidity,
+                    drone.Data.Baro.Temperature,
 
                     inputManager.TargetData.Pitch,
                     inputManager.TargetData.Roll,
