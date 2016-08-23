@@ -8,9 +8,9 @@ namespace DroneLibrary.Protocol
         public PacketType Type => PacketType.BeginOTA;
 
         public string MD5;
-        public int Size;
-
-        public PacketBeginOTA(string md5, int size)
+        public uint Size;
+        
+        public PacketBeginOTA(string md5, uint size)
         {
             this.MD5 = md5;
             this.Size = size;

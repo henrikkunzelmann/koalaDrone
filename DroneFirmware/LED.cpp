@@ -5,9 +5,9 @@ int ledPin = 0;
 bool shouldBlink = false;
 bool blinkCooldown = false;
 
-int blinkCount = 0;
-int blinkCooldownTime = 0;
-int blinkTimer = 0;
+int32_t blinkCount = 0;
+uint32_t blinkCooldownTime = 0;
+uint32_t blinkTimer = 0;
 
 void setupLED(Config* config) {
 	ledPin = config->PinLed;
@@ -33,7 +33,7 @@ void handleBlink() {
 	}
 }
 
-void blinkLED(int count, int time) {
+void blinkLED(int count, uint32_t time) {
 	if (time < blinkCooldownTime) {
 		blinkCooldownTime = time;
 		blinkCount = count;

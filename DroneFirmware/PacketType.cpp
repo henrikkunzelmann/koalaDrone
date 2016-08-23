@@ -7,6 +7,7 @@ const char* getHelloPacketName(HelloPacketType type) {
 	case HelloAnswer:
 		return "Answer";
 	}
+	return "Unknown";
 }
 
 const char* getControlPacketName(ControlPacketType type) {
@@ -48,6 +49,7 @@ const char* getControlPacketName(ControlPacketType type) {
 	case EndOTA:
 		return "EndOTA";
 	}
+	return "Unknown";
 }
 
 const char* getDataPacketName(DataPacketType type) {
@@ -59,4 +61,5 @@ const char* getDataPacketName(DataPacketType type) {
 	case DataDebug:
 		return "Debug";
 	}
+	return "Unknown";
 }

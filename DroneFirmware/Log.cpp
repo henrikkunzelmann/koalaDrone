@@ -77,7 +77,7 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 		return;
 	}
 
-	int size = snprintf(message, messageSize, "$ [%8us] %s [%s]", millis() / 1000, getLevelString(level), tag);
+	int size = snprintf(message, messageSize, "$ [%8lus] %s [%s]", millis() / 1000, getLevelString(level), tag);
 	if (size < 0 || size > messageSize) {
 		free(message);
 		return;

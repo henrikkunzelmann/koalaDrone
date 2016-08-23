@@ -23,7 +23,7 @@ ProfilerFunction* Profiler::findFunction(const char* name) {
 	uint32_t index = UINT32_MAX;
 
 	// Eintrag suchen
-	for (int i = 0; i < length; i++) {
+	for (uint32_t i = 0; i < length; i++) {
 		if (strcmp(functions[i].name, name) == 0) {
 			index = i;
 			break;
@@ -121,7 +121,7 @@ void Profiler::finishFrame() {
 	if (resetMax)
 		lastMaxReset = millis();
 
-	for (int i = 0; i < length; i++) {
+	for (uint32_t i = 0; i < length; i++) {
 		ProfilerFunction* function = &functions[i];
 		function->lastTime = function->time;
 		function->shouldReset = true;	// anfangen mit Zeit zurücksetzen
@@ -144,7 +144,7 @@ void Profiler::write(PacketBuffer* buffer) {
 		init();
 
 	buffer->write(length);
-	for (int i = 0; i < length; i++) {
+	for (uint32_t i = 0; i < length; i++) {
 		ProfilerFunction* function = &functions[i];
 
 		buffer->writeString(function->name);

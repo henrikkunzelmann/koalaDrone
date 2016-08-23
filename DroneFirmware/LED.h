@@ -10,12 +10,12 @@ extern bool shouldBlink;
 extern bool blinkCooldown;
 
 extern int blinkCount;
-extern int blinkCooldownTime;
-extern int blinkTimer;
+extern uint32_t blinkCooldownTime;
+extern uint32_t blinkTimer;
 
 void setupLED(Config* config);
 void handleBlink();
-void blinkLED(int count, int time);
+void blinkLED(int count, uint32_t time);
 void turnLedOn();
 void turnLedOff();
 #endif

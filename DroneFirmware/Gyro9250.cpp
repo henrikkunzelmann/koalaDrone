@@ -78,7 +78,9 @@ void Gyro9250::getValues(GyroValues* values) {
 	values->MagnetY = mx * sy * magRes;
 	values->MagnetZ = -mz * sz * magRes;
 
-	values->Temperature = mpu.getTemperature() / 333.87 + 21;
+	int16_t temp;
+	if (mpu.getTemperature(&temp))
+		values->Temperature = temp / 333.87 + 21;
 
 	Profiler::end();
 }

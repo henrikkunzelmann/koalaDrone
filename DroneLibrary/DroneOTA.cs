@@ -51,7 +51,7 @@ namespace DroneLibrary
                 Hash = BitConverter.ToString(md5.ComputeHash(data)).Replace("-", "").ToLower();
             }
 
-            Drone.SendPacket(new PacketBeginOTA(Hash, Size), true, (s, p) =>
+            Drone.SendPacket(new PacketBeginOTA(Hash, (uint)Size), true, (s, p) =>
             {
                 if (IsRunning)
                     SendData();

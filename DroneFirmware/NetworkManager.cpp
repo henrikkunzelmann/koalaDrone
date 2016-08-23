@@ -372,7 +372,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		lastOtaRevision = revision;
 
 		char* md5 = readBuffer->readString();
-		int32_t size = readBuffer->readInt32();
+		uint32_t size = readBuffer->readUint32();
 
 		if (readBuffer->getError())
 			return;
