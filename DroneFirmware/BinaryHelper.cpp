@@ -1,7 +1,3 @@
-// 
-// 
-// 
-
 #include "BinaryHelper.h"
 #include "string.h"
 

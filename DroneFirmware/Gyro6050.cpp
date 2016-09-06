@@ -3,13 +3,13 @@
 Gyro6050::Gyro6050(SensorCalibration* calibration) : Gyro(calibration) {
 }
 
-char* Gyro6050::name() {
+const char* Gyro6050::name() {
 	if (mpuOK)
 		return "InvenSense MPU-6050";
 	return "";
 }
 
-char* Gyro6050::magnetometerName() {
+const char* Gyro6050::magnetometerName() {
 	return "";
 }
 

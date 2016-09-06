@@ -1,5 +1,3 @@
-// Log.h
-
 #ifndef _LOG_h
 #define _LOG_h
 

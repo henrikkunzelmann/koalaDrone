@@ -16,7 +16,7 @@ void SensorHAL::initSensors() {
 		gyroInit = initGyro(new Gyro6050(getCalibrationData()));
 
 	initBaro(new Baro280(getCalibrationData()));
-
+	
 	Log::info("Boot", "Gyro sensor: \"%s\"", getGyroName());
 	Log::info("Boot", "Magnetometer: \"%s\"", getMagnetometerName());
 	Log::info("Boot", "Baro sensor: \"%s\"", getBaroName());
@@ -41,19 +41,19 @@ boolean SensorHAL::initBaro(Baro* baro) {
 	return baro->init();
 }
 
-char* SensorHAL::getGyroName() const {
+const char* SensorHAL::getGyroName() const {
 	if (gyro == NULL)
 		return "";
 	return gyro->name();
 }
 
-char* SensorHAL::getMagnetometerName() const {
+const char* SensorHAL::getMagnetometerName() const {
 	if (gyro == NULL)
 		return "";
 	return gyro->magnetometerName();
 }
 
-char* SensorHAL::getBaroName() const {
+const char* SensorHAL::getBaroName() const {
 	if (baro == NULL)
 		return "";
 	return baro->name();

@@ -13,6 +13,10 @@ Gyro::Gyro(SensorCalibration* calibration) {
 	this->lastMagnetData = millis();
 }
 
+Gyro::~Gyro() {
+
+}
+
 void Gyro::resetCalibration(CalibrationData* data) {
 	calibrationCount = 0;
 	for (int i = 0; i < 3; i++)

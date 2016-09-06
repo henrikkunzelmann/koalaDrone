@@ -4,6 +4,10 @@ Baro::Baro(SensorCalibration* calibration) {
 	this->calibration = calibration;
 }
 
+Baro::~Baro() {
+
+}
+
 void Baro::update() {
 	uint32_t interval = micros() - lastSample;
 	if (interval < CYCLE_BARO * 1000)

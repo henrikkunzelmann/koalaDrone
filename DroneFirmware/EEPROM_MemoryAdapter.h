@@ -1,5 +1,3 @@
-// EEPROM_MemoryAdapter.h
-
 #ifndef _EEPROM_MEMORYADAPTER_h
 #define _EEPROM_MEMORYADAPTER_h
 

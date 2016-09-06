@@ -1,5 +1,3 @@
-// MemoryAdapter.h
-
 #ifndef _MEMORYADAPTER_h
 #define _MEMORYADAPTER_h
 

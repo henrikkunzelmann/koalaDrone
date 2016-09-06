@@ -1,5 +1,3 @@
-// BinaryHelper.h
-
 #ifndef _BINARYHELPER_h
 #define _BINARYHELPER_h
 

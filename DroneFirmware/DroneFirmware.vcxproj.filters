@@ -25,15 +25,18 @@
     <Filter Include="Header Files\math">
       <UniqueIdentifier>{54cba317-ddab-4b6f-bdb9-971bcce241a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\sensor">
+      <UniqueIdentifier>{84d0f478-4826-4c7b-a06e-0f422b51c24a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sensor">
+      <UniqueIdentifier>{9f04d01d-8230-4937-b470-879e564dc5ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DroneFirmware.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.DroneFirmware.vsarduino.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Gyro.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ServoManager.h">
@@ -72,12 +75,6 @@
     <ClInclude Include="BinaryHelper.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
-    <ClInclude Include="DroneEngine.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="VoltageInputReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LED.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,35 +84,41 @@
     <ClInclude Include="Profiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Gyro6050.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PID.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="CycleTimes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Gyro9250.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Gyro.h">
+      <Filter>Header Files\sensor</Filter>
     </ClInclude>
-    <ClInclude Include="Baro.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Gyro6050.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="Gyro9250.h">
+      <Filter>Header Files\sensor</Filter>
     </ClInclude>
     <ClInclude Include="Baro280.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\sensor</Filter>
     </ClInclude>
-    <ClInclude Include="SensorHAL.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Baro.h">
+      <Filter>Header Files\sensor</Filter>
     </ClInclude>
     <ClInclude Include="SensorCalibration.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorHAL.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="VoltageInputReader.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="DroneEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Gyro.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConfigManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -134,14 +137,8 @@
     <ClCompile Include="MathHelper.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
-    <ClCompile Include="DroneEngine.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
     <ClCompile Include="BinaryHelper.cpp">
       <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="VoltageInputReader.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LED.cpp">
       <Filter>Source Files</Filter>
@@ -155,22 +152,31 @@
     <ClCompile Include="Profiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Gyro6050.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PID.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
-    <ClCompile Include="Gyro9250.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Baro.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\sensor</Filter>
     </ClCompile>
     <ClCompile Include="Baro280.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="Gyro.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="Gyro6050.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="Gyro9250.cpp">
+      <Filter>Source Files\sensor</Filter>
     </ClCompile>
     <ClCompile Include="SensorHAL.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="VoltageInputReader.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="DroneEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

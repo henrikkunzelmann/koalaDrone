@@ -25,8 +25,8 @@ protected:
 public:
 	explicit Gyro9250(SensorCalibration* calibration);
 
-	char* name();
-	char* magnetometerName();
+	const char* name();
+	const char* magnetometerName();
 
 	bool init();
 	void reset();

@@ -1,5 +1,3 @@
-// VoltageInputReader.h
-
 #ifndef _VOLTAGEINPUTREADER_h
 #define _VOLTAGEINPUTREADER_h
 

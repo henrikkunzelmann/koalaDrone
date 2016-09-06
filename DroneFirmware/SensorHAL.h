@@ -24,9 +24,9 @@ private:
 public:
 	explicit SensorHAL(Config* config);
 	
-	char* getGyroName() const;
-	char* getMagnetometerName() const;
-	char* getBaroName() const;
+	const char* getGyroName() const;
+	const char* getMagnetometerName() const;
+	const char* getBaroName() const;
 
 	Gyro* getGyro() const;
 	Baro* getBaro() const;

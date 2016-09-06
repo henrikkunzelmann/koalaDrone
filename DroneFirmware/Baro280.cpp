@@ -3,7 +3,7 @@
 Baro280::Baro280(SensorCalibration* calibration) : Baro(calibration) {
 }
 
-char* Baro280::name() {
+const char* Baro280::name() {
 	if (ok)
 		return "Bosch BME280";
 	return "";

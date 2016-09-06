@@ -1,5 +1,3 @@
-// ServoManager.h
-
 #ifndef _SERVOMANAGER_h
 #define _SERVOMANAGER_h
 

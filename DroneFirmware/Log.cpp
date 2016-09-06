@@ -1,7 +1,3 @@
-// 
-// 
-// 
-
 #include "Log.h"
 
 uint32_t Log::bufferLines = 0;

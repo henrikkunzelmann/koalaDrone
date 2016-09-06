@@ -66,9 +66,10 @@ protected:
 
 public:
 	explicit Gyro(SensorCalibration* calibration);
+	virtual ~Gyro();
 
-	virtual char* name() = 0;
-	virtual char* magnetometerName() = 0;
+	virtual const char* name() = 0;
+	virtual const char* magnetometerName() = 0;
 
 	virtual bool init() = 0;
 	virtual void reset() = 0;

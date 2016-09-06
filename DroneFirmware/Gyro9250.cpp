@@ -3,13 +3,13 @@
 Gyro9250::Gyro9250(SensorCalibration* calibration) : Gyro(calibration) {
 }
 
-char* Gyro9250::name() {
+const char* Gyro9250::name() {
 	if (mpuOK)
 		return "InvenSense MPU-9250";
 	return "";
 }
 
-char* Gyro9250::magnetometerName() {
+const char* Gyro9250::magnetometerName() {
 	if (mpuOK)
 		return "MPU-9250 (AK8963)";
 	return "";
@@ -31,7 +31,7 @@ bool Gyro9250::init() {
 	mpu.initialize();
 
 	mpu.setClockSource(MPU9250_CLOCK_PLL_ZGYRO);
-    mpu.setFullScaleAccelRange(MPU9250_ACCEL_FS_16);
+	mpu.setFullScaleAccelRange(MPU9250_ACCEL_FS_16);
 	mpu.setFullScaleGyroRange(MPU9250_GYRO_FS_2000);
 	mpu.setDLPFMode(0);
 

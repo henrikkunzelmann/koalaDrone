@@ -32,8 +32,9 @@ protected:
 
 public:
 	explicit Baro(SensorCalibration* calibration);
+	virtual ~Baro();
 
-	virtual char* name() = 0;
+	virtual const char* name() = 0;
 
 	virtual bool init() = 0;
 	virtual void reset() = 0;

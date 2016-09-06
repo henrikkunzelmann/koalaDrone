@@ -1,18 +1,14 @@
 #ifndef _PACKETTYPE_h
 #define _PACKETTYPE_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#include "Arduino.h"
 
-enum HelloPacketType : byte {
+enum HelloPacketType : uint8_t {
 	HelloQuestion = 1,
 	HelloAnswer = 2
 };
 
-enum ControlPacketType : byte {
+enum ControlPacketType : uint8_t {
 	MovementPacket = 1,
 	StopPacket = 2,
 	ArmPacket = 3,
@@ -38,7 +34,7 @@ enum ControlPacketType : byte {
 	EndOTA = 18
 };
 
-enum DataPacketType : byte {
+enum DataPacketType : uint8_t {
 	DataDrone = 1,
 	DataLog = 2,
 	DataDebug = 3
