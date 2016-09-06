@@ -38,6 +38,11 @@ namespace DroneControl.Input
             }
         }
 
+        public bool CanCalibrate
+        {
+            get { return false; }
+        }
+
         public XboxController(Controller controller)
         {
             if (controller == null)

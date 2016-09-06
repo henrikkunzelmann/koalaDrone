@@ -39,6 +39,11 @@ namespace DroneControl.Input
             }
         }
 
+        public bool CanCalibrate
+        {
+            get { return IsConnected; }
+        }
+
         public GamePad(DirectInput directInput, DeviceInstance deviceInstance)
         {
             this.directInput = directInput;

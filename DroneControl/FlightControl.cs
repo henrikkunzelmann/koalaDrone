@@ -164,7 +164,7 @@ namespace DroneControl
 
             if (InputManager.CurrentDevice.IsConnected)
             {
-                calibrateButton.Enabled = true;
+                calibrateButton.Enabled = InputManager.CurrentDevice.CanCalibrate;
 
                 deviceConnectionLabel.Text = "Device connected";
                 deviceConnectionLabel.ForeColor = Color.Green;

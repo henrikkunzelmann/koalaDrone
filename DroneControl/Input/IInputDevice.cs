@@ -23,6 +23,11 @@ namespace DroneControl.Input
         /// </summary>
         BatteryInfo Battery { get; }
 
+        /// <summary>
+        /// Gibt zurück, ob das Eingabegerät kalibriert werden kann.
+        /// </summary>
+        bool CanCalibrate { get; }
+
         void Calibrate();
 
         void Update(InputManager manager);
