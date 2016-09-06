@@ -10,12 +10,8 @@
 /*****************************************************************************/
 
 using System;
-using System.ComponentModel;
-using System.Windows.Forms;
-using System.Collections;
 using System.Drawing;
-using System.Text;
-using System.Data;
+using System.Windows.Forms;
 
 
 namespace DroneControl.Avionics

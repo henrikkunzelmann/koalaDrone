@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DroneLibrary {
+namespace DroneLibrary
+{
 
     /// <summary>
     /// Eine Struktur zum Speichern der Motorwerte aller vier Motoren.

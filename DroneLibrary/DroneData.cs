@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DroneLibrary {
+﻿namespace DroneLibrary
+{
     public struct DroneData  {
         public DroneState State { get; }
         public QuadMotorValues MotorValues { get; }

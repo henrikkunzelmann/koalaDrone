@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DroneLibrary.Protocol {
+﻿namespace DroneLibrary.Protocol
+{
     public static class PacketTypeHelper {
         /// <summary>
         /// Gibt zurück, ob das Cluster bei einem Paket-Typ antwortet.

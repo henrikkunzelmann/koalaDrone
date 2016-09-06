@@ -1,4 +1,5 @@
-﻿namespace DroneControl {
+﻿namespace DroneControl
+{
     partial class FlightControl {
         /// <summary> 
         /// Erforderliche Designervariable.

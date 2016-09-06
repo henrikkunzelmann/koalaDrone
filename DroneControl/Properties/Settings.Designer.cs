@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DroneControl.Properties {
+namespace DroneControl.Properties
+{
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

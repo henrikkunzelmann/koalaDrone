@@ -1,4 +1,5 @@
-﻿namespace DroneControl {
+﻿namespace DroneControl
+{
     partial class MainForm {
         /// <summary>
         /// Required designer variable.

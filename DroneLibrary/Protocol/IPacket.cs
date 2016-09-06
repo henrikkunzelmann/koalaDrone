@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace DroneLibrary.Protocol
+﻿namespace DroneLibrary.Protocol
 {
     /// <summary>
     /// Stellt ein Interface für alle Kugelmatik-Pakete dar.

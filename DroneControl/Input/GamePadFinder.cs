@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SharpDX.DirectInput;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX.DirectInput;
 
 namespace DroneControl.Input
 {
