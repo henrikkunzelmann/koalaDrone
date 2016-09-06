@@ -9,6 +9,7 @@ Gyro::Gyro(SensorCalibration* calibration) {
 	memset(&gyroCalibration, 0, sizeof(CalibrationData));
 	memset(&orientationCalibration, 0, sizeof(CalibrationData));
 
+	this->firstSample = true;
 	this->lastSample = micros();
 	this->lastMagnetData = millis();
 }

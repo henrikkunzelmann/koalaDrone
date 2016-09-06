@@ -9,9 +9,9 @@ SensorHAL::SensorHAL(Config* config) {
 }
 
 void SensorHAL::initSensors() {
-	boolean gyroInit = false;
-	if (!gyroInit)
-		gyroInit = initGyro(new Gyro9250(getCalibrationData()));
+	boolean gyroInit;
+	
+	gyroInit = initGyro(new Gyro9250(getCalibrationData()));
 	if (!gyroInit)
 		gyroInit = initGyro(new Gyro6050(getCalibrationData()));
 

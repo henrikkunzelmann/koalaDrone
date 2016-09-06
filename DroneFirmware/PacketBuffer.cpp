@@ -8,6 +8,7 @@ PacketBuffer::PacketBuffer(uint32_t size) {
 	this->size = size;
 
 	this->error = false;
+	this->allowRead = true;
 }
 
 PacketBuffer::PacketBuffer(uint8_t* data, uint32_t size) {

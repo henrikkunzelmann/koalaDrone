@@ -2,6 +2,14 @@
 
 Baro::Baro(SensorCalibration* calibration) {
 	this->calibration = calibration;
+
+	memset(&last, 0, sizeof(BaroValues));
+	memset(&values, 0, sizeof(BaroValues));
+
+	this->altitude = 0;
+
+	this->firstSample = true;
+	this->lastSample = micros();
 }
 
 Baro::~Baro() {
