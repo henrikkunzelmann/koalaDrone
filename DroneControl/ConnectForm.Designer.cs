@@ -38,6 +38,7 @@
             this.searchStatus = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.droneListBox = new System.Windows.Forms.ListBox();
+            this.infoButton = new System.Windows.Forms.Button();
             this.connectButton = new System.Windows.Forms.Button();
             this.searchTimer = new System.Windows.Forms.Timer(this.components);
             ipAddressLabel = new System.Windows.Forms.Label();
@@ -149,6 +150,7 @@
             // 
             // splitContainer3.Panel2
             // 
+            splitContainer3.Panel2.Controls.Add(this.infoButton);
             splitContainer3.Panel2.Controls.Add(this.connectButton);
             splitContainer3.Size = new System.Drawing.Size(277, 178);
             splitContainer3.SplitterDistance = 141;
@@ -163,6 +165,17 @@
             this.droneListBox.Size = new System.Drawing.Size(277, 141);
             this.droneListBox.TabIndex = 4;
             this.droneListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.droneListBox_MouseDoubleClick);
+            // 
+            // infoButton
+            // 
+            this.infoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.infoButton.Location = new System.Drawing.Point(12, 3);
+            this.infoButton.Name = "infoButton";
+            this.infoButton.Size = new System.Drawing.Size(75, 23);
+            this.infoButton.TabIndex = 2;
+            this.infoButton.Text = "Info";
+            this.infoButton.UseVisualStyleBackColor = true;
+            this.infoButton.Click += new System.EventHandler(this.infoButton_Click);
             // 
             // connectButton
             // 
@@ -217,5 +230,6 @@
         private System.Windows.Forms.Label searchStatus;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Timer searchTimer;
+        private System.Windows.Forms.Button infoButton;
     }
 }

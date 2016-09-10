@@ -15,6 +15,7 @@ namespace DroneControl
         private DebugForm debugForm;
         private GraphForm graphForm;
         private SettingsForm settingsForm;
+        private InfoForm infoForm;
 
         public InputManager InputManager
         {
@@ -304,6 +305,11 @@ namespace DroneControl
         private void settingsButton_Click(object sender, EventArgs e)
         {
             ShowForm(settingsForm, () => (settingsForm = new SettingsForm(drone)));
+        }
+
+        private void infoButton_Click(object sender, EventArgs e)
+        {
+            ShowForm(infoForm, () => (infoForm = new InfoForm()));
         }
     }
 }

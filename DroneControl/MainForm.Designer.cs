@@ -32,6 +32,7 @@
             System.Windows.Forms.TabPage infoTabPage;
             System.Windows.Forms.TabPage settingsTabPage;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.settingsButton = new System.Windows.Forms.Button();
             this.wifiRssiLabel = new System.Windows.Forms.Label();
             this.graphsButton = new System.Windows.Forms.Button();
             this.debugButton = new System.Windows.Forms.Button();
@@ -50,7 +51,7 @@
             this.droneInfoPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.droneSettingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.settingsButton = new System.Windows.Forms.Button();
+            this.infoButton = new System.Windows.Forms.Button();
             dronePingSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsInfoSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsSensorSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -88,6 +89,7 @@
             // 
             // dronePingSplitContainer.Panel1
             // 
+            dronePingSplitContainer.Panel1.Controls.Add(this.infoButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.settingsButton);
             dronePingSplitContainer.Panel1.Controls.Add(this.wifiRssiLabel);
             dronePingSplitContainer.Panel1.Controls.Add(this.graphsButton);
@@ -105,6 +107,16 @@
             dronePingSplitContainer.Size = new System.Drawing.Size(1047, 737);
             dronePingSplitContainer.SplitterDistance = 51;
             dronePingSplitContainer.TabIndex = 18;
+            // 
+            // settingsButton
+            // 
+            this.settingsButton.Location = new System.Drawing.Point(360, 4);
+            this.settingsButton.Name = "settingsButton";
+            this.settingsButton.Size = new System.Drawing.Size(60, 23);
+            this.settingsButton.TabIndex = 21;
+            this.settingsButton.Text = "Settings";
+            this.settingsButton.UseVisualStyleBackColor = true;
+            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
             // 
             // wifiRssiLabel
             // 
@@ -350,15 +362,15 @@
             // 
             this.timer.Enabled = true;
             // 
-            // settingsButton
+            // infoButton
             // 
-            this.settingsButton.Location = new System.Drawing.Point(360, 4);
-            this.settingsButton.Name = "settingsButton";
-            this.settingsButton.Size = new System.Drawing.Size(60, 23);
-            this.settingsButton.TabIndex = 21;
-            this.settingsButton.Text = "Settings";
-            this.settingsButton.UseVisualStyleBackColor = true;
-            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
+            this.infoButton.Location = new System.Drawing.Point(426, 4);
+            this.infoButton.Name = "infoButton";
+            this.infoButton.Size = new System.Drawing.Size(60, 23);
+            this.infoButton.TabIndex = 22;
+            this.infoButton.Text = "Info";
+            this.infoButton.UseVisualStyleBackColor = true;
+            this.infoButton.Click += new System.EventHandler(this.infoButton_Click);
             // 
             // MainForm
             // 
@@ -413,5 +425,6 @@
         private System.Windows.Forms.Button graphsButton;
         private System.Windows.Forms.Label wifiRssiLabel;
         private System.Windows.Forms.Button settingsButton;
+        private System.Windows.Forms.Button infoButton;
     }
 }

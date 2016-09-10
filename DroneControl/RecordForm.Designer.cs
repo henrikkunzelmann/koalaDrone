@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecordForm));
             this.startButton = new System.Windows.Forms.Button();
             this.fileLabel = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
@@ -74,6 +75,7 @@
             // 
             // timer
             // 
+            this.timer.Interval = 25;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // RecordForm
@@ -86,6 +88,7 @@
             this.Controls.Add(this.fileLabel);
             this.Controls.Add(this.startButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RecordForm";
             this.Text = "Drone Recorder";
             this.ResumeLayout(false);

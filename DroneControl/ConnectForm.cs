@@ -121,5 +121,10 @@ namespace DroneControl
                 TryToConnect();
             }
         }
+
+        private void infoButton_Click(object sender, EventArgs e)
+        {
+            new InfoForm().ShowDialog();
+        }
     }
 }

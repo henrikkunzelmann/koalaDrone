@@ -1,8 +1,12 @@
 ﻿using DroneControl.Input;
 using DroneLibrary;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -10,11 +14,19 @@ namespace DroneControl
 {
     public partial class RecordForm : Form
     {
+        private const char csvSeperator = ';';
+        private const bool useQuotes = false;
+
         private Drone drone;
         private InputManager inputManager;
 
         private bool running;
-        private string file;
+        private string path;
+
+        private Stopwatch time;
+
+        private StreamWriter dataStream;
+        private StreamWriter logStream;
 
         public RecordForm(Drone drone, InputManager inputManager)
         {
@@ -36,16 +48,28 @@ namespace DroneControl
             if (running)
                 throw new InvalidOperationException("Already running");
 
+            string recordingName = "recording_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+            fileLabel.Text = string.Format("Recording to \"{0}\"", recordingName);
+
+            path = Path.Combine(Environment.CurrentDirectory, "recordings", recordingName);
+
+            if (!OpenFiles())
+            {
+                statusLabel.Text = "Error";
+                return;
+            }
+
             running = true;
-            file = "recording_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + ".csv";
 
             progressBar.Style = ProgressBarStyle.Marquee;
             statusLabel.Text = "Running";
-            fileLabel.Text = string.Format("Recording to \"{0}\"", file);
-
             startButton.Text = "Stop";
 
-            System.IO.File.AppendAllText(file, string.Join(", ", columns.Select(s => '"' + s + '"')) + Environment.NewLine);
+            time = new Stopwatch();
+            time.Start();
+            lastDroneLogIndex = drone.LogBuffer.Count;
+
+            EmitData();
 
             timer.Enabled = true;
         }
@@ -59,15 +83,63 @@ namespace DroneControl
 
             progressBar.Style = ProgressBarStyle.Continuous;
             progressBar.Value = progressBar.Maximum;
-            statusLabel.Text = "Stopped";
 
+            statusLabel.Text = "Stopped";
             startButton.Text = "Start";
 
             timer.Enabled = false;
+            CloseFiles();
+        }
+
+        private bool OpenFiles()
+        {
+            try
+            {
+                Directory.CreateDirectory(path);
+
+                dataStream = File.CreateText(Path.Combine(path, "data.csv"));
+                logStream = File.CreateText(Path.Combine(path, "log.txt"));
+
+                Version version = Assembly.GetExecutingAssembly().GetName().Version;
+                DateTime now = DateTime.Now;
+                dataStream.WriteLine("koalaDrone data (version {0}, date {1})", version, now);
+                logStream.WriteLine("koalaDrone log (version {0}, date {1})", version, now);
+
+                IEnumerable<string> columnsText;
+                if (useQuotes)
+                    columnsText = columns.Select(s => '"' + s + '"');
+                else
+                    columnsText = columns.AsEnumerable();
+
+                dataStream.WriteLine(string.Join(csvSeperator + " ", columnsText));
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+            return false;
+        }
+
+        private void CloseFiles()
+        {
+            try
+            {
+                if (dataStream != null)
+                    dataStream.Close();
+                if (logStream != null)
+                    logStream.Close();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
         }
 
         private static string[] columns = new string[]
         {
+            "Time ms",
+
             "State", "RSSI", "BatteryV",
             "GyroTemp", "Pitch", "Roll", "Yaw",
 
@@ -90,13 +162,33 @@ namespace DroneControl
         };
 
         private StringBuilder line = new StringBuilder();
+        private int lastDroneLogIndex;
 
-        private void EmitLine()
+        private void EmitData()
         {
             try
             {
-                object[] values = new object[]
+                EmitLine();
+                EmitLog();
+
+                long fileSize = dataStream.BaseStream.Length + logStream.BaseStream.Length;
+                if (fileSize < 1024 * 1024)
+                    statusLabel.Text = string.Format("Running ({0}kbyte)", fileSize / 1024);
+                else
+                    statusLabel.Text = string.Format("Running ({0}mkbyte)", fileSize / (1024 * 1024));
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
+        private void EmitLine()
+        {
+            object[] values = new object[]
                 {
+                    time.ElapsedMilliseconds,
+
                     drone.Data.State,
                     drone.Data.WifiRssi,
                     drone.Data.BatteryVoltage,
@@ -138,42 +230,44 @@ namespace DroneControl
                     drone.Data.MotorValues.BackRight
                 };
 
-                line.Clear();
-                for (int i = 0; i < values.Length; i++)
-                {
-                    if (i > 0)
-                        line.Append(", ");
-
-
-                    line.Append('"');
-
-                    object value = values[i];
-                    if (value is float)
-                        line.Append(((float)value).ToString("F"));
-                    else
-                        line.Append(values[i].ToString());
-
-                    line.Append('"');
-                }
-                line.AppendLine();
-
-                System.IO.File.AppendAllText(file, line.ToString());
-
-                long fileSize = (new System.IO.FileInfo(file)).Length;
-                if (fileSize < 1024 * 1024) 
-                    statusLabel.Text = string.Format("Running ({0}kbyte)", fileSize / 1024);
-                else
-                    statusLabel.Text = string.Format("Running ({0}mkbyte)", fileSize / (1024 * 1024));
-            }
-            catch (Exception e)
+            line.Clear();
+            for (int i = 0; i < values.Length; i++)
             {
-                Log.Error(e);
+                if (i > 0)
+                {
+                    line.Append(csvSeperator);
+                    line.Append(' ');
+                }
+
+
+                if (useQuotes)
+                    line.Append('"');
+
+                object value = values[i];
+                if (value is float)
+                    line.Append(((float)value).ToString("F"));
+                else
+                    line.Append(values[i].ToString());
+
+                if (useQuotes)
+                    line.Append('"');
             }
+
+            dataStream.WriteLine(line.ToString());
+        }
+
+        private void EmitLog()
+        {
+            string[] logLines = drone.LogBuffer.GetLinesAfter(lastDroneLogIndex);
+            foreach (string line in logLines)
+                logStream.WriteLine(line);
+
+            lastDroneLogIndex += logLines.Length;
         }
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            EmitLine();
+            EmitData();
         }
 
         private void startButton_Click(object sender, EventArgs e)

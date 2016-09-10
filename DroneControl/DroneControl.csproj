@@ -61,6 +61,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InfoForm.Designer.cs">
+      <DependentUpon>InfoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Avionics\AirSpeedIndicatorInstrumentControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -191,6 +197,9 @@
     <Compile Include="UpdateOTAForm.Designer.cs">
       <DependentUpon>UpdateOTAForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="InfoForm.resx">
+      <DependentUpon>InfoForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Avionics\AvionicsInstrumentsControlsRessources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AvionicsInstrumentsControlsRessources1.Designer.cs</LastGenOutput>
