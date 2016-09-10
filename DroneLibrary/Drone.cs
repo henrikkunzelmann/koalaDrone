@@ -45,6 +45,8 @@ namespace DroneLibrary
             get { return Ping >= 0; }
         }
 
+        public DroneLog LogBuffer { get; private set; }
+
         /// <summary>
         /// Wird aufgerufen wenn die Drohne verbunden ist.
         /// </summary>
@@ -59,11 +61,6 @@ namespace DroneLibrary
         /// Wird aufgerufen wenn sich der Ping-Wert ändert.
         /// </summary>
         public event EventHandler<PingChangedEventArgs> OnPingChange;
-
-        /// <summary>
-        /// Wird aufgerufen wenn die Drohne eine Log Nachricht schickt.
-        /// </summary>
-        public event Action<String> OnLogMessage;
 
         /// <summary>
         /// Gibt die aktuelle Revision der Daten an die zu der Drohne geschickt wurden.
@@ -287,6 +284,7 @@ namespace DroneLibrary
 
             this.Config = config;
             this.Address = address;
+            this.LogBuffer = new DroneLog();
 
             controlSocket = new UdpClient();
             controlSocket.Connect(address, Config.ProtocolControlPort);
@@ -804,10 +802,7 @@ namespace DroneLibrary
                         {
                             string msg = buffer.ReadString();
 
-                            if (OnLogMessage == null)
-                                Log.Info("[Drone] " + msg);
-                            else
-                                OnLogMessage(msg + Environment.NewLine);
+                            LogBuffer.AddLine(msg);
                         }
 
                         lastDataLogRevision = revision;

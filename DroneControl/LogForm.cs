@@ -7,6 +7,7 @@ namespace DroneControl
     public partial class LogForm : Form
     {
         private Drone drone;
+        private int lastDroneLogIndex;
 
         public LogForm(Drone drone)
         {
@@ -19,7 +20,15 @@ namespace DroneControl
 
             this.drone = drone;
 
-            drone.OnLogMessage += Drone_OnLogMessage;
+            AppendDroneLog();
+            drone.LogBuffer.OnAddedLines += LogBuffer_OnAddedLines;
+        }
+
+        private void AppendDroneLog()
+        {
+            string[] lines = drone.LogBuffer.GetLinesAfter(lastDroneLogIndex);
+            droneLogTextBox.AppendText(string.Join(Environment.NewLine, lines));
+            lastDroneLogIndex += lines.Length;
         }
 
         private void Log_OnFlushBuffer(string obj)
@@ -30,20 +39,21 @@ namespace DroneControl
                 logTextBox.AppendText(obj);
         }
 
-        private void Drone_OnLogMessage(string msg)
+        private void LogBuffer_OnAddedLines(object sender, EventArgs e)
         {
             if (droneLogTextBox.InvokeRequired)
-                droneLogTextBox.Invoke(new Action<string>(Drone_OnLogMessage), msg);
+                droneLogTextBox.Invoke(new EventHandler(LogBuffer_OnAddedLines), sender, e);
             else
-                droneLogTextBox.AppendText(msg);
+                AppendDroneLog();
         }
+    
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             Log.OnFlushBuffer -= Log_OnFlushBuffer;
             Log.AutomaticFlush = false;
 
-            drone.OnLogMessage -= Drone_OnLogMessage;
+            drone.LogBuffer.OnAddedLines -= LogBuffer_OnAddedLines;
 
             base.OnFormClosing(e);
         }
