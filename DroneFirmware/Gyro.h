@@ -34,6 +34,10 @@ private:
 	CalibrationData gyroCalibration;
 	CalibrationData orientationCalibration;
 
+	bool validGyroData;
+	bool validMagData;
+	bool validImu;
+
 	GyroValues values;
 	GyroValues rawValues;
 
@@ -84,6 +88,10 @@ public:
 	void beginCalibration();
 	void beginMagnetCalibration();
 	bool inCalibration();
+
+	boolean hasValidGyroData() const;
+	boolean hasValidMagnetData() const;
+	boolean hasValidImuData() const;
 
 	GyroValues getValues() const;
 

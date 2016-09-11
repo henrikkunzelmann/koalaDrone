@@ -12,6 +12,10 @@ Gyro::Gyro(SensorCalibration* calibration) {
 	this->firstSample = true;
 	this->lastSample = micros();
 	this->lastMagnetData = millis();
+
+	this->validGyroData = false;
+	this->validMagData = false;
+	this->validImu = false;
 }
 
 Gyro::~Gyro() {
@@ -112,6 +116,9 @@ void Gyro::filterData() {
 	values.MagnetZ = FILTER(last.MagnetZ, values.MagnetZ, 0.005f);
 
 	values.Temperature = FILTER(last.Temperature, values.Temperature, 0.025f);
+
+	validGyroData = true;
+	validMagData = canUseMagneticData();
 }
 
 void Gyro::calibrateOrientation() {
@@ -133,6 +140,10 @@ void Gyro::update() {
 	lastSample = micros();
 
 	Profiler::begin("Gyro::update()");
+
+	validGyroData = false;
+	validMagData = false;
+	validImu = false;
 
 	if (getValues(&rawValues))
 		filterData();
@@ -176,12 +187,14 @@ void Gyro::calculateIMU() {
 	Profiler::begin("Gyro::calculateIMU()");
 	float dt = CYCLE_GYRO / 1000.f;
 
-	if (values.RawGyroX < gyroCalibration.Min[0] || values.RawGyroX > gyroCalibration.Max[0])
-		roll += values.GyroX * dt;
-	if (values.RawGyroY < gyroCalibration.Min[1] || values.RawGyroY > gyroCalibration.Max[1])
-		pitch += values.GyroY * dt;
-	if (values.RawGyroZ < gyroCalibration.Min[2] || values.RawGyroZ > gyroCalibration.Max[2])
-		yaw += values.GyroZ * dt;
+	if (hasValidGyroData()) {
+		if (values.RawGyroX < gyroCalibration.Min[0] || values.RawGyroX > gyroCalibration.Max[0])
+			roll += values.GyroX * dt;
+		if (values.RawGyroY < gyroCalibration.Min[1] || values.RawGyroY > gyroCalibration.Max[1])
+			pitch += values.GyroY * dt;
+		if (values.RawGyroZ < gyroCalibration.Min[2] || values.RawGyroZ > gyroCalibration.Max[2])
+			yaw += values.GyroZ * dt;
+	}
 
 	if (!isAccMoving()) {
 		float accRoll = -MathHelper::toDegress(atan(values.AccY / sqrt(values.AccX*values.AccX + values.AccZ*values.AccZ)));
@@ -205,6 +218,8 @@ void Gyro::calculateIMU() {
 		pitch = FILTER(pitch, magPitch, 0.01f);
 		yaw = FILTER(yaw, magYaw, 0.025f);
 	}
+
+	validImu = true;
 
 	Profiler::end();
 }
@@ -233,6 +248,18 @@ void Gyro::beginMagnetCalibration() {
 
 bool Gyro::inCalibration() {
 	return calibrationRunning || calibrationMagnet || calibrationOrientation;
+}
+
+boolean Gyro::hasValidGyroData() const {
+	return validGyroData;
+}
+
+boolean Gyro::hasValidMagnetData() const {
+	return validMagData;
+}
+
+boolean Gyro::hasValidImuData() const {
+	return validImu;
 }
 
 GyroValues Gyro::getValues() const {

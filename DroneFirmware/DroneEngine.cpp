@@ -61,6 +61,11 @@ void DroneEngine::arm() {
 			Log::info("Engine", "Can not arm motors, gyro is in calibration");
 			return;
 		}
+		if (!sensor->getGyro()->hasValidGyroData()) {
+			blinkLED(5, 300);
+			Log::info("Engine", "Can not arm motors, gyro data is not valid");
+			return;
+		}
 		if (!isGyroSafe()) {
 			blinkLED(5, 300);
 			Log::info("Engine", "Can not arm motors, gyro is not safe");
@@ -194,16 +199,29 @@ void DroneEngine::handleInternal() {
 	float rollCmd = targetRoll << 1;
 
 	if (config->EnableStabilization) {
-		calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetPitch / 50.0f);
-		calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetRoll / 50.0f);
+		if (sensor->getGyro()->hasValidImuData()) {
+			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetPitch / 50.0f);
+			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetRoll / 50.0f);
 
-		pitchCmd = -anglePitchOutput;
-		rollCmd = -angleRollOutput;
+			pitchCmd = -anglePitchOutput;
+			rollCmd = -angleRollOutput;
+		}
+		else
+			FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidImuData()");
 	}
 
-	calculatePID(rollPID, gyroValues.RawGyroX, rollCmd);
-	calculatePID(pitchPID, gyroValues.RawGyroY, pitchCmd);
-	calculatePID(yawPID, gyroValues.RawGyroZ, targetYaw << 1);
+	if (sensor->getGyro()->hasValidGyroData()) {
+		calculatePID(rollPID, gyroValues.RawGyroX, rollCmd);
+		calculatePID(pitchPID, gyroValues.RawGyroY, pitchCmd);
+		calculatePID(yawPID, gyroValues.RawGyroZ, targetYaw << 1);
+	}
+	else {
+		FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidGyroData()");
+
+		rollPID = 0;
+		pitchPID = 0;
+		yawPID = 0;
+	}
 
 	uint16_t minServo = config->ServoMin;
 	if (config->KeepMotorsOn)
