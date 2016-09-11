@@ -42,11 +42,11 @@ namespace DroneLibrary
         {
             lock (lines)
             {
-                lines.Add(line);
-
-                if (OnAddedLines != null)
-                    OnAddedLines(this, EventArgs.Empty);
+                lines.Add(line); 
             }
+
+            if (OnAddedLines != null)
+                OnAddedLines(this, EventArgs.Empty);
         }
 
         /// <summary>
