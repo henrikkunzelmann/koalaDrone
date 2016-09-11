@@ -6,7 +6,7 @@
 #include "MemoryAdapter.h"
 #include "Log.h"
 
-class EEPROM_MemoryAdapter : public MemoryAdaptor {
+class EEPROM_MemoryAdapter : public MemoryAdapter {
 protected:
 	uint16_t size;
 	uint16_t offset;

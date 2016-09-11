@@ -11,7 +11,7 @@ Config ConfigManager::loadConfig() {
 	return config;
 }
 
-Config ConfigManager::loadConfig(MemoryAdaptor* memory) {
+Config ConfigManager::loadConfig(MemoryAdapter* memory) {
 	// wir nutzen erstes Byte um zu Erkennen ob schon Daten geschrieben wurden
 	if (memory->readByte(0) != CONFIG_MAGIC_VALUE) {
 		Log::info("Config", "Saved magic value does not match excepted magic value");
@@ -57,7 +57,7 @@ void ConfigManager::saveConfig(const Config config) {
 	Profiler::end();
 }
 
-void ConfigManager::saveConfig(MemoryAdaptor* memory, const Config config) {
+void ConfigManager::saveConfig(MemoryAdapter* memory, const Config config) {
 	// Magic Value speichern
 	memory->writeByte(0, CONFIG_MAGIC_VALUE);
 

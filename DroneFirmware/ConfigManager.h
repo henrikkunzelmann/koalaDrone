@@ -18,10 +18,10 @@ class ConfigManager
 {
  public:
 	 static Config loadConfig();
-	 static Config loadConfig(MemoryAdaptor* memory);
+	 static Config loadConfig(MemoryAdapter* memory);
 
 	 static void saveConfig(const Config config);
-	 static void saveConfig(MemoryAdaptor* memory, const Config config);
+	 static void saveConfig(MemoryAdapter* memory, const Config config);
 
 	 static Config getDefault();
 };

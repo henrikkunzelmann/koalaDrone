@@ -3,12 +3,10 @@
 
 #include "arduino.h"
 
-class MemoryAdaptor {
-protected:
-	~MemoryAdaptor() {
-	}
-
+class MemoryAdapter {
 public:
+	virtual ~MemoryAdapter();
+
 	virtual bool begin() = 0;
 	virtual void writeByte(uint32_t address, uint8_t val) = 0;
 	virtual void write(uint32_t address, uint8_t* data, uint32_t length) = 0;
