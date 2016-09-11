@@ -27,8 +27,10 @@ namespace DroneControl
         private void AppendDroneLog()
         {
             string[] lines = drone.LogBuffer.GetLinesAfter(lastDroneLogIndex);
-            droneLogTextBox.AppendText(string.Join(Environment.NewLine, lines));
             lastDroneLogIndex += lines.Length;
+
+            droneLogTextBox.AppendText(string.Join(Environment.NewLine, lines));
+            droneLogTextBox.AppendText(Environment.NewLine);
         }
 
         private void Log_OnFlushBuffer(string obj)
