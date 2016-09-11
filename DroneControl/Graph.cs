@@ -46,6 +46,12 @@ namespace DroneControl
             if (DesignMode || History == null)
                 return;
 
+            if (Width == 0 || Height == 0)
+            {
+                base.OnResize(e);
+                return;
+            }
+
             DataHistory newHistory = new DataHistory(Width);
             newHistory.FullMin = ValueMin;
             newHistory.FullMax = ValueMax;
