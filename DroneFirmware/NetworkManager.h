@@ -14,6 +14,7 @@
 #include "ConfigManager.h"
 #include "LED.h"
 #include "CycleTimes.h"
+#include "FaultManager.h"
 
 #include <ESP8266WiFi/src/ESP8266WiFi.h>
 #include <ESP8266WiFi/src/WiFiUdp.h>

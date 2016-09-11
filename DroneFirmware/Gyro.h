@@ -6,6 +6,7 @@
 #include "SensorCalibration.h"
 #include "Log.h"
 #include "Profiler.h"
+#include "FaultManager.h"
 
 struct GyroValues {
 	int16_t RawGyroX, RawGyroY, RawGyroZ;

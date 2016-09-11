@@ -449,6 +449,10 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			engine->endOTA();
 		}
 		break;
+	default: 
+		Log::error("Network", "Unknown packet: %d", type);
+		FaultManager::fault(FaultProtocol, "Network", "Invalid packet");
+		break;
 	}
 }
 

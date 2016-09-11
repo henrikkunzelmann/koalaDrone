@@ -3,6 +3,7 @@
 
 #include "arduino.h"
 #include "Config.h"
+#include "FaultManager.h"
 #include "Gyro.h"
 #include "Gyro6050.h"
 #include "Gyro9250.h"

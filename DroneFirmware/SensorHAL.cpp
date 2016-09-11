@@ -20,6 +20,9 @@ void SensorHAL::initSensors() {
 	Log::info("Boot", "Gyro sensor: \"%s\"", getGyroName());
 	Log::info("Boot", "Magnetometer: \"%s\"", getMagnetometerName());
 	Log::info("Boot", "Baro sensor: \"%s\"", getBaroName());
+
+	if (!gyroInit)
+		FaultManager::fault(FaultHardware, "SensorHAL", "initSensors() Gyro");
 }
 
 boolean SensorHAL::initGyro(Gyro* gyro) {

@@ -134,8 +134,8 @@ void Gyro::update() {
 
 	Profiler::begin("Gyro::update()");
 
-	getValues(&rawValues);
-	filterData();
+	if (getValues(&rawValues))
+		filterData();
 
 	if (calibrationRunning)
 		calibrateGyro();

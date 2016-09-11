@@ -95,6 +95,9 @@
     <ClInclude Include="CycleTimes.h" />
     <ClInclude Include="DroneEngine.h" />
     <ClInclude Include="EEPROM_MemoryAdapter.h" />
+    <ClInclude Include="Fault.h" />
+    <ClInclude Include="FaultManager.h" />
+    <ClInclude Include="FaultType.h" />
     <ClInclude Include="Gyro.h" />
     <ClInclude Include="Gyro6050.h" />
     <ClInclude Include="Gyro9250.h" />
@@ -121,6 +124,7 @@
     <ClCompile Include="ConfigManager.cpp" />
     <ClCompile Include="DroneEngine.cpp" />
     <ClCompile Include="EEPROM_MemoryAdapter.cpp" />
+    <ClCompile Include="FaultManager.cpp" />
     <ClCompile Include="Gyro.cpp" />
     <ClCompile Include="Gyro6050.cpp" />
     <ClCompile Include="Gyro9250.cpp" />

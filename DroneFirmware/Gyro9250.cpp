@@ -35,8 +35,10 @@ bool Gyro9250::init() {
 	mpu.setFullScaleGyroRange(MPU9250_GYRO_FS_2000);
 	mpu.setDLPFMode(0);
 
-	if (!mpu.magCheckConnection())
+	if (!mpu.magCheckConnection()) {
 		Log::error("Gyro9250", "Mag connection failed");
+		FaultManager::fault(FaultHardware, "Gyro9250", "magCheckConnection()");
+	}
 
 	mpu.magGetAxisSensitivity(&sx, &sy, &sz);
 
@@ -65,6 +67,7 @@ bool Gyro9250::getValues(GyroValues* values) {
 	int16_t mx, my, mz;
 
 	if (!mpu.getMotion9(&ax, &ay, &az, &gx, &gy, &gz, &mx, &my, &mz)) {
+		FaultManager::fault(FaultHardware, "Gyro9250", "getMotion9()");
 		Profiler::end();
 		return false;
 	}
@@ -83,6 +86,7 @@ bool Gyro9250::getValues(GyroValues* values) {
 
 	int16_t temp;
 	if (!mpu.getTemperature(&temp)) {
+		FaultManager::fault(FaultHardware, "Gyro9250", "getTemperature()");
 		Profiler::end();
 		return false;
 	}

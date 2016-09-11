@@ -31,6 +31,12 @@
     <Filter Include="Source Files\sensor">
       <UniqueIdentifier>{9f04d01d-8230-4937-b470-879e564dc5ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\diagnostics">
+      <UniqueIdentifier>{f2e5854c-b090-4c65-a70a-5aebc3003bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\diagnostics">
+      <UniqueIdentifier>{e515b202-3515-4603-b02c-f25134c7be3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DroneFirmware.ino" />
@@ -117,6 +123,15 @@
     <ClInclude Include="DroneEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FaultType.h">
+      <Filter>Header Files\diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="Fault.h">
+      <Filter>Header Files\diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="FaultManager.h">
+      <Filter>Header Files\diagnostics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigManager.cpp">
@@ -181,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="MemoryAdapter.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FaultManager.cpp">
+      <Filter>Source Files\diagnostics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
