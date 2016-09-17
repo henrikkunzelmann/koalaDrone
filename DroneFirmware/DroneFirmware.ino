@@ -50,6 +50,11 @@ void setup() {
 	Log::info("Boot", "Model: %s", MODEL_NAME);
 	Log::info("Boot", "Build: %s", BUILD_NAME);
 
+	Log::info("Hardware", "Core version: %s", ESP.getCoreVersion().c_str());
+	Log::info("Hardware", "SDK version: %s", ESP.getSdkVersion());
+	Log::info("Hardware", "CPU freq: %dmhz", ESP.getCpuFreqMHz());
+	Log::info("Hardware", "Flash size: %dkbyte (set by compiler %dkbyte)", ESP.getFlashChipRealSize() / 1024, ESP.getFlashChipSize() / 1024);
+
 	ESP.eraseConfig();
 
 	// Serialnummer schreiben
