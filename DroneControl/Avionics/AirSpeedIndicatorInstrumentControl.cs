@@ -97,7 +97,7 @@ namespace DroneControl.Avionics
         {
             airSpeed = aircraftAirSpeed;
 
-            this.Refresh();
+            Invalidate();
         }
 
         #endregion

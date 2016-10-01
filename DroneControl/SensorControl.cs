@@ -100,6 +100,7 @@ namespace DroneControl
                 Formatting.FormatDecimal(e.Data.Baro.Altitude, 2, 4));
 
             ResumeLayout();
+            Invalidate(true);
         }
 
         private void calibrateGyroButton_Click(object sender, EventArgs e)

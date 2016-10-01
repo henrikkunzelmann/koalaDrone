@@ -34,9 +34,10 @@ namespace DroneControl.Avionics
         }
 
         // Parameters
-        int Heading = 30; 
+        int Heading = 30;
 
         // Images
+        bool bmpDirty = true;
         Bitmap bmpCadran = new Bitmap(AvionicsInstrumentsControlsRessources.HeadingIndicator_Background);
         Bitmap bmpHedingWeel = new Bitmap(AvionicsInstrumentsControlsRessources.HeadingWeel);
         Bitmap bmpAircaft = new Bitmap(AvionicsInstrumentsControlsRessources.HeadingIndicator_Aircraft);        
@@ -82,9 +83,13 @@ namespace DroneControl.Avionics
             Point ptImgAircraft = new Point(73,41);
             Point ptImgHeadingWeel = new Point(13, 13);
 
-            bmpCadran.MakeTransparent(Color.Yellow);
-            bmpHedingWeel.MakeTransparent(Color.Yellow);
-            bmpAircaft.MakeTransparent(Color.Yellow);
+            if (bmpDirty)
+            {
+                bmpCadran.MakeTransparent(Color.Yellow);
+                bmpHedingWeel.MakeTransparent(Color.Yellow);
+                bmpAircaft.MakeTransparent(Color.Yellow);
+                bmpDirty = false;
+            }
 
             double alphaHeadingWeel = InterpolPhyToAngle(Heading,0,360,360,0);
 
@@ -122,7 +127,7 @@ namespace DroneControl.Avionics
         {
             Heading = aircraftHeading;
 
-            this.Refresh();
+            Invalidate();
         }
 
         #endregion

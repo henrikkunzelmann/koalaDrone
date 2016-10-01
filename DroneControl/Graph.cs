@@ -112,17 +112,15 @@ namespace DroneControl
                 Pen pen = new Pen(Color.Black);
                 Brush highlightBrush = new SolidBrush(Color.SkyBlue);
 
-                int lastY = 0;
-                for (int i = 0; i < History.ValueCount; i++)
+
+                if (History.ValueCount > 1)
                 {
-                    int y = ConvertValue(History[i]);
+                    PointF[] points = new PointF[History.ValueCount];
 
-                    if (i == 0)
-                        e.Graphics.DrawLine(pen, 0, y, 0, y);
-                    else
-                        e.Graphics.DrawLine(pen, i - 1, lastY, i, y);
+                    for (int i = 0; i < History.ValueCount; i++)
+                        points[i] = new PointF(i, ConvertValue(History[i]));
 
-                    lastY = y;
+                    e.Graphics.DrawLines(pen, points);
                 }
 
                 if (HighlightX >= 0 && HighlightX < History.ValueCount)

@@ -108,7 +108,7 @@ namespace DroneControl.Avionics
         {
             altitude = aircraftAltitude;
 
-            this.Refresh();
+            Invalidate();
         }
 
         #endregion

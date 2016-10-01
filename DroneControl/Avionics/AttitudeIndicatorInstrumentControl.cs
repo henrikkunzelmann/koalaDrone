@@ -24,6 +24,7 @@ namespace DroneControl.Avionics
 		double RollAngle = 0; // Theta
 
         // Images
+        bool bmpDirty = true;
         Bitmap bmpCadran = new Bitmap(AvionicsInstrumentsControlsRessources.Horizon_Background);
         Bitmap bmpBoule = new Bitmap(AvionicsInstrumentsControlsRessources.Horizon_GroundSky);
         Bitmap bmpAvion = new Bitmap(AvionicsInstrumentsControlsRessources.Maquette_Avion);
@@ -73,8 +74,12 @@ namespace DroneControl.Avionics
 
             // Affichages - - - - - - - - - - - - - - - - - - - - - - 
 
-            bmpCadran.MakeTransparent(Color.Yellow);
-            bmpAvion.MakeTransparent(Color.Yellow);
+            if (bmpDirty)
+            {
+                bmpCadran.MakeTransparent(Color.Yellow);
+                bmpAvion.MakeTransparent(Color.Yellow);
+                bmpDirty = false;
+            }
 
             // display Horizon
             RotateAndTranslate(pe, bmpBoule, RollAngle, 0, ptBoule, (int)(4*PitchAngle), ptRotation, scale);
@@ -106,7 +111,7 @@ namespace DroneControl.Avionics
             PitchAngle = aircraftPitchAngle;
             RollAngle = aircraftRollAngle * Math.PI / 180;
 
-            this.Refresh();
+            Invalidate();
         }
 
         #endregion
