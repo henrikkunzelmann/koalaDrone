@@ -544,6 +544,8 @@ void NetworkManager::sendDebugData(WiFiUDP udp) {
 	if (millis() - _lastDebugDataSend > CYCLE_DEBUG_DATA) {
 		writeDataHeader(dataUDP, dataRevision++, DataDebug);
 
+		writeBuffer->write(ESP.getFreeHeap());
+
 		Profiler::write(writeBuffer);
 
 		writeBuffer->write(engine->getPitchOutput());

@@ -45,6 +45,8 @@ void setup() {
 	Serial.begin(115200);
 	Serial.println();
 
+	uint32_t heapBefore = ESP.getFreeHeap();
+
 	Log::info("Boot", "=====================");
 	Log::info("Boot", "Drone v%d booting...", BUILD_VERSION);
 	Log::info("Boot", "Model: %s", MODEL_NAME);
@@ -54,6 +56,8 @@ void setup() {
 	Log::info("Hardware", "SDK version: %s", ESP.getSdkVersion());
 	Log::info("Hardware", "CPU freq: %dmhz", ESP.getCpuFreqMHz());
 	Log::info("Hardware", "Flash size: %dkbyte (set by compiler %dkbyte)", ESP.getFlashChipRealSize() / 1024, ESP.getFlashChipSize() / 1024);
+
+	Log::info("Memory", "Free heap (before boot): %d", heapBefore);
 
 	ESP.eraseConfig();
 
@@ -165,6 +169,7 @@ void setup() {
 	// Profiler laden
 	Profiler::init();
 
+	Log::info("Memory", "Free heap (after boot): %d", ESP.getFreeHeap());
 	Log::info("Boot", "done booting. ready.");
 }
 

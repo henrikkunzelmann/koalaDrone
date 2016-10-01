@@ -35,6 +35,9 @@ namespace DroneControl
         {
             StringBuilder profilerString = new StringBuilder();
 
+            profilerString.AppendFormat("Free heap: {0}", Formatting.FormatDataSize(data.FreeHeapBytes));
+            profilerString.AppendLine();
+
             if (data.Profiler.Entries != null)
             {
                 for (int i = 0; i < data.Profiler.Entries.Length; i++)
