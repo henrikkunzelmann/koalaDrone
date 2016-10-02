@@ -600,7 +600,7 @@ namespace DroneLibrary
 
                 controlSocket.BeginSend(packetStream.GetBuffer(), (int)packetBuffer.Position, SendPacket, null);
                 if (Config.VerbosePacketSending && (packet.Type != PacketType.Ping || Config.LogPingPacket))
-                    Log.Verbose("[{0}] Packet:   [{1}] {2}, size: {3} bytes {4} {5}", Address.ToString(), revision, packet.Type, packetBuffer.Position, guaranteed ? "(guaranteed)" : "", alreadySent ? "(resend)" : "");
+                    Log.Verbose("[{0}] Packet:      [{1}] {2}, size: {3} bytes {4} {5}", Address.ToString(), revision, packet.Type, packetBuffer.Position, guaranteed ? "(guaranteed)" : "", alreadySent ? "(resend)" : "");
             }
             return true;
         }
@@ -676,7 +676,7 @@ namespace DroneLibrary
                 if (Config.VerbosePacketReceive
                     && type != PacketType.Ack
                     && (type != PacketType.Ping || Config.LogPingPacket))
-                    Log.Verbose("[{0}] Received: [{1}] {2}, size: {3} bytes", Address.ToString(), revision, type, packet.Length);
+                    Log.Verbose("[{0}] Received:    [{1}] {2}, size: {3} bytes", Address.ToString(), revision, type, packet.Length);
 
                 switch (type)
                 {
