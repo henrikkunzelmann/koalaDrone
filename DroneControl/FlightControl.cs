@@ -244,6 +244,8 @@ namespace DroneControl
             inputCurves.RightBottom.ShowHalfScaling = true;
             inputCurves.RightBottom.BaseLine = 500;
             CreateThrustGraph(inputCurves.RightBottom.History);
+
+            inputCurves.Invalidate();
         }
 
         private void HighlightInputGraph(TargetData data)
