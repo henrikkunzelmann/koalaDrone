@@ -28,26 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogForm));
-            this.flushTimer = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.clientPage = new System.Windows.Forms.TabPage();
             this.logTextBox = new System.Windows.Forms.TextBox();
-            this.logCleanButton = new System.Windows.Forms.Button();
             this.dronePage = new System.Windows.Forms.TabPage();
-            this.clearDroneButton = new System.Windows.Forms.Button();
             this.droneLogTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.clientPage.SuspendLayout();
             this.dronePage.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // flushTimer
-            // 
-            this.flushTimer.Enabled = true;
-            this.flushTimer.Interval = 200;
-            this.flushTimer.Tick += new System.EventHandler(this.flushTimer_Tick);
             // 
             // tabControl1
             // 
@@ -62,7 +52,6 @@
             // 
             // clientPage
             // 
-            this.clientPage.Controls.Add(this.logCleanButton);
             this.clientPage.Controls.Add(this.logTextBox);
             this.clientPage.Location = new System.Drawing.Point(4, 22);
             this.clientPage.Name = "clientPage";
@@ -85,20 +74,8 @@
             this.logTextBox.Size = new System.Drawing.Size(514, 358);
             this.logTextBox.TabIndex = 2;
             // 
-            // logCleanButton
-            // 
-            this.logCleanButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.logCleanButton.Location = new System.Drawing.Point(412, 333);
-            this.logCleanButton.Name = "logCleanButton";
-            this.logCleanButton.Size = new System.Drawing.Size(75, 23);
-            this.logCleanButton.TabIndex = 4;
-            this.logCleanButton.Text = "Clear";
-            this.logCleanButton.UseVisualStyleBackColor = true;
-            this.logCleanButton.Click += new System.EventHandler(this.logCleanButton_Click);
-            // 
             // dronePage
             // 
-            this.dronePage.Controls.Add(this.clearDroneButton);
             this.dronePage.Controls.Add(this.droneLogTextBox);
             this.dronePage.Location = new System.Drawing.Point(4, 22);
             this.dronePage.Name = "dronePage";
@@ -107,17 +84,6 @@
             this.dronePage.TabIndex = 1;
             this.dronePage.Text = "Drone";
             this.dronePage.UseVisualStyleBackColor = true;
-            // 
-            // clearDroneButton
-            // 
-            this.clearDroneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.clearDroneButton.Location = new System.Drawing.Point(409, 330);
-            this.clearDroneButton.Name = "clearDroneButton";
-            this.clearDroneButton.Size = new System.Drawing.Size(75, 23);
-            this.clearDroneButton.TabIndex = 8;
-            this.clearDroneButton.Text = "Clear";
-            this.clearDroneButton.UseVisualStyleBackColor = true;
-            this.clearDroneButton.Click += new System.EventHandler(this.clearDroneButton_Click);
             // 
             // droneLogTextBox
             // 
@@ -151,13 +117,10 @@
         }
 
         #endregion
-        private System.Windows.Forms.Timer flushTimer;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage clientPage;
         private System.Windows.Forms.TextBox logTextBox;
-        private System.Windows.Forms.Button logCleanButton;
         private System.Windows.Forms.TabPage dronePage;
-        private System.Windows.Forms.Button clearDroneButton;
         private System.Windows.Forms.TextBox droneLogTextBox;
     }
 }

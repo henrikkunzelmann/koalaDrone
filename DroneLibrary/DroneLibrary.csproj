@@ -58,7 +58,7 @@
     <Compile Include="DroneEntry.cs" />
     <Compile Include="DroneList.cs" />
     <Compile Include="DroneListChangedEventArgs.cs" />
-    <Compile Include="DroneLog.cs" />
+    <Compile Include="LogStorage.cs" />
     <Compile Include="DroneOTA.cs" />
     <Compile Include="DroneSettings.cs" />
     <Compile Include="DroneInfo.cs" />
@@ -69,6 +69,7 @@
     <Compile Include="InfoChangedEventArgs.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="LogLevel.cs" />
+    <Compile Include="LogView.cs" />
     <Compile Include="NetworkHelper.cs" />
     <Compile Include="NetworkStatistics.cs" />
     <Compile Include="PacketBuffer.cs" />

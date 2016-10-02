@@ -61,13 +61,17 @@ namespace DroneControl
 
             running = true;
 
+            Log.Info("Starting recording: {0}", recordingName);
+
             progressBar.Style = ProgressBarStyle.Marquee;
             statusLabel.Text = "Running";
             startButton.Text = "Stop";
 
             time = new Stopwatch();
             time.Start();
-            lastDroneLogIndex = drone.LogBuffer.Count;
+
+            log = Log.Storage.CreateView(true);
+            droneLog = drone.DroneLog.CreateView(true);
 
             EmitData();
 
@@ -80,6 +84,8 @@ namespace DroneControl
                 throw new InvalidOperationException("Alread stopped");
 
             running = false;
+
+            Log.Info("Stopped recording");
 
             progressBar.Style = ProgressBarStyle.Continuous;
             progressBar.Value = progressBar.Maximum;
@@ -162,7 +168,8 @@ namespace DroneControl
         };
 
         private StringBuilder line = new StringBuilder();
-        private int lastDroneLogIndex;
+        private LogView log;
+        private LogView droneLog;
 
         private void EmitData()
         {
@@ -258,11 +265,10 @@ namespace DroneControl
 
         private void EmitLog()
         {
-            string[] logLines = drone.LogBuffer.GetLinesAfter(lastDroneLogIndex);
-            foreach (string line in logLines)
+            foreach (string line in log.GetNewLines())
                 logStream.WriteLine(line);
-
-            lastDroneLogIndex += logLines.Length;
+            foreach (string line in droneLog.GetNewLines())
+                logStream.WriteLine(line);
         }
 
         private void timer_Tick(object sender, EventArgs e)

@@ -5,7 +5,7 @@
 #include "PacketBuffer.h"
 #include "CycleTimes.h"
 
-#define PROFILE_SIZE 16
+#define PROFILE_SIZE 48
 
 struct ProfilerFunction {
 	uint32_t index;

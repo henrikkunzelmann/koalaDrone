@@ -7,30 +7,38 @@ namespace DroneControl
     public partial class LogForm : Form
     {
         private Drone drone;
-        private int lastDroneLogIndex;
+
+        private LogView log;
+        private LogView droneLog;
 
         public LogForm(Drone drone)
         {
-            InitializeComponent();
-
-            // Log Klasse vorbereiten 
-            Log.OnFlushBuffer += Log_OnFlushBuffer;
-            Log.FlushBuffer();
-            Log.AutomaticFlush = true;
-
             this.drone = drone;
 
-            AppendDroneLog();
-            drone.LogBuffer.OnAddedLines += LogBuffer_OnAddedLines;
+            InitializeComponent();
+
+            log = Log.Storage.CreateView();
+            droneLog = drone.DroneLog.CreateView();
+
+            AppendLog();
+
+            Log.Storage.OnAddedLines += LogBuffer_OnAddedLines;
+            drone.DroneLog.OnAddedLines += LogBuffer_OnAddedLines;
         }
 
-        private void AppendDroneLog()
+        private void AppendLog()
         {
-            string[] lines = drone.LogBuffer.GetLinesAfter(lastDroneLogIndex);
-            lastDroneLogIndex += lines.Length;
+            AppendLog(logTextBox, log);
+            AppendLog(droneLogTextBox, droneLog);
+        }
 
-            droneLogTextBox.AppendText(string.Join(Environment.NewLine, lines));
-            droneLogTextBox.AppendText(Environment.NewLine);
+        private void AppendLog(TextBox box, LogView view)
+        {
+            if (!view.HasNewLines)
+                return;
+
+            box.AppendText(string.Join(Environment.NewLine, view.GetNewLines()));
+            box.AppendText(Environment.NewLine);
         }
 
         private void Log_OnFlushBuffer(string obj)
@@ -46,33 +54,16 @@ namespace DroneControl
             if (droneLogTextBox.InvokeRequired)
                 droneLogTextBox.Invoke(new EventHandler(LogBuffer_OnAddedLines), sender, e);
             else
-                AppendDroneLog();
+                AppendLog();
         }
     
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            Log.OnFlushBuffer -= Log_OnFlushBuffer;
-            Log.AutomaticFlush = false;
-
-            drone.LogBuffer.OnAddedLines -= LogBuffer_OnAddedLines;
+            Log.Storage.OnAddedLines -= LogBuffer_OnAddedLines;
+            drone.DroneLog.OnAddedLines -= LogBuffer_OnAddedLines;
 
             base.OnFormClosing(e);
-        }
-
-        private void flushTimer_Tick(object sender, EventArgs e)
-        {
-            Log.FlushBuffer();
-        }
-
-        private void logCleanButton_Click(object sender, EventArgs e)
-        {
-            logTextBox.Clear();
-        }
-
-        private void clearDroneButton_Click(object sender, EventArgs e)
-        {
-            droneLogTextBox.Clear();
         }
     }
 }

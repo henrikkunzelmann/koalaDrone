@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DroneLibrary
 {
-    public class DroneLog
+    public class LogStorage
     {
         private List<string> lines = new List<string>();
         
@@ -50,7 +50,7 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Gibt alle Zeilen welche nach dem Index kommen.
+        /// Gibt alle Zeilen welche nach dem Index kommen zurück.
         /// </summary>
         /// <param name="index"></param>
         /// <returns>Die Zeilen nach dem Index oder null wenn keine neuen Zeilen vorhanden sind.</returns>
@@ -58,11 +58,23 @@ namespace DroneLibrary
         {
             lock (lines)
             {
-                if (index >= Count)
-                    return null;
+                if (index < 0 || index > Count)
+                    throw new ArgumentOutOfRangeException(nameof(index));
 
                 return lines.Skip(index).ToArray();
             }
+        }
+
+        public LogView CreateView()
+        {
+            return CreateView(false);
+        }
+
+        public LogView CreateView(bool onlyNewData)
+        {
+            if (onlyNewData)
+                return new LogView(this, Count);
+            return new LogView(this, 0);
         }
     }
 }

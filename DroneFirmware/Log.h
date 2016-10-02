@@ -5,12 +5,12 @@
 #include <stdarg.h>
 
 enum LogLevel {
-	Error, // Nachrichten die als Fehler eingestuft werden, können Sicherheit von Drone gefährden
-	Info, // Nachrichten die nicht als Error oder Debug eingestuft werden
-	Debug // Nachrichten die für Programmierer interessant sein können
+	Error, // Nachrichten die als Fehler eingestuft werden, können Sicherheit von Drohne gefährden
+	Info,  // Nachrichten die nicht als Error oder Debug eingestuft werden
+	Debug  // Nachrichten die für Programmierer interessant sein können
 };
 
-#define LOG_BUFFER_LINES 32
+#define LOG_BUFFER_LINES 128
 
 class Log {
 private:

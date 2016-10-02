@@ -45,7 +45,7 @@ namespace DroneLibrary
             get { return Ping >= 0; }
         }
 
-        public DroneLog LogBuffer { get; private set; }
+        public LogStorage DroneLog { get; private set; }
 
         /// <summary>
         /// Wird aufgerufen wenn die Drohne verbunden ist.
@@ -137,6 +137,7 @@ namespace DroneLibrary
         /// </summary>
         public event EventHandler<InfoChangedEventArgs> OnInfoChange;
 
+        private bool firstInfo = true;
         private DroneInfo info;
 
         /// <summary>
@@ -284,7 +285,7 @@ namespace DroneLibrary
 
             this.Config = config;
             this.Address = address;
-            this.LogBuffer = new DroneLog();
+            this.DroneLog = new LogStorage();
 
             controlSocket = new UdpClient();
             controlSocket.Connect(address, Config.ProtocolControlPort);
@@ -303,6 +304,7 @@ namespace DroneLibrary
             {
                 Log.Info("Connected to {0}", Address);
 
+                firstInfo = true;
                 currentRevision = 1;
                 lastDataDroneRevision = 0;
                 lastDataLogRevision = 0;
@@ -713,6 +715,14 @@ namespace DroneLibrary
                         Info = new DroneInfo(buffer);
                         Settings = DroneSettings.Read(buffer);
 
+                        if (firstInfo)
+                        {
+                            Log.Info("Received drone info for first time...");
+                            Log.WriteProperties(LogLevel.Info, Info);
+
+                            firstInfo = false;
+                        }
+
                         RemovePacketToAcknowlegde(revision);
                         break;
                     default:
@@ -802,7 +812,7 @@ namespace DroneLibrary
                         {
                             string msg = buffer.ReadString();
 
-                            LogBuffer.AddLine(msg);
+                            DroneLog.AddLine(msg);
                         }
 
                         lastDataLogRevision = revision;
