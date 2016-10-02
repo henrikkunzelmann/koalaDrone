@@ -1,7 +1,7 @@
 ﻿namespace DroneLibrary.Protocol
 {
     /// <summary>
-    /// Stellt ein Interface für alle Kugelmatik-Pakete dar.
+    /// Stellt ein Interface für alle koalaDrone Pakete dar.
     /// </summary>
     public interface IPacket
     {

@@ -10,7 +10,7 @@ using System.Net.Sockets;
 namespace DroneLibrary
 {
     /// <summary>
-    /// Stellt eine Drohne dar.
+    /// Stellt die Verbindung zu einer Drohne dar.
     /// </summary>
     public class Drone : IDisposable
     {
@@ -141,7 +141,7 @@ namespace DroneLibrary
         private DroneInfo info;
 
         /// <summary>
-        /// Gibt Informationen über die Drone zurück. Null wenn noch keine Informationen empfangen wurden.
+        /// Gibt Informationen über die Drohne zurück. 
         /// </summary>
         public DroneInfo Info
         {
@@ -168,14 +168,14 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Wird aufgerufen, wenn sich die Dronen Einstellungen ändern.
+        /// Wird aufgerufen, wenn sich die Einstellungen der Drohne ändern.
         /// </summary>
         public event EventHandler<SettingsChangedEventArgs> OnSettingsChange;
 
         private DroneSettings settings;
 
         /// <summary>
-        /// Gibt Einstellungen der Drone zurück. Null wenn noch keine Informationen empfangen wurden.
+        /// Gibt die letzten bekannten Einstellungen der Drohne zurück.
         /// </summary>
         public DroneSettings Settings
         {
@@ -206,7 +206,7 @@ namespace DroneLibrary
         private DebugData debugData;
 
         /// <summary>
-        /// Gibt aktuelle Daten über das Verhalten der Drone zurück.
+        /// Gibt aktuelle Debug-Daten über das Verhalten der Drohne zurück.
         /// </summary>
         public DebugData DebugData
         {
@@ -229,17 +229,17 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Gibt den Socket an mit dem die Drone mit der Hardware per UDP verbunden ist.
+        /// Gibt den Socket an mit dem die Drohne mit der Hardware per UDP verbunden ist.
         /// </summary>
         private UdpClient controlSocket;
 
         /// <summary>
-        /// Gibt den Socket an, mit dem die Drone die Daten empfängt.
+        /// Gibt den Socket an, mit dem die Drohne die Daten empfängt.
         /// </summary>
         private UdpClient dataSocket;
 
         /// <summary>
-        /// Gibt den Paket-Buffer an der benutzt wird um die Pakete zu generieren.
+        /// Gibt den Paket-Buffer an, welcher benutzt wird um die Pakete zu generieren.
         /// </summary>
         private MemoryStream packetStream = new MemoryStream();
 
@@ -249,12 +249,12 @@ namespace DroneLibrary
         private PacketBuffer packetBuffer;
 
         /// <summary>
-        /// Gibt den Zeitpunkt an als das Paket abgeschickt wurde.
+        /// Gibt den Zeitpunkt an, als das Paket abgeschickt wurde.
         /// </summary>
         private Dictionary<int, long> packetSendTime = new Dictionary<int, long>();
 
         /// <summary>
-        /// Pakete die noch vom Drone bestätigt werden müssen.
+        /// Pakete die noch von der Drohne bestätigt werden müssen.
         /// </summary>
         private Dictionary<int, IPacket> packetsToAcknowledge = new Dictionary<int, IPacket>();
 
@@ -264,12 +264,12 @@ namespace DroneLibrary
         private Dictionary<int, EventHandler<IPacket>> packetAcknowlegdeEvents = new Dictionary<int, EventHandler<IPacket>>();
 
         /// <summary>
-        /// Gibt zurück ob Pakete noch warten vom Drone bestätigt zu werden.
+        /// Gibt zurück ob Pakete noch warten von der Drohne bestätigt zu werden.
         /// </summary>
         public bool AnyPacketsAcknowledgePending => packetsToAcknowledge.Count > 0;
 
         /// <summary>
-        /// Gibt die Anzahl der Pakete zurück die noch vom Drone bestätigt werden müssen.
+        /// Gibt die Anzahl der Pakete zurück die noch von der Drohne bestätigt werden müssen.
         /// </summary>
         public int PendingAcknowledgePacketsCount => packetsToAcknowledge.Count;
 
@@ -313,7 +313,7 @@ namespace DroneLibrary
                 lastPing = Environment.TickCount;
                 lastDataTime = Environment.TickCount;
 
-                // alle Pending Packets leeren, damit die Drone nach Reconnect nicht überfordert wird
+                // alle Pending Packets leeren, damit die Drohne nach Reconnect nicht überfordert wird
                 lock (packetsToAcknowledge)
                 {
                     packetsToAcknowledge.Clear();
@@ -367,7 +367,7 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Verschickt alle Pakete nochmal die noch vom Drone bestätigt werden.
+        /// Verschickt alle Pakete nochmal die noch von der Drohne bestätigt werden sollen.
         /// </summary>
         /// <returns>Gibt true zurück, wenn Pakete gesendet wurden.</returns>
         public bool ResendPendingPackets()
@@ -410,7 +410,7 @@ namespace DroneLibrary
         #region SendShortcuts
 
         /// <summary>
-        /// Schickt einen Ping-Befehl an das Drone. 
+        /// Schickt einen Ping-Befehl an die Drohne.
         /// </summary>
         public void SendPing()
         {
@@ -426,7 +426,7 @@ namespace DroneLibrary
         }
 
         /// <summary>
-        /// Schickt der Drone den Befehl neuzustarten.
+        /// Schickt der Drohne den Befehl neuzustarten.
         /// </summary>
         public void SendReset()
         {
@@ -480,6 +480,9 @@ namespace DroneLibrary
             SendPacket(new PacketSetMovement(roll, pitch, yaw, thrust), false);
         }
 
+        /// <summary>
+        /// Schickt einen Befehl an die Drohne um die LED blinken zu lassen.
+        /// </summary>
         public void SendBlink()
         {
             if (IsDisposed)
@@ -526,7 +529,7 @@ namespace DroneLibrary
         /// Schickt ein Packet an die Drohne.
         /// </summary>
         /// <param name="packet"></param>
-        /// <param name="guaranteed">Ob vom Drone eine Antwort gefordert wird.</param>
+        /// <param name="guaranteed">Ob von der Drohne eine Antwort gefordert wird.</param>
         public bool SendPacket(IPacket packet, bool guaranteed, EventHandler<IPacket> handler = null)
         {
             return SendPacket(packet, guaranteed, currentRevision++, handler);
@@ -592,7 +595,7 @@ namespace DroneLibrary
                 packetBuffer.Write(revision);
 
                 // wenn die Drohne eine Antwort schickt dann wird kein Ack-Paket angefordert, sonst kann es passieren, dass das Ack-Paket die eigentliche Antwort verdrängt
-                packetBuffer.Write(guaranteed && !packet.Type.DoesClusterAnswer());
+                packetBuffer.Write(guaranteed && !packet.Type.DoesAnswer());
                 packetBuffer.Write((byte)packet.Type);
 
                 // Paket Inhalt schreiben
@@ -726,7 +729,7 @@ namespace DroneLibrary
                         RemovePacketToAcknowlegde(revision);
                         break;
                     default:
-                        throw new InvalidDataException("Invalid packet type to get sent by cluster.");
+                        throw new InvalidDataException("Invalid packet type received.");
                 }
             }
         }

@@ -3,61 +3,79 @@
 namespace DroneLibrary
 {
     /// <summary>
-    /// Stellt verschiedene Informationen über das Drone bereit.
+    /// Stellt verschiedene Informationen über die Drohne bereit.
     /// </summary>
     public struct DroneInfo
     {
         /// <summary>
-        /// Gibt den benutzerfreundlichen Namen der Drone zurück.
+        /// Gibt den benutzerfreundlichen Namen der Drohne zurück.
         /// </summary>
         [Category("Drone")]
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gibt den Model Namen der Drone zurück.
+        /// Gibt den Model Namen der Drohne zurück.
         /// </summary>
         [Category("Drone")]
         public string ModelName { get; private set; }
 
         /// <summary>
-        /// Gibt die Seriennummer der Drone zurück.
+        /// Gibt die Seriennummer der Drohne zurück.
         /// </summary>
         [Category("Drone")]
         public string SerialCode { get; private set; }
 
         /// <summary>
-        /// Gibt den Buildnamen der Drone zurück.
+        /// Gibt den Buildnamen der Drohne zurück.
         /// </summary>
         [Category("Build")]
         public string BuildName { get; private set; }
 
         /// <summary>
-        /// Gibt die Build-Version der Firmware der Drone zurück.
+        /// Gibt die Build-Version der Firmware der Drohne zurück.
         /// </summary>
         [Category("Build")]
         public byte BuildVersion { get; private set; }
 
         /// <summary>
-        /// Gibt die größte Revision der Drone zurück.
+        /// Gibt die größte Revision der Drohne zurück.
         /// </summary>
         [Category("Debug")]
         public int HighestRevision { get; private set; }
 
+        /// <summary>
+        /// Gibt den Grund des letzten Resets der Drohne zurück.
+        /// </summary>
         [Category("Debug")]
         public ResetReason ResetReason { get; private set; }
 
+        /// <summary>
+        /// Gibt die Exceptions des letzten Resets der Drohne zurück.
+        /// </summary>
         [Category("Debug")]
         public ResetException ResetException { get; private set; }
 
+        /// <summary>
+        /// Gibt den letzten Stop Grund der Drohne zurück.
+        /// </summary>
         [Category("Debug")]
         public StopReason StopReason { get; private set; }
 
+        /// <summary>
+        /// Gibt den Namen des Gyrosensors zurück.
+        /// </summary>
         [Category("Drone")]
         public string GyroSensor { get; private set; }
 
+        /// <summary>
+        /// Gibt den Namen des Magnetometers zurück.
+        /// </summary>
         [Category("Drone")]
         public string Magnetometer { get; private set; }
 
+        /// <summary>
+        /// Gibt den Namen des Barometers zurück.
+        /// </summary>
         [Category("Drone")]
         public string BaroSensor { get; private set; }
 

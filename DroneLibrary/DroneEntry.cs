@@ -11,22 +11,22 @@ namespace DroneLibrary
         public DateTime LastFound { get; set; }
 
         /// <summary>
-        /// Gibt die IP-Adresse der Drone an.
+        /// Gibt die IP-Adresse der Drohne an.
         /// </summary>
         public IPAddress Address;
 
         /// <summary>
-        /// Gibt den benutzerfreundlichen Namen der Drone an.
+        /// Gibt den benutzerfreundlichen Namen der Drohne an.
         /// </summary>
         public string Name;
 
         /// <summary>
-        /// Gibt den Model Namen der Drone an.
+        /// Gibt den Model Namen der Drohne an.
         /// </summary>
         public string Model;
 
         /// <summary>
-        /// Gibt die Seriennummer der Drone an.
+        /// Gibt die Seriennummer der Drohne an.
         /// </summary>
         public string SerialCode;
 

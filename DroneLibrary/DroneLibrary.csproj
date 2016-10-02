@@ -71,7 +71,6 @@
     <Compile Include="LogLevel.cs" />
     <Compile Include="LogView.cs" />
     <Compile Include="NetworkHelper.cs" />
-    <Compile Include="NetworkStatistics.cs" />
     <Compile Include="PacketBuffer.cs" />
     <Compile Include="PidSettings.cs" />
     <Compile Include="PingChangedEventArgs.cs" />

@@ -7,7 +7,7 @@ using System.Reflection;
 namespace DroneLibrary
 {
     /// <summary>
-    /// Stellt verschiedene Einstellungen für die Kugelmatik bereit.
+    /// Stellt verschiedene Einstellungen für die Drohnen Verbindung bereit.
     /// </summary>
     public class Config
     {
@@ -45,11 +45,11 @@ namespace DroneLibrary
         public int AcknowlegdeTime { get; set; }
 
         [Category("Network")]
-        [Description("Wenn true, dann werden Pakete (außer Ping) nicht gesendet, wenn das Drone offline ist.")]
+        [Description("Wenn true, dann werden Pakete (außer Ping) nicht gesendet, wenn die Drohne offline ist.")]
         public bool IgnorePacketsWhenOffline { get; set; }
 
         [Category("Network")]
-        [Description("Wenn true, dann wird der Guaranteed-Flag ignoriert, wenn das Drone offline ist.")]
+        [Description("Wenn true, dann wird der Guaranteed-Flag ignoriert, wenn die Drohne offline ist.")]
         public bool IgnoreGuaranteedWhenOffline { get; set; }
 
         public Config()
