@@ -80,15 +80,22 @@ void setup() {
 	// Calibrate servos
 	if (config.CalibrateServos) {
 		Log::info("Boot", "Calibration of servos...");
+
 		rst_info* resetInfo = ESP.getResetInfoPtr();
-		if (resetInfo->reason == REASON_DEFAULT_RST) {
+		if (resetInfo->reason == REASON_DEFAULT_RST || resetInfo->reason == REASON_EXT_SYS_RST) {
 			turnLedOn();
 			servos->calibrate();
 			turnLedOff();
 			Log::info("Boot", "Done with calibration");
+
+			blinkLED(5, 1000);
 		}
 		else
+		{
+
 			Log::error("Boot", "Invalid reset reason: %d", resetInfo->reason);
+			blinkLED(10, 500);
+		}
 
 		config.CalibrateServos = false;
 		saveConfig = true;
