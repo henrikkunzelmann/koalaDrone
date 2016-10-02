@@ -73,6 +73,12 @@ namespace DroneControl
             log = Log.Storage.CreateView(true);
             droneLog = drone.DroneLog.CreateView(true);
 
+            Log.Debug("Drone info:");
+            Log.WriteProperties(LogLevel.Debug, drone.Info);
+
+            Log.Debug("Drone settings:");
+            Log.WriteFields(LogLevel.Debug, drone.Settings);
+
             EmitData();
 
             timer.Enabled = true;
@@ -146,7 +152,7 @@ namespace DroneControl
         {
             "Time ms",
 
-            "State", "RSSI", "BatteryV",
+            "State", "RSSI", "BatteryV", "FreeHeap",
             "GyroTemp", "Pitch", "Roll", "Yaw",
 
             "GyroX", "GyroY", "GyroZ",
@@ -199,6 +205,7 @@ namespace DroneControl
                     drone.Data.State,
                     drone.Data.WifiRssi,
                     drone.Data.BatteryVoltage,
+                    drone.DebugData.FreeHeapBytes,
 
                     drone.Data.Gyro.Temperature,
                     drone.Data.Gyro.Pitch,
