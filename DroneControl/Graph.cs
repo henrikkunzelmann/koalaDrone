@@ -155,8 +155,9 @@ namespace DroneControl
 
         private void DrawValue(Graphics graphics, Font font, double value, float alignFactor = 0)
         {
-            float offsetY = graphics.MeasureString(value.ToString(), font).Height * alignFactor;
-            graphics.DrawString(value.ToString(), font, new SolidBrush(Color.DarkGray), 4, ConvertValue(value) - offsetY);
+            string str = Formatting.FormatDecimal(value, 1);
+            float offsetY = graphics.MeasureString(str, font).Height * alignFactor;
+            graphics.DrawString(str, font, new SolidBrush(Color.DarkGray), 4, ConvertValue(value) - offsetY);
         }
 
         public void UpdateValue(double value)
