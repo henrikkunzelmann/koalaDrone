@@ -33,6 +33,8 @@ namespace DroneControl
 
             this.drone = drone;
 
+            Log.Info("Booting main form with drone {0}", drone.Address);
+
             timer.Interval = 250;
             timer.Tick += Timer_Tick;
             timer.Start();
@@ -69,7 +71,6 @@ namespace DroneControl
             }
 
             base.OnFormClosed(e);
-            Application.Exit();
         }
 
         private void Timer_Tick(object sender, EventArgs e)

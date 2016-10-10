@@ -28,12 +28,19 @@ namespace DroneControl
             droneList.SendHello();
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
+        private void StopDroneList()
         {
             if (droneList != null)
+            {
                 droneList.OnListChanged -= DroneList_OnListChanged;
-
+                droneList.Dispose();
+            }
             searchTimer.Stop();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            StopDroneList();
             base.OnFormClosing(e);
         }
 
@@ -50,23 +57,27 @@ namespace DroneControl
         {
             connectButton.Enabled = false;
 
-            // wenn wir verbunden sind (result == OK), können wir das Fenster schließen
-            ConnectingForm form = new ConnectingForm(address);
-            if (form.ShowDialog() == DialogResult.OK)
+            
+            using (ConnectingForm form = new ConnectingForm(address))
             {
-                searchTimer.Stop();
-
-                OpenMainForm(form.Drone);
+                // wenn wir verbunden sind (result == OK)
+                if (form.ShowDialog() == DialogResult.OK)
+                    OpenMainForm(form.Drone); // richtiges Fenster öffnen
             }
-            form.Dispose();
 
             connectButton.Enabled = true;
         }
 
         private void OpenMainForm(Drone drone)
         {
-            new MainForm(drone).Show();
+            StopDroneList();
+
+            MainForm form = new MainForm(drone);
+            form.Show();
             Hide();
+
+            // wenn MainForm geschlossen wurde dann auch unser Fenster schließen
+            form.FormClosed += (sender, e) => Close(); 
         }
 
         private void DroneList_OnListChanged(object sender, DroneListChangedEventArgs e)
