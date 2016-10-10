@@ -5,6 +5,11 @@ namespace DroneControl.Input
 {
     public class XboxDeviceFinder : IDeviceFinder
     {
+        public void Dispose()
+        {
+
+        }
+
         public IInputDevice[] FindDevices()
         {
             List<IInputDevice> devices = new List<IInputDevice>();

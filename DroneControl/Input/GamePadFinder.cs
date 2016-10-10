@@ -12,6 +12,12 @@ namespace DroneControl.Input
             directInput = new DirectInput();
         }
 
+        public void Dispose()
+        {
+            if (directInput != null)
+                directInput.Dispose();
+        }
+
         public IInputDevice[] FindDevices()
         {
             return directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices)

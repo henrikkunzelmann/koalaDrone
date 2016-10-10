@@ -35,17 +35,42 @@ namespace DroneControl.Input
         public event EventHandler OnDeviceInfoChanged;
         public event EventHandler OnTargetDataChanged;
 
+        private IDeviceFinder[] deviceFinders;
+
         public InputManager(Drone drone)
         {
             if (drone == null)
                 throw new ArgumentNullException(nameof(drone));
             this.drone = drone;
+
+            CreateDeviceFinders();
+        }
+
+        private void CreateDeviceFinders()
+        {
+            try
+            {
+                // alle IDeviceFinder Types in diesem Code suchen
+                var finderTypes = Assembly.GetExecutingAssembly().GetTypes()
+                    .Where(t => t.GetInterfaces().Contains(typeof(IDeviceFinder)))
+                    .Where(t => t.IsClass);
+
+                // IDeviceFinder Instanzen erzeugen
+                deviceFinders = finderTypes.Select(t => (IDeviceFinder)Activator.CreateInstance(t)).ToArray();
+            }
+            catch(Exception e)
+            {
+                Log.Error(e);
+                deviceFinders = new IDeviceFinder[0];
+            }
         }
 
         public void Dispose()
         {
             foreach (IInputDevice device in devices)
-                device.Dispose(); 
+                device.Dispose();
+            foreach (IDeviceFinder finder in deviceFinders)
+                finder.Dispose();
         }
 
         /// <summary>
@@ -56,16 +81,8 @@ namespace DroneControl.Input
         {
             int lastDeviceCount = devices.Count;
 
-            // alle IDeviceFinder Types in diesem Code suchen
-            var finderTypes = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(t => t.GetInterfaces().Contains(typeof(IDeviceFinder)))
-                .Where(t => t.IsClass);
-
-            // IDeviceFinder Instanzen erzeugen
-            var finders = finderTypes.Select(t => Activator.CreateInstance(t));
-
             // Geräte suchen
-            foreach (IDeviceFinder finder in finders)
+            foreach (IDeviceFinder finder in deviceFinders)
                 foreach (IInputDevice device in finder.FindDevices())
                     if (!devices.Contains(device))
                         devices.Add(device);
@@ -127,7 +144,7 @@ namespace DroneControl.Input
             if (drone.Data.State == DroneState.Idle)
                 ArmDrone();
             else if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
-                drone.SendDisarm();
+                DisarmDrone();
         }
 
         public void ArmDrone()

@@ -1,6 +1,8 @@
-﻿namespace DroneControl.Input
+﻿using System;
+
+namespace DroneControl.Input
 {
-    public interface IDeviceFinder
+    public interface IDeviceFinder : IDisposable
     {
         IInputDevice[] FindDevices();
     }
