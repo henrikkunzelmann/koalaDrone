@@ -10,7 +10,7 @@ namespace DroneLibrary
     /// <summary>
     /// Bietet Funktionen um Dronen im Netzwerk zu suchen und in einer Liste zu sammeln.
     /// </summary>
-    public class DroneList
+    public class DroneList : IDisposable
     {
         private Config config;
 
@@ -31,6 +31,12 @@ namespace DroneLibrary
             client = new UdpClient(config.ProtocolHelloPort);
             client.EnableBroadcast = true;
             client.BeginReceive(ReceivePacket, null);
+        }
+
+        public void Dispose()
+        {
+            if (client != null)
+                client.Close();
         }
 
         public void SendHello()
@@ -60,14 +66,24 @@ namespace DroneLibrary
 
         private void ReceivePacket(IAsyncResult result)
         {
-            IPEndPoint sender = null;
-            byte[] packet = client.EndReceive(result, ref sender);
+            try
+            {
+                IPEndPoint sender = null;
+                byte[] packet = client.EndReceive(result, ref sender);
 
-            Log.Debug("Got hello answer from {0}", sender.Address);
+                Log.Debug("Got hello answer from {0}", sender.Address);
 
-            HandlePacket(packet, sender);
+                HandlePacket(packet, sender);
 
-            client.BeginReceive(ReceivePacket, null);
+                client.BeginReceive(ReceivePacket, null);
+            }
+            catch(ObjectDisposedException)
+            {
+            }
+            catch(Exception e)
+            {
+                Log.Error(e);
+            }
         }
 
         private void HandlePacket(byte[] packet, IPEndPoint sender)

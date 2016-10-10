@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace DroneLibrary
@@ -7,19 +8,18 @@ namespace DroneLibrary
     /// <summary>
     /// Stellt Methoden für Netzwerkkommunikation bereit.
     /// </summary>
-    class NetworkHelper {
-
+    public class NetworkHelper
+    {
         /// <summary>
         /// Gibt die lokale IP-Adressen des Hosts zurück.
         /// </summary>
         /// <returns>Die IP-Adressen des Hosts</returns>
-        public static IPAddress[] GetLocalIPAddresses() {
-            if(!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable()) {
+        public static IPAddress[] GetLocalIPAddresses()
+        {
+            if (!NetworkInterface.GetIsNetworkAvailable())
                 return null;
-            }
 
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-
             return host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToArray();
         }
 
@@ -32,6 +32,7 @@ namespace DroneLibrary
             IPAddress[] addresses = GetLocalIPAddresses();
             if (addresses == null)
                 return null;
+
             for (int i = 0; i < addresses.Length; i++)
                 addresses[i] = GetLocalBroadcastAddress(addresses[i]);
             return addresses;

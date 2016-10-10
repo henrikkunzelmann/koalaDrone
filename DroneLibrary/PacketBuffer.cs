@@ -9,8 +9,6 @@ namespace DroneLibrary
         private MemoryStream stream;
         private BinaryReader reader;
         private BinaryWriter writer;
-
-        private byte[] helperBuffer = new byte[sizeof(double)];
         
         public long Position
         {
@@ -93,14 +91,12 @@ namespace DroneLibrary
 
         public float ReadFloat()
         {
-            stream.Read(helperBuffer, 0, sizeof(float));
-            return BitConverter.ToSingle(helperBuffer, 0);
+            return reader.ReadSingle();
         }
 
         public double ReadDouble()
         {
-            stream.Read(helperBuffer, 0, sizeof(double));
-            return BitConverter.ToDouble(helperBuffer, 0);
+            return reader.ReadDouble();
         }
 
         public string ReadString()
@@ -172,20 +168,31 @@ namespace DroneLibrary
 
         public void Write(float value)
         {
-            stream.Write(BitConverter.GetBytes(value), 0, sizeof(float));
+            writer.Write(value);
         }
 
         public void Write(double value)
         {
-            stream.Write(BitConverter.GetBytes(value), 0, sizeof(double));
+            writer.Write(value);
         }
 
         public void Write(string str)
         {
+            if (str.Length > ushort.MaxValue)
+                throw new ArgumentException("String can not be longer then ushort.MaxValue", nameof(str));
+
             Write((ushort)str.Length);
 
             for (int i = 0; i < str.Length; i++)
-                Write((byte)str[i]);
+            {
+                char c = str[i];
+                if (c == 0)
+                    throw new ArgumentException("String can not contain \\0", nameof(str));
+                if (c > byte.MaxValue)
+                    Write((byte)'?');
+                else
+                    Write((byte)c);
+            }
         }
 
         public void Write(byte[] buffer, int offset, int count)

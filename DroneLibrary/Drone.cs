@@ -282,6 +282,8 @@ namespace DroneLibrary
         {
             if (address == null)
                 throw new ArgumentNullException(nameof(address));
+            if (config == null)
+                throw new ArgumentNullException(nameof(config));
 
             this.Config = config;
             this.Address = address;
@@ -359,8 +361,13 @@ namespace DroneLibrary
 
         public void Disconnect()
         {
-            SendDisarm();
-            SendPacket(new PacketUnsubscribeDataFeed(), false);
+            Log.Info("Disconnecting drone {0}", Address);
+            // wenn wir schon disposed sind, können wir keine weiteren Pakete mehr versenden
+            if (!IsDisposed)
+            {
+                SendDisarm();
+                SendPacket(new PacketUnsubscribeDataFeed(), false);
+            }
 
             Ping = -1;
             Dispose();
@@ -414,11 +421,9 @@ namespace DroneLibrary
         /// </summary>
         public void SendPing()
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
+            // Stopwatch zum Messen der Zeit für die Pings starten
             if (!stopwatch.IsRunning)
-                stopwatch.Start();
+                stopwatch.Restart();
 
             CheckConnection();
 
@@ -430,9 +435,6 @@ namespace DroneLibrary
         /// </summary>
         public void SendReset()
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
             if (Data.State != DroneState.Reset && Data.State != DroneState.Stopped && Data.State != DroneState.Idle)
                 throw new InvalidOperationException("Drone in invalid state: " + Data.State);
 
@@ -444,9 +446,6 @@ namespace DroneLibrary
         /// </summary>
         public void SendGetInfo()
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
             SendPacket(new PacketInfo(), false);
         }
 
@@ -455,9 +454,6 @@ namespace DroneLibrary
         /// </summary>
         public void SendArm()
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
             SendPacket(new PacketArm(true), true);
         }
 
@@ -466,17 +462,11 @@ namespace DroneLibrary
         /// </summary>
         public void SendDisarm()
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
             SendPacket(new PacketArm(false), true);
         }
 
         public void SendMovementData(short roll, short pitch, short yaw, short thrust)
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
             SendPacket(new PacketSetMovement(roll, pitch, yaw, thrust), false);
         }
 
@@ -485,9 +475,6 @@ namespace DroneLibrary
         /// </summary>
         public void SendBlink()
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
             SendPacket(new PacketBlink(), true);
         }
 
@@ -496,9 +483,6 @@ namespace DroneLibrary
         /// </summary>
         public void SendConfig(DroneSettings config)
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
             SendPacket(new PacketSetConfig(config), true);
             Settings = config;
         }
@@ -508,9 +492,6 @@ namespace DroneLibrary
         /// </summary>
         public void SendStop()
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
             SendPacket(new PacketStop(), true);
         }
 
@@ -519,9 +500,6 @@ namespace DroneLibrary
         /// </summary>
         public void SendClearStatus()
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException(GetType().Name);
-
             SendPacket(new PacketClearStatus(), true);
         }
 

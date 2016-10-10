@@ -15,7 +15,7 @@ namespace DroneControl
     public partial class RecordForm : Form
     {
         private const char csvSeperator = ';';
-        private const bool useQuotes = false;
+        private bool useQuotes = false;
 
         private Drone drone;
         private InputManager inputManager;

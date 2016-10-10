@@ -211,7 +211,7 @@ namespace DroneControl
 
 
             drone.SendPacket(
-                new PacketSetRawValues(new QuadMotorValues(leftFront, rightFront, leftBack, rightBack)), true);
+                new PacketSetRawValues(leftFront, rightFront, leftBack, rightBack), true);
             return true;
         }
 
