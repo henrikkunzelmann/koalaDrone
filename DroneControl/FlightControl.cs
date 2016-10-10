@@ -78,18 +78,18 @@ namespace DroneControl
 
         private void searchTimer_Tick(object sender, EventArgs e)
         {
-			if (DesignMode)
-				return;
+            if (DesignMode)
+                return;
             SearchInputDevices();
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)
         {
-			if (DesignMode)
-				return;
-			
-			if (InputManager != null)
-				InputManager.Update();
+            if (DesignMode)
+                return;
+
+            if (InputManager != null)
+                InputManager.Update();
         }
 
         private void searchDeviceButton_Click(object sender, EventArgs e)
@@ -169,7 +169,7 @@ namespace DroneControl
                     deviceBatteryLabel.Visible = true;
                     deviceBatteryLabel.Text = string.Format("Battery: {0}", InputManager.CurrentDevice.Battery.Level);
 
-                    switch(InputManager.CurrentDevice.Battery.Level)
+                    switch (InputManager.CurrentDevice.Battery.Level)
                     {
                         case BatteryLevel.Empty:
                             deviceBatteryLabel.ForeColor = Color.DarkRed;
@@ -184,7 +184,7 @@ namespace DroneControl
                             deviceBatteryLabel.ForeColor = Color.Green;
                             break;
                     }
-                   
+
                 }
                 else
                     deviceBatteryLabel.Visible = false;
@@ -219,7 +219,7 @@ namespace DroneControl
                     Formatting.FormatDecimal(InputManager.TargetData.Pitch, 0, 4));
                 yawLabel.Text = string.Format("Yaw: {0}",
                     Formatting.FormatDecimal(InputManager.TargetData.Yaw, 0, 4));
-                thrustLabel.Text = string.Format("Thrust: {0}", 
+                thrustLabel.Text = string.Format("Thrust: {0}",
                     Formatting.FormatDecimal(InputManager.TargetData.Thrust, 0, 4));
 
                 HighlightInputGraph(InputManager.RawTargetData);

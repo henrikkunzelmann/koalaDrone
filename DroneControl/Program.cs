@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using DroneLibrary;
+﻿using DroneLibrary;
+using System;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace DroneControl
 {
