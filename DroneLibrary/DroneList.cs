@@ -17,6 +17,7 @@ namespace DroneLibrary
         private UdpClient client;
         private List<DroneEntry> foundDrones = new List<DroneEntry>();
 
+        public bool IsDisposed { get; private set; }
         public int TimeoutSeconds { get; set; } = 10;
 
         public event EventHandler<DroneListChangedEventArgs> OnListChanged;
@@ -33,10 +34,26 @@ namespace DroneLibrary
             client.BeginReceive(ReceivePacket, null);
         }
 
+        ~DroneList()
+        {
+            Dispose(false);
+        }
+
         public void Dispose()
         {
-            if (client != null)
-                client.Close();
+            Dispose(false);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (IsDisposed)
+                return;
+
+            if (disposing)
+                client?.Close();
+
+            IsDisposed = true;
         }
 
         public void SendHello()
@@ -50,8 +67,8 @@ namespace DroneLibrary
             RemoveTimeoutDrones();
 
             using (MemoryStream stream = new MemoryStream())
-            using (BinaryWriter writer = new BinaryWriter(stream))
             {
+                BinaryWriter writer = new BinaryWriter(stream);
                 writer.Write((byte)'F');
                 writer.Write((byte)'L');
                 writer.Write((byte)'Y');

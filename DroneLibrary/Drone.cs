@@ -163,7 +163,7 @@ namespace DroneLibrary
                 }
 
                 if (changed)
-                    OnInfoChange?.Invoke(this, new InfoChangedEventArgs(this));
+                    OnInfoChange?.Invoke(this, new InfoChangedEventArgs(value));
             }
         }
 

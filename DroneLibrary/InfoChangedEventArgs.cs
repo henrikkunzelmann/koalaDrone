@@ -6,9 +6,9 @@ namespace DroneLibrary
     {
         public DroneInfo Info { get; private set; }
 
-        public InfoChangedEventArgs(Drone drone)
+        public InfoChangedEventArgs(DroneInfo info)
         {
-            this.Info = drone.Info;
+            this.Info = info;
         }
     }
 }

@@ -47,6 +47,17 @@ namespace DroneLibrary
             return e;
         }
 
+        public static bool operator ==(DroneEntry a, DroneEntry b)
+        {
+            return a.Equals(b);
+        }
+
+
+        public static bool operator !=(DroneEntry a, DroneEntry b)
+        {
+            return !(a == b);
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null)

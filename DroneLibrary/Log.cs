@@ -69,7 +69,7 @@ namespace DroneLibrary
         /// </summary>
         public static LogLevel LevelMinimum { get; set; } = LogLevel.Verbose;
 
-        public static event Action<string> OnFlushBuffer;
+        public static event EventHandler<LogFlushEventArgs> OnFlushBuffer;
 
         /// <summary>
         /// Sorgt dafür das der Buffer in die Konsole oder Debug-Output geschrieben wird.
@@ -97,8 +97,7 @@ namespace DroneLibrary
                 if (WriteToDebug)
                     System.Diagnostics.Debug.Write(bufferString);
 
-                if (OnFlushBuffer != null)
-                    OnFlushBuffer(bufferString);
+                OnFlushBuffer?.Invoke(null, new LogFlushEventArgs(bufferString));
                 buffer.Clear();
             }
         }

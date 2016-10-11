@@ -4,11 +4,13 @@ using System.Net;
 
 namespace DroneLibrary
 {
-    public class PacketBuffer
+    public class PacketBuffer : IDisposable
     {
         private MemoryStream stream;
         private BinaryReader reader;
         private BinaryWriter writer;
+
+        public bool IsDisposed { get; private set; }
         
         public long Position
         {
@@ -28,6 +30,32 @@ namespace DroneLibrary
             this.stream = stream;
             this.reader = new BinaryReader(stream);
             this.writer = new BinaryWriter(stream);
+        }
+
+        ~PacketBuffer()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(false);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (IsDisposed)
+                return;
+
+            if (disposing)
+            {
+                stream.Close();
+                reader.Dispose();
+                writer.Dispose();
+            }
+
+            IsDisposed = true;
         }
 
         public void ResetPosition()
