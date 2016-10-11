@@ -87,7 +87,7 @@ namespace DroneControl
             else
             {
                 if (e.Entries.Length == 0)
-                    searchStatus.Text = "Search drones...";
+                    searchStatus.Text = "Searching drones...";
                 else if (e.Entries.Length == 1)
                     searchStatus.Text = string.Format("Found {0} drone...", e.Entries.Length);
                 else

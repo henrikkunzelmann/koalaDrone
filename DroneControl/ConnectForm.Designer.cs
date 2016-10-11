@@ -124,15 +124,15 @@
             this.searchStatus.AutoSize = true;
             this.searchStatus.Location = new System.Drawing.Point(12, 13);
             this.searchStatus.Name = "searchStatus";
-            this.searchStatus.Size = new System.Drawing.Size(90, 13);
+            this.searchStatus.Size = new System.Drawing.Size(99, 13);
             this.searchStatus.TabIndex = 5;
-            this.searchStatus.Text = "Searching drones";
+            this.searchStatus.Text = "Searching drones...";
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(108, 7);
+            this.progressBar1.Location = new System.Drawing.Point(127, 7);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(157, 23);
+            this.progressBar1.Size = new System.Drawing.Size(138, 23);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 6;
             // 
