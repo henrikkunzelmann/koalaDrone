@@ -118,7 +118,23 @@ void Gyro::filterData() {
 
 	values.Temperature = FILTER(last.Temperature, values.Temperature, 0.025f);
 
+	const float gyroRange = 200.0f;
+	const float accRange = 3.0f;
+
 	validGyroData = true;
+	if (values.GyroX < -gyroRange || values.GyroX > gyroRange ||
+		values.GyroY < -gyroRange || values.GyroY > gyroRange ||
+		values.GyroZ < -gyroRange || values.GyroZ > gyroRange) {
+		FaultManager::fault(FaultInvalidSensorData, "Gyro", "filterData()");
+		validGyroData = false;
+	}
+	if (values.AccX < -accRange || values.AccX > accRange ||
+		values.AccY < -accRange || values.AccY > accRange ||
+		values.AccZ < -accRange || values.AccZ > accRange) {
+		FaultManager::fault(FaultInvalidSensorData, "Acc", "filterData()");
+		validGyroData = false;
+	}
+	
 	validMagData = canUseMagneticData();
 }
 
