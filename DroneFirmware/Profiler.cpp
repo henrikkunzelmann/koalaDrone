@@ -84,8 +84,13 @@ void Profiler::stop(const char* name) {
 
 void Profiler::begin(const char* name) {
 	uint32_t func = start(name);
-	if (func != UINT32_MAX)
+	if (func != UINT32_MAX) {
+		if (stackCurrent >= PROFILE_SIZE) {
+			Log::error("Profiler", "Stack overflow");
+			return;
+		}
 		stack[stackCurrent++] = func;
+	}
 }
 
 void Profiler::end() {
