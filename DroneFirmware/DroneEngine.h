@@ -65,7 +65,7 @@ class DroneEngine
 	 PID* angleRollPID;
 
 	 void createPID();
-	 PID* createPID(PIDSettings settings, double* output);
+	 PID* createPID(PIDSettings settings, double limit, double* output);
 
 	 void calculatePID(PID* pid, float input, float setpoint);
 

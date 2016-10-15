@@ -34,19 +34,19 @@ void DroneEngine::createPID() {
 	if (angleRollPID)
 		delete angleRollPID;
 
-	pitchPID = createPID(config->PitchPid, &pitchOutput);
-	rollPID = createPID(config->RollPid, &rollOutput);
-	yawPID = createPID(config->YawPid, &yawOutput);
+	pitchPID = createPID(config->PitchPid, 35, &pitchOutput);
+	rollPID = createPID(config->RollPid, 35, &rollOutput);
+	yawPID = createPID(config->YawPid, 35, &yawOutput);
 
-	anglePitchPID = createPID(config->AngleStabilization, &anglePitchOutput);
-	angleRollPID = createPID(config->AngleStabilization, &angleRollOutput);
+	anglePitchPID = createPID(config->AngleStabilization, 200, &anglePitchOutput);
+	angleRollPID = createPID(config->AngleStabilization, 200, &angleRollOutput);
 }
 
-PID* DroneEngine::createPID(PIDSettings settings, double* output) {
+PID* DroneEngine::createPID(PIDSettings settings, double limit, double* output) {
 	PID* pid = new PID(&pidInput, output, &pidSetpoint, settings.Kp, settings.Ki, settings.Kd, DIRECT);
 	pid->SetMode(AUTOMATIC);
 	pid->SetSampleTime(CYCLE_PID);
-	pid->SetOutputLimits(-300, 300);
+	pid->SetOutputLimits(-limit, limit);
 	return pid;
 }
 
