@@ -23,7 +23,7 @@ protected:
 
 	bool getValues(GyroValues* values);
 public:
-	explicit Gyro9250(SensorCalibration* calibration);
+	explicit Gyro9250(Config* config);
 
 	const char* name();
 	const char* magnetometerName();

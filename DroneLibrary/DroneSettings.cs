@@ -134,6 +134,24 @@ namespace DroneLibrary
         public PidSettings AngleStabilization;
 
         [MarshalAs(UnmanagedType.U1)]
+        [Category("Debug")]
+        public bool EnableImuAcc;
+
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Debug")]
+        public bool EnableImuMag;
+
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Debug")]
+        public bool UseFilteredGyroEngine;
+
+        [Category("Debug")]
+        public float GyroFilter;
+
+        [Category("Debug")]
+        public float AccFilter;
+
+        [MarshalAs(UnmanagedType.U1)]
         [Category("Motors")]
         public bool CalibrateServos;
 

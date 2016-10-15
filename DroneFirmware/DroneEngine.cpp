@@ -211,9 +211,17 @@ void DroneEngine::handleInternal() {
 	}
 
 	if (sensor->getGyro()->hasValidGyroData()) {
-		calculatePID(rollPID, gyroValues.RawGyroX, rollCmd);
-		calculatePID(pitchPID, gyroValues.RawGyroY, pitchCmd);
-		calculatePID(yawPID, gyroValues.RawGyroZ, targetYaw << 1);
+		if (config->UseFilteredGyroEngine) {
+			float res = 8196.0f / 2000.0f;
+			calculatePID(rollPID, gyroValues.GyroX * res, rollCmd);
+			calculatePID(pitchPID, gyroValues.GyroY* res, pitchCmd);
+			calculatePID(yawPID, gyroValues.GyroZ * res, targetYaw << 1);
+		}
+		else {
+			calculatePID(rollPID, gyroValues.RawGyroX, rollCmd);
+			calculatePID(pitchPID, gyroValues.RawGyroY, pitchCmd);
+			calculatePID(yawPID, gyroValues.RawGyroZ, targetYaw << 1);
+		}
 	}
 	else {
 		FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidGyroData()");

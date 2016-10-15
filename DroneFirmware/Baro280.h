@@ -18,7 +18,7 @@ protected:
 
 	bool getValues(BaroValues* values);
 public:
-	explicit Baro280(SensorCalibration* calibration);
+	explicit Baro280(Config* config);
 
 	const char* name();
 

@@ -1,6 +1,6 @@
 #include "Gyro9250.h"
 
-Gyro9250::Gyro9250(SensorCalibration* calibration) : Gyro(calibration) {
+Gyro9250::Gyro9250(Config* config) : Gyro(config) {
 }
 
 const char* Gyro9250::name() {

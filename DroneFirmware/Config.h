@@ -71,7 +71,6 @@ struct Config {
 	int SafeServoValue;
 
 	boolean EnableStabilization;
-	boolean EnableAngleStabilization;
 	boolean NegativeMixing;
 	boolean KeepMotorsOn;
 
@@ -79,6 +78,13 @@ struct Config {
 	boolean OnlyArmWhenStill;
 
 	PIDSettings AngleStabilization;
+
+	// Debug Settings
+	boolean EnableImuAcc;
+	boolean EnableImuMag;
+	boolean UseFilteredGyroEngine;
+	float GyroFilter;
+	float AccFilter;
 
 	boolean CalibrateServos;
 	SensorCalibration SensorCalibrationData;

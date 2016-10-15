@@ -11,11 +11,11 @@ SensorHAL::SensorHAL(Config* config) {
 void SensorHAL::initSensors() {
 	boolean gyroInit;
 	
-	gyroInit = initGyro(new Gyro9250(getCalibrationData()));
+	gyroInit = initGyro(new Gyro9250(config));
 	if (!gyroInit)
-		gyroInit = initGyro(new Gyro6050(getCalibrationData()));
+		gyroInit = initGyro(new Gyro6050(config));
 
-	initBaro(new Baro280(getCalibrationData()));
+	initBaro(new Baro280(config));
 	
 	Log::info("Boot", "Gyro sensor: \"%s\"", getGyroName());
 	Log::info("Boot", "Magnetometer: \"%s\"", getMagnetometerName());

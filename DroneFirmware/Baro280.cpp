@@ -1,6 +1,6 @@
 #include "Baro280.h"
 
-Baro280::Baro280(SensorCalibration* calibration) : Baro(calibration) {
+Baro280::Baro280(Config* config) : Baro(config) {
 }
 
 const char* Baro280::name() {

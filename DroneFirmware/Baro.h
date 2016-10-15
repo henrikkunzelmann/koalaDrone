@@ -26,12 +26,13 @@ private:
 	float altitude;
 
 protected:
+	Config* config;
 	SensorCalibration* calibration;
 
 	virtual bool getValues(BaroValues* values) = 0;
 
 public:
-	explicit Baro(SensorCalibration* calibration);
+	explicit Baro(Config* config);
 	virtual ~Baro();
 
 	virtual const char* name() = 0;

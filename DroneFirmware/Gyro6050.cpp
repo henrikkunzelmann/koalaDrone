@@ -1,6 +1,6 @@
 #include "Gyro6050.h"
 
-Gyro6050::Gyro6050(SensorCalibration* calibration) : Gyro(calibration) {
+Gyro6050::Gyro6050(Config* config) : Gyro(config) {
 }
 
 const char* Gyro6050::name() {

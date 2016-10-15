@@ -1,7 +1,8 @@
 #include "Gyro.h"
 
-Gyro::Gyro(SensorCalibration* calibration) {
-	this->calibration = calibration;
+Gyro::Gyro(Config* config) {
+	this->config = config;
+	this->calibration = &config->SensorCalibrationData;
 
 	memset(&last, 0, sizeof(GyroValues));
 	memset(&rawValues, 0, sizeof(GyroValues));
@@ -103,13 +104,13 @@ void Gyro::filterData() {
 	}
 
 	float gyroRes = 2000.0f / 8196.0f;
-	values.GyroX = FILTER(last.RawGyroX, values.RawGyroX, 0.025f) * gyroRes;
-	values.GyroY = FILTER(last.RawGyroY, values.RawGyroY, 0.025f) * gyroRes;
-	values.GyroZ = FILTER(last.RawGyroZ, values.RawGyroZ, 0.025f) * gyroRes;
+	values.GyroX = FILTER(last.GyroX, values.RawGyroX * gyroRes, config->GyroFilter);
+	values.GyroY = FILTER(last.GyroY, values.RawGyroY * gyroRes, config->GyroFilter);
+	values.GyroZ = FILTER(last.GyroZ, values.RawGyroZ * gyroRes, config->GyroFilter);
 
-	values.AccX = FILTER(last.AccX, values.AccX, 0.025f);
-	values.AccY = FILTER(last.AccY, values.AccY, 0.025f);
-	values.AccZ = FILTER(last.AccZ, values.AccZ, 0.025f);
+	values.AccX = FILTER(last.AccX, values.AccX, config->AccFilter);
+	values.AccY = FILTER(last.AccY, values.AccY, config->AccFilter);
+	values.AccZ = FILTER(last.AccZ, values.AccZ, config->AccFilter);
 
 	values.MagnetX = FILTER(last.MagnetX, values.MagnetX, 0.005f);
 	values.MagnetY = FILTER(last.MagnetY, values.MagnetY, 0.005f);
@@ -196,14 +197,14 @@ void Gyro::calculateIMU() {
 			yaw += values.GyroZ * dt;
 	}
 
-	if (!isAccMoving()) {
+	if (config->EnableImuAcc && !isAccMoving()) {
 		float accRoll = -MathHelper::toDegress(atan(values.AccY / sqrt(values.AccX*values.AccX + values.AccZ*values.AccZ)));
 		float accPitch = MathHelper::toDegress(atan(values.AccX / sqrt(values.AccY*values.AccY + values.AccZ*values.AccZ)));
 
 		roll = FILTER(roll, accRoll, 0.05f);
 		pitch = FILTER(pitch, accPitch, 0.05f);
 	}
-	if (canUseMagneticData()) {
+	if (config->EnableImuMag && canUseMagneticData()) {
 		float magRoll = MathHelper::toDegress(atan(values.MagnetY / sqrt(values.MagnetX*values.MagnetX + values.MagnetZ*values.MagnetZ)));
 		float magPitch = -MathHelper::toDegress(atan(values.MagnetX / sqrt(values.MagnetY*values.MagnetY + values.MagnetZ*values.MagnetZ)));
 

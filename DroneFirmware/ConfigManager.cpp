@@ -88,7 +88,7 @@ Config ConfigManager::getDefault() {
 	config.NetworkHelloPort = 4710;
 	config.NetworkControlPort = 4711;
 	config.NetworkDataPort = 4712;
-	config.NetworkPacketBufferSize = 512;
+	config.NetworkPacketBufferSize = 1024;
 	config.MaximumNetworkTimeout = 1500;
 
 	config.VerboseSerialLog = true;
@@ -130,6 +130,12 @@ Config ConfigManager::getDefault() {
 	config.AngleStabilization.Kp = 5.0f;
 	config.AngleStabilization.Ki = 0;
 	config.AngleStabilization.Kd = 0;
+
+	config.EnableImuAcc = true;
+	config.EnableImuMag = false;
+	config.UseFilteredGyroEngine = false;
+	config.GyroFilter = 0.025f;
+	config.AccFilter = 0.025f;
 	
 	config.CalibrateServos = false;
 	memset(&config.SensorCalibrationData, 0, sizeof(SensorCalibration));

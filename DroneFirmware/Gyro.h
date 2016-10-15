@@ -66,11 +66,12 @@ private:
 	void filterData();
 
 protected:
+	Config* config;
 	SensorCalibration* calibration;
 	virtual bool getValues(GyroValues* values) = 0;
 
 public:
-	explicit Gyro(SensorCalibration* calibration);
+	explicit Gyro(Config* config);
 	virtual ~Gyro();
 
 	virtual const char* name() = 0;

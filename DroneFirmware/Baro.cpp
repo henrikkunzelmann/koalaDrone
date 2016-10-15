@@ -1,7 +1,8 @@
 #include "Baro.h"
 
-Baro::Baro(SensorCalibration* calibration) {
-	this->calibration = calibration;
+Baro::Baro(Config* config) {
+	this->config = config;
+	this->calibration = &config->SensorCalibrationData;
 
 	memset(&last, 0, sizeof(BaroValues));
 	memset(&values, 0, sizeof(BaroValues));
