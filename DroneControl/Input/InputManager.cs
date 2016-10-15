@@ -128,8 +128,8 @@ namespace DroneControl.Input
 
             data.Roll *= 500;
             data.Pitch *= 500;
-            data.Yaw *= 500;
-            data.Thrust *= 1000;
+            data.Yaw *= 200;
+            data.Thrust *= 400;
 
             // Daten setzen und senden
             TargetData = data;
