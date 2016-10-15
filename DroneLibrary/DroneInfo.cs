@@ -55,6 +55,21 @@ namespace DroneLibrary
         [Category("Debug")]
         public ResetException ResetException { get; private set; }
 
+        [Category("Debug")]
+        public uint ResetEpc1 { get; private set; }
+
+        [Category("Debug")]
+        public uint ResetEpc2 { get; private set; }
+
+        [Category("Debug")]
+        public uint ResetEpc3 { get; private set; }
+
+        [Category("Debug")]
+        public uint ResetExcvaddr { get; private set; }
+
+        [Category("Debug")]
+        public uint ResetDepc { get; private set; }
+
         /// <summary>
         /// Gibt den letzten Stop Grund der Drohne zurück.
         /// </summary>
@@ -89,8 +104,14 @@ namespace DroneLibrary
             BuildVersion = buffer.ReadByte();
 
             HighestRevision = buffer.ReadInt();
+
             ResetReason = (ResetReason)buffer.ReadByte();
             ResetException = (ResetException)buffer.ReadByte();
+            ResetEpc1 = buffer.ReadUInt();
+            ResetEpc2 = buffer.ReadUInt();
+            ResetEpc3 = buffer.ReadUInt();
+            ResetExcvaddr = buffer.ReadUInt();
+            ResetDepc = buffer.ReadUInt();
 
             if (ResetReason != ResetReason.Exception)
                 ResetException = ResetException.None;

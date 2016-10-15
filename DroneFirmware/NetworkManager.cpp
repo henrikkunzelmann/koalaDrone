@@ -304,6 +304,11 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 
 		writeBuffer->write(uint8_t(resetInfo->reason));
 		writeBuffer->write(uint8_t(resetInfo->exccause));
+		writeBuffer->write(resetInfo->epc1);
+		writeBuffer->write(resetInfo->epc2);
+		writeBuffer->write(resetInfo->epc3);
+		writeBuffer->write(resetInfo->excvaddr);
+		writeBuffer->write(resetInfo->depc);
 
 		writeBuffer->write(uint8_t(engine->getStopReason()));
 

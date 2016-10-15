@@ -59,6 +59,11 @@ void setup() {
 
 	Log::info("Memory", "Free heap (before boot): %d", heapBefore);
 
+	rst_info* resetInfo = ESP.getResetInfoPtr();
+	Log::debug("Boot", "Reset info: r: %d, ex: %d   0x%x, 0x%x, 0x%x, 0x%x", 
+		resetInfo->reason, resetInfo->exccause,
+		resetInfo->epc1, resetInfo->epc2, resetInfo->epc3, resetInfo->excvaddr, resetInfo->depc);
+
 	ESP.eraseConfig();
 
 	// Serialnummer schreiben
@@ -81,7 +86,6 @@ void setup() {
 	if (config.CalibrateServos) {
 		Log::info("Boot", "Calibration of servos...");
 
-		rst_info* resetInfo = ESP.getResetInfoPtr();
 		if (resetInfo->reason == REASON_DEFAULT_RST || resetInfo->reason == REASON_EXT_SYS_RST) {
 			turnLedOn();
 			servos->calibrate();
