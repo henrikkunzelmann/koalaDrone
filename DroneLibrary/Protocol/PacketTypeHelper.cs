@@ -18,5 +18,19 @@
                     return false;
             }
         }
+
+        public static bool IsNosiy(this PacketType type)
+        {
+            switch(type)
+            {
+                case PacketType.Ping:
+                case PacketType.SetRawValues:
+                case PacketType.Movement:
+                case PacketType.Info:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }

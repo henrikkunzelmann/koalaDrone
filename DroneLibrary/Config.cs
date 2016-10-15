@@ -24,6 +24,10 @@ namespace DroneLibrary
         [Description("Wenn true, dann werden Ping-Pakete in die Konsole geschrieben")]
         public bool LogPingPacket { get; set; }
 
+        [Category("Network Log")]
+        [Description("Wenn true, dann werden noisy Pakete in die Konsole geschrieben")]
+        public bool LogNoisyPackets { get; set; }
+
         [Category("Network")]
         [Description("Hello-Port der UDP-Verbindung zu der Drohne")]
         [Range(0, 65535)]
@@ -57,6 +61,8 @@ namespace DroneLibrary
             ProtocolHelloPort = 4710;
             ProtocolControlPort = 4711;
             ProtocolDataPort = 4712;
+            LogPingPacket = false;
+            LogNoisyPackets = false;
             VerbosePacketSending = true;
             VerbosePacketReceive = true;
             AcknowlegdeTime = 20;
