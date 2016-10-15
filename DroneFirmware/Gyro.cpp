@@ -35,32 +35,36 @@ void Gyro::resetCalibration(CalibrationData* data) {
 }
 
 void Gyro::calibrateGyro() {
-	updateCalibrationData(&gyroCalibration, rawValues.RawGyroX, rawValues.RawGyroY, rawValues.RawGyroZ, false);
+	if (validGyroData) {
+		updateCalibrationData(&gyroCalibration, rawValues.RawGyroX, rawValues.RawGyroY, rawValues.RawGyroZ, false);
 
-	if (++calibrationCount > 5000 / CYCLE_GYRO) {
-		for (int i = 0; i < 3; i++) {
-			gyroCalibration.Min[i] *= 1.25f;
-			gyroCalibration.Max[i] *= 1.25f;
+		if (++calibrationCount > 5000 / CYCLE_GYRO) {
+			for (int i = 0; i < 3; i++) {
+				gyroCalibration.Min[i] *= 1.25f;
+				gyroCalibration.Max[i] *= 1.25f;
+			}
+
+			Log::info("Gyro", "Done with calibration. Starting orientation calibration...");
+			calibrationRunning = false;
+
+			resetCalibration(&orientationCalibration);
+			calibrationOrientation = true;
+			firstSample = true;
 		}
-
-		Log::info("Gyro", "Done with calibration. Starting orientation calibration...");
-		calibrationRunning = false;
-
-		resetCalibration(&orientationCalibration);
-		calibrationOrientation = true;
-		firstSample = true;
 	}
 }
 
 void Gyro::calibrateMagnet() {
-	updateCalibrationData(&calibration->MagnetData, rawValues.MagnetX, rawValues.MagnetY, rawValues.MagnetZ, true);
+	if (canUseMagneticData()) {
+		updateCalibrationData(&calibration->MagnetData, rawValues.MagnetX, rawValues.MagnetY, rawValues.MagnetZ, true);
 
-	if (++calibrationCount > 20000 / CYCLE_GYRO) {
-		Log::info("Gyro", "Done with magnetic calibration");
-		calibration->MagneticFieldStrength = getMagnetStrength();
+		if (++calibrationCount > 20000 / CYCLE_GYRO) {
+			Log::info("Gyro", "Done with magnetic calibration");
+			calibration->MagneticFieldStrength = getMagnetStrength();
 
-		calibrationMagnet = false;
-		firstSample = true;
+			calibrationMagnet = false;
+			firstSample = true;
+		}
 	}
 }
 

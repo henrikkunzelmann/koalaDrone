@@ -72,6 +72,8 @@ bool Gyro9250::getValues(GyroValues* values) {
 		return false;
 	}
 
+	yield();
+
 	values->AccX = ax * accRes;
 	values->AccY = ay * accRes;
 	values->AccZ = az * accRes;
@@ -90,6 +92,8 @@ bool Gyro9250::getValues(GyroValues* values) {
 		Profiler::end();
 		return false;
 	}
+
+	yield();
 
 	values->Temperature = temp / 333.87 + 21;
 	Profiler::end();

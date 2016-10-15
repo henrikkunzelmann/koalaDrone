@@ -187,11 +187,15 @@ void loop() {
 		engine->stop(WifiDisconnect);
 
 	network->handlePackets();
+	yield();
 
 	if (engine->state() != StateOTA)
 	{
 		sensor->update();
+		yield();
+
 		engine->handle();
+		yield();
 	}
 	handleBlink();
 

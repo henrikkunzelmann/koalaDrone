@@ -79,6 +79,8 @@ void SensorHAL::update() {
 	if (gyro != NULL)
 		gyro->update();
 
+	yield();
+
 	if (baro != NULL)
 		baro->update();
 }

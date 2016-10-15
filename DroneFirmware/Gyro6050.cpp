@@ -54,6 +54,7 @@ bool Gyro6050::getValues(GyroValues* values) {
 	int16_t ax, ay, az;
 	int16_t gx, gy, gz;
 	mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+	yield();
 
 	values->AccX = -ax * accRes;
 	values->AccY = -ay * accRes;
@@ -68,6 +69,7 @@ bool Gyro6050::getValues(GyroValues* values) {
 	values->MagnetZ = 0;
 
 	values->Temperature = mpu.getTemperature() / 340.00 + 36.53;
+	yield();
 
 	Profiler::end();
 	return true;

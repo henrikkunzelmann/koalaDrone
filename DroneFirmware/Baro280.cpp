@@ -45,6 +45,7 @@ bool Baro280::getValues(BaroValues* values) {
 	Profiler::begin("Baro280::getValues()");
 
 	bool success = bme.getValues(&values->Temperature, &values->Pressure, &values->Humidity);
+	yield();
 
 	Profiler::end();
 	return success;

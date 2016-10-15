@@ -102,6 +102,8 @@ bool NetworkManager::beginParse(WiFiUDP udp) {
 	readBuffer->setSize(size);
 	udp.readBytes(readBuffer->getBuffer(), size);
 
+	yield();
+
 	// Pakete ohne richtige Magic Value am Anfang werden ignoriert
 	if (size < 3)
 		return false;
@@ -117,6 +119,8 @@ void NetworkManager::sendPacket(WiFiUDP udp) {
 		udp.beginPacket(udp.remoteIP(), udp.remotePort());
 		udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
 		udp.endPacket();
+
+		yield();
 	}
 
 	writeBuffer->resetPosition();
