@@ -220,9 +220,9 @@ void DroneEngine::handleInternal() {
 	else {
 		FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidGyroData()");
 
-		rollPID = 0;
-		pitchPID = 0;
-		yawPID = 0;
+		pitchOutput = 0;
+		rollOutput = 0;
+		yawOutput = 0;
 	}
 
 	for (int i = 0; i < 4; i++) {
