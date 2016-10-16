@@ -59,6 +59,7 @@ private:
 
 	void resetCalibration(CalibrationData* data);
 	void updateCalibrationData(CalibrationData* data, float x, float y, float z, boolean averageByBounds);
+	void logCalibration(CalibrationData* data);
 
 	void runCalibration();
 

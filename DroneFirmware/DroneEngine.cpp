@@ -71,10 +71,21 @@ void DroneEngine::arm() {
 			Log::info("Engine", "Can not arm motors, gyro is not safe");
 			return;
 		}
-		if (config->OnlyArmWhenStill && (sensor->getGyro()->isMoving() || !sensor->getGyro()->isFlat())) {
-			blinkLED(5, 300);
-			Log::info("Engine", "Can not arm motors, not still");
-			return;
+		if (config->OnlyArmWhenStill) {
+			boolean still = true;
+			if (sensor->getGyro()->isMoving()) {
+				Log::info("Engine", "Can not arm motors, not still (moving)");
+				still = false;
+			}
+			if (!sensor->getGyro()->isFlat()) {
+				Log::info("Engine", "Can not arm motors, not still (not flat)");
+				still = false;
+			}
+
+			if (!still) {
+				blinkLED(5, 300);
+				return;
+			}
 		}
 
 		servos->setAllServos(config->ServoMin);

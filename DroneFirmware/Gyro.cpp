@@ -64,6 +64,13 @@ void Gyro::updateCalibrationData(CalibrationData* data, float x, float y, float 
 	yield();
 }
 
+void Gyro::logCalibration(CalibrationData* data) {
+	Log::debug("Gyro", "min: %f, %f, %f", data->Min[0], data->Min[1], data->Min[2]);
+	Log::debug("Gyro", "max: %f, %f, %f", data->Max[0], data->Max[1], data->Max[2]);
+	Log::debug("Gyro", "average: %f, %f, %f", data->Average[0], data->Average[1], data->Average[2]);
+	Log::debug("Gyro", "length: %f", data->Length);
+}
+
 void Gyro::beginCalibration(CalibrationState state) {
 	if (state == CalibrationMagnet && !hasMagnetometer()) {
 		Log::info("Gyro", "Magnetic calibration started but no magnetometer found");
@@ -143,11 +150,23 @@ void Gyro::runCalibration() {
 		
 		switch (calibrationState) {
 		case CalibrationGyro:
+			Log::debug("Gyro", "Calibration data for gyro:");
+			logCalibration(&gyroCalibration);
+
 			beginCalibration(CalibrationAcc);
 			break;
 		case CalibrationAcc:
+			Log::debug("Gyro", "Calibration data for acc:");
+			logCalibration(&accCalibration);
+
 			beginCalibration(CalibrationOrientation);
 			break;
+		case CalibrationOrientation:
+			Log::debug("Gyro", "Calibration data for orientation:");
+			logCalibration(&orientationCalibration);
+			beginCalibration(CalibrationNone);
+			break;
+
 		default:
 			beginCalibration(CalibrationNone);
 			break;
@@ -364,25 +383,25 @@ boolean Gyro::isAccMoving() const {
 	float y = values.AccY;
 	float z = values.AccZ;
 
-	float len2 = x*x + y*y + z*z;
-	float calibrationlen2 = accCalibration.Length * accCalibration.Length;
-	return len2 < calibrationlen2 * 0.98 || len2 > calibrationlen2 * 1.02;
+	float len2 = sqrtf(x*x + y*y + z*z);
+	return len2 < accCalibration.Length * 0.98 || len2 > accCalibration.Length * 1.02;
 }
 
 boolean Gyro::canUseMagneticData() const {
 	return hasMagnetometer() && calibration->MagnetCalibration.Length > 0 && !isMagnetInterferenced();
 }
 
+#define GYRO_ROTATING_FACTOR 5.0f
 boolean Gyro::isGyroXRotating() const {
-	return values.GyroX < gyroCalibration.Min[0] * 1.25f || values.GyroX > gyroCalibration.Max[0] * 1.25f;
+	return values.GyroX < gyroCalibration.Min[0] * GYRO_ROTATING_FACTOR || values.GyroX > gyroCalibration.Max[0] * GYRO_ROTATING_FACTOR;
 }
 
 boolean Gyro::isGyroYRotating() const {
-	return values.GyroY < gyroCalibration.Min[1] * 1.25f || values.GyroY > gyroCalibration.Max[1] * 1.25f;
+	return values.GyroY < gyroCalibration.Min[1] * GYRO_ROTATING_FACTOR || values.GyroY > gyroCalibration.Max[1] * GYRO_ROTATING_FACTOR;
 }
 
 boolean Gyro::isGyroZRotating() const {
-	return values.GyroZ < gyroCalibration.Min[2] * 1.25f || values.GyroZ > gyroCalibration.Max[2] * 1.25f;
+	return values.GyroZ < gyroCalibration.Min[2] * GYRO_ROTATING_FACTOR || values.GyroZ > gyroCalibration.Max[2] * GYRO_ROTATING_FACTOR;
 }
 
 boolean Gyro::isGyroRotating() const {
