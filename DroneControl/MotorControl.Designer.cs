@@ -180,7 +180,7 @@
             this.servoValueNumericUpDown.Name = "servoValueNumericUpDown";
             this.servoValueNumericUpDown.Size = new System.Drawing.Size(52, 20);
             this.servoValueNumericUpDown.TabIndex = 8;
-            this.servoValueNumericUpDown.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnAllEnter);
+            this.servoValueNumericUpDown.ValueChanged += new System.EventHandler(this.servoValueNumericUpDown_ValueChanged);
             // 
             // rightBackTextBox
             // 
@@ -193,7 +193,7 @@
             this.rightBackTextBox.Name = "rightBackTextBox";
             this.rightBackTextBox.Size = new System.Drawing.Size(61, 20);
             this.rightBackTextBox.TabIndex = 7;
-            this.rightBackTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
+            this.rightBackTextBox.ValueChanged += new System.EventHandler(this.NumericTextBoxValueChanged);
             // 
             // rightFrontTextBox
             // 
@@ -206,7 +206,7 @@
             this.rightFrontTextBox.Name = "rightFrontTextBox";
             this.rightFrontTextBox.Size = new System.Drawing.Size(61, 20);
             this.rightFrontTextBox.TabIndex = 5;
-            this.rightFrontTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
+            this.rightFrontTextBox.ValueChanged += new System.EventHandler(this.NumericTextBoxValueChanged);
             // 
             // leftBackTextBox
             // 
@@ -219,7 +219,7 @@
             this.leftBackTextBox.Name = "leftBackTextBox";
             this.leftBackTextBox.Size = new System.Drawing.Size(61, 20);
             this.leftBackTextBox.TabIndex = 3;
-            this.leftBackTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
+            this.leftBackTextBox.ValueChanged += new System.EventHandler(this.NumericTextBoxValueChanged);
             // 
             // leftFrontTextBox
             // 
@@ -232,7 +232,7 @@
             this.leftFrontTextBox.Name = "leftFrontTextBox";
             this.leftFrontTextBox.Size = new System.Drawing.Size(61, 20);
             this.leftFrontTextBox.TabIndex = 1;
-            this.leftFrontTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnEnter);
+            this.leftFrontTextBox.ValueChanged += new System.EventHandler(this.NumericTextBoxValueChanged);
             // 
             // MotorControl
             // 

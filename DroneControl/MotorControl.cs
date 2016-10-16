@@ -85,7 +85,7 @@ namespace DroneControl
         private void UpdateServoValue(int leftFront, int rightFront, int leftBack, int rightBack)
         {
             int[] values = new int[] { leftFront, rightFront, leftBack, rightBack };
-            var filteredValues = values.Where(v => v != 1);
+            var filteredValues = values.Select(v => v == 1 ? 1000 : v);
 
             int average = drone.Settings.ServoMin;
             if (filteredValues.Count() > 0)
@@ -110,26 +110,6 @@ namespace DroneControl
                 valueTrackBar.Value = average;
 
             changingValues = false;
-        }
-
-        private void OnEnter(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter && !changingValues)
-            {
-                CheckNumericUpDown((NumericUpDown)sender);
-                UpdateServoValue();
-                SendValues();
-            }
-        }
-
-        private void OnAllEnter(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter && !changingValues)
-            {
-                CheckNumericUpDown((NumericUpDown)sender);
-                SetServoValueToAll();
-                SendValues();
-            }
         }
 
         private void valueTrackBar_ValueChanged(object sender, EventArgs e)
@@ -256,6 +236,28 @@ namespace DroneControl
             int max = Math.Min(drone.Settings.ServoMax, drone.Settings.SafeServoValue);
             if (box.Value < drone.Settings.ServoMin || box.Value > max)
                 box.Value = drone.Settings.ServoMin;
+        }
+
+        private void NumericTextBoxValueChanged(object sender, EventArgs e)
+        {
+            NumericUpDown box = (NumericUpDown)sender;
+            if (!changingValues)
+            {
+                CheckNumericUpDown(box);
+                UpdateServoValue();
+                SendValues();
+            }
+        }
+
+        private void servoValueNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            NumericUpDown box = (NumericUpDown)sender;
+            if (!changingValues)
+            {
+                CheckNumericUpDown(box);
+                SetServoValueToAll();
+                SendValues();
+            }
         }
     }
 }
