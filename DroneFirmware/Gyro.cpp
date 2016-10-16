@@ -60,7 +60,7 @@ void Gyro::updateCalibrationData(CalibrationData* data, float x, float y, float 
 	float ax = data->Average[0];
 	float ay = data->Average[1];
 	float az = data->Average[2];
-	data->Length = sqrt(ax*ax + ay*ay + az*az);
+	data->Length = sqrtf(ax*ax + ay*ay + az*az);
 	yield();
 }
 
@@ -280,15 +280,15 @@ void Gyro::calculateIMU() {
 	}
 
 	if (config->EnableImuAcc && !isAccMoving()) {
-		float accRoll = -MathHelper::toDegress(atan(values.AccY / sqrt(values.AccX*values.AccX + values.AccZ*values.AccZ)));
-		float accPitch = MathHelper::toDegress(atan(values.AccX / sqrt(values.AccY*values.AccY + values.AccZ*values.AccZ)));
+		float accRoll = -MathHelper::toDegress(atan(values.AccY / sqrtf(values.AccX*values.AccX + values.AccZ*values.AccZ)));
+		float accPitch = MathHelper::toDegress(atan(values.AccX / sqrtf(values.AccY*values.AccY + values.AccZ*values.AccZ)));
 
 		roll = FILTER(roll, accRoll, 0.05f);
 		pitch = FILTER(pitch, accPitch, 0.05f);
 	}
 	if (config->EnableImuMag && canUseMagneticData()) {
-		float magRoll = MathHelper::toDegress(atan(values.MagnetY / sqrt(values.MagnetX*values.MagnetX + values.MagnetZ*values.MagnetZ)));
-		float magPitch = -MathHelper::toDegress(atan(values.MagnetX / sqrt(values.MagnetY*values.MagnetY + values.MagnetZ*values.MagnetZ)));
+		float magRoll = MathHelper::toDegress(atan(values.MagnetY / sqrtf(values.MagnetX*values.MagnetX + values.MagnetZ*values.MagnetZ)));
+		float magPitch = -MathHelper::toDegress(atan(values.MagnetX / sqrtf(values.MagnetY*values.MagnetY + values.MagnetZ*values.MagnetZ)));
 
 		float r = MathHelper::toRadians(roll);
 		float p = MathHelper::toRadians(pitch);
@@ -348,7 +348,7 @@ float Gyro::getMagnetStrength() const {
 	float y = values.MagnetY;
 	float z = values.MagnetZ;
 
-	return sqrt(x*x + y*y + z*z);
+	return sqrtf(x*x + y*y + z*z);
 }
 
 boolean Gyro::isMagnetInterferenced() const {
