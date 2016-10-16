@@ -1,6 +1,7 @@
 #include "FaultManager.h"
 
-uint16_t FaultManager::lastID = 0;
+boolean FaultManager::inited = false;
+uint16_t FaultManager::lastID = 1;
 Fault FaultManager::faults[FAULTS_SIZE];
 
 const char* FaultManager::getFaultName(FaultType type) {
@@ -23,17 +24,31 @@ const char* FaultManager::getFaultName(FaultType type) {
 	}
 }
 
+void FaultManager::init() {
+	if (inited)
+		return;
+
+	memset(faults, 0, sizeof(faults));
+	inited = true;
+}
+
 uint16_t FaultManager::findFault(FaultType type, const char* source, const char* function) {
+	uint16_t faultIndex = UINT16_MAX;
+	uint16_t highestID = 0;
+	
 	for (int i = 0; i < FAULTS_SIZE; i++) {
 		Fault fault = faults[i];
 
 		if (fault.type == type
 			&& strncmp(fault.source, source, sizeof(fault.source)) == 0
-			&& strncmp(fault.function, function, sizeof(fault.function)) == 0)
-			return i;
+			&& strncmp(fault.function, function, sizeof(fault.function)) == 0
+			&& fault.id > highestID) {
+			faultIndex = i;
+			highestID = fault.id;
+		}
 	}
 
-	return UINT16_MAX;
+	return faultIndex;
 }
 
 boolean FaultManager::addFault(Fault fault) {
@@ -61,7 +76,7 @@ void FaultManager::createNewFault(FaultType type, const char* source, const char
 
 	if (!addFault(fault)) {
 		// Fault mit kleinster ID löschen
-		uint16_t lowestID = 0;
+		uint16_t lowestID = UINT16_MAX;
 		int index = -1;
 		
 		for (int i = 0; i < FAULTS_SIZE; i++) {
@@ -83,19 +98,27 @@ void FaultManager::createNewFault(FaultType type, const char* source, const char
 		else
 			Log::error("Fault", "Could not remove old fault");
 	}
+
+	yield();
 }
 
 void FaultManager::fault(FaultType type, const char* source, const char* function) {
+	init();
+
 	uint16_t index = findFault(type, source, function);
 
 	if (index != UINT16_MAX) {
 		Fault* fault = &faults[index];
 
 		// gespeicherter Fault ist zu alt
-		if (millis() - fault->timeLast > NEW_FAULT_TIME)
+		uint32_t now = millis();
+		if (fault->timeLast < now && now - fault->timeLast > NEW_FAULT_TIME)
+		{
+			Log::error("Fault", "New fault for old fault... (first time: %dms, last time: %dms)", fault->timeFirst, fault->timeLast);
 			return createNewFault(type, source, function);
+		}
 
-		fault->timeLast = millis();
+		fault->timeLast = now;
 		return;
 	}
 
