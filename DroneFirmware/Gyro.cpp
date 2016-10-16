@@ -161,20 +161,22 @@ void Gyro::processData() {
 	values = rawValues;
 
 	// Werte überprüfen
-	const float gyroRange = 200.0f;
-	const float accRange = 3.0f;
+	const float gyroRange = 500.0f;
+	const float accRange = 5.0f;
 
 	validGyroData = true;
 	validAccData = true;
 	if (values.GyroX < -gyroRange || values.GyroX > gyroRange ||
 		values.GyroY < -gyroRange || values.GyroY > gyroRange ||
 		values.GyroZ < -gyroRange || values.GyroZ > gyroRange) {
+		Log::debug("Gyro", "invalid gyrox: %f, gyroy: %f, gyroz: %f", values.GyroX, values.GyroY, values.GyroZ);
 		FaultManager::fault(FaultInvalidSensorData, "Gyro", "filterData()");
 		validGyroData = false;
 	}
 	if (values.AccX < -accRange || values.AccX > accRange ||
 		values.AccY < -accRange || values.AccY > accRange ||
 		values.AccZ < -accRange || values.AccZ > accRange) {
+		Log::debug("Gyro", "invalid accx: %f, accy: %f, accz: %f", values.AccX, values.AccY, values.AccZ);
 		FaultManager::fault(FaultInvalidSensorData, "Acc", "filterData()");
 		validAccData = false;
 	}
