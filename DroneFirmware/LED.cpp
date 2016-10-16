@@ -12,6 +12,7 @@ uint32_t blinkTimer = 0;
 void setupLED(Config* config) {
 	ledPin = config->PinLed;
 	pinMode(ledPin, OUTPUT);
+	turnLedOff();
 }
 
 void handleBlink() {
