@@ -228,7 +228,7 @@ void DroneEngine::handleInternal() {
 	for (int i = 0; i < 4; i++) {
 		if (thrust > config->MaxThrustForFlying) {
 			int value = (int)(config->ServoMin + thrust + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput));
-			values[i] = min(config->ServoIdle, value);
+			values[i] = max(config->ServoIdle, value);
 		}
 		else
 			values[i] = config->ServoMin;

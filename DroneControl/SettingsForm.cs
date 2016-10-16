@@ -58,7 +58,6 @@ namespace DroneControl
 
             Bind(enableStabilizationCheckBox, "data.EnableStabilization");
             Bind(negativeMixingCheckBox, "data.NegativeMixing");
-            Bind(keepMotorsOnCheckBox, "data.KeepMotorsOn");
 
             Bind(maxThrustForFlyingTextBox, "data.MaxThrustForFlying");
             Bind(onlyArmWhenStillCheckBox, "data.OnlyArmWhenStill");

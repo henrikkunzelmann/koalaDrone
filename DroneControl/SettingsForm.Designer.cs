@@ -36,6 +36,7 @@
             System.Windows.Forms.Label buildDateLabel;
             System.Windows.Forms.TabPage quadrocopterPage;
             System.Windows.Forms.GroupBox hardwareGroupBox;
+            System.Windows.Forms.Label label8;
             System.Windows.Forms.Label magnetometerLabel;
             System.Windows.Forms.Label gyroSensorLabel;
             System.Windows.Forms.GroupBox motorsGroupBox;
@@ -64,12 +65,12 @@
             System.Windows.Forms.Label label2;
             System.Windows.Forms.Label label3;
             System.Windows.Forms.Label label7;
-            System.Windows.Forms.Label label8;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.updateFirmwareButton = new System.Windows.Forms.Button();
             this.firmwareVersionTextBox = new System.Windows.Forms.TextBox();
             this.buildDateTextBox = new System.Windows.Forms.TextBox();
             this.saveConfigCheckBox = new System.Windows.Forms.CheckBox();
+            this.baroSensorTextBox = new System.Windows.Forms.TextBox();
             this.restartButton = new System.Windows.Forms.Button();
             this.modelTextBox = new System.Windows.Forms.TextBox();
             this.magnetometerTextBox = new System.Windows.Forms.TextBox();
@@ -100,11 +101,9 @@
             this.flyingPage = new System.Windows.Forms.TabPage();
             this.onlyArmWhenStillCheckBox = new System.Windows.Forms.CheckBox();
             this.maxThrustForFlyingTextBox = new System.Windows.Forms.NumericUpDown();
-            this.keepMotorsOnCheckBox = new System.Windows.Forms.CheckBox();
             this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
             this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
             this.applyButton = new System.Windows.Forms.Button();
-            this.baroSensorTextBox = new System.Windows.Forms.TextBox();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -113,6 +112,7 @@
             buildDateLabel = new System.Windows.Forms.Label();
             quadrocopterPage = new System.Windows.Forms.TabPage();
             hardwareGroupBox = new System.Windows.Forms.GroupBox();
+            label8 = new System.Windows.Forms.Label();
             magnetometerLabel = new System.Windows.Forms.Label();
             gyroSensorLabel = new System.Windows.Forms.Label();
             motorsGroupBox = new System.Windows.Forms.GroupBox();
@@ -141,7 +141,6 @@
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
-            label8 = new System.Windows.Forms.Label();
             firmwareGroupBox.SuspendLayout();
             quadrocopterPage.SuspendLayout();
             hardwareGroupBox.SuspendLayout();
@@ -295,6 +294,22 @@
             hardwareGroupBox.TabIndex = 16;
             hardwareGroupBox.TabStop = false;
             hardwareGroupBox.Text = "Hardware";
+            // 
+            // baroSensorTextBox
+            // 
+            this.baroSensorTextBox.Location = new System.Drawing.Point(110, 124);
+            this.baroSensorTextBox.Name = "baroSensorTextBox";
+            this.baroSensorTextBox.Size = new System.Drawing.Size(142, 20);
+            this.baroSensorTextBox.TabIndex = 17;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new System.Drawing.Point(9, 127);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(65, 13);
+            label8.TabIndex = 16;
+            label8.Text = "Baro Sensor";
             // 
             // restartButton
             // 
@@ -926,7 +941,6 @@
             this.flyingPage.Controls.Add(this.onlyArmWhenStillCheckBox);
             this.flyingPage.Controls.Add(this.maxThrustForFlyingTextBox);
             this.flyingPage.Controls.Add(label1);
-            this.flyingPage.Controls.Add(this.keepMotorsOnCheckBox);
             this.flyingPage.Controls.Add(this.negativeMixingCheckBox);
             this.flyingPage.Controls.Add(this.enableStabilizationCheckBox);
             this.flyingPage.Controls.Add(pidYawGroupBox);
@@ -968,16 +982,6 @@
             this.maxThrustForFlyingTextBox.Size = new System.Drawing.Size(70, 20);
             this.maxThrustForFlyingTextBox.TabIndex = 26;
             // 
-            // keepMotorsOnCheckBox
-            // 
-            this.keepMotorsOnCheckBox.AutoSize = true;
-            this.keepMotorsOnCheckBox.Location = new System.Drawing.Point(283, 159);
-            this.keepMotorsOnCheckBox.Name = "keepMotorsOnCheckBox";
-            this.keepMotorsOnCheckBox.Size = new System.Drawing.Size(100, 17);
-            this.keepMotorsOnCheckBox.TabIndex = 24;
-            this.keepMotorsOnCheckBox.Text = "Keep motors on";
-            this.keepMotorsOnCheckBox.UseVisualStyleBackColor = true;
-            // 
             // negativeMixingCheckBox
             // 
             this.negativeMixingCheckBox.AutoSize = true;
@@ -1007,22 +1011,6 @@
             this.applyButton.Text = "Apply";
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
-            // 
-            // baroSensorTextBox
-            // 
-            this.baroSensorTextBox.Location = new System.Drawing.Point(110, 124);
-            this.baroSensorTextBox.Name = "baroSensorTextBox";
-            this.baroSensorTextBox.Size = new System.Drawing.Size(142, 20);
-            this.baroSensorTextBox.TabIndex = 17;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(9, 127);
-            label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(65, 13);
-            label8.TabIndex = 16;
-            label8.Text = "Baro Sensor";
             // 
             // SettingsForm
             // 
@@ -1104,7 +1092,6 @@
         private System.Windows.Forms.NumericUpDown rollKpTextBox;
         private System.Windows.Forms.CheckBox saveConfigCheckBox;
         private System.Windows.Forms.Button applyButton;
-        private System.Windows.Forms.CheckBox keepMotorsOnCheckBox;
         private System.Windows.Forms.CheckBox negativeMixingCheckBox;
         private System.Windows.Forms.CheckBox enableStabilizationCheckBox;
         private System.Windows.Forms.NumericUpDown maxThrustForFlyingTextBox;
