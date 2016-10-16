@@ -195,8 +195,9 @@ void DroneEngine::handleInternal() {
 
 	GyroValues gyroValues = sensor->getGyro()->getValues();
 
-    float pitchCmd = targetPitch << 1;
+	float pitchCmd = targetPitch << 1;
 	float rollCmd = targetRoll << 1;
+	float yawCmd = targetYaw << 1;
 
 	if (config->EnableStabilization) {
 		if (sensor->getGyro()->hasValidImuData()) {
@@ -211,17 +212,10 @@ void DroneEngine::handleInternal() {
 	}
 
 	if (sensor->getGyro()->hasValidGyroData()) {
-		if (config->UseFilteredGyroEngine) {
-			float res = 8196.0f / 2000.0f;
-			calculatePID(rollPID, gyroValues.GyroX * res, rollCmd);
-			calculatePID(pitchPID, gyroValues.GyroY* res, pitchCmd);
-			calculatePID(yawPID, gyroValues.GyroZ * res, targetYaw << 1);
-		}
-		else {
-			calculatePID(rollPID, gyroValues.RawGyroX, rollCmd);
-			calculatePID(pitchPID, gyroValues.RawGyroY, pitchCmd);
-			calculatePID(yawPID, gyroValues.RawGyroZ, targetYaw << 1);
-		}
+		float res = 8196.0f / 2000.0f;
+		calculatePID(rollPID, gyroValues.GyroX * res, rollCmd);
+		calculatePID(pitchPID, gyroValues.GyroY * res, pitchCmd);
+		calculatePID(yawPID, gyroValues.GyroZ * res, yawCmd);
 	}
 	else {
 		FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidGyroData()");
@@ -231,12 +225,14 @@ void DroneEngine::handleInternal() {
 		yawPID = 0;
 	}
 
-	uint16_t minServo = config->ServoMin;
-	if (config->KeepMotorsOn)
-		minServo = config->ServoIdle;
-
-	for (int i = 0; i < 4; i++)
-		values[i] = (int)MathHelper::clampValue(minServo + thrust + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput), config->ServoMin, config->ServoMax);
+	for (int i = 0; i < 4; i++) {
+		if (thrust > config->MaxThrustForFlying) {
+			int value = (int)(config->ServoMin + thrust + MathHelper::mixMotor(config, i, pitchOutput, rollOutput, yawOutput));
+			values[i] = min(config->ServoIdle, value);
+		}
+		else
+			values[i] = config->ServoMin;
+	}	
 
 	servos->setServos(values[0], values[1], values[2], values[3]);
 

@@ -7,14 +7,16 @@ Gyro::Gyro(Config* config) {
 	memset(&last, 0, sizeof(GyroValues));
 	memset(&rawValues, 0, sizeof(GyroValues));
 	memset(&values, 0, sizeof(GyroValues));
-	memset(&gyroCalibration, 0, sizeof(CalibrationData));
-	memset(&orientationCalibration, 0, sizeof(CalibrationData));
+	resetCalibration(&gyroCalibration);
+	resetCalibration(&accCalibration);
+	resetCalibration(&orientationCalibration);
 
 	this->firstSample = true;
 	this->lastSample = micros();
 	this->lastMagnetData = millis();
 
 	this->validGyroData = false;
+	this->validAccData = false;
 	this->validMagData = false;
 	this->validImu = false;
 }
@@ -24,48 +26,13 @@ Gyro::~Gyro() {
 }
 
 void Gyro::resetCalibration(CalibrationData* data) {
-	calibrationCount = 0;
-	for (int i = 0; i < 3; i++)
-		calibrationSum[i] = 0;
-
 	for (int i = 0; i < 3; i++) {
 		data->Min[i] = MAXFLOAT;
 		data->Max[i] = -MAXFLOAT;
+		data->Average[i] = 0;
 	}
-}
 
-void Gyro::calibrateGyro() {
-	if (validGyroData) {
-		updateCalibrationData(&gyroCalibration, rawValues.RawGyroX, rawValues.RawGyroY, rawValues.RawGyroZ, false);
-
-		if (++calibrationCount > 5000 / CYCLE_GYRO) {
-			for (int i = 0; i < 3; i++) {
-				gyroCalibration.Min[i] *= 1.25f;
-				gyroCalibration.Max[i] *= 1.25f;
-			}
-
-			Log::info("Gyro", "Done with calibration. Starting orientation calibration...");
-			calibrationRunning = false;
-
-			resetCalibration(&orientationCalibration);
-			calibrationOrientation = true;
-			firstSample = true;
-		}
-	}
-}
-
-void Gyro::calibrateMagnet() {
-	if (canUseMagneticData()) {
-		updateCalibrationData(&calibration->MagnetData, rawValues.MagnetX, rawValues.MagnetY, rawValues.MagnetZ, true);
-
-		if (++calibrationCount > 20000 / CYCLE_GYRO) {
-			Log::info("Gyro", "Done with magnetic calibration");
-			calibration->MagneticFieldStrength = getMagnetStrength();
-
-			calibrationMagnet = false;
-			firstSample = true;
-		}
-	}
+	data->Length = 0;
 }
 
 void Gyro::updateCalibrationData(CalibrationData* data, float x, float y, float z, boolean averageByBounds) {
@@ -89,43 +56,116 @@ void Gyro::updateCalibrationData(CalibrationData* data, float x, float y, float 
 		for (int i = 0; i < 3; i++)
 			data->Average[i] = calibrationSum[i] / calibrationCount;
 	}
+
+	float ax = data->Average[0];
+	float ay = data->Average[1];
+	float az = data->Average[2];
+	data->Length = sqrt(ax*ax + ay*ay + az*az);
+	yield();
 }
 
-void Gyro::filterData() {
-	values = rawValues;
-
-	values.RawGyroX -= gyroCalibration.Average[0];
-	values.RawGyroY -= gyroCalibration.Average[1];
-	values.RawGyroZ -= gyroCalibration.Average[2];
-
-	values.MagnetX -= calibration->MagnetData.Average[0];
-	values.MagnetY -= calibration->MagnetData.Average[1];
-	values.MagnetZ -= calibration->MagnetData.Average[2];
-
-	if (firstSample) {
-		last = values;
-		firstSample = false;
+void Gyro::beginCalibration(CalibrationState state) {
+	if (state == CalibrationMagnet && !hasMagnetometer()) {
+		Log::info("Gyro", "Magnetic calibration started but no magnetometer found");
+		return;
 	}
 
-	float gyroRes = 2000.0f / 8196.0f;
-	values.GyroX = FILTER(last.GyroX, values.RawGyroX * gyroRes, config->GyroFilter);
-	values.GyroY = FILTER(last.GyroY, values.RawGyroY * gyroRes, config->GyroFilter);
-	values.GyroZ = FILTER(last.GyroZ, values.RawGyroZ * gyroRes, config->GyroFilter);
+	calibrationState = state;
 
-	values.AccX = FILTER(last.AccX, values.AccX, config->AccFilter);
-	values.AccY = FILTER(last.AccY, values.AccY, config->AccFilter);
-	values.AccZ = FILTER(last.AccZ, values.AccZ, config->AccFilter);
+	firstSample = true;
+	calibrationCount = 1;
+	for (int i = 0; i < 3; i++)
+		calibrationSum[i] = 0;
 
-	values.MagnetX = FILTER(last.MagnetX, values.MagnetX, 0.005f);
-	values.MagnetY = FILTER(last.MagnetY, values.MagnetY, 0.005f);
-	values.MagnetZ = FILTER(last.MagnetZ, values.MagnetZ, 0.005f);
 
-	values.Temperature = FILTER(last.Temperature, values.Temperature, 0.025f);
+	if (!inCalibration())
+		return;
 
+	Log::info("Gyro", "Starting calibration %d", state);
+	switch (state) {
+	case CalibrationGyro:
+		resetCalibration(&gyroCalibration);
+		break;
+	case CalibrationAcc:
+		resetCalibration(&accCalibration);
+		break;
+	case CalibrationOrientation:
+		resetCalibration(&orientationCalibration);
+		break;
+	case CalibrationMagnet:
+		resetCalibration(&calibration->MagnetCalibration);
+		break;
+	default:
+		Log::error("Gyro", "Unknown calibration state: %d", calibrationState);
+		calibrationState = CalibrationNone;
+		return;
+	}
+}
+
+void Gyro::runCalibration() {
+	if (!inCalibration())
+		return;
+
+	switch (calibrationState) {
+	case CalibrationGyro:
+		if (!validGyroData)
+			return;
+
+		updateCalibrationData(&gyroCalibration, rawValues.GyroX, rawValues.GyroY, rawValues.GyroZ, false);
+		break;
+	case CalibrationAcc:
+		if (!validAccData)
+			return;
+
+		updateCalibrationData(&accCalibration, rawValues.AccX, rawValues.AccY, rawValues.AccZ, false);
+		break;
+	case CalibrationOrientation:
+		if (!validImu)
+			return;
+
+		updateCalibrationData(&orientationCalibration, roll, pitch, yaw, false);
+		break;
+	case CalibrationMagnet:
+		if (!canUseMagneticData())
+			return;
+
+		updateCalibrationData(&calibration->MagnetCalibration, rawValues.MagnetX, rawValues.MagnetY, rawValues.MagnetZ, true);
+		break;
+	default:
+		Log::error("Gyro", "Unknown calibration state: %d", calibrationState);
+		calibrationState = CalibrationNone;
+		return;
+	}
+	int32_t time[] = { 0, 5000, 5000, 2000, 20000 };
+
+	if (++calibrationCount > time[calibrationState] / CYCLE_GYRO) {
+		Log::info("Gyro", "Done with calibration.");
+		
+		switch (calibrationState) {
+		case CalibrationGyro:
+			beginCalibration(CalibrationAcc);
+			break;
+		case CalibrationAcc:
+			beginCalibration(CalibrationOrientation);
+			break;
+		default:
+			beginCalibration(CalibrationNone);
+			break;
+		}
+		firstSample = true;
+	}
+	yield();
+}
+
+void Gyro::processData() {
+	values = rawValues;
+
+	// Werte überprüfen
 	const float gyroRange = 200.0f;
 	const float accRange = 3.0f;
 
 	validGyroData = true;
+	validAccData = true;
 	if (values.GyroX < -gyroRange || values.GyroX > gyroRange ||
 		values.GyroY < -gyroRange || values.GyroY > gyroRange ||
 		values.GyroZ < -gyroRange || values.GyroZ > gyroRange) {
@@ -136,21 +176,40 @@ void Gyro::filterData() {
 		values.AccY < -accRange || values.AccY > accRange ||
 		values.AccZ < -accRange || values.AccZ > accRange) {
 		FaultManager::fault(FaultInvalidSensorData, "Acc", "filterData()");
-		validGyroData = false;
+		validAccData = false;
 	}
+
+	// Calibration
+	values.GyroX -= gyroCalibration.Average[0];
+	values.GyroY -= gyroCalibration.Average[1];
+	values.GyroZ -= gyroCalibration.Average[2];
+
+	values.MagnetX -= calibration->MagnetCalibration.Average[0];
+	values.MagnetY -= calibration->MagnetCalibration.Average[1];
+	values.MagnetZ -= calibration->MagnetCalibration.Average[2];
+
+	if (firstSample) {
+		last = values;
+		firstSample = false;
+	}
+
+	// Filtering
+	values.GyroX = FILTER(last.GyroX, values.GyroX, config->GyroFilter);
+	values.GyroY = FILTER(last.GyroY, values.GyroY, config->GyroFilter);
+	values.GyroZ = FILTER(last.GyroZ, values.GyroZ, config->GyroFilter);
+
+	values.AccX = FILTER(last.AccX, values.AccX, config->AccFilter);
+	values.AccY = FILTER(last.AccY, values.AccY, config->AccFilter);
+	values.AccZ = FILTER(last.AccZ, values.AccZ, config->AccFilter);
+
+	values.MagnetX = FILTER(last.MagnetX, values.MagnetX, 0.005f);
+	values.MagnetY = FILTER(last.MagnetY, values.MagnetY, 0.005f);
+	values.MagnetZ = FILTER(last.MagnetZ, values.MagnetZ, 0.005f);
+
+	values.Temperature = FILTER(last.Temperature, values.Temperature, 0.025f);
 	
 	validMagData = canUseMagneticData();
-}
-
-void Gyro::calibrateOrientation() {
-	updateCalibrationData(&orientationCalibration, roll, pitch, yaw, false);
-
-	if (++calibrationCount > 2000 / CYCLE_GYRO) {
-		Log::debug("Gyro", "Done with orientation calibration");
-
-		calibrationOrientation = false;
-		firstSample = true;
-	}
+	yield();
 }
 
 void Gyro::update() {
@@ -163,22 +222,19 @@ void Gyro::update() {
 	Profiler::begin("Gyro::update()");
 
 	validGyroData = false;
+	validAccData = false;
 	validMagData = false;
 	validImu = false;
 
 	if (getValues(&rawValues))
-		filterData();
+		processData();
 
-	if (calibrationRunning)
-		calibrateGyro();
-	else if (calibrationMagnet)
-		calibrateMagnet();
+	if (inCalibration() && calibrationState != CalibrationOrientation)
+		runCalibration();
 	else {
 		// Runtime magnetic calibration
 		if (canUseMagneticData()) {
-			updateCalibrationData(&calibration->MagnetData, rawValues.MagnetX, rawValues.MagnetY, rawValues.MagnetZ, true);
-
-			calibration->MagneticFieldStrength = FILTER(calibration->MagneticFieldStrength, getMagnetStrength(), 0.05f);
+			updateCalibrationData(&calibration->MagnetCalibration, rawValues.MagnetX, rawValues.MagnetY, rawValues.MagnetZ, true);
 			lastMagnetData = millis();
 		}
 		else if (millis() - lastMagnetData > 10000) {
@@ -186,12 +242,16 @@ void Gyro::update() {
 			lastMagnetData = millis();
 		}
 
+		yield();
+
 		// IMU
 		if (!hasIMU())
 			calculateIMU();
 
-		if (calibrationOrientation)
-			calibrateOrientation();
+		if (calibrationState == CalibrationOrientation)
+			runCalibration();
+
+		yield();
 	}
 
 
@@ -209,11 +269,11 @@ void Gyro::calculateIMU() {
 	float dt = CYCLE_GYRO / 1000.f;
 
 	if (hasValidGyroData()) {
-		if (values.RawGyroX < gyroCalibration.Min[0] || values.RawGyroX > gyroCalibration.Max[0])
+		if (isGyroXRotating())
 			roll += values.GyroX * dt;
-		if (values.RawGyroY < gyroCalibration.Min[1] || values.RawGyroY > gyroCalibration.Max[1])
+		if (isGyroYRotating())
 			pitch += values.GyroY * dt;
-		if (values.RawGyroZ < gyroCalibration.Min[2] || values.RawGyroZ > gyroCalibration.Max[2])
+		if (isGyroZRotating())
 			yaw += values.GyroZ * dt;
 	}
 
@@ -245,30 +305,8 @@ void Gyro::calculateIMU() {
 	Profiler::end();
 }
 
-void Gyro::beginCalibration() {
-	if (inCalibration())
-		return;
-
-	calibrationRunning = true;
-	calibrationOrientation = false;
-	calibrationCount = 0;
-
-	resetCalibration(&gyroCalibration);
-}
-
-void Gyro::beginMagnetCalibration() {
-	if (inCalibration())
-		return;
-	if (!hasMagnetometer())
-		return;
-
-	calibrationMagnet = true;
-	calibration->MagneticFieldStrength = 0;
-	resetCalibration(&calibration->MagnetData);
-}
-
 bool Gyro::inCalibration() {
-	return calibrationRunning || calibrationMagnet || calibrationOrientation;
+	return calibrationState != CalibrationNone;
 }
 
 boolean Gyro::hasValidGyroData() const {
@@ -308,14 +346,15 @@ float Gyro::getMagnetStrength() const {
 	float y = values.MagnetY;
 	float z = values.MagnetZ;
 
-	return sqrtf(x*x + y*y + z*z);
+	return sqrt(x*x + y*y + z*z);
 }
 
 boolean Gyro::isMagnetInterferenced() const {
-	if (calibration->MagneticFieldStrength <= 0)
+	float len = calibration->MagnetCalibration.Length;
+	if (len <= 0)
 		return false;
 
-	return abs(getMagnetStrength() - calibration->MagneticFieldStrength) >= 3;
+	return abs(getMagnetStrength() - len) >= 3;
 }
 
 boolean Gyro::isAccMoving() const {
@@ -323,22 +362,33 @@ boolean Gyro::isAccMoving() const {
 	float y = values.AccY;
 	float z = values.AccZ;
 
-	float len = sqrtf(x*x + y*y + z*z);
-	return len < 0.98f || len > 1.02f;
+	float len2 = x*x + y*y + z*z;
+	float calibrationlen2 = accCalibration.Length * accCalibration.Length;
+	return len2 < calibrationlen2 * 0.98 || len2 > calibrationlen2 * 1.02;
 }
 
 boolean Gyro::canUseMagneticData() const {
-	return hasMagnetometer() && calibration->MagneticFieldStrength > 0 && !isMagnetInterferenced();
+	return hasMagnetometer() && calibration->MagnetCalibration.Length > 0 && !isMagnetInterferenced();
 }
 
+boolean Gyro::isGyroXRotating() const {
+	return values.GyroX < gyroCalibration.Min[0] * 1.25f || values.GyroX > gyroCalibration.Max[0] * 1.25f;
+}
 
-#define GYRO_MOVING(x) (abs(x) > (10 * (2000.0f / 8196.0f)))
-boolean Gyro::isGyroMoving() const {
-	return GYRO_MOVING(values.RawGyroX) || GYRO_MOVING(values.RawGyroY) || GYRO_MOVING(values.RawGyroZ);
+boolean Gyro::isGyroYRotating() const {
+	return values.GyroY < gyroCalibration.Min[1] * 1.25f || values.GyroY > gyroCalibration.Max[1] * 1.25f;
+}
+
+boolean Gyro::isGyroZRotating() const {
+	return values.GyroZ < gyroCalibration.Min[2] * 1.25f || values.GyroZ > gyroCalibration.Max[2] * 1.25f;
+}
+
+boolean Gyro::isGyroRotating() const {
+	return isGyroXRotating() || isGyroYRotating() || isGyroZRotating();
 }
 
 boolean Gyro::isMoving() const {
-	return isAccMoving() || isGyroMoving();
+	return isAccMoving() || isGyroRotating();
 }
 
 #define GYRO_FLAT(x) (abs(x) < 1.0f)

@@ -119,10 +119,6 @@ namespace DroneLibrary
         [Category("Flying")]
         public bool NegativeMixing;
 
-        [MarshalAs(UnmanagedType.U1)]
-        [Category("Flying")]
-        public bool KeepMotorsOn;
-
         [Category("Flying")]
         public int MaxThrustForFlying;
 
@@ -140,10 +136,6 @@ namespace DroneLibrary
         [MarshalAs(UnmanagedType.U1)]
         [Category("Debug")]
         public bool EnableImuMag;
-
-        [MarshalAs(UnmanagedType.U1)]
-        [Category("Debug")]
-        public bool UseFilteredGyroEngine;
 
         [Category("Debug")]
         public float GyroFilter;

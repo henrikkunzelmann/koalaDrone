@@ -16,5 +16,7 @@ namespace DroneLibrary
         public float AverageX;
         public float AverageY;
         public float AverageZ;
+
+        public float Length;
     }
 }

@@ -60,9 +60,9 @@ bool Gyro6050::getValues(GyroValues* values) {
 	values->AccY = -ay * accRes;
 	values->AccZ = -az * accRes;
 
-	values->RawGyroX = -(gx >> 2);
-	values->RawGyroY = -(gy >> 2);
-	values->RawGyroZ = -(gz >> 2);
+	values->GyroX = -gx * gyroRes;
+	values->GyroY = -gy * gyroRes;
+	values->GyroZ = -gz * gyroRes;
 
 	values->MagnetX = 0;
 	values->MagnetY = 0;

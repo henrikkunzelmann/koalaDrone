@@ -336,15 +336,14 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 	case CalibrateGyro:
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle) {
-
 			boolean calibrateMagnet = readBuffer->readBoolean();
 			if (readBuffer->getError())
 				return;
 
 			if (calibrateMagnet)
-				sensor->getGyro()->beginMagnetCalibration();
+				sensor->getGyro()->beginCalibration(CalibrationMagnet);
 			else
-				sensor->getGyro()->beginCalibration();
+				sensor->getGyro()->beginCalibration(CalibrationGyro);
 		}
 		break;
 

@@ -78,9 +78,9 @@ bool Gyro9250::getValues(GyroValues* values) {
 	values->AccY = ay * accRes;
 	values->AccZ = az * accRes;
 
-	values->RawGyroX = gx >> 2;
-	values->RawGyroY = gy >> 2;
-	values->RawGyroZ = gz >> 2;
+	values->GyroX = gx * gyroRes;
+	values->GyroY = gy * gyroRes;
+	values->GyroZ = gz * gyroRes;
 
 	values->MagnetX = my * sx * magRes;
 	values->MagnetY = mx * sy * magRes;

@@ -72,7 +72,6 @@ struct Config {
 
 	boolean EnableStabilization;
 	boolean NegativeMixing;
-	boolean KeepMotorsOn;
 
 	int MaxThrustForFlying;
 	boolean OnlyArmWhenStill;
@@ -82,7 +81,6 @@ struct Config {
 	// Debug Settings
 	boolean EnableImuAcc;
 	boolean EnableImuMag;
-	boolean UseFilteredGyroEngine;
 	float GyroFilter;
 	float AccFilter;
 

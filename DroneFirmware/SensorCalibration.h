@@ -6,11 +6,11 @@ struct CalibrationData {
 	float Min[3];
 	float Max[3];
 	float Average[3];
+	float Length;
 };
 
 struct SensorCalibration {
-	CalibrationData MagnetData;
-	float MagneticFieldStrength;
+	CalibrationData MagnetCalibration;
 };
 
 #endif

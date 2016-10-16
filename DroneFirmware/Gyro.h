@@ -9,12 +9,19 @@
 #include "FaultManager.h"
 
 struct GyroValues {
-	int16_t RawGyroX, RawGyroY, RawGyroZ;
 	float AccX, AccY, AccZ;
 	float GyroX, GyroY, GyroZ;
 	float MagnetX, MagnetY, MagnetZ;
 
 	float Temperature;
+};
+
+enum CalibrationState {
+	CalibrationNone,
+	CalibrationGyro,
+	CalibrationAcc,
+	CalibrationOrientation,
+	CalibrationMagnet
 };
 
 class Gyro
@@ -24,17 +31,16 @@ private:
 	uint32_t lastSample;
 	GyroValues last;
 
-	bool calibrationRunning = false;
-	bool calibrationOrientation = false;
-	bool calibrationMagnet = false;
-	uint32_t calibrationCount;
-
+	CalibrationState calibrationState;
+	int32_t calibrationCount;
 	float calibrationSum[3];
 
 	CalibrationData gyroCalibration;
+	CalibrationData accCalibration;
 	CalibrationData orientationCalibration;
 
 	bool validGyroData;
+	bool validAccData;
 	bool validMagData;
 	bool validImu;
 
@@ -45,25 +51,26 @@ private:
 	float pitch = 0;
 	float yaw = 0;
 
-	uint32_t lastMagnetData;
-
 	void calculateIMU();
 
+	uint32_t lastMagnetData;
 	float getMagnetStrength() const;
 	boolean isMagnetInterferenced() const;
 
-	boolean isAccMoving() const;
-	boolean isGyroMoving() const;
-	boolean canUseMagneticData() const;
-
+	void resetCalibration(CalibrationData* data);
 	void updateCalibrationData(CalibrationData* data, float x, float y, float z, boolean averageByBounds);
 
-	void resetCalibration(CalibrationData* data);
-	void calibrateGyro();
-	void calibrateOrientation();
-	void calibrateMagnet();
+	void runCalibration();
 
-	void filterData();
+	void processData();
+
+	boolean isGyroXRotating() const;
+	boolean isGyroYRotating() const;
+	boolean isGyroZRotating() const;
+
+	boolean isAccMoving() const;
+	boolean isGyroRotating() const;
+	boolean canUseMagneticData() const;
 
 protected:
 	Config* config;
@@ -86,11 +93,11 @@ public:
 	virtual bool hasMagnetometer() const = 0;
 	virtual bool hasIMU() const = 0;
 
-	void beginCalibration();
-	void beginMagnetCalibration();
+	void beginCalibration(CalibrationState state);
 	bool inCalibration();
 
 	boolean hasValidGyroData() const;
+	boolean hasValidAccData() const;
 	boolean hasValidMagnetData() const;
 	boolean hasValidImuData() const;
 

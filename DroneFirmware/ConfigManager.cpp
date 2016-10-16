@@ -122,7 +122,6 @@ Config ConfigManager::getDefault() {
 
 	config.EnableStabilization = false;
 	config.NegativeMixing = false;
-	config.KeepMotorsOn = false;
 
 	config.MaxThrustForFlying = 50;
 	config.OnlyArmWhenStill = false;
@@ -133,8 +132,7 @@ Config ConfigManager::getDefault() {
 
 	config.EnableImuAcc = true;
 	config.EnableImuMag = false;
-	config.UseFilteredGyroEngine = true;
-	config.GyroFilter = 0.025f;
+	config.GyroFilter = 0.01f;
 	config.AccFilter = 0.025f;
 	
 	config.CalibrateServos = false;

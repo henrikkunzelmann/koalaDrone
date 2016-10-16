@@ -32,7 +32,7 @@ boolean SensorHAL::initGyro(Gyro* gyro) {
 	this->gyro = gyro;
 	if (!gyro->init())
 		return false;
-	gyro->beginCalibration();
+	gyro->beginCalibration(CalibrationGyro);
 	return true;
 }
 
