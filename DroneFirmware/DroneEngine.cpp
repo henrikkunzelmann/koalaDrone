@@ -34,9 +34,9 @@ void DroneEngine::createPID() {
 	if (angleRollPID)
 		delete angleRollPID;
 
-	pitchPID = createPID(config->PitchPid, 35, &pitchOutput);
-	rollPID = createPID(config->RollPid, 35, &rollOutput);
-	yawPID = createPID(config->YawPid, 35, &yawOutput);
+	pitchPID = createPID(config->PitchPid, 30, &pitchOutput);
+	rollPID = createPID(config->RollPid, 30, &rollOutput);
+	yawPID = createPID(config->YawPid, 80, &yawOutput);
 
 	anglePitchPID = createPID(config->AngleStabilization, 200, &anglePitchOutput);
 	angleRollPID = createPID(config->AngleStabilization, 200, &angleRollOutput);
