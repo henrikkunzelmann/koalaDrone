@@ -298,7 +298,6 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		writeBuffer->writeString(BUILD_NAME);
 
 		writeBuffer->write(uint8_t(BUILD_VERSION));
-		writeBuffer->write(uint32_t(0)); // lastRevision);
 
 		rst_info* resetInfo = ESP.getResetInfoPtr();
 

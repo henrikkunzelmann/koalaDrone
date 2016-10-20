@@ -38,12 +38,6 @@ namespace DroneLibrary
         public byte BuildVersion { get; private set; }
 
         /// <summary>
-        /// Gibt die größte Revision der Drohne zurück.
-        /// </summary>
-        [Category("Debug")]
-        public int HighestRevision { get; private set; }
-
-        /// <summary>
         /// Gibt den Grund des letzten Resets der Drohne zurück.
         /// </summary>
         [Category("Debug")]
@@ -102,8 +96,6 @@ namespace DroneLibrary
 
             BuildName = buffer.ReadString().Trim().Replace(' ', '_');
             BuildVersion = buffer.ReadByte();
-
-            HighestRevision = buffer.ReadInt();
 
             ResetReason = (ResetReason)buffer.ReadByte();
             ResetException = (ResetException)buffer.ReadByte();

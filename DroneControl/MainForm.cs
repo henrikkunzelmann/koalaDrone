@@ -76,7 +76,7 @@ namespace DroneControl
         private void Timer_Tick(object sender, EventArgs e)
         {
             drone.SendPing();
-            if (tickCount % 16 == 0)
+            if (tickCount % 50 == 0)
                 drone.SendGetInfo();
             drone.ResendPendingPackets();
 
