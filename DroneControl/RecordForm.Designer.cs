@@ -35,6 +35,7 @@
             this.statusLabel = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.autoStartCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // startButton
@@ -78,11 +79,24 @@
             this.timer.Interval = 25;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // autoStartCheckBox
+            // 
+            this.autoStartCheckBox.AutoSize = true;
+            this.autoStartCheckBox.Checked = true;
+            this.autoStartCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoStartCheckBox.Location = new System.Drawing.Point(189, 79);
+            this.autoStartCheckBox.Name = "autoStartCheckBox";
+            this.autoStartCheckBox.Size = new System.Drawing.Size(120, 17);
+            this.autoStartCheckBox.TabIndex = 4;
+            this.autoStartCheckBox.Text = "Auto start with flying";
+            this.autoStartCheckBox.UseVisualStyleBackColor = true;
+            // 
             // RecordForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(408, 110);
+            this.Controls.Add(this.autoStartCheckBox);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.fileLabel);
@@ -103,5 +117,6 @@
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.CheckBox autoStartCheckBox;
     }
 }

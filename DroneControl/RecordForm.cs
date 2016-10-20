@@ -28,25 +28,60 @@ namespace DroneControl
         private StreamWriter dataStream;
         private StreamWriter logStream;
 
+        private DroneState lastState;
+
         public RecordForm(Drone drone, InputManager inputManager)
         {
             this.drone = drone;
             this.inputManager = inputManager;
 
+            lastState = drone.Data.State;
+            drone.OnDataChange += Drone_OnDataChange;
+
             InitializeComponent();
+        }
+
+        private void Drone_OnDataChange(object sender, DataChangedEventArgs e)
+        {
+            if (InvokeRequired)
+                Invoke(new EventHandler<DataChangedEventArgs>(Drone_OnDataChange), sender, e);
+            else
+            {
+                if (!autoStartCheckBox.Checked)
+                    return;
+
+                if (e.Data.State != lastState)
+                {
+                    if (e.Data.State == DroneState.Flying)
+                    {
+                        if (!running)
+                        {
+                            Start();
+                            Log.Info("Starting automatic recording... state changed: {0} --> {1}", lastState, e.Data.State);
+                        }
+                    }
+                    else if (running)
+                    {
+                        Log.Info("Stopping recording... state changed: {0} --> {1}", lastState, e.Data.State);
+                        Stop();
+                    }
+
+                    lastState = e.Data.State;
+                }
+            }
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            if (running)
-                Stop();
+            drone.OnDataChange -= Drone_OnDataChange;
+            Stop();
             base.OnFormClosed(e);
         }
 
         public void Start()
         {
             if (running)
-                throw new InvalidOperationException("Already running");
+                return;
 
             string recordingName = "recording_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
             fileLabel.Text = string.Format("Recording to \"{0}\"", recordingName);
@@ -87,7 +122,7 @@ namespace DroneControl
         public void Stop()
         {
             if (!running)
-                throw new InvalidOperationException("Alread stopped");
+                return;
 
             running = false;
 
