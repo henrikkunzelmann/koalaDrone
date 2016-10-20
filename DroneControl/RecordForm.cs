@@ -149,7 +149,8 @@ namespace DroneControl
 
                 Version version = Assembly.GetExecutingAssembly().GetName().Version;
                 DateTime now = DateTime.Now;
-                dataStream.WriteLine("koalaDrone data (version {0}, date {1})", version, now);
+
+                string dataTag = string.Format("koalaDrone data (version {0}, date {1})", version, now);
                 logStream.WriteLine("koalaDrone log (version {0}, date {1})", version, now);
 
                 IEnumerable<string> columnsText;
@@ -157,6 +158,12 @@ namespace DroneControl
                     columnsText = columns.Select(s => '"' + s + '"');
                 else
                     columnsText = columns.AsEnumerable();
+
+                // DataTag schreiben
+                columnsText = columnsText.Skip(1);
+                dataStream.Write(dataTag);
+                dataStream.Write(csvSeperator);
+                dataStream.Write(' ');
 
                 dataStream.WriteLine(string.Join(csvSeperator + " ", columnsText));
                 return true;
