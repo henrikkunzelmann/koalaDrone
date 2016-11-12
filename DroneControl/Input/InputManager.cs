@@ -99,14 +99,18 @@ namespace DroneControl.Input
             {
                 CurrentDevice.Update(this);
                 if (!CurrentDevice.IsConnected)
+                {
                     SendTargetData(new TargetData(0, 0, 0, 0));
+
+                    if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
+                        StopDrone();
+                }
 
                 // schauen ob sich Informationen vom Gerät geändert haben
                 bool dirty = CurrentDevice.IsConnected != lastConnected || !CurrentDevice.Battery.Equals(lastBattery);
                 if (dirty)
                 {
-                    if (OnDeviceInfoChanged != null)
-                        OnDeviceInfoChanged(this, EventArgs.Empty);
+                    OnDeviceInfoChanged?.Invoke(this, EventArgs.Empty);
 
                     lastConnected = CurrentDevice.IsConnected;
                     lastBattery = CurrentDevice.Battery;
