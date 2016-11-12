@@ -104,24 +104,24 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.PitchPid.Kp = 0.1f;
-	config.PitchPid.Ki = 0;
-	config.PitchPid.Kd = 0;
+	config.PitchPid.Kp = 1.3f;
+	config.PitchPid.Ki = 0.0002f;
+	config.PitchPid.Kd = 0.06f;
 
-	config.RollPid.Kp = 0.1f;
-	config.RollPid.Ki = 0;
-	config.RollPid.Kd = 0;
+	config.RollPid.Kp = 1.3f;
+	config.RollPid.Ki = 0.0002f;
+	config.RollPid.Kd = 0.06f;
 
-	config.YawPid.Kp = 0.3f;
-	config.YawPid.Ki = 0;
-	config.YawPid.Kd = 0;
+	config.YawPid.Kp = 4.0f;
+	config.YawPid.Ki = 0.00008f;
+	config.YawPid.Kd = 0.0f;
 
 	config.SafePitch = 100;
 	config.SafeRoll = 100;
 	config.SafeServoValue = 1850;
 
 	config.EnableStabilization = false;
-	config.NegativeMixing = false;
+	config.NegativeMixing = true;
 
 	config.MaxThrustForFlying = 50;
 	config.OnlyArmWhenStill = false;
@@ -132,8 +132,8 @@ Config ConfigManager::getDefault() {
 
 	config.EnableImuAcc = true;
 	config.EnableImuMag = false;
-	config.GyroFilter = 0.01f;
-	config.AccFilter = 0.025f;
+	config.GyroFilter = 0.02f;
+	config.AccFilter = 0.2f;
 	
 	config.CalibrateServos = false;
 	memset(&config.SensorCalibrationData, 0, sizeof(SensorCalibration));

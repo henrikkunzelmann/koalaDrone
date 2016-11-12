@@ -90,6 +90,7 @@ class DroneEngine
 	void handleInternal();
 
 	void updateTunings();
+	void updateTuning(PID* pid, PIDSettings settings);
 
 	void heartbeat();
 
