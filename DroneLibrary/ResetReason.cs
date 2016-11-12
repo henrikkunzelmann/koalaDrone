@@ -7,7 +7,7 @@
         Exception = 2,
         SoftWatchdog = 3,
         SoftRestart = 4,
-        DeepSleepSwake = 5,
+        DeepSleepAwake = 5,
         ExtSys = 6
     }
 }

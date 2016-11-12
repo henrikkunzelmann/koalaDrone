@@ -1,4 +1,3 @@
-#include <helper_3dmath.h>
 #include <Wire.h>
 #include <I2Cdev.h>
 #include <WiFiUdp.h>
