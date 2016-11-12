@@ -34,9 +34,9 @@ void DroneEngine::createPID() {
 	if (angleRollPID)
 		delete angleRollPID;
 
-	pitchPID = createPID(config->PitchPid, 30, &pitchOutput);
-	rollPID = createPID(config->RollPid, 30, &rollOutput);
-	yawPID = createPID(config->YawPid, 80, &yawOutput);
+	pitchPID = createPID(config->PitchPid, 100, &pitchOutput);
+	rollPID = createPID(config->RollPid, 100, &rollOutput);
+	yawPID = createPID(config->YawPid, 200, &yawOutput);
 
 	anglePitchPID = createPID(config->AngleStabilization, 200, &anglePitchOutput);
 	angleRollPID = createPID(config->AngleStabilization, 200, &angleRollOutput);
@@ -206,14 +206,15 @@ void DroneEngine::handleInternal() {
 
 	GyroValues gyroValues = sensor->getGyro()->getValues();
 
-	float pitchCmd = targetPitch << 1;
-	float rollCmd = targetRoll << 1;
-	float yawCmd = targetYaw << 1;
+	const float sensitivity = (1.0f / 500.0f) * 164.0f;
+	float pitchCmd = targetPitch * sensitivity;
+	float rollCmd = targetRoll * sensitivity;
+	float yawCmd = targetYaw * sensitivity;
 
 	if (config->EnableStabilization) {
 		if (sensor->getGyro()->hasValidImuData()) {
-			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetPitch / 50.0f);
-			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetRoll / 50.0f);
+			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetPitch);
+			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetRoll);
 
 			pitchCmd = -anglePitchOutput;
 			rollCmd = -angleRollOutput;
@@ -223,10 +224,9 @@ void DroneEngine::handleInternal() {
 	}
 
 	if (sensor->getGyro()->hasValidGyroData()) {
-		float res = 8196.0f / 2000.0f;
-		calculatePID(rollPID, gyroValues.GyroX * res, rollCmd);
-		calculatePID(pitchPID, gyroValues.GyroY * res, pitchCmd);
-		calculatePID(yawPID, gyroValues.GyroZ * res, yawCmd);
+		calculatePID(rollPID, gyroValues.GyroX, rollCmd);
+		calculatePID(pitchPID, gyroValues.GyroY, pitchCmd);
+		calculatePID(yawPID, gyroValues.GyroZ, yawCmd);
 	}
 	else {
 		FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidGyroData()");
@@ -255,12 +255,16 @@ void DroneEngine::handleInternal() {
 }
 
 void DroneEngine::updateTunings() {
-	pitchPID->SetTunings(config->PitchPid.Kp, config->PitchPid.Ki, config->PitchPid.Kd);
-	rollPID->SetTunings(config->RollPid.Kp, config->RollPid.Ki, config->RollPid.Kd);
-	yawPID->SetTunings(config->YawPid.Kp, config->YawPid.Ki, config->YawPid.Kd);
+	updateTuning(pitchPID, config->PitchPid);
+	updateTuning(rollPID, config->RollPid);
+	updateTuning(yawPID, config->YawPid);
 
-	anglePitchPID->SetTunings(config->AngleStabilization.Kp, config->AngleStabilization.Ki, config->AngleStabilization.Kd);
-	angleRollPID->SetTunings(config->AngleStabilization.Kp, config->AngleStabilization.Ki, config->AngleStabilization.Kd);
+	updateTuning(anglePitchPID, config->AngleStabilization);
+	updateTuning(angleRollPID, config->AngleStabilization);
+}
+
+void DroneEngine::updateTuning(PID* pid, PIDSettings settings) {
+	pid->SetTunings(settings.Kp, settings.Ki, settings.Kd);
 }
 
 void DroneEngine::calculatePID(PID* pid, float input, float setpoint) {

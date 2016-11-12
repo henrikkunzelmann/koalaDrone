@@ -32,8 +32,9 @@ bool Gyro9250::init() {
 
 	mpu.setClockSource(MPU9250_CLOCK_PLL_ZGYRO);
 	mpu.setFullScaleAccelRange(MPU9250_ACCEL_FS_16);
-	mpu.setFullScaleGyroRange(MPU9250_GYRO_FS_2000);
-	mpu.setDLPFMode(0);
+	mpu.setFullScaleGyroRange(MPU9250_GYRO_FS_500);
+	mpu.setDLPFMode(MPU9250_DLPF_BW_20);
+
 
 	if (!mpu.magCheckConnection()) {
 		Log::error("Gyro9250", "Mag connection failed");
@@ -82,8 +83,8 @@ bool Gyro9250::getValues(GyroValues* values) {
 	values->GyroY = gy * gyroRes;
 	values->GyroZ = gz * gyroRes;
 
-	values->MagnetX = my * sx * magRes;
-	values->MagnetY = mx * sy * magRes;
+	values->MagnetX = my * sy * magRes;
+	values->MagnetY = mx * sx * magRes;
 	values->MagnetZ = -mz * sz * magRes;
 
 	int16_t temp;
@@ -95,7 +96,7 @@ bool Gyro9250::getValues(GyroValues* values) {
 
 	yield();
 
-	values->Temperature = temp / 333.87 + 21;
+	values->Temperature = temp / 333.87f + 21.0f;
 	Profiler::end();
 	return true;
 }

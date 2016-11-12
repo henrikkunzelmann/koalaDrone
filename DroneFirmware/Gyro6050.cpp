@@ -31,7 +31,7 @@ bool Gyro6050::init() {
 	mpu.setClockSource(MPU6050_CLOCK_PLL_ZGYRO);
 	mpu.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
 	mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_2000);
-	mpu.setDLPFMode(0);
+	mpu.setDLPFMode(MPU6050_DLPF_BW_20);
 
 	double accRange[4] = { 2, 4, 8, 16 }; // g
 	double gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
@@ -68,7 +68,7 @@ bool Gyro6050::getValues(GyroValues* values) {
 	values->MagnetY = 0;
 	values->MagnetZ = 0;
 
-	values->Temperature = mpu.getTemperature() / 340.00 + 36.53;
+	values->Temperature = mpu.getTemperature() / 340.0f + 36.53f;
 	yield();
 
 	Profiler::end();
