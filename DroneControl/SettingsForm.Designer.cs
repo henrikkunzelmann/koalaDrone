@@ -548,36 +548,26 @@
             // 
             // pitchKdTextBox
             // 
-            this.pitchKdTextBox.DecimalPlaces = 2;
+            this.pitchKdTextBox.DecimalPlaces = 5;
             this.pitchKdTextBox.Increment = new decimal(new int[] {
             5,
             0,
             0,
             131072});
             this.pitchKdTextBox.Location = new System.Drawing.Point(34, 72);
-            this.pitchKdTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.pitchKdTextBox.Name = "pitchKdTextBox";
             this.pitchKdTextBox.Size = new System.Drawing.Size(70, 20);
             this.pitchKdTextBox.TabIndex = 15;
             // 
             // pitchKiTextBox
             // 
-            this.pitchKiTextBox.DecimalPlaces = 2;
+            this.pitchKiTextBox.DecimalPlaces = 5;
             this.pitchKiTextBox.Increment = new decimal(new int[] {
             5,
             0,
             0,
             131072});
             this.pitchKiTextBox.Location = new System.Drawing.Point(34, 46);
-            this.pitchKiTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.pitchKiTextBox.Name = "pitchKiTextBox";
             this.pitchKiTextBox.Size = new System.Drawing.Size(70, 20);
             this.pitchKiTextBox.TabIndex = 14;
@@ -591,11 +581,6 @@
             0,
             131072});
             this.pitchKpTextBox.Location = new System.Drawing.Point(34, 18);
-            this.pitchKpTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.pitchKpTextBox.Name = "pitchKpTextBox";
             this.pitchKpTextBox.Size = new System.Drawing.Size(70, 20);
             this.pitchKpTextBox.TabIndex = 13;
@@ -644,36 +629,26 @@
             // 
             // rollKdTextBox
             // 
-            this.rollKdTextBox.DecimalPlaces = 2;
+            this.rollKdTextBox.DecimalPlaces = 5;
             this.rollKdTextBox.Increment = new decimal(new int[] {
             5,
             0,
             0,
             131072});
             this.rollKdTextBox.Location = new System.Drawing.Point(34, 72);
-            this.rollKdTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.rollKdTextBox.Name = "rollKdTextBox";
             this.rollKdTextBox.Size = new System.Drawing.Size(70, 20);
             this.rollKdTextBox.TabIndex = 15;
             // 
             // rollKiTextBox
             // 
-            this.rollKiTextBox.DecimalPlaces = 2;
+            this.rollKiTextBox.DecimalPlaces = 5;
             this.rollKiTextBox.Increment = new decimal(new int[] {
             5,
             0,
             0,
             131072});
             this.rollKiTextBox.Location = new System.Drawing.Point(34, 46);
-            this.rollKiTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.rollKiTextBox.Name = "rollKiTextBox";
             this.rollKiTextBox.Size = new System.Drawing.Size(70, 20);
             this.rollKiTextBox.TabIndex = 14;
@@ -687,11 +662,6 @@
             0,
             131072});
             this.rollKpTextBox.Location = new System.Drawing.Point(34, 18);
-            this.rollKpTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.rollKpTextBox.Name = "rollKpTextBox";
             this.rollKpTextBox.Size = new System.Drawing.Size(70, 20);
             this.rollKpTextBox.TabIndex = 13;
@@ -740,36 +710,26 @@
             // 
             // yawKdTextBox
             // 
-            this.yawKdTextBox.DecimalPlaces = 2;
+            this.yawKdTextBox.DecimalPlaces = 5;
             this.yawKdTextBox.Increment = new decimal(new int[] {
             5,
             0,
             0,
             131072});
             this.yawKdTextBox.Location = new System.Drawing.Point(34, 72);
-            this.yawKdTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.yawKdTextBox.Name = "yawKdTextBox";
             this.yawKdTextBox.Size = new System.Drawing.Size(70, 20);
             this.yawKdTextBox.TabIndex = 15;
             // 
             // yawKiTextBox
             // 
-            this.yawKiTextBox.DecimalPlaces = 2;
+            this.yawKiTextBox.DecimalPlaces = 5;
             this.yawKiTextBox.Increment = new decimal(new int[] {
             5,
             0,
             0,
             131072});
             this.yawKiTextBox.Location = new System.Drawing.Point(34, 46);
-            this.yawKiTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.yawKiTextBox.Name = "yawKiTextBox";
             this.yawKiTextBox.Size = new System.Drawing.Size(70, 20);
             this.yawKiTextBox.TabIndex = 14;
@@ -783,11 +743,6 @@
             0,
             131072});
             this.yawKpTextBox.Location = new System.Drawing.Point(34, 18);
-            this.yawKpTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.yawKpTextBox.Name = "yawKpTextBox";
             this.yawKpTextBox.Size = new System.Drawing.Size(70, 20);
             this.yawKpTextBox.TabIndex = 13;
@@ -852,11 +807,6 @@
             0,
             131072});
             this.angleKdTextBox.Location = new System.Drawing.Point(34, 72);
-            this.angleKdTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.angleKdTextBox.Name = "angleKdTextBox";
             this.angleKdTextBox.Size = new System.Drawing.Size(70, 20);
             this.angleKdTextBox.TabIndex = 15;
@@ -870,11 +820,6 @@
             0,
             131072});
             this.angleKiTextBox.Location = new System.Drawing.Point(34, 46);
-            this.angleKiTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.angleKiTextBox.Name = "angleKiTextBox";
             this.angleKiTextBox.Size = new System.Drawing.Size(70, 20);
             this.angleKiTextBox.TabIndex = 14;
@@ -888,11 +833,6 @@
             0,
             131072});
             this.angleKpTextBox.Location = new System.Drawing.Point(34, 18);
-            this.angleKpTextBox.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
             this.angleKpTextBox.Name = "angleKpTextBox";
             this.angleKpTextBox.Size = new System.Drawing.Size(70, 20);
             this.angleKpTextBox.TabIndex = 13;
