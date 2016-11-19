@@ -134,7 +134,7 @@ namespace DroneLibrary
             }
             catch (Exception e)
             {
-                Log.Error(e.ToString());
+                Log.Error();
             }
         }
 
