@@ -1,6 +1,6 @@
 #include "PacketBuffer.h"
 
-PacketBuffer::PacketBuffer(uint32_t size) {
+PacketBuffer::PacketBuffer(size_t size) {
 	this->data = new uint8_t[size];
 	this->bufferSize = size;
 
@@ -9,14 +9,20 @@ PacketBuffer::PacketBuffer(uint32_t size) {
 
 	this->error = false;
 	this->allowRead = true;
+
+	if (this->data == NULL)
+		errorMemory();
 }
 
-PacketBuffer::PacketBuffer(uint8_t* data, uint32_t size) {
+PacketBuffer::PacketBuffer(uint8_t* data, size_t size) {
 	setBuffer(data, size);
 	this->error = false;
 }
 
-void PacketBuffer::setBuffer(uint8_t* data, uint32_t size) {
+void PacketBuffer::setBuffer(uint8_t* data, size_t size) {
+	if (!assertNull(data))
+		return;
+
 	this->data = data;
 	this->bufferSize = size;
 
@@ -46,6 +52,15 @@ uint32_t PacketBuffer::getBufferSize() const {
 	return bufferSize;
 }
 
+bool PacketBuffer::assertNull(void* pointer) {
+	if (pointer != NULL)
+		return true;
+
+	Log::error("PacketBuffer", "assertNull()");
+	error = true;
+	return false;
+}
+
 bool PacketBuffer::assertRead() {
 	if (error)
 		return false;
@@ -57,41 +72,47 @@ bool PacketBuffer::assertRead() {
 	return allowRead;
 }
 
-bool PacketBuffer::assertPosition(uint32_t length) {
+bool PacketBuffer::assertPosition(size_t length) {
 	if (error)
 		return false;
 
 	if (position + length > size) {
 		error = true;
 		Log::error("PacketBuffer", "assertPosition() operation not in range of packet");
-		Log::error("PacketBuffer", "%d + %d > %d", position, length, size);
+		Log::error("PacketBuffer", "%u + %u > %u", position, length, size);
 		return false;
 	}
 	if (position + length > bufferSize) {
 		error = true;
 		Log::error("PacketBuffer", "assertPosition() operation not in range of internal buffer");
-		Log::error("PacketBuffer", "%d + %d > %d", position, length, bufferSize);
+		Log::error("PacketBuffer", "%u + %u > %u", position, length, bufferSize);
 		return false;
 	}
 	return true;
 }
 
-bool PacketBuffer::assertPositionRead(uint32_t length) {
+bool PacketBuffer::assertPositionRead(size_t length) {
 	if (!assertRead())
 		return false;
 	return assertPosition(length);
 }
 
-bool PacketBuffer::assertPositionWrite(uint32_t length) {
+bool PacketBuffer::assertPositionWrite(size_t length) {
 	allowRead = false;
 	return assertPosition(length);
 }
 
-uint32_t PacketBuffer::addPosition(uint32_t length) {
+uint32_t PacketBuffer::addPosition(size_t length) {
 	uint32_t old = position;
 	if (assertPosition(length))
 		position += length;
 	return old;
+}
+
+void PacketBuffer::errorMemory() {
+	Log::error("PacketBuffer", "errorMemory()");
+	Log::error("PacketBuffer", "Free heap: %ubytes", ESP.getFreeHeap());
+	error = true;
 }
 
 uint32_t PacketBuffer::getPosition() const {
@@ -120,7 +141,7 @@ uint32_t PacketBuffer::getSize() const {
 void PacketBuffer::setSize(uint32_t size) {
 	if (size > bufferSize) {
 		Log::error("PacketBuffer", "setSize() operation not in range of packet");
-		Log::error("PacketBuffer", "%d > %d", size, bufferSize);
+		Log::error("PacketBuffer", "%u > %u", size, bufferSize);
 		error = true;
 		return;
 	}
@@ -202,11 +223,14 @@ double PacketBuffer::readDouble() {
 	return BinaryHelper::readDouble(data, addPosition(sizeof(double)));
 }
 
-void PacketBuffer::read(uint8_t* buffer, int length) {
+void PacketBuffer::read(uint8_t* buffer, size_t length) {
 	read(buffer, length, 0);
 }
 
-void PacketBuffer::read(uint8_t* buffer, int length, int offset) {
+void PacketBuffer::read(uint8_t* buffer, size_t length, uint32_t offset) {
+	if (!assertNull(buffer))
+		return;
+
 	uint8_t* dest = buffer + offset;
 
 	if (!assertPositionRead(length)) {
@@ -218,11 +242,11 @@ void PacketBuffer::read(uint8_t* buffer, int length, int offset) {
 	memcpy(dest, source, length);
 }
 
-void PacketBuffer::read(char* buffer, int length, int offset) {
+void PacketBuffer::read(char* buffer, size_t length, uint32_t offset) {
 	read((uint8_t*)buffer, length, offset);
 }
 
-uint8_t* PacketBuffer::getBufferRegion(int size) {
+uint8_t* PacketBuffer::getBufferRegion(size_t size) {
 	if (!assertPosition(size))
 		return this->data;
 
@@ -232,16 +256,21 @@ uint8_t* PacketBuffer::getBufferRegion(int size) {
 char* PacketBuffer::readString() {
 	uint16_t length = readUint16();
 	if (error)
-		return "";
+		return NULL;
 
-	int size = length * sizeof(char);
+	size_t size = length * sizeof(char);
 
 	char* str = (char*)malloc(size + 1);
+	if (str == NULL) {
+		errorMemory();
+		return NULL;
+	}
+
 	read(str, size, 0);
 
 	if (error) {
 		free(str);
-		return "";
+		return NULL;
 	}
 
 	str[size] = '\0';
@@ -310,11 +339,14 @@ void PacketBuffer::write(double value) {
 		BinaryHelper::writeDouble(data, addPosition(sizeof(value)), value);
 }
 
-void PacketBuffer::write(uint8_t* buffer, int length) {
+void PacketBuffer::write(uint8_t* buffer, size_t length) {
 	write(buffer, length, 0);
 }
 
-void PacketBuffer::write(uint8_t* buffer, int length, int offset) {
+void PacketBuffer::write(uint8_t* buffer, size_t length, uint32_t offset) {
+	if (!assertNull(buffer))
+		return;
+
 	if (!assertPositionWrite(length))
 		return;
 
@@ -325,6 +357,9 @@ void PacketBuffer::write(uint8_t* buffer, int length, int offset) {
 }
 
 void PacketBuffer::writeString(char* str) {
+	if (!assertNull(str))
+		return;
+
 	int size = sizeof(char) * strlen(str);
 	if (!assertPositionWrite(size + sizeof(uint16_t)))
 		return;
