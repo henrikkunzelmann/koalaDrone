@@ -8,20 +8,20 @@
 
 class EEPROM_MemoryAdapter : public MemoryAdapter {
 protected:
-	uint16_t size;
+	size_t size;
 	uint16_t offset;
 
-	bool assertAddress(uint32_t address, uint32_t length);
+	bool assertAddress(uint32_t address, size_t length);
 
 public:
-	EEPROM_MemoryAdapter(uint16_t size, uint16_t offset);
+	EEPROM_MemoryAdapter(size_t size, uint16_t offset);
 
 	bool begin() override;
 	bool end() override;
 	void writeByte(uint32_t address, uint8_t val) override;
-	void write(uint32_t address, uint8_t* data, uint32_t length) override;
+	void write(uint32_t address, uint8_t* data, size_t length) override;
 	byte readByte(uint32_t address) override;
-	void read(uint32_t address, uint8_t* data, uint32_t length) override;
+	void read(uint32_t address, uint8_t* data, size_t length) override;
 
 };
 
