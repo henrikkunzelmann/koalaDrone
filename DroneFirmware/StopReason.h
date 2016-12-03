@@ -1,7 +1,7 @@
 #ifndef _STOPREASON_h
 #define _STOPREASON_h
 
-enum StopReason : byte {
+enum StopReason : uint8_t {
 	Unknown,
 	None, 
 	User,

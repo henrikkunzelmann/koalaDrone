@@ -72,7 +72,7 @@ void DroneEngine::arm() {
 			return;
 		}
 		if (config->OnlyArmWhenStill) {
-			boolean still = true;
+			bool still = true;
 			if (sensor->getGyro()->isMoving()) {
 				Log::info("Engine", "Can not arm motors, not still (moving)");
 				still = false;

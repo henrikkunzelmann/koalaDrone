@@ -55,23 +55,23 @@ private:
 
 	uint32_t lastMagnetData;
 	float getMagnetStrength() const;
-	boolean isMagnetInterferenced() const;
+	bool isMagnetInterferenced() const;
 
 	void resetCalibration(CalibrationData* data);
-	void updateCalibrationData(CalibrationData* data, float x, float y, float z, boolean averageByBounds);
+	void updateCalibrationData(CalibrationData* data, float x, float y, float z, bool averageByBounds);
 	void logCalibration(CalibrationData* data);
 
 	void runCalibration();
 
 	void processData();
 
-	boolean isGyroXRotating() const;
-	boolean isGyroYRotating() const;
-	boolean isGyroZRotating() const;
+	bool isGyroXRotating() const;
+	bool isGyroYRotating() const;
+	bool isGyroZRotating() const;
 
-	boolean isAccMoving() const;
-	boolean isGyroRotating() const;
-	boolean canUseMagneticData() const;
+	bool isAccMoving() const;
+	bool isGyroRotating() const;
+	bool canUseMagneticData() const;
 
 protected:
 	Config* config;
@@ -97,10 +97,10 @@ public:
 	void beginCalibration(CalibrationState state);
 	bool inCalibration();
 
-	boolean hasValidGyroData() const;
-	boolean hasValidAccData() const;
-	boolean hasValidMagnetData() const;
-	boolean hasValidImuData() const;
+	bool hasValidGyroData() const;
+	bool hasValidAccData() const;
+	bool hasValidMagnetData() const;
+	bool hasValidImuData() const;
 
 	GyroValues getValues() const;
 
@@ -108,8 +108,8 @@ public:
 	float getPitch() const;
 	float getYaw() const;
 
-	boolean isMoving() const;
-	boolean isFlat() const;
+	bool isMoving() const;
+	bool isFlat() const;
 };
 
 #endif

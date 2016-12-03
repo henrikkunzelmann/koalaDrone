@@ -14,7 +14,7 @@ struct ProfilerFunction {
 	uint32_t time;
 	uint32_t maxTime;
 
-	boolean shouldReset;
+	bool shouldReset;
 	uint32_t currentTime;
 };
 
@@ -30,8 +30,8 @@ private:
 	static long lastMaxReset;
 
 	static ProfilerFunction* findFunction(const char* name);
-	static uint32_t start(const char* name, boolean reset);
-	static void stop(ProfilerFunction* function, boolean add);
+	static uint32_t start(const char* name, bool reset);
+	static void stop(ProfilerFunction* function, bool add);
 
 public:
 	static void init();

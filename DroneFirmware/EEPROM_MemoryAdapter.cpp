@@ -32,7 +32,7 @@ void EEPROM_MemoryAdapter::writeByte(uint32_t address, uint8_t val) {
 		EEPROM.write(offset + address, val);
 }
 
-byte EEPROM_MemoryAdapter::readByte(uint32_t address) {
+uint8_t EEPROM_MemoryAdapter::readByte(uint32_t address) {
 	if (assertAddress(address, sizeof(uint8_t)))
 		return EEPROM.read(offset + address);
 	return 0;

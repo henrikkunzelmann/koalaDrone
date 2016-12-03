@@ -18,7 +18,7 @@ class SensorHAL;
 class Baro
 {
 private:
-	boolean firstSample;
+	bool firstSample;
 	uint32_t lastSample;
 	BaroValues last;
 

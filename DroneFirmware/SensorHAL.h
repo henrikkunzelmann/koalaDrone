@@ -19,8 +19,8 @@ private:
 	Baro* baro;
 
 	void initSensors();
-	boolean initGyro(Gyro* gyro);
-	boolean initBaro(Baro* baro);
+	bool initGyro(Gyro* gyro);
+	bool initBaro(Baro* baro);
 
 public:
 	explicit SensorHAL(Config* config);

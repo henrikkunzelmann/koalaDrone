@@ -35,7 +35,7 @@ void Gyro::resetCalibration(CalibrationData* data) {
 	data->Length = 0;
 }
 
-void Gyro::updateCalibrationData(CalibrationData* data, float x, float y, float z, boolean averageByBounds) {
+void Gyro::updateCalibrationData(CalibrationData* data, float x, float y, float z, bool averageByBounds) {
 	data->Min[0] = min(data->Min[0], x);
 	data->Min[1] = min(data->Min[1], y);
 	data->Min[2] = min(data->Min[2], z);
@@ -330,15 +330,15 @@ bool Gyro::inCalibration() {
 	return calibrationState != CalibrationNone;
 }
 
-boolean Gyro::hasValidGyroData() const {
+bool Gyro::hasValidGyroData() const {
 	return validGyroData;
 }
 
-boolean Gyro::hasValidMagnetData() const {
+bool Gyro::hasValidMagnetData() const {
 	return validMagData;
 }
 
-boolean Gyro::hasValidImuData() const {
+bool Gyro::hasValidImuData() const {
 	return validImu;
 }
 
@@ -370,7 +370,7 @@ float Gyro::getMagnetStrength() const {
 	return sqrtf(x*x + y*y + z*z);
 }
 
-boolean Gyro::isMagnetInterferenced() const {
+bool Gyro::isMagnetInterferenced() const {
 	float len = calibration->MagnetCalibration.Length;
 	if (len <= 0)
 		return false;
@@ -378,7 +378,7 @@ boolean Gyro::isMagnetInterferenced() const {
 	return abs(getMagnetStrength() - len) >= 3;
 }
 
-boolean Gyro::isAccMoving() const {
+bool Gyro::isAccMoving() const {
 	float x = values.AccX;
 	float y = values.AccY;
 	float z = values.AccZ;
@@ -387,33 +387,33 @@ boolean Gyro::isAccMoving() const {
 	return len2 < accCalibration.Length * 0.98 || len2 > accCalibration.Length * 1.02;
 }
 
-boolean Gyro::canUseMagneticData() const {
+bool Gyro::canUseMagneticData() const {
 	return hasMagnetometer() && calibration->MagnetCalibration.Length > 0 && !isMagnetInterferenced();
 }
 
 #define GYRO_ROTATING_FACTOR 5.0f
-boolean Gyro::isGyroXRotating() const {
+bool Gyro::isGyroXRotating() const {
 	return values.GyroX < gyroCalibration.Min[0] * GYRO_ROTATING_FACTOR || values.GyroX > gyroCalibration.Max[0] * GYRO_ROTATING_FACTOR;
 }
 
-boolean Gyro::isGyroYRotating() const {
+bool Gyro::isGyroYRotating() const {
 	return values.GyroY < gyroCalibration.Min[1] * GYRO_ROTATING_FACTOR || values.GyroY > gyroCalibration.Max[1] * GYRO_ROTATING_FACTOR;
 }
 
-boolean Gyro::isGyroZRotating() const {
+bool Gyro::isGyroZRotating() const {
 	return values.GyroZ < gyroCalibration.Min[2] * GYRO_ROTATING_FACTOR || values.GyroZ > gyroCalibration.Max[2] * GYRO_ROTATING_FACTOR;
 }
 
-boolean Gyro::isGyroRotating() const {
+bool Gyro::isGyroRotating() const {
 	return isGyroXRotating() || isGyroYRotating() || isGyroZRotating();
 }
 
-boolean Gyro::isMoving() const {
+bool Gyro::isMoving() const {
 	return isAccMoving() || isGyroRotating();
 }
 
 #define GYRO_FLAT(x) (abs(x) < 1.0f)
 
-boolean Gyro::isFlat() const {
+bool Gyro::isFlat() const {
 	return GYRO_FLAT(getRoll()) && GYRO_FLAT(getPitch());
 }

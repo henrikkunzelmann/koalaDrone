@@ -37,7 +37,7 @@ Config ConfigManager::loadConfig(MemoryAdapter* memory) {
 
 	// nach der Größe folgen unsere eigentliche Daten
 	Config* config = (Config*)malloc(sizeof(Config));
-	memory->read(4, (byte*)config, sizeof(Config));
+	memory->read(4, (uint8_t*)config, sizeof(Config));
 
 	Log::info("Config", "Config loaded");
 	return *config;
@@ -69,7 +69,7 @@ void ConfigManager::saveConfig(MemoryAdapter* memory, const Config config) {
 	memory->write(2, buffer, sizeof(buffer));
 
 	// eigentliche Daten speichern
-	memory->write(4, (byte*)(&config), sizeof(Config));
+	memory->write(4, (uint8_t*)(&config), sizeof(Config));
 
 	Log::info("Config", "Config saved");
 }

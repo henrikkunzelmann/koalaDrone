@@ -74,12 +74,12 @@ void NetworkManager::handlePackets() {
 	Profiler::end();
 }
 
-void NetworkManager::handlePackets(int num) {
-	int helloPackets = 0;
+void NetworkManager::handlePackets(uint16_t num) {
+	uint16_t helloPackets = 0;
 	while (beginParse(helloUDP) && helloPackets++ < num)
 		handleHello(helloUDP);
 
-	int controlPackets = 0;
+	uint16_t controlPackets = 0;
 	while (beginParse(controlUDP) && controlPackets++ < num)
 		handleControl(controlUDP);
 }
@@ -132,8 +132,8 @@ void NetworkManager::writeHeader(WiFiUDP udp, int32_t revision, ControlPacketTyp
 	writeBuffer->write('L');
 	writeBuffer->write('Y');
 	writeBuffer->write(revision);
-	writeBuffer->write(byte(0)); // kein Ack anfordern
-	writeBuffer->write(static_cast<uint8_t>(packetType));
+	writeBuffer->write(uint8_t(0)); // kein Ack anfordern
+	writeBuffer->write(uint8_t(packetType));
 }
 
 void NetworkManager::writeDataHeader(WiFiUDP udp, int32_t revision, DataPacketType packetType) {
@@ -141,7 +141,7 @@ void NetworkManager::writeDataHeader(WiFiUDP udp, int32_t revision, DataPacketTy
 	writeBuffer->write('L');
 	writeBuffer->write('Y');
 	writeBuffer->write(revision);
-	writeBuffer->write(static_cast<uint8_t>(packetType));
+	writeBuffer->write(uint8_t(packetType));
 }
 
 
@@ -175,7 +175,7 @@ void NetworkManager::handleHello(WiFiUDP udp) {
 	writeBuffer->write('F');
 	writeBuffer->write('L');
 	writeBuffer->write('Y');
-	writeBuffer->write(byte(HelloAnswer));
+	writeBuffer->write((uint8_t)HelloAnswer);
 
 	writeBuffer->writeString(config->DroneName);
 	writeBuffer->writeString(MODEL_NAME);
@@ -262,7 +262,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 	case ArmPacket:
 		if (readBuffer->readUint8() == 'A' && readBuffer->readUint8() == 'R' && readBuffer->readUint8() == 'M') {
-			boolean arm = readBuffer->readBoolean();
+			bool arm = readBuffer->readBoolean();
 			if (readBuffer->getError())
 				return;
 
@@ -335,7 +335,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		break;
 	case CalibrateGyro:
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle) {
-			boolean calibrateMagnet = readBuffer->readBoolean();
+			bool calibrateMagnet = readBuffer->readBoolean();
 			if (readBuffer->getError())
 				return;
 
@@ -355,7 +355,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			Log::error("Network", "[SetConfig] Packet size does not match config structure size");
 			return;
 		}
-		readBuffer->read((byte*)config, sizeof(Config));
+		readBuffer->read((uint8_t*)config, sizeof(Config));
 
 		if (readBuffer->getError()) 
 			return;
@@ -534,13 +534,13 @@ void NetworkManager::sendLog(WiFiUDP udp) {
 		while (Log::getBufferLines() > 0) {
 			writeDataHeader(dataUDP, dataRevision++, DataLog);
 
-			int messagesToSend = Log::getBufferLines();
+			uint32_t messagesToSend = Log::getBufferLines();
 			if (messagesToSend > 5)
 				messagesToSend = 5;
 
 			writeBuffer->write(messagesToSend);
 
-			for (int i = 0; i < messagesToSend; i++) {
+			for (uint32_t i = 0; i < messagesToSend; i++) {
 				char* msg = Log::popMessage();
 				writeBuffer->writeString(msg);
 				free(msg);

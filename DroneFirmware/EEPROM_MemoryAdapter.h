@@ -20,7 +20,7 @@ public:
 	bool end() override;
 	void writeByte(uint32_t address, uint8_t val) override;
 	void write(uint32_t address, uint8_t* data, size_t length) override;
-	byte readByte(uint32_t address) override;
+	uint8_t readByte(uint32_t address) override;
 	void read(uint32_t address, uint8_t* data, size_t length) override;
 
 };

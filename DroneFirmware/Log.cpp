@@ -80,9 +80,9 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 	}
 
 	// Padding
-	int startLength = strlen(message);
+	size_t startLength = strlen(message);
 
-	int padding = 14 - strlen(tag);
+	size_t padding = 14 - strlen(tag);
 	if (padding > 0) {
 		for (int i = 0; i < padding; i++)
 			message[startLength + i] = ' ';

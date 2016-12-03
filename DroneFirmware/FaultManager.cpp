@@ -1,6 +1,6 @@
 #include "FaultManager.h"
 
-boolean FaultManager::inited = false;
+bool FaultManager::inited = false;
 uint16_t FaultManager::lastID = 1;
 Fault FaultManager::faults[FAULTS_SIZE];
 
@@ -51,7 +51,7 @@ uint16_t FaultManager::findFault(FaultType type, const char* source, const char*
 	return faultIndex;
 }
 
-boolean FaultManager::addFault(Fault fault) {
+bool FaultManager::addFault(Fault fault) {
 	for (int i = 0; i < FAULTS_SIZE; i++) {
 		if (faults[i].id == 0) {
 			faults[i] = fault;

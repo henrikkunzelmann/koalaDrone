@@ -9,7 +9,7 @@ SensorHAL::SensorHAL(Config* config) {
 }
 
 void SensorHAL::initSensors() {
-	boolean gyroInit;
+	bool gyroInit;
 	
 	gyroInit = initGyro(new Gyro9250(config));
 	if (!gyroInit)
@@ -25,7 +25,7 @@ void SensorHAL::initSensors() {
 		FaultManager::fault(FaultHardware, "SensorHAL", "initSensors() Gyro");
 }
 
-boolean SensorHAL::initGyro(Gyro* gyro) {
+bool SensorHAL::initGyro(Gyro* gyro) {
 	if (this->gyro != NULL)
 		delete this->gyro;
 
@@ -36,7 +36,7 @@ boolean SensorHAL::initGyro(Gyro* gyro) {
 	return true;
 }
 
-boolean SensorHAL::initBaro(Baro* baro) {
+bool SensorHAL::initBaro(Baro* baro) {
 	if (this->baro != NULL)
 		delete this->baro;
 

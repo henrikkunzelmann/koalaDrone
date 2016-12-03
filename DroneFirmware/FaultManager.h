@@ -13,7 +13,7 @@
 class FaultManager
 {
 private:
-	static boolean inited;
+	static bool inited;
 	static uint16_t lastID;
 	static Fault faults[FAULTS_SIZE];
 
@@ -21,7 +21,7 @@ private:
 
 	static void init();
 	static uint16_t findFault(FaultType type, const char* source, const char* function);
-	static boolean addFault(Fault fault);
+	static bool addFault(Fault fault);
 	static void createNewFault(FaultType type, const char* source, const char* function);
 
 public:

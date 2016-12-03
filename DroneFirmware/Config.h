@@ -13,7 +13,7 @@ struct Config {
 	//A user-friendly name for the drone
 	char DroneName[20];
 
-	boolean SaveConfig;
+	bool SaveConfig;
 
 	// Name des WiFi Netzwerks
 	// leerer String bedeutet es wird keine Verbindung zu einem Netzwerk aufgebaut
@@ -52,15 +52,15 @@ struct Config {
 	uint16_t ServoIdle;
 
 	//The pin of the front-left motor
-	byte PinFrontLeft;
+	uint8_t PinFrontLeft;
 	//The pin of the front-right motor
-	byte PinFrontRight;
+	uint8_t PinFrontRight;
 	//The pin of the back-left motor
-	byte PinBackLeft;
+	uint8_t PinBackLeft;
 	//The pin of the back-right motor
-	byte PinBackRight;
+	uint8_t PinBackRight;
 	//The pin of the LED
-	byte PinLed;
+	uint8_t PinLed;
 
 	PIDSettings PitchPid;
 	PIDSettings RollPid;
@@ -68,23 +68,23 @@ struct Config {
 
 	float SafePitch;
 	float SafeRoll;
-	int SafeServoValue;
+	int32_t SafeServoValue;
 
-	boolean EnableStabilization;
-	boolean NegativeMixing;
+	bool EnableStabilization;
+	bool NegativeMixing;
 
-	int MaxThrustForFlying;
-	boolean OnlyArmWhenStill;
+	int32_t MaxThrustForFlying;
+	bool OnlyArmWhenStill;
 
 	PIDSettings AngleStabilization;
 
 	// Debug Settings
-	boolean EnableImuAcc;
-	boolean EnableImuMag;
+	bool EnableImuAcc;
+	bool EnableImuMag;
 	float GyroFilter;
 	float AccFilter;
 
-	boolean CalibrateServos;
+	bool CalibrateServos;
 	SensorCalibration SensorCalibrationData;
 };
 

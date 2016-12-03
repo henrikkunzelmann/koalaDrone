@@ -80,7 +80,7 @@ void setup() {
 
 	setupLED(&config);
 
-	boolean saveConfig = false;
+	bool saveConfig = false;
 	// Calibrate servos
 	if (config.CalibrateServos) {
 		Log::info("Boot", "Calibration of servos...");

@@ -57,7 +57,7 @@ protected:
 
 	void checkSaveConfig();
 
-	void handlePackets(int num);
+	void handlePackets(uint16_t num);
 
 	bool beginParse(WiFiUDP udp);
 	void handleHello(WiFiUDP udp);

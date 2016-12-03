@@ -60,7 +60,7 @@ void ServoManager::waitForDetach() {
 }
 
 void ServoManager::waitForDetach(Servo servo) {
-	int start = millis();
+	uint32_t start = millis();
 	while (millis() - start < 1000 && servo.attached()) 
 		yield();
 }
@@ -103,6 +103,7 @@ void ServoManager::calibrate() {
 int ServoManager::getValue(int value) {
 	if (value == 1)
 		return value;
+
 	value = MathHelper::clampValue(value, config->ServoMin, config->ServoMax);
 	if (value > config->SafeServoValue)
 		return config->SafeServoValue;

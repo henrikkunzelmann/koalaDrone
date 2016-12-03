@@ -53,7 +53,7 @@ uint32_t Profiler::start(const char* name) {
 	return start(name, true);
 }
 
-uint32_t Profiler::start(const char* name, boolean reset) {
+uint32_t Profiler::start(const char* name, bool reset) {
 	ProfilerFunction* function = findFunction(name);
 	if (function == NULL)
 		return UINT32_MAX;
@@ -65,7 +65,7 @@ uint32_t Profiler::start(const char* name, boolean reset) {
 	return function->index;
 }
 
-void Profiler::stop(ProfilerFunction* function, boolean add) {
+void Profiler::stop(ProfilerFunction* function, bool add) {
 	if (function->currentTime != 0) {
 		if (add)
 			function->time += micros() - function->currentTime;
@@ -122,7 +122,7 @@ void Profiler::finishFrame() {
 			end();
 	}
 
-	boolean resetMax = millis() - lastMaxReset > CYCLE_PROFILER_MAX;
+	bool resetMax = millis() - lastMaxReset > CYCLE_PROFILER_MAX;
 	if (resetMax)
 		lastMaxReset = millis();
 
