@@ -66,15 +66,16 @@ void Log::addMessage(char* message) {
 }
 
 void Log::print(LogLevel level, const char* tag, const char* format, va_list args) {
-	int messageSize = 128 * sizeof(char);
+	size_t messageSize = 128 * sizeof(char);
 	char* message = (char*)malloc(messageSize);
+
 	if (message == NULL) {
 		Serial.println("Log::print(), malloc() failed.");
 		return;
 	}
 
 	int size = snprintf(message, messageSize, "$ [%8lus] %s [%s]", millis() / 1000, getLevelString(level), tag);
-	if (size < 0 || size > messageSize) {
+	if (size < 0) {
 		free(message);
 		return;
 	}
@@ -84,13 +85,13 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 
 	size_t padding = 14 - strlen(tag);
 	if (padding > 0) {
-		for (int i = 0; i < padding; i++)
+		for (size_t i = 0; i < padding; i++)
 			message[startLength + i] = ' ';
 		message[startLength + padding] = '\0';
 	}
 
 	size = vsnprintf(message + strlen(message), messageSize, format, args);
-	if (size < 0 || size > messageSize) {
+	if (size < 0) {
 		free(message);
 		return;
 	}
