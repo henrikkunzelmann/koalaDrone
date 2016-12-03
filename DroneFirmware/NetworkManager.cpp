@@ -20,7 +20,7 @@ NetworkManager::NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEng
 	lastConfigSave = millis();
 
 	Log::info("Network", "Starting network manager...");
-	Log::debug("Network", "[Ports] hello: %d, control: %d, data: %d", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
+	Log::debug("Network", "[Ports] hello: %u, control: %u, data: %u", config->NetworkHelloPort, config->NetworkControlPort, config->NetworkDataPort);
 
 	Log::info("Network", "Creating UDP sockets...");
 
@@ -199,7 +199,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	ControlPacketType type = static_cast<ControlPacketType>(readBuffer->readUint8());
 
 #if VERBOSE_PACKET_LOG
-	Log::debug("Network", "[Packet] %s, size %d, rev %d", getControlPacketName(type), readBuffer->getSize(), revision);
+	Log::debug("Network", "[Packet] %s, size %u, rev %d", getControlPacketName(type), readBuffer->getSize(), revision);
 #endif
 	
 	if (ackRequested && type != DataOTA) // DataOTA sendet selber Ack
@@ -387,7 +387,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		if (!engine->beginOTA())
 			return;
 
-		Log::info("Network", "OTA begin with size %d and md5 %s", size, md5);
+		Log::info("Network", "OTA begin with size %u and md5 %s", size, md5);
 
 		if (ESP.getFreeSketchSpace() < size) {
 			Log::error("Network", "OTA begin failed (not enough free space)");

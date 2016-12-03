@@ -53,13 +53,13 @@ void setup() {
 
 	Log::info("Hardware", "Core version: %s", ESP.getCoreVersion().c_str());
 	Log::info("Hardware", "SDK version: %s", ESP.getSdkVersion());
-	Log::info("Hardware", "CPU freq: %dmhz", ESP.getCpuFreqMHz());
-	Log::info("Hardware", "Flash size: %dkbyte (set by compiler %dkbyte)", ESP.getFlashChipRealSize() / 1024, ESP.getFlashChipSize() / 1024);
+	Log::info("Hardware", "CPU freq: %umhz", ESP.getCpuFreqMHz());
+	Log::info("Hardware", "Flash size: %ukbyte (set by compiler %ukbyte)", ESP.getFlashChipRealSize() / 1024u, ESP.getFlashChipSize() / 1024u);
 
-	Log::info("Memory", "Free heap (before boot): %d", heapBefore);
+	Log::info("Memory", "Free heap (before boot): %u", heapBefore);
 
 	rst_info* resetInfo = ESP.getResetInfoPtr();
-	Log::debug("Boot", "Reset info: r: %d, ex: %d   0x%x, 0x%x, 0x%x, 0x%x, 0x%x", 
+	Log::debug("Boot", "Reset info: r: %u, ex: %u   0x%x, 0x%x, 0x%x, 0x%x, 0x%x", 
 		resetInfo->reason, resetInfo->exccause,
 		resetInfo->epc1, resetInfo->epc2, resetInfo->epc3, resetInfo->excvaddr, resetInfo->depc);
 
@@ -96,7 +96,7 @@ void setup() {
 		else
 		{
 
-			Log::error("Boot", "Invalid reset reason: %d", resetInfo->reason);
+			Log::error("Boot", "Invalid reset reason: %u", resetInfo->reason);
 			blinkLED(10, 500);
 		}
 
@@ -179,7 +179,7 @@ void setup() {
 	// Profiler laden
 	Profiler::init();
 
-	Log::info("Memory", "Free heap (after boot): %d", ESP.getFreeHeap());
+	Log::info("Memory", "Free heap (after boot): %u", ESP.getFreeHeap());
 	Log::info("Boot", "done booting. ready.");
 }
 

@@ -72,7 +72,7 @@ void FaultManager::createNewFault(FaultType type, const char* source, const char
 	fault.timeFirst = now;
 	fault.timeLast = now;
 
-	Log::error("Fault", "[%d] [%s] %s at %s", fault.id, getFaultName(type), source, function);
+	Log::error("Fault", "[%u] [%s] %s at %s", fault.id, getFaultName(type), source, function);
 
 	if (!addFault(fault)) {
 		// Fault mit kleinster ID löschen
@@ -89,7 +89,7 @@ void FaultManager::createNewFault(FaultType type, const char* source, const char
 
 		if (index >= 0) {
 			faults[index].id = 0;
-			Log::info("Fault", "Removed fault with id %d", lowestID);
+			Log::info("Fault", "Removed fault with id %u", lowestID);
 
 			// erneut versuchen
 			if (!addFault(fault))
@@ -114,7 +114,7 @@ void FaultManager::fault(FaultType type, const char* source, const char* functio
 		uint32_t now = millis();
 		if (fault->timeLast < now && now - fault->timeLast > NEW_FAULT_TIME)
 		{
-			Log::error("Fault", "New fault for old fault... (first time: %dms, last time: %dms)", fault->timeFirst, fault->timeLast);
+			Log::error("Fault", "New fault for old fault... (first time: %ums, last time: %ums)", fault->timeFirst, fault->timeLast);
 			return createNewFault(type, source, function);
 		}
 
