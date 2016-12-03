@@ -384,24 +384,30 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 		if (readBuffer->getError())
 			return;
 
-		if (!engine->beginOTA())
+		if (!engine->beginOTA()) {
+			free(md5);
 			return;
+		}
 
 		Log::info("Network", "OTA begin with size %u and md5 %s", size, md5);
 
 		if (ESP.getFreeSketchSpace() < size) {
 			Log::error("Network", "OTA begin failed (not enough free space)");
 			engine->endOTA();
+			free(md5);
 			return;
 		}
 
 		if (!Update.begin(size, U_FLASH)) {
 			Log::error("Network", "OTA begin failed");
 			engine->endOTA();
+			free(md5);
 			return;
 		}
 
-		Update.setMD5(md5);
+		if (!Update.setMD5(md5))
+			free(md5);
+
 		break;
 	}
 	case DataOTA: {
@@ -451,13 +457,13 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 			}
 
 			Log::info("Network", "OTA md5: %s", Update.md5String().c_str());
-			Log::error("Network", "OTA update failed (%d)", Update.getError());
+			Log::error("Network", "OTA update failed (%u)", Update.getError());
 
 			engine->endOTA();
 		}
 		break;
 	default: 
-		Log::error("Network", "Unknown packet: %d", type);
+		Log::error("Network", "Unknown packet: %u", type);
 		FaultManager::fault(FaultProtocol, "Network", "Invalid packet");
 		break;
 	}
