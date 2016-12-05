@@ -78,21 +78,22 @@ protected:
 	SensorCalibration* calibration;
 	virtual bool getValues(GyroValues* values) = 0;
 
-public:
 	explicit Gyro(Config* config);
+public:
 	virtual ~Gyro();
 
-	virtual const char* name() = 0;
-	virtual const char* magnetometerName() = 0;
+	virtual const char* name() const = 0;
+	virtual const char* magnetometerName() const = 0;
 
 	virtual bool init() = 0;
 	virtual void reset() = 0;
 	virtual void resetMagnet() = 0;
 
-	void update();
-
+	virtual bool isOK() const = 0;
 	virtual bool hasMagnetometer() const = 0;
 	virtual bool hasIMU() const = 0;
+
+	void update();
 
 	void beginCalibration(CalibrationState state);
 	bool inCalibration();

@@ -13,8 +13,6 @@ struct BaroValues {
 	float Humidity;
 };
 
-class SensorHAL;
-
 class Baro
 {
 private:
@@ -31,17 +29,18 @@ protected:
 
 	virtual bool getValues(BaroValues* values) = 0;
 
-public:
 	explicit Baro(Config* config);
+public:
 	virtual ~Baro();
 
-	virtual const char* name() = 0;
+	virtual const char* name() const = 0;
 
 	virtual bool init() = 0;
 	virtual void reset() = 0;
 
-	void update();
+	virtual bool isOK() const = 0;
 
+	void update();
 	BaroValues getValues() const;
 	float getAltitude() const;
 };

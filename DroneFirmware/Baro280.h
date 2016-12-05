@@ -20,7 +20,8 @@ protected:
 public:
 	explicit Baro280(Config* config);
 
-	const char* name();
+	bool isOK() const;
+	const char* name() const;
 
 	bool init();
 	void reset();

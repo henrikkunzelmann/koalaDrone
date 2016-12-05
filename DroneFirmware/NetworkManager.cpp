@@ -56,7 +56,7 @@ void NetworkManager::checkSaveConfig() {
 		ConfigManager::saveConfig(*config);
 
 		servos->attach();
-		handlePackets(INT32_MAX);
+		handlePackets(20); // Catch up mit Paketen
 
 
 		ESP.wdtEnable(WDTO_0MS);

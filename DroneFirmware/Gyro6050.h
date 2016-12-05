@@ -22,13 +22,14 @@ protected:
 public:
 	explicit Gyro6050(Config* config);
 
-	const char* name();
-	const char* magnetometerName();
+	const char* name() const;
+	const char* magnetometerName() const;
 
 	bool init();
 	void reset();
 	void resetMagnet();
 
+	bool isOK() const;
 	bool hasMagnetometer() const;
 	bool hasIMU() const;
 };

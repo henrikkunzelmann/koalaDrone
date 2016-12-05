@@ -4,11 +4,11 @@
 #include "arduino.h"
 
 class VoltageInputReader {
-protected:
-	int _inputPin;
-	float _maxVoltage;
-	float _maxInputVoltage;
-	float _voltage;
+private:
+	int inputPin;
+	float maxVoltage;
+	float maxInputVoltage;
+	float voltage;
 
 public:
 	VoltageInputReader(int pin, float maxVoltage, float maxInputVoltage);

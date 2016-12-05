@@ -4,6 +4,9 @@
 #include "arduino.h"
 
 class MemoryAdapter {
+protected:
+	explicit MemoryAdapter();
+
 public:
 	virtual ~MemoryAdapter();
 

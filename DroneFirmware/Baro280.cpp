@@ -1,12 +1,15 @@
 #include "Baro280.h"
 
 Baro280::Baro280(Config* config) : Baro(config), bme(BME280_ADDR_SDO_HIGH) {
+	ok = false;
 }
 
-const char* Baro280::name() {
-	if (ok)
-		return "Bosch BME280";
-	return "";
+bool Baro280::isOK() const {
+	return ok;
+}
+
+const char* Baro280::name() const {
+	return "Bosch BME280";
 }
 
 bool Baro280::init() {

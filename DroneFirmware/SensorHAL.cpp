@@ -45,19 +45,19 @@ bool SensorHAL::initBaro(Baro* baro) {
 }
 
 const char* SensorHAL::getGyroName() const {
-	if (gyro == NULL)
+	if (gyro == NULL || !gyro->isOK())
 		return "";
 	return gyro->name();
 }
 
 const char* SensorHAL::getMagnetometerName() const {
-	if (gyro == NULL)
+	if (gyro == NULL || !gyro->isOK())
 		return "";
 	return gyro->magnetometerName();
 }
 
 const char* SensorHAL::getBaroName() const {
-	if (baro == NULL)
+	if (baro == NULL || !baro->isOK())
 		return "";
 	return baro->name();
 }

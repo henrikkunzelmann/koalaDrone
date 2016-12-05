@@ -1,18 +1,15 @@
 #include "Gyro9250.h"
 
 Gyro9250::Gyro9250(Config* config) : Gyro(config) {
+	mpuOK = false;
 }
 
-const char* Gyro9250::name() {
-	if (mpuOK)
-		return "InvenSense MPU-9250";
-	return "";
+const char* Gyro9250::name() const {
+	return "InvenSense MPU-9250";
 }
 
-const char* Gyro9250::magnetometerName() {
-	if (mpuOK)
-		return "MPU-9250 (AK8963)";
-	return "";
+const char* Gyro9250::magnetometerName() const {
+	return "MPU-9250 (AK8963)";
 }
 
 bool Gyro9250::init() {
@@ -111,6 +108,10 @@ void Gyro9250::resetMagnet() {
 		mpu.magSoftReset();
 		mpu.magInit();
 	}
+}
+
+bool Gyro9250::isOK() const {
+	return mpuOK;
 }
 
 bool Gyro9250::hasMagnetometer() const {

@@ -198,8 +198,7 @@ namespace DroneLibrary
 
         private void InvokeEvent()
         {
-            if (OnListChanged != null)
-                OnListChanged(this, new DroneListChangedEventArgs(GetDrones()));
+            OnListChanged?.Invoke(this, new DroneListChangedEventArgs(GetDrones()));
         }
 
         public DroneEntry[] GetDrones()

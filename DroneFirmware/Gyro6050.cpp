@@ -1,15 +1,14 @@
 #include "Gyro6050.h"
 
 Gyro6050::Gyro6050(Config* config) : Gyro(config) {
+	mpuOK = false;
 }
 
-const char* Gyro6050::name() {
-	if (mpuOK)
-		return "InvenSense MPU-6050";
-	return "";
+const char* Gyro6050::name() const {
+	return "InvenSense MPU-6050";
 }
 
-const char* Gyro6050::magnetometerName() {
+const char* Gyro6050::magnetometerName() const {
 	return "";
 }
 
@@ -81,6 +80,10 @@ void Gyro6050::reset() {
 }
 
 void Gyro6050::resetMagnet() {
+}
+
+bool Gyro6050::isOK() const {
+	return mpuOK;
 }
 
 bool Gyro6050::hasMagnetometer() const {
