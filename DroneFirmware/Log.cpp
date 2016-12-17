@@ -2,6 +2,8 @@
 
 uint32_t Log::bufferLines = 0;
 char** Log::_buffer;
+char Log::tagBuffer[LOG_TAG_BUFFER_SIZE];
+char Log::formatBuffer[LOG_FORMAT_BUFFER_SIZE];
 bool Log::printToSerial = true;
 
 const char* Log::getLevelString(LogLevel level) {
@@ -13,7 +15,7 @@ const char* Log::getLevelString(LogLevel level) {
 	case Debug:
 		return "[Debug]";
 	}
-	return "[UNKWN]";
+	return     "[Unkwn]";
 }
 
 uint32_t Log::getBufferLines() {
@@ -65,26 +67,40 @@ void Log::addMessage(char* message) {
 	buffer[bufferLines++] = message;
 }
 
+void Log::print_P(LogLevel level, const __FlashStringHelper* tag, const __FlashStringHelper* format, va_list args) {
+	memset(tagBuffer, 0, sizeof(tagBuffer));
+	memset(formatBuffer, 0, sizeof(formatBuffer));
+
+	strncpy_P(tagBuffer, (PGM_P)tag, sizeof(tagBuffer));
+	strncpy_P(formatBuffer, (PGM_P)format, sizeof(formatBuffer));
+
+	print(level, tagBuffer, formatBuffer, args);
+}
+
 void Log::print(LogLevel level, const char* tag, const char* format, va_list args) {
 	size_t messageSize = 128 * sizeof(char);
 	char* message = (char*)malloc(messageSize);
 
 	if (message == NULL) {
-		Serial.println("Log::print(), malloc() failed.");
+		Serial.println(F("[Log::print()] malloc() failed."));
 		return;
 	}
 
+	memset(message, 0, messageSize);
+
 	int size = snprintf(message, messageSize, "$ [%8lus] %s [%s]", millis() / 1000, getLevelString(level), tag);
 	if (size < 0) {
+		Serial.println(F("[Log::print()] Could not log message, because message is too long"));
 		free(message);
 		return;
 	}
 
 	// Padding
 	size_t startLength = strlen(message);
+	size_t tagLength = strlen(tag);
 
-	size_t padding = 14 - strlen(tag);
-	if (padding > 0) {
+	if (tagLength < 14) {
+		size_t padding = 14 - tagLength;
 		for (size_t i = 0; i < padding; i++)
 			message[startLength + i] = ' ';
 		message[startLength + padding] = '\0';
@@ -92,6 +108,7 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 
 	size = vsnprintf(message + strlen(message), messageSize, format, args);
 	if (size < 0) {
+		Serial.println(F("[Log::print()] Could not log message, because message is too long"));
 		free(message);
 		return;
 	}
@@ -101,6 +118,27 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 		Serial.println(message);
 
 	addMessage(message);
+}
+
+void Log::error_P(const __FlashStringHelper* tag, const __FlashStringHelper* format, ...) {
+	va_list args;
+	va_start(args, format);
+	print_P(Error, tag, format, args);
+	va_end(args);
+}
+
+void Log::info_P(const __FlashStringHelper* tag, const __FlashStringHelper* format, ...) {
+	va_list args;
+	va_start(args, format);
+	print_P(Info, tag, format, args);
+	va_end(args);
+}
+
+void Log::debug_P(const __FlashStringHelper* tag, const __FlashStringHelper* format, ...) {
+	va_list args;
+	va_start(args, format);
+	print_P(Debug, tag, format, args);
+	va_end(args);
 }
 
 void Log::error(const char* tag, const char* format, ...) {
