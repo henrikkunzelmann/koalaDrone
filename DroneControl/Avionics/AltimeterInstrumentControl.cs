@@ -25,7 +25,7 @@ namespace DroneControl.Avionics
         Bitmap bmpCadran = new Bitmap(AvionicsInstrumentsControlsRessources.Altimeter_Background);
         Bitmap bmpSmallNeedle = new Bitmap(AvionicsInstrumentsControlsRessources.SmallNeedleAltimeter);
         Bitmap bmpLongNeedle = new Bitmap(AvionicsInstrumentsControlsRessources.LongNeedleAltimeter);
-        Bitmap bmpScroll = new Bitmap(AvionicsInstrumentsControlsRessources.Bandeau_Dérouleur);
+        Bitmap bmpScroll = new Bitmap(AvionicsInstrumentsControlsRessources.Bandeau_Derouleur);
 
         #endregion
 

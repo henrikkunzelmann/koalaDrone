@@ -93,9 +93,9 @@ namespace DroneControl.Avionics {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Bandeau_Dérouleur {
+        internal static System.Drawing.Bitmap Bandeau_Derouleur {
             get {
-                object obj = ResourceManager.GetObject("Bandeau_Dérouleur", resourceCulture);
+                object obj = ResourceManager.GetObject("Bandeau_Derouleur", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
