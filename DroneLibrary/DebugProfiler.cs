@@ -8,6 +8,9 @@ namespace DroneLibrary
 
         public DebugProfiler(PacketBuffer buffer)
         {
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
+
             uint count = buffer.ReadUInt();
 
             Entries = new Entry[count];
@@ -33,6 +36,9 @@ namespace DroneLibrary
 
             public Entry(PacketBuffer buffer)
             {
+                if (buffer == null)
+                    throw new ArgumentNullException(nameof(buffer));
+
                 Name = buffer.ReadString();
                 TimeMicros = buffer.ReadUInt();
                 TimeMaxMicros = buffer.ReadUInt();

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace DroneLibrary
@@ -153,6 +154,9 @@ namespace DroneLibrary
 
         public static DroneSettings Read(PacketBuffer packetBuffer)
         {
+            if (packetBuffer == null)
+                throw new ArgumentNullException(nameof(packetBuffer));
+
             int size = Marshal.SizeOf(typeof(DroneSettings));
 
             byte[] buffer = new byte[size];
@@ -167,6 +171,9 @@ namespace DroneLibrary
 
         public void Write(PacketBuffer packetBuffer)
         {
+            if (packetBuffer == null)
+                throw new ArgumentNullException(nameof(packetBuffer));
+
             int size = Marshal.SizeOf(typeof(DroneSettings));
 
             byte[] buffer = new byte[size];

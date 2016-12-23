@@ -140,7 +140,7 @@ uint32_t PacketBuffer::getSize() const {
 
 void PacketBuffer::setSize(uint32_t size) {
 	if (size > bufferSize) {
-		Log::error("PacketBuffer", "setSize() operation not in range of packet");
+		Log::error("PacketBuffer", "setSize() operation not in range of internal buffer");
 		Log::error("PacketBuffer", "%u > %u", size, bufferSize);
 		error = true;
 		return;

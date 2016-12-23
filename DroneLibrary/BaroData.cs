@@ -1,4 +1,6 @@
-﻿namespace DroneLibrary
+﻿using System;
+
+namespace DroneLibrary
 {
     public struct BaroData
     {
@@ -9,10 +11,13 @@
 
         public BaroData(PacketBuffer buffer)
         {
-            this.Pressure = buffer.ReadFloat();
-            this.Humidity = buffer.ReadFloat();
-            this.Temperature = buffer.ReadFloat();
-            this.Altitude = buffer.ReadFloat();
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
+
+            Pressure = buffer.ReadFloat();
+            Humidity = buffer.ReadFloat();
+            Temperature = buffer.ReadFloat();
+            Altitude = buffer.ReadFloat();
         }
     }
 }

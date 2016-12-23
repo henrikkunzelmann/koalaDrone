@@ -8,6 +8,9 @@ namespace DroneLibrary
 
         public DataChangedEventArgs(Drone drone)
         {
+            if (drone == null)
+                throw new ArgumentNullException(nameof(drone));
+
             this.Data = drone.Data;
         }
     }

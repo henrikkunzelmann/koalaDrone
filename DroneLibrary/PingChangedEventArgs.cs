@@ -9,6 +9,9 @@ namespace DroneLibrary
 
         public PingChangedEventArgs(Drone drone)
         {
+            if (drone == null)
+                throw new ArgumentNullException(nameof(drone));
+
             this.IsConnected = drone.IsConnected;
             this.Ping = drone.Ping;
         }

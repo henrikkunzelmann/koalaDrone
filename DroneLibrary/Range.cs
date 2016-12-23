@@ -10,8 +10,8 @@ namespace DroneLibrary
 
         public Range(int min, int max)
         {
-            this.Min = min;
-            this.Max = max;
+            this.Min = Math.Min(min, max);
+            this.Max = Math.Max(min, max);
         }
     }
 }

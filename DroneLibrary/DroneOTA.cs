@@ -26,14 +26,20 @@ namespace DroneLibrary
 
         public DroneOTA(Drone drone)
         {
+            if (drone == null)
+                throw new ArgumentNullException(nameof(drone));
+
             this.Drone = drone;
 
+            // wenn schon ein OTA Prozess läuft, alten stoppen
             if (IsRunning)
                 Abort();
         }
 
         public void Start(string file)
         {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
             if (!CanStart)
                 throw new InvalidOperationException("Drone not ready for OTA");
 

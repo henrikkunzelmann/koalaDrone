@@ -11,7 +11,6 @@ namespace DroneLibrary
     /// </summary>
     public class Config
     {
-        
         [Category("Network Log")]
         [Description("Wenn true, dann werden gesendete Pakete in die Konsole geschrieben")]
         public bool VerbosePacketSending { get; set; }
@@ -70,6 +69,9 @@ namespace DroneLibrary
             IgnoreGuaranteedWhenOffline = true;
         }
 
+        /// <summary>
+        /// Schreibt alle Einstellungen in die Konsole.
+        /// </summary>
         public void PrintToConsole()
         {
             Console.WriteLine("Config:");
@@ -78,13 +80,20 @@ namespace DroneLibrary
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Schreibt die Einstellungen in eine Datei.
+        /// </summary>
+        /// <param name="file">Der Name der Datei in welche die Einstellungen gespeichert werden sollen</param>
         public void SaveToFile(string file)
         {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
             using (FileStream stream = File.OpenWrite(file))
             {
                 StreamWriter writer = new StreamWriter(stream);
 
-                writer.WriteLine("# Standard Einstellungen für die Drohne");
+                writer.WriteLine("# Standard Einstellungen für koalaDrone");
                 writer.WriteLine();
 
                 foreach (PropertyInfo info in GetType().GetProperties())
@@ -120,6 +129,9 @@ namespace DroneLibrary
         /// <returns></returns>
         public static Config LoadConfigFromFile(string file)
         {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
             string[] fileLines = File.ReadAllLines(file);
             Config config = new Config();
             Type configType = config.GetType();

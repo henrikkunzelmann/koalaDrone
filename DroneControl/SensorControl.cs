@@ -16,8 +16,9 @@ namespace DroneControl
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
-            if (this.Drone != null)
-                this.Drone.OnDataChange -= Drone_OnDataChange;
+            if (Drone != null)
+                Drone.OnDataChange -= Drone_OnDataChange;
+
             base.OnHandleDestroyed(e);
         }
 

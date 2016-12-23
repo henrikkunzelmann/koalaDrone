@@ -27,7 +27,13 @@ namespace DroneLibrary
         /// </summary>
         public string[] Lines
         {
-            get { return lines.ToArray(); }
+            get
+            {
+                lock (lines)
+                {
+                    return lines.ToArray();
+                }
+            }
         }
 
         public event EventHandler OnAddedLines;
@@ -54,11 +60,11 @@ namespace DroneLibrary
         /// <returns>Die Zeilen nach dem Index oder null wenn keine neuen Zeilen vorhanden sind.</returns>
         public string[] GetLinesAfter(int index)
         {
+            if (index < 0 || index > Count)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
             lock (lines)
             {
-                if (index < 0 || index > Count)
-                    throw new ArgumentOutOfRangeException(nameof(index));
-
                 return lines.Skip(index).ToArray();
             }
         }

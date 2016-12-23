@@ -110,7 +110,7 @@ namespace DroneLibrary
         public static void Write(LogLevel level, string message)
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
 
             if (level >= LevelMinimum)// alle Einträge die unter dem Minimum fallen ignoreren
             {
@@ -141,9 +141,9 @@ namespace DroneLibrary
         public static void Write(LogLevel level, string format, params object[] args)
         {
             if (format == null)
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
             if (args == null)
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException(nameof(args));
 
             Write(level, string.Format(format, args));
         }
@@ -155,7 +155,7 @@ namespace DroneLibrary
         public static void Verbose(string message)
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
 
             Write(LogLevel.Verbose, message);
         }
@@ -167,7 +167,7 @@ namespace DroneLibrary
         public static void Debug(string message)
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
 
             Write(LogLevel.Debug, message);
         }
@@ -179,7 +179,7 @@ namespace DroneLibrary
         public static void Info(string message)
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
 
             Write(LogLevel.Info, message);
         }
@@ -191,18 +191,29 @@ namespace DroneLibrary
         public static void Warning(string message)
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
 
             Write(LogLevel.Warning, message);
         }
 
-        public static void Error(Exception e)
+        /// <summary>
+        /// Schreibt eine Exception in den Log.
+        /// </summary>
+        /// <param name="exception">Die Exception welche geschrieben werden soll.</param>
+        public static void Error(Exception exception)
         {
-            if (e == null)
-                throw new ArgumentNullException("e");
+            if (exception == null)
+                throw new ArgumentNullException(nameof(exception));
 
-            Error(e.Message);
-            Error(e.StackTrace);
+            if (exception.Message == null)
+                Error("Exception {0}", exception.GetType().Name);
+            else
+                Error(exception.Message);
+
+            if (exception.StackTrace == null)
+                Error("No stacktrace");
+            else
+                Error(exception.StackTrace);
         }
 
         /// <summary>
@@ -212,7 +223,7 @@ namespace DroneLibrary
         public static void Error(string message)
         {
             if (message == null)
-                throw new ArgumentNullException("message");
+                throw new ArgumentNullException(nameof(message));
 
             Write(LogLevel.Error, message);
         }
@@ -224,9 +235,9 @@ namespace DroneLibrary
         public static void Verbose(string format, params object[] args)
         {
             if (format == null)
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
             if (args == null)
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException(nameof(args));
 
             Write(LogLevel.Verbose, format, args);
         }
@@ -238,9 +249,9 @@ namespace DroneLibrary
         public static void Debug(string format, params object[] args)
         {
             if (format == null)
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
             if (args == null)
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException(nameof(args));
 
             Write(LogLevel.Debug, format, args);
         }
@@ -252,9 +263,9 @@ namespace DroneLibrary
         public static void Info(string format, params object[] args)
         {
             if (format == null)
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
             if (args == null)
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException(nameof(args));
 
             Write(LogLevel.Info, format, args);
         }
@@ -266,9 +277,9 @@ namespace DroneLibrary
         public static void Warning(string format, params object[] args)
         {
             if (format == null)
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
             if (args == null)
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException(nameof(args));
 
             Write(LogLevel.Warning, format, args);
         }
@@ -280,9 +291,9 @@ namespace DroneLibrary
         public static void Error(string format, params object[] args)
         {
             if (format == null)
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
             if (args == null)
-                throw new ArgumentNullException("args");
+                throw new ArgumentNullException(nameof(args));
 
             Write(LogLevel.Error, format, args);
         }
@@ -295,6 +306,9 @@ namespace DroneLibrary
         /// <param name="obj">Das Objekt mit den Feldern die in den Log geschrieben werden sollen.</param>
         public static void WriteFields(LogLevel level, object obj)
         {
+            if (obj == null)
+                throw new ArgumentNullException(nameof(obj));
+
             var fields = obj.GetType().GetFields();
             Log.Write(level, "All fields for {0} [n: {1}]:", obj.GetType().FullName, fields.Length);
             foreach (var field in fields)
@@ -308,6 +322,9 @@ namespace DroneLibrary
         /// <param name="obj">Das Objekt mit den Eigenschaften die in den Log geschrieben werden sollen.</param>
         public static void WriteProperties(LogLevel level, object obj)
         {
+            if (obj == null)
+                throw new ArgumentNullException(nameof(obj));
+
             var properties = obj.GetType().GetProperties();
             Log.Write(level, "All properties for {0} [n: {1}]:", obj.GetType().FullName, properties.Length);
             foreach (var property in properties)

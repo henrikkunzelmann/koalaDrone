@@ -1,4 +1,6 @@
-﻿namespace DroneLibrary
+﻿using System;
+
+namespace DroneLibrary
 {
     public struct GyroData
     {
@@ -24,25 +26,28 @@
 
         public GyroData(PacketBuffer buffer)
         {
-            this.InCalibration = buffer.ReadBoolean();
+            if (buffer == null)
+                throw new ArgumentNullException(nameof(buffer));
 
-            this.Roll = buffer.ReadFloat();
-            this.Pitch = buffer.ReadFloat();
-            this.Yaw = buffer.ReadFloat();
+            InCalibration = buffer.ReadBoolean();
 
-            this.GyroX = buffer.ReadFloat();
-            this.GyroY = buffer.ReadFloat();
-            this.GyroZ = buffer.ReadFloat();
+            Roll = buffer.ReadFloat();
+            Pitch = buffer.ReadFloat();
+            Yaw = buffer.ReadFloat();
 
-            this.AccelerationX = buffer.ReadFloat();
-            this.AccelerationY = buffer.ReadFloat();
-            this.AccelerationZ = buffer.ReadFloat();
+            GyroX = buffer.ReadFloat();
+            GyroY = buffer.ReadFloat();
+            GyroZ = buffer.ReadFloat();
 
-            this.MagnetX = buffer.ReadFloat();
-            this.MagnetY = buffer.ReadFloat();
-            this.MagnetZ = buffer.ReadFloat();
+            AccelerationX = buffer.ReadFloat();
+            AccelerationY = buffer.ReadFloat();
+            AccelerationZ = buffer.ReadFloat();
 
-            this.Temperature = buffer.ReadFloat();
+            MagnetX = buffer.ReadFloat();
+            MagnetY = buffer.ReadFloat();
+            MagnetZ = buffer.ReadFloat();
+
+            Temperature = buffer.ReadFloat();
         }
     }
 }
