@@ -2,6 +2,10 @@
 #define _NETWORKMANAGER_h
 
 #include "arduino.h"
+#include <user_interface.h>
+#include <ESP8266WiFi.h>
+#include <WiFiUdp.h>
+
 #include "Config.h"
 #include "Gyro.h"
 #include "Baro.h"
@@ -15,11 +19,8 @@
 #include "LED.h"
 #include "CycleTimes.h"
 #include "FaultManager.h"
-
-#include <ESP8266WiFi/src/ESP8266WiFi.h>
-#include <ESP8266WiFi/src/WiFiUdp.h>
 #include "VoltageInputReader.h"
-#include <user_interface.h>
+
 
 #define VERBOSE_PACKET_LOG false
 

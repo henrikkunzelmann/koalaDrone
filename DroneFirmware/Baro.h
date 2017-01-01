@@ -2,6 +2,7 @@
 #define _BARO_h
 
 #include "arduino.h"
+
 #include "MathHelper.h"
 #include "SensorCalibration.h"
 #include "Log.h"

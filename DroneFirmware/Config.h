@@ -2,7 +2,9 @@
 #define _CONFIG_h
 
 #include "arduino.h"
+
 #include "SensorCalibration.h"
+
 struct PIDSettings {
 	float Kp;
 	float Ki;

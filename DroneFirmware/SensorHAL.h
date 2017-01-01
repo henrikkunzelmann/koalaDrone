@@ -2,6 +2,7 @@
 #define _SENSORHAL_h
 
 #include "arduino.h"
+
 #include "Config.h"
 #include "FaultManager.h"
 #include "Gyro.h"

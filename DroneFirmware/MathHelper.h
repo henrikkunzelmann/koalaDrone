@@ -2,6 +2,7 @@
 #define _MATHHELPER_h
 
 #include "arduino.h"
+
 #include "Config.h"
 
 #define FILTER(x, y, w) ((1.0f - w) * x + w * y)

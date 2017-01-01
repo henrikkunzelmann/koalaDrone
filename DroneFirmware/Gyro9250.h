@@ -1,13 +1,14 @@
 #ifndef _GYRO9250_h
 #define _GYRO9250_h
 
-#include "Build.h"
-#include "Gyro.h"
-#include "CycleTimes.h"
-
+#include "Arduino.h"
 #include <Wire.h>
 #include <I2Cdev.h>
 #include <MPU9250.h>
+
+#include "Build.h"
+#include "Gyro.h"
+#include "CycleTimes.h"
 
 class Gyro9250 : public Gyro
 {

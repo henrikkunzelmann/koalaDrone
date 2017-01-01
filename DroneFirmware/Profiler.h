@@ -2,6 +2,7 @@
 #define _PROFILER_h
 
 #include "arduino.h"
+
 #include "PacketBuffer.h"
 #include "CycleTimes.h"
 

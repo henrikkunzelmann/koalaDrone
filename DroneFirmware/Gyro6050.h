@@ -1,13 +1,14 @@
 #ifndef _GYRO6050_h
 #define _GYRO6050_h
 
-#include "Build.h"
-#include "Gyro.h"
-#include "CycleTimes.h"
-
+#include "Arduino.h"
 #include <Wire.h>
 #include <I2Cdev.h>
 #include <MPU6050.h>
+
+#include "Build.h"
+#include "Gyro.h"
+#include "CycleTimes.h"
 
 class Gyro6050 : public Gyro
 {
