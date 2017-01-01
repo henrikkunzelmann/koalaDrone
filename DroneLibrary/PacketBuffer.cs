@@ -39,7 +39,7 @@ namespace DroneLibrary
 
         public void Dispose()
         {
-            Dispose(false);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -48,14 +48,14 @@ namespace DroneLibrary
             if (IsDisposed)
                 return;
 
+            IsDisposed = true;
+
             if (disposing)
             {
-                stream.Close();
-                reader.Dispose();
-                writer.Dispose();
+                stream?.Close();
+                reader?.Dispose();
+                writer?.Dispose();
             }
-
-            IsDisposed = true;
         }
 
         public void ResetPosition()

@@ -41,7 +41,7 @@ namespace DroneLibrary
 
         public void Dispose()
         {
-            Dispose(false);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -50,10 +50,10 @@ namespace DroneLibrary
             if (IsDisposed)
                 return;
 
+            IsDisposed = true;
+
             if (disposing)
                 client?.Close();
-
-            IsDisposed = true;
         }
 
         public void SendHello()
@@ -83,6 +83,9 @@ namespace DroneLibrary
 
         private void ReceivePacket(IAsyncResult result)
         {
+            if (IsDisposed)
+                return;
+
             try
             {
                 IPEndPoint sender = null;

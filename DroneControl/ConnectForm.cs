@@ -30,12 +30,13 @@ namespace DroneControl
 
         private void StopDroneList()
         {
+            searchTimer.Stop();
+
             if (droneList != null)
             {
                 droneList.OnListChanged -= DroneList_OnListChanged;
                 droneList.Dispose();
             }
-            searchTimer.Stop();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -57,7 +58,6 @@ namespace DroneControl
         {
             connectButton.Enabled = false;
 
-            
             using (ConnectingForm form = new ConnectingForm(address))
             {
                 // wenn wir verbunden sind (result == OK)

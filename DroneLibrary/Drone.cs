@@ -338,7 +338,7 @@ namespace DroneLibrary
 
         public void Dispose()
         {
-            Dispose(false);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -347,14 +347,14 @@ namespace DroneLibrary
             if (IsDisposed)
                 return;
 
+            IsDisposed = true;
+
             if (disposing)
             {
                 controlSocket?.Close();
                 dataSocket?.Close();
                 packetStream?.Dispose();
             }
-
-            IsDisposed = true;
         }
 
         #endregion
@@ -590,6 +590,9 @@ namespace DroneLibrary
 
         private void SendPacket(IAsyncResult result)
         {
+            if (IsDisposed)
+                return;
+
             try
             {
                 controlSocket.EndSend(result);
@@ -635,7 +638,8 @@ namespace DroneLibrary
             }
             finally
             {
-                controlSocket.BeginReceive(ReceivePacket, null);
+                if (!IsDisposed)
+                    controlSocket.BeginReceive(ReceivePacket, null);
             }
         }
 
@@ -750,7 +754,8 @@ namespace DroneLibrary
             }
             finally
             {
-                dataSocket.BeginReceive(ReceiveDataPacket, null);
+                if (!IsDisposed)
+                    dataSocket.BeginReceive(ReceiveDataPacket, null);
             }
         }
 

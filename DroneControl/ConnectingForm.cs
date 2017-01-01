@@ -16,9 +16,9 @@ namespace DroneControl
             if (ipAddress == null)
                 throw new ArgumentNullException(nameof(ipAddress));
 
-            InitializeComponent();
-
             this.ipAddress = ipAddress;
+
+            InitializeComponent();
 
             connectStatus.Text = string.Format(connectStatus.Text, ipAddress);
 
@@ -29,8 +29,7 @@ namespace DroneControl
 
                 if (MessageBox.Show("Error while connecting: timeout.", "Connection Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                 {
-                    if (Drone != null)
-                        Drone.Dispose();
+                    DisposeDrone(false);
 
                     DialogResult = DialogResult.Cancel;
                     Close();
@@ -46,6 +45,17 @@ namespace DroneControl
             };
         }
 
+        private void DisposeDrone(bool onlyIfNotConnected)
+        {
+            StopTimers();
+            if (Drone != null)
+            {
+                Drone.OnConnected -= OnDroneConnected;
+                if (!onlyIfNotConnected || !Drone.IsConnected)
+                    Drone.Dispose();
+            }
+        }
+
         protected override void OnHandleCreated(EventArgs e)
         {
             Connect();
@@ -54,14 +64,7 @@ namespace DroneControl
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if (Drone != null)
-            {
-                Drone.OnConnected -= OnDroneConnected;
-                if (!Drone.IsConnected)
-                    Drone.Dispose();
-            }
-
-            StopTimers();
+            DisposeDrone(true);
             base.OnFormClosing(e);
         }
 
@@ -82,6 +85,8 @@ namespace DroneControl
         /// </summary>
         private void Connect()
         {
+            DisposeDrone(false);
+
             Drone = new Drone(ipAddress, new Config());
             Drone.OnConnected += OnDroneConnected;
 
@@ -98,19 +103,18 @@ namespace DroneControl
                 Invoke(new EventHandler(OnDroneConnected), sender, args);
             else
             {
-                DialogResult = DialogResult.OK;
                 StopTimers();
+
+                DialogResult = DialogResult.OK;
                 Close();
             }
         }
 
         private void abortButton_Click(object sender, EventArgs e)
         {
-            if (Drone != null)
-                Drone.Dispose();
+            DisposeDrone(false);
 
             DialogResult = DialogResult.Abort;
-            StopTimers();
             Close();
         }
     }
