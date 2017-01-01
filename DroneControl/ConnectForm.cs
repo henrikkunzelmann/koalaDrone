@@ -61,7 +61,7 @@ namespace DroneControl
             using (ConnectingForm form = new ConnectingForm(address))
             {
                 // wenn wir verbunden sind (result == OK)
-                if (form.ShowDialog() == DialogResult.OK)
+                if (!form.IsDisposed && form.ShowDialog() == DialogResult.OK)
                     OpenMainForm(form.Drone); // richtiges Fenster öffnen
             }
 

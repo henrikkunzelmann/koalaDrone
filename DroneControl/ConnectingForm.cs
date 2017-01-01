@@ -43,6 +43,8 @@ namespace DroneControl
             {
                 Drone.SendPing();
             };
+
+            Connect();
         }
 
         private void DisposeDrone(bool onlyIfNotConnected)
@@ -54,12 +56,6 @@ namespace DroneControl
                 if (!onlyIfNotConnected || !Drone.IsConnected)
                     Drone.Dispose();
             }
-        }
-
-        protected override void OnHandleCreated(EventArgs e)
-        {
-            Connect();
-            base.OnHandleCreated(e);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -87,14 +83,27 @@ namespace DroneControl
         {
             DisposeDrone(false);
 
-            Drone = new Drone(ipAddress, new Config());
-            Drone.OnConnected += OnDroneConnected;
+            try
+            {
+                Drone = new Drone(ipAddress, new Config());
+                Drone.OnConnected += OnDroneConnected;
 
-            // TODO: drone.Connect() einbauen, damit das Event schon gesetzt ist bevor wir verbinden
-            if (Drone.IsConnected) // schauen ob wir schon verbunden wurden, als wir das Event gesetzt haben
-                OnDroneConnected(this, EventArgs.Empty);
+                // TODO: drone.Connect() einbauen, damit das Event schon gesetzt ist bevor wir verbinden
+                if (Drone.IsConnected) // schauen ob wir schon verbunden wurden, als wir das Event gesetzt haben
+                    OnDroneConnected(this, EventArgs.Empty);
 
-            StartTimers();
+                StartTimers();
+            }
+            catch(Exception e)
+            {
+                Log.Error(e);
+                MessageBox.Show("Error while connecting: exception." + Environment.NewLine + e.ToString(), "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                DisposeDrone(false);
+
+                DialogResult = DialogResult.Abort;
+                Close();
+            }
         }
 
         private void OnDroneConnected(object sender, EventArgs args)
