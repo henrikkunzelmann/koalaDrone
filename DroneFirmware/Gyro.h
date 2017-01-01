@@ -50,9 +50,9 @@ private:
 	GyroValues values;
 	GyroValues rawValues;
 
-	float roll = 0;
-	float pitch = 0;
-	float yaw = 0;
+	float roll;
+	float pitch;
+	float yaw;
 
 	void calculateIMU();
 

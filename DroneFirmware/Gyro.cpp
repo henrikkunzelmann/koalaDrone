@@ -11,6 +11,10 @@ Gyro::Gyro(Config* config) {
 	resetCalibration(&accCalibration);
 	resetCalibration(&orientationCalibration);
 
+	roll = 0;
+	pitch = 0;
+	yaw = 0;
+
 	calibrationState = CalibrationNone;
 	calibrationCount = 0;
 	calibrationWrongDataCount = 0;
@@ -368,14 +372,23 @@ GyroValues Gyro::getValues() const {
 }
 
 float Gyro::getRoll() const {
+	if (!isOK())
+		return 0;
+
 	return MathHelper::fixValue(roll - orientationCalibration.Average[0], -180, 180);
 }
 
 float Gyro::getPitch() const {
+	if (!isOK())
+		return 0;
+
 	return MathHelper::fixValue(pitch - orientationCalibration.Average[1], -180, 180);
 }
 
 float Gyro::getYaw() const {
+	if (!isOK())
+		return 0;
+
 	float offset = 0;
 	if (!hasMagnetometer())
 		offset = orientationCalibration.Average[2];
