@@ -85,6 +85,8 @@ namespace DroneControl
 
             try
             {
+                Log.Info("Connecting to {0}", ipAddress);
+
                 Drone = new Drone(ipAddress, new Config());
                 Drone.OnConnected += OnDroneConnected;
 
