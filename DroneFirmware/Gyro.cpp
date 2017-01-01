@@ -11,14 +11,18 @@ Gyro::Gyro(Config* config) {
 	resetCalibration(&accCalibration);
 	resetCalibration(&orientationCalibration);
 
-	this->firstSample = true;
-	this->lastSample = micros();
-	this->lastMagnetData = millis();
+	calibrationState = CalibrationNone;
+	calibrationCount = 0;
+	calibrationWrongDataCount = 0;
 
-	this->validGyroData = false;
-	this->validAccData = false;
-	this->validMagData = false;
-	this->validImu = false;
+	firstSample = true;
+	lastSample = micros();
+	lastMagnetData = millis();
+
+	validGyroData = false;
+	validAccData = false;
+	validMagData = false;
+	validImu = false;
 }
 
 Gyro::~Gyro() {
@@ -80,6 +84,7 @@ void Gyro::beginCalibration(CalibrationState state) {
 	calibrationState = state;
 
 	firstSample = true;
+	calibrationWrongDataCount = 0;
 	calibrationCount = 1;
 	for (int i = 0; i < 3; i++)
 		calibrationSum[i] = 0;
@@ -113,28 +118,30 @@ void Gyro::runCalibration() {
 	if (!inCalibration())
 		return;
 
+	blinkLED(2, 1000);
+
 	switch (calibrationState) {
 	case CalibrationGyro:
-		if (!validGyroData)
-			return;
+		if (!hasValidGyroData()) 
+			return wrongCalibrationData();
 
 		updateCalibrationData(&gyroCalibration, rawValues.GyroX, rawValues.GyroY, rawValues.GyroZ, false);
 		break;
 	case CalibrationAcc:
-		if (!validAccData)
-			return;
+		if (!hasValidAccData())
+			return wrongCalibrationData();
 
 		updateCalibrationData(&accCalibration, rawValues.AccX, rawValues.AccY, rawValues.AccZ, false);
 		break;
 	case CalibrationOrientation:
-		if (!validImu)
-			return;
+		if (!hasValidImuData())
+			return wrongCalibrationData();
 
 		updateCalibrationData(&orientationCalibration, roll, pitch, yaw, false);
 		break;
 	case CalibrationMagnet:
-		if (!canUseMagneticData())
-			return;
+		if (isMagnetInterferenced())
+			return wrongCalibrationData();
 
 		updateCalibrationData(&calibration->MagnetCalibration, rawValues.MagnetX, rawValues.MagnetY, rawValues.MagnetZ, true);
 		break;
@@ -176,12 +183,22 @@ void Gyro::runCalibration() {
 	yield();
 }
 
+void Gyro::wrongCalibrationData() {
+	calibrationWrongDataCount++;
+
+	if (calibrationWrongDataCount > 200) {
+		Log::error("Gyro", "Calibration stopped because too much sensor data is wrong");
+		calibrationState = CalibrationNone;
+	}
+	return blinkLED(2, 300);
+}
+
 void Gyro::processData() {
 	values = rawValues;
 
 	// Werte überprüfen
-	const float gyroRange = 500.0f;
-	const float accRange = 5.0f;
+	const float gyroRange = 800.0f;
+	const float accRange = 10.0f;
 
 	validGyroData = true;
 	validAccData = true;
@@ -326,12 +343,16 @@ void Gyro::calculateIMU() {
 	Profiler::end();
 }
 
-bool Gyro::inCalibration() {
+bool Gyro::inCalibration() const {
 	return calibrationState != CalibrationNone;
 }
 
 bool Gyro::hasValidGyroData() const {
 	return validGyroData;
+}
+
+bool Gyro::hasValidAccData() const {
+	return validAccData;
 }
 
 bool Gyro::hasValidMagnetData() const {
@@ -372,10 +393,10 @@ float Gyro::getMagnetStrength() const {
 
 bool Gyro::isMagnetInterferenced() const {
 	float len = calibration->MagnetCalibration.Length;
-	if (len <= 0)
-		return false;
+	if (len <= 0 || inCalibration()) // keine Kalibrierung vorhanden
+		return getMagnetStrength() > 200;
 
-	return abs(getMagnetStrength() - len) >= 3;
+	return abs(getMagnetStrength() - len) >= 5;
 }
 
 bool Gyro::isAccMoving() const {

@@ -17,7 +17,7 @@ void setupLED(Config* config) {
 
 void handleBlink() {
 	if (shouldBlink) {
-		if (millis() - blinkTimer > 250) {
+		if (millis() - blinkTimer > 300) {
 			turnLedOff();
 
 			shouldBlink = false;

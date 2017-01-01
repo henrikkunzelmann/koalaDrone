@@ -3,6 +3,7 @@
 
 #include "arduino.h"
 
+#include "LED.h"
 #include "MathHelper.h"
 #include "SensorCalibration.h"
 #include "Log.h"
@@ -34,6 +35,7 @@ private:
 
 	CalibrationState calibrationState;
 	int32_t calibrationCount;
+	int32_t calibrationWrongDataCount;
 	float calibrationSum[3];
 
 	CalibrationData gyroCalibration;
@@ -63,6 +65,7 @@ private:
 	void logCalibration(CalibrationData* data);
 
 	void runCalibration();
+	void wrongCalibrationData();
 
 	void processData();
 
@@ -97,7 +100,7 @@ public:
 	void update();
 
 	void beginCalibration(CalibrationState state);
-	bool inCalibration();
+	bool inCalibration() const;
 
 	bool hasValidGyroData() const;
 	bool hasValidAccData() const;
