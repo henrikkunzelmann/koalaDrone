@@ -117,9 +117,6 @@
     <ClInclude Include="SensorHAL.h">
       <Filter>Header Files\sensor</Filter>
     </ClInclude>
-    <ClInclude Include="VoltageInputReader.h">
-      <Filter>Header Files\sensor</Filter>
-    </ClInclude>
     <ClInclude Include="DroneEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -131,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="FaultManager.h">
       <Filter>Header Files\diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="VoltageReader.h">
+      <Filter>Header Files\sensor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,9 +188,6 @@
     <ClCompile Include="SensorHAL.cpp">
       <Filter>Source Files\sensor</Filter>
     </ClCompile>
-    <ClCompile Include="VoltageInputReader.cpp">
-      <Filter>Source Files\sensor</Filter>
-    </ClCompile>
     <ClCompile Include="DroneEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -199,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="FaultManager.cpp">
       <Filter>Source Files\diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="VoltageReader.cpp">
+      <Filter>Source Files\sensor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

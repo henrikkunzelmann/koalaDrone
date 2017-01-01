@@ -19,7 +19,7 @@
 #include "LED.h"
 #include "CycleTimes.h"
 #include "FaultManager.h"
-#include "VoltageInputReader.h"
+#include "VoltageReader.h"
 
 
 #define VERBOSE_PACKET_LOG false
@@ -31,7 +31,7 @@ protected:
 	ServoManager* servos;
 	DroneEngine* engine;
 	Config* config;
-	VoltageInputReader* voltageReader;
+	VoltageReader* voltageReader;
 
 	IPAddress _dataFeedSubscriptor;
 	bool _dataFeedSubscribed;
@@ -47,9 +47,9 @@ protected:
 	int lastMovementRevision;
 	int lastOtaRevision;
 
-	WiFiUDP helloUDP;
-	WiFiUDP controlUDP;
-	WiFiUDP dataUDP;
+	WiFiUDP* helloUDP;
+	WiFiUDP* controlUDP;
+	WiFiUDP* dataUDP;
 
 	PacketBuffer* readBuffer;
 	PacketBuffer* writeBuffer;
@@ -60,24 +60,26 @@ protected:
 
 	void handlePackets(uint16_t num);
 
-	bool beginParse(WiFiUDP udp);
-	void handleHello(WiFiUDP udp);
-	void handleControl(WiFiUDP udp);
-	void handleData(WiFiUDP upd);
+	bool beginParse(WiFiUDP* udp);
+	void handleHello(WiFiUDP* udp);
+	void handleControl(WiFiUDP* udp);
+	void handleData(WiFiUDP* udp);
 
-	void writeHeader(WiFiUDP udp, int32_t revision, ControlPacketType packetType);
-	void writeDataHeader(WiFiUDP udp, int32_t revision, DataPacketType packetType);
+	void writeHeader(WiFiUDP* udp, int32_t revision, ControlPacketType packetType);
+	void writeDataHeader(WiFiUDP* udp, int32_t revision, DataPacketType packetType);
 
-	void sendPacket(WiFiUDP udp);
-	void sendAck(WiFiUDP udp, int32_t revision);
-	void sendData(WiFiUDP udp);
-	void echoPacket(WiFiUDP udp);
+	void sendPacket(WiFiUDP* udp);
+	void sendPacket(WiFiUDP* udp, IPAddress remote, uint16_t remotePort);
 
-	void sendDroneData(WiFiUDP udp);
-	void sendLog(WiFiUDP udp);
-	void sendDebugData(WiFiUDP udp);
+	void sendAck(WiFiUDP* udp, int32_t revision);
+	void sendData(WiFiUDP* udp);
+	void echoPacket(WiFiUDP* udp);
+
+	void sendDroneData(WiFiUDP* udp);
+	void sendLog(WiFiUDP* udp);
+	void sendDebugData(WiFiUDP* udp);
 public:
-	explicit NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader);
+	explicit NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEngine* engine, Config* config, VoltageReader* voltageReader);
 	
 	void beginSaveConfig();
 

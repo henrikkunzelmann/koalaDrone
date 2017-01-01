@@ -1,9 +1,9 @@
-#ifndef _VOLTAGEINPUTREADER_h
-#define _VOLTAGEINPUTREADER_h
+#ifndef _VOLTAGEREADER_h
+#define _VOLTAGEREADER_h
 
 #include "arduino.h"
 
-class VoltageInputReader {
+class VoltageReader {
 private:
 	int inputPin;
 	float maxVoltage;
@@ -11,7 +11,7 @@ private:
 	float voltage;
 
 public:
-	VoltageInputReader(int pin, float maxVoltage, float maxInputVoltage);
+	VoltageReader(int pin, float maxVoltage, float maxInputVoltage);
 
 	float readVoltage();
 	float readRawVoltage();

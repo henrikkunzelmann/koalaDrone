@@ -20,7 +20,7 @@
 #include "ServoManager.h"
 #include "BinaryHelper.h"
 #include "LED.h"
-#include "VoltageInputReader.h"
+#include "VoltageReader.h"
 #include "Profiler.h"
 #include "SensorHAL.h"
 #include "Gyro.h"
@@ -33,7 +33,7 @@
 
 Config config;
 
-VoltageInputReader* voltageReader;
+VoltageReader* voltageReader;
 SensorHAL* sensor;
 
 ServoManager* servos;
@@ -162,7 +162,8 @@ void setup() {
 	Wire.setClock(400000L);
 
 	// Batterie Voltage Reader laden
-	voltageReader = new VoltageInputReader(A0, 17, 1);
+	Log::info("Boot", "Init voltage reader...");
+	voltageReader = new VoltageReader(A0, 17, 1);
 
 	Log::info("Boot", "Init sensor hal...");
 	sensor = new SensorHAL(&config);
@@ -171,7 +172,7 @@ void setup() {
 	engine = new DroneEngine(sensor, servos, &config);
 
 	// Netzwerkmanager starten
-	Log::info("Boot", "Init network manager..");
+	Log::info("Boot", "Init network manager...");
 	network = new NetworkManager(sensor, servos, engine, &config, voltageReader);
 	if (saveConfig)
 		network->beginSaveConfig();

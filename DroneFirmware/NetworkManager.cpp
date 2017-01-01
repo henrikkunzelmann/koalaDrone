@@ -1,6 +1,6 @@
 #include "NetworkManager.h"
 
-NetworkManager::NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEngine* engine, Config* config, VoltageInputReader* voltageReader) {
+NetworkManager::NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEngine* engine, Config* config, VoltageReader* voltageReader) {
 	this->sensor = sensor;
 	this->servos = servos;
 	this->engine = engine;
@@ -24,8 +24,16 @@ NetworkManager::NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEng
 
 	Log::info("Network", "Creating UDP sockets...");
 
-	helloUDP.begin(config->NetworkHelloPort);
-	controlUDP.begin(config->NetworkControlPort);
+	helloUDP = new WiFiUDP();
+	controlUDP = new WiFiUDP();
+	dataUDP = new WiFiUDP();
+	
+	if (!helloUDP->begin(config->NetworkHelloPort))
+		 Log::error("Network", "Error while creating hello socket");
+	if (!controlUDP->begin(config->NetworkControlPort))
+		 Log::error("Network", "Error while creating control socket");
+	if (!dataUDP->begin(config->NetworkDataPort))
+		 Log::error("Network", "Error while creating data socket");
 
 	Log::info("Network", "Creating buffers...");
 
@@ -88,19 +96,19 @@ void NetworkManager::handleData() {
 	handleData(dataUDP);
 }
 
-bool NetworkManager::beginParse(WiFiUDP udp) {
+bool NetworkManager::beginParse(WiFiUDP* udp) {
 	Profiler::begin("parsePacket()");
-	int size = udp.parsePacket();
+	int size = udp->parsePacket();
 	Profiler::end();
 
-	if (size == 0)
+	if (size <= 0)
 		return false;
 
 	// setSize vor readBytes sorgt dafür, dass wenn Paket länger als interner Buffer ist eine Exception geworfen wird
 	readBuffer->getError(); // Fehler löschen
 	readBuffer->resetPosition();
 	readBuffer->setSize(size);
-	udp.readBytes(readBuffer->getBuffer(), size);
+	udp->readBytes(readBuffer->getBuffer(), size);
 
 	yield();
 
@@ -113,12 +121,16 @@ bool NetworkManager::beginParse(WiFiUDP udp) {
 	return true;
 }
 
-void NetworkManager::sendPacket(WiFiUDP udp) {
+void NetworkManager::sendPacket(WiFiUDP* udp) {
+	sendPacket(udp, udp->remoteIP(), udp->remotePort());
+}
+
+void NetworkManager::sendPacket(WiFiUDP* udp, IPAddress remote, uint16_t remotePort) {
 	Profiler::begin("sendPacket()");
 	if (!writeBuffer->getError()) {
-		udp.beginPacket(udp.remoteIP(), udp.remotePort());
-		udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
-		udp.endPacket();
+		udp->beginPacket(remote, remotePort);
+		udp->write(writeBuffer->getBuffer(), writeBuffer->getPosition());
+		udp->endPacket();
 
 		yield();
 	}
@@ -127,7 +139,7 @@ void NetworkManager::sendPacket(WiFiUDP udp) {
 	Profiler::end();
 }
 
-void NetworkManager::writeHeader(WiFiUDP udp, int32_t revision, ControlPacketType packetType) {
+void NetworkManager::writeHeader(WiFiUDP* udp, int32_t revision, ControlPacketType packetType) {
 	writeBuffer->write('F');
 	writeBuffer->write('L');
 	writeBuffer->write('Y');
@@ -136,7 +148,7 @@ void NetworkManager::writeHeader(WiFiUDP udp, int32_t revision, ControlPacketTyp
 	writeBuffer->write(uint8_t(packetType));
 }
 
-void NetworkManager::writeDataHeader(WiFiUDP udp, int32_t revision, DataPacketType packetType) {
+void NetworkManager::writeDataHeader(WiFiUDP* udp, int32_t revision, DataPacketType packetType) {
 	writeBuffer->write('F');
 	writeBuffer->write('L');
 	writeBuffer->write('Y');
@@ -145,28 +157,28 @@ void NetworkManager::writeDataHeader(WiFiUDP udp, int32_t revision, DataPacketTy
 }
 
 
-void NetworkManager::sendAck(WiFiUDP udp, int32_t revision) {
+void NetworkManager::sendAck(WiFiUDP* udp, int32_t revision) {
 	writeHeader(udp, revision, AckPacket);
 	sendPacket(udp);
 }
 
-void NetworkManager::sendData(WiFiUDP udp) {
-	Profiler::begin("sendData()");
-	udp.beginPacket(_dataFeedSubscriptor, config->NetworkDataPort);
-	udp.write(writeBuffer->getBuffer(), writeBuffer->getPosition());
-	udp.endPacket();
+void NetworkManager::sendData(WiFiUDP* udp) {
+	sendPacket(udp, _dataFeedSubscriptor, config->NetworkDataPort);
+}
 
-	writeBuffer->resetPosition();
+void NetworkManager::echoPacket(WiFiUDP* udp) {
+	Profiler::begin("echoPacket()");
+	if (!readBuffer->getError()) {
+		udp->beginPacket(udp->remoteIP(), udp->remotePort());
+		udp->write(readBuffer->getBuffer(), readBuffer->getSize());
+		udp->endPacket();
+		
+		yield();
+	}
 	Profiler::end();
 }
 
-void NetworkManager::echoPacket(WiFiUDP udp) {
-	udp.beginPacket(udp.remoteIP(), udp.remotePort());
-	udp.write(readBuffer->getBuffer(), readBuffer->getSize());
-	udp.endPacket();
-}
-
-void NetworkManager::handleHello(WiFiUDP udp) {
+void NetworkManager::handleHello(WiFiUDP* udp) {
 	if (readBuffer->getSize() < 4 || readBuffer->readUint8() != HelloQuestion)
 		return;
 
@@ -189,7 +201,7 @@ void NetworkManager::handleHello(WiFiUDP udp) {
 	sendPacket(udp);
 }
 
-void NetworkManager::handleControl(WiFiUDP udp) {
+void NetworkManager::handleControl(WiFiUDP* udp) {
 	if (readBuffer->getSize() < 9)
 		return;
 
@@ -322,16 +334,16 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	}
 
 	case SubscribeDataFeed:
-		_dataFeedSubscriptor = udp.remoteIP();
+		_dataFeedSubscriptor = udp->remoteIP();
 		_dataFeedSubscribed = true;
 
-		Log::debug("Network", "Client %s subscribed data", udp.remoteIP().toString().c_str());
+		Log::debug("Network", "Client %s subscribed data", udp->remoteIP().toString().c_str());
 		break;
 
 	case UnsubscribeDataFeed:
 		_dataFeedSubscribed = false;
 
-		Log::debug("Network", "Client %s unsubscribed data", udp.remoteIP().toString().c_str());
+		Log::debug("Network", "Client %s unsubscribed data", udp->remoteIP().toString().c_str());
 		break;
 	case CalibrateGyro:
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle) {
@@ -469,7 +481,7 @@ void NetworkManager::handleControl(WiFiUDP udp) {
 	}
 }
 
-void NetworkManager::handleData(WiFiUDP udp) {
+void NetworkManager::handleData(WiFiUDP* udp) {
 	if (!_dataFeedSubscribed)
 		return;
 
@@ -480,7 +492,7 @@ void NetworkManager::handleData(WiFiUDP udp) {
 	Profiler::end();
 }
 
-void NetworkManager::sendDroneData(WiFiUDP udp) {
+void NetworkManager::sendDroneData(WiFiUDP* udp) {
 	if (millis() - _lastDataSend >= CYCLE_DATA) {
 		writeDataHeader(dataUDP, dataRevision++, DataDrone);
 
@@ -526,7 +538,7 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 	}
 }
 
-void NetworkManager::sendLog(WiFiUDP udp) {
+void NetworkManager::sendLog(WiFiUDP* udp) {
 	if (millis() - _lastLogSend > CYCLE_LOG) {
 		if (Log::getBuffer() == NULL)
 			return;
@@ -553,7 +565,7 @@ void NetworkManager::sendLog(WiFiUDP udp) {
 	}
 }
 
-void NetworkManager::sendDebugData(WiFiUDP udp) {
+void NetworkManager::sendDebugData(WiFiUDP* udp) {
 	if (millis() - _lastDebugDataSend > CYCLE_DEBUG_DATA) {
 		writeDataHeader(dataUDP, dataRevision++, DataDebug);
 
