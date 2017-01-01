@@ -3,12 +3,13 @@
 ServoManager::ServoManager(Config* config) {
 	this->config = config;
 
-	this->attached = false;
 	servoFLValue = config->ServoMin;
 	servoFRValue = config->ServoMin;
 	servoBLValue = config->ServoMin;
 	servoBRValue = config->ServoMin;
-	this->_dirty = true;
+
+	attached = false;
+	_dirty = true;
 }
 
 void ServoManager::internalAttach() {

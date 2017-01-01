@@ -31,9 +31,9 @@ protected:
 
 	bool _dirty;
 
-	 int getValue(int servoValue);
+	int getValue(int servoValue);
 
-	 void internalAttach();
+	void internalAttach();
 
 public:
 	explicit ServoManager(Config* config);
@@ -50,16 +50,16 @@ public:
 
 	void calibrate();
 
-	int FL() const {
+	int getFrontLeft() const {
 		return servoFLValue;
 	}
-	int FR() const {
+	int getFrontRight() const {
 		return servoFRValue;
 	}
-	int BL() const {
+	int getBackLeft() const {
 		return servoBLValue;
 	}
-	int BR() const {
+	int getBackRight() const {
 		return servoBRValue;
 	}
 

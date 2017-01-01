@@ -485,10 +485,10 @@ void NetworkManager::sendDroneData(WiFiUDP udp) {
 		writeDataHeader(dataUDP, dataRevision++, DataDrone);
 
 		writeBuffer->write(uint8_t(engine->state()));
-		writeBuffer->write(uint16_t(servos->FL()));
-		writeBuffer->write(uint16_t(servos->FR()));
-		writeBuffer->write(uint16_t(servos->BL()));
-		writeBuffer->write(uint16_t(servos->BR()));
+		writeBuffer->write(uint16_t(servos->getFrontLeft()));
+		writeBuffer->write(uint16_t(servos->getFrontRight()));
+		writeBuffer->write(uint16_t(servos->getBackLeft()));
+		writeBuffer->write(uint16_t(servos->getBackRight()));
 
 		writeBuffer->write(sensor->getGyro()->inCalibration());
 
