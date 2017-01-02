@@ -9,6 +9,7 @@
 #include <BME280.h>
 
 #include "Build.h"
+#include "Hardware.h"
 #include "Log.h"
 #include "NetworkManager.h"
 #include "Config.h"
@@ -44,21 +45,26 @@ void setup() {
 	Serial.begin(115200);
 	Serial.println();
 
-	uint32_t heapBefore = ESP.getFreeHeap();
+	uint64_t heapBefore = Hardware::getFreeHeap();
 
+	Log::emptyLine();
 	Log::info("Boot", "=====================");
 	Log::info("Boot", "Drone v%d booting...", BUILD_VERSION);
 	Log::info("Boot", "Model: %s", MODEL_NAME);
 	Log::info("Boot", "Build: %s", BUILD_NAME);
 
-	Log::info("Hardware", "Core version: %s", ESP.getCoreVersion().c_str());
-	Log::info("Hardware", "SDK version: %s", ESP.getSdkVersion());
-	Log::info("Hardware", "CPU freq: %umhz", ESP.getCpuFreqMHz());
-	Log::info("Hardware", "Flash size: %ukbyte (set by compiler %ukbyte)", ESP.getFlashChipRealSize() / 1024u, ESP.getFlashChipSize() / 1024u);
+	Log::emptyLine();
+	Log::info("Hardware", "Hardware: %s", Hardware::getName());
+	Log::info("Hardware", "Arduino core version: %s", Hardware::getArduinoCoreVersion());
+	Log::info("Hardware", "SDK version: %s", Hardware::getSDKVersion());
+	Log::info("Hardware", "CPU freq: %u mhz", Hardware::getCPUFrequency());
+	Log::info("Hardware", "Flash size: %u kbyte", Hardware::getFlashSize() / 1024u);
 
-	Log::info("Memory", "Free heap (before boot): %u", heapBefore);
+	Log::emptyLine();
+	Log::info("Memory", "Free heap (before boot): %llu", heapBefore);
 
 	rst_info* resetInfo = ESP.getResetInfoPtr();
+	Log::emptyLine();
 	Log::debug("Boot", "Reset info: r: %u, ex: %u   0x%x, 0x%x, 0x%x, 0x%x, 0x%x", 
 		resetInfo->reason, resetInfo->exccause,
 		resetInfo->epc1, resetInfo->epc2, resetInfo->epc3, resetInfo->excvaddr, resetInfo->depc);
@@ -68,6 +74,7 @@ void setup() {
 	// Serialnummer schreiben
 	char serialCode[32];
 	getBuildSerialCode(serialCode, sizeof(serialCode));
+	Log::emptyLine();
 	Log::info("Boot", "Serial code: %s", serialCode);
 
 	config = ConfigManager::loadConfig();
@@ -107,6 +114,7 @@ void setup() {
 	// Attach servos
 	servos->attach();
 
+	Log::emptyLine();
 	Log::info("Boot", "Init network...");
 	bool openOwnNetwork = true;
 
@@ -157,6 +165,7 @@ void setup() {
 
 
 	// I2C initialisieren
+	Log::emptyLine();
 	Log::info("Boot", "Init I2C...");
 	Wire.begin(SDA, SCL);
 	Wire.setClock(400000L);
@@ -180,7 +189,11 @@ void setup() {
 	// Profiler laden
 	Profiler::init();
 
-	Log::info("Memory", "Free heap (after boot): %u", ESP.getFreeHeap());
+	uint64_t heapAfter = Hardware::getFreeHeap();
+	Log::emptyLine();
+	Log::info("Memory", "Free heap (after boot): %llu (diff: -%llu)", heapAfter, heapBefore - heapAfter);
+
+	Log::emptyLine();
 	Log::info("Boot", "done booting. ready.");
 }
 

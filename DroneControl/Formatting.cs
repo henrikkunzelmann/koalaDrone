@@ -16,18 +16,18 @@
             return FormatDecimal(value, 2);
         }
 
-        public static string FormatQuantity(int value, string single, string mutiple)
+        public static string FormatQuantity(ulong value, string single, string mutiple)
         {
             if (value == 1)
                 return value + " " + single;
             return value + " " + mutiple;
         }
 
-        public static string FormatDataSize(int value)
+        public static string FormatDataSize(ulong value)
         {
-            const int _byte = 1;
-            const int _kbyte = 1024 * _byte;
-            const int _mbyte = 1024 * _kbyte;
+            const ulong _byte = 1;
+            const ulong _kbyte = 1024 * _byte;
+            const ulong _mbyte = 1024 * _kbyte;
 
             if (value < 2 * _kbyte)
                 return FormatQuantity(value, "byte", "bytes");

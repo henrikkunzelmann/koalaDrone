@@ -1,14 +1,7 @@
 #include "BinaryHelper.h"
-#include "string.h"
-
-#ifdef  __IEEE_LITTLE_ENDIAN
-	#define NEED_SWAPPING 1
-#else
-	#define NEED_SWAPPING 0
-#endif
 
 void BinaryHelper::changeByteOrder(uint8_t* buffer, int32_t offset, size_t length) {
-#if NEED_SWAPPING
+#if BINARY_NEED_SWAPPING
 	int32_t end = offset + length;
 	int32_t swapsLeft = length / 2;
 

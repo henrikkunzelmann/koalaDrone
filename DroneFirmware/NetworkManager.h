@@ -6,6 +6,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
+#include "Hardware.h"
 #include "Config.h"
 #include "Gyro.h"
 #include "Baro.h"

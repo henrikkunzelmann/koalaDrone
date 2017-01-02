@@ -2,7 +2,7 @@
 {
     public struct DebugData
     {
-        public readonly int FreeHeapBytes;
+        public readonly ulong FreeHeapBytes;
         public readonly DebugProfiler Profiler;
         public readonly float PitchOutput;
         public readonly float RollOutput;
@@ -10,7 +10,7 @@
 
         public DebugData(PacketBuffer buffer)
         {
-            FreeHeapBytes = buffer.ReadInt();
+            FreeHeapBytes = buffer.ReadULong();
             Profiler = new DebugProfiler(buffer);
             PitchOutput = buffer.ReadFloat();
             RollOutput = buffer.ReadFloat();

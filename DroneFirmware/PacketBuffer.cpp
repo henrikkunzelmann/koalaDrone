@@ -111,7 +111,7 @@ uint32_t PacketBuffer::addPosition(size_t length) {
 
 void PacketBuffer::errorMemory() {
 	Log::error("PacketBuffer", "errorMemory()");
-	Log::error("PacketBuffer", "Free heap: %ubytes", ESP.getFreeHeap());
+	Log::error("PacketBuffer", "Free heap: %ubytes", Hardware::getFreeHeap());
 	error = true;
 }
 

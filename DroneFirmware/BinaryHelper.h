@@ -3,6 +3,13 @@
 
 #include "arduino.h"
 
+#ifdef  __IEEE_LITTLE_ENDIAN
+#define BINARY_NEED_SWAPPING 1
+#else
+#define BINARY_NEED_SWAPPING 0
+#endif
+
+
 class BinaryHelper
 {
  public:

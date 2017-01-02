@@ -1,6 +1,7 @@
 #ifndef _PACKETBUFFER_h
 #define _PACKETBUFFER_h
 
+#include "Hardware.h"
 #include "BinaryHelper.h"
 #include "Log.h"
 

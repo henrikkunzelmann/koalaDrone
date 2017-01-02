@@ -30,6 +30,8 @@ private:
 	static void print_P(LogLevel level, const __FlashStringHelper* tag, const __FlashStringHelper* format, va_list args);
 	static void print(LogLevel level, const char* tag, const char* format, va_list args);
 public:
+	static void emptyLine();
+
 	static void error_P(const __FlashStringHelper* tag, const __FlashStringHelper* format, ...);
 	static void info_P(const __FlashStringHelper* tag, const __FlashStringHelper* format, ...);
 	static void debug_P(const __FlashStringHelper* tag, const __FlashStringHelper* format, ...);

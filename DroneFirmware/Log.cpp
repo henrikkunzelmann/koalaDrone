@@ -67,6 +67,16 @@ void Log::addMessage(char* message) {
 	buffer[bufferLines++] = message;
 }
 
+void Log::emptyLine() {
+	char* message = (char*)malloc(1);
+	if (message != NULL) {
+		message[0] = '\0';
+		addMessage(message);
+	}
+
+	Serial.println();
+}
+
 void Log::print_P(LogLevel level, const __FlashStringHelper* tag, const __FlashStringHelper* format, va_list args) {
 	memset(tagBuffer, 0, sizeof(tagBuffer));
 	memset(formatBuffer, 0, sizeof(formatBuffer));

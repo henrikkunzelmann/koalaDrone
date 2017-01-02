@@ -58,7 +58,7 @@ void NetworkManager::checkSaveConfig() {
 		if (millis() - lastConfigSave  < TIME_CONFIG_SAVE)
 			return;
 
-		ESP.wdtDisable();
+		Hardware::disableWatchDog();
 		servos->waitForDetach();
 
 		ConfigManager::saveConfig(*config);
@@ -66,8 +66,7 @@ void NetworkManager::checkSaveConfig() {
 		servos->attach();
 		handlePackets(20); // Catch up mit Paketen
 
-
-		ESP.wdtEnable(WDTO_0MS);
+		Hardware::enableWatchDog();
 
 		saveConfig = false;
 		lastConfigSave = millis();
@@ -360,7 +359,7 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 
 	case Reset:
 		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
-			ESP.restart();
+			Hardware::restart();
 		break;
 	case SetConfig: {
 		if (readBuffer->getSize() - readBuffer->getPosition() != sizeof(Config)) {
@@ -464,7 +463,7 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 		if (engine->state() == StateOTA) {
 			if (Update.end(!readBuffer->readBoolean())) {
 				Log::info("Network", "OTA update done");
-				ESP.restart();
+				Hardware::restart();
 				return;
 			}
 
@@ -569,7 +568,7 @@ void NetworkManager::sendDebugData(WiFiUDP* udp) {
 	if (millis() - _lastDebugDataSend > CYCLE_DEBUG_DATA) {
 		writeDataHeader(dataUDP, dataRevision++, DataDebug);
 
-		writeBuffer->write(ESP.getFreeHeap());
+		writeBuffer->write(Hardware::getFreeHeap());
 
 		Profiler::write(writeBuffer);
 
