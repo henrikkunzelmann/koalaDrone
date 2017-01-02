@@ -67,10 +67,14 @@ uint32_t Profiler::start(const char* name, bool reset) {
 
 void Profiler::stop(ProfilerFunction* function, bool add) {
 	if (function->currentTime != 0) {
-		if (add)
-			function->time += micros() - function->currentTime;
-		else
-			function->time = micros() - function->currentTime;
+		uint32_t time = micros();
+		if (time > function->currentTime) {
+			uint32_t diff = time - function->currentTime;
+			if (add)
+				function->time += diff;
+			else
+				function->time = diff;
+		}
 	}
 }
 void Profiler::stop(const char* name) {

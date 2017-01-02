@@ -2,7 +2,6 @@
 #define _CONFIGMANAGER_h
 
 #include "arduino.h"
-#include <EEPROM.h>
 
 #include "MemoryAdapter.h"
 #include "Config.h"

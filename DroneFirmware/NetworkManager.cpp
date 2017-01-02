@@ -107,7 +107,8 @@ bool NetworkManager::beginParse(WiFiUDP* udp) {
 	readBuffer->getError(); // Fehler löschen
 	readBuffer->resetPosition();
 	readBuffer->setSize(size);
-	udp->readBytes(readBuffer->getBuffer(), size);
+	udp->read(readBuffer->getBuffer(), size);
+	udp->flush();
 
 	yield();
 
@@ -178,10 +179,16 @@ void NetworkManager::echoPacket(WiFiUDP* udp) {
 }
 
 void NetworkManager::handleHello(WiFiUDP* udp) {
-	if (readBuffer->getSize() < 4 || readBuffer->readUint8() != HelloQuestion)
+	if (readBuffer->getSize() < 4)
 		return;
 
-	Log::debug("Network", "Received hello question");
+	uint8_t type = readBuffer->readUint8();
+	if (type != HelloQuestion) {
+		Log::error("Network", "Unknown hello packet from %s: %u", udp->remoteIP().toString().c_str(), type);
+		FaultManager::fault(FaultProtocol, "Network", "Invalid hello packet");
+	}
+
+	Log::debug("Network", "Received hello question from %s", udp->remoteIP().toString().c_str());
 
 	writeBuffer->write('F');
 	writeBuffer->write('L');
@@ -493,7 +500,7 @@ void NetworkManager::handleData(WiFiUDP* udp) {
 
 void NetworkManager::sendDroneData(WiFiUDP* udp) {
 	if (millis() - _lastDataSend >= CYCLE_DATA) {
-		writeDataHeader(dataUDP, dataRevision++, DataDrone);
+		writeDataHeader(udp, dataRevision++, DataDrone);
 
 		writeBuffer->write(uint8_t(engine->state()));
 		writeBuffer->write(uint16_t(servos->getFrontLeft()));
@@ -543,7 +550,7 @@ void NetworkManager::sendLog(WiFiUDP* udp) {
 			return;
 
 		while (Log::getBufferLines() > 0) {
-			writeDataHeader(dataUDP, dataRevision++, DataLog);
+			writeDataHeader(udp, dataRevision++, DataLog);
 
 			uint32_t messagesToSend = Log::getBufferLines();
 			if (messagesToSend > 5)
@@ -566,7 +573,7 @@ void NetworkManager::sendLog(WiFiUDP* udp) {
 
 void NetworkManager::sendDebugData(WiFiUDP* udp) {
 	if (millis() - _lastDebugDataSend > CYCLE_DEBUG_DATA) {
-		writeDataHeader(dataUDP, dataRevision++, DataDebug);
+		writeDataHeader(udp, dataRevision++, DataDebug);
 
 		writeBuffer->write(Hardware::getFreeHeap());
 
