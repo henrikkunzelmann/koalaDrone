@@ -669,15 +669,22 @@ namespace DroneLibrary
                 switch (type)
                 {
                     case PacketType.Ping:
-                        if (packet.Length < HeaderSize + sizeof(long))
-                            throw new InvalidDataException("Packet is not long enough.");
-
                         bool wasNotConnected = !CheckConnection();
-
                         lastPing = Environment.TickCount;
 
-                        long time = buffer.ReadLong(); // time ist der Wert von stopwatch zum Zeitpunkt des Absenden des Pakets
-                        Ping = (int)(stopwatch.ElapsedMilliseconds - time);
+                        long time = 0;
+                        if (packet.Length >= HeaderSize + sizeof(long))
+                            time = buffer.ReadLong(); // time ist der Wert von stopwatch zum Zeitpunkt des Absenden des Pakets
+                        else
+                            Log.Error("Invalid ping packet received with length: {0}", packet.Length);
+
+                        int ping = (int)(stopwatch.ElapsedMilliseconds - time);
+                        if (ping < 0)
+                        {
+                            Log.Warning("Invalid ping value received: {0}", ping);
+                            ping = 0;
+                        }
+                        Ping = ping;
 
                         if (wasNotConnected)
                             OnConnected?.Invoke(this, EventArgs.Empty);
