@@ -116,6 +116,8 @@ Config ConfigManager::getDefault() {
 	config.YawPid.Ki = 0.00008f;
 	config.YawPid.Kd = 0.0f;
 
+	config.InputScale = 164.0f;
+
 	config.SafePitch = 100;
 	config.SafeRoll = 100;
 	config.SafeServoValue = 1850;

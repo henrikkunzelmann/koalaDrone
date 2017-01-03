@@ -206,7 +206,7 @@ void DroneEngine::handleInternal() {
 
 	GyroValues gyroValues = sensor->getGyro()->getValues();
 
-	const float sensitivity = (1.0f / 500.0f) * 164.0f;
+	float sensitivity = (1.0f / 500.0f) * config->InputScale;
 	float pitchCmd = targetPitch * sensitivity;
 	float rollCmd = targetRoll * sensitivity;
 	float yawCmd = targetYaw * sensitivity;

@@ -68,6 +68,8 @@ struct Config {
 	PIDSettings RollPid;
 	PIDSettings YawPid;
 
+	float InputScale;
+
 	float SafePitch;
 	float SafeRoll;
 	int32_t SafeServoValue;
