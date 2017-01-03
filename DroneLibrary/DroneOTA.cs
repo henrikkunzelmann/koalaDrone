@@ -9,7 +9,7 @@ namespace DroneLibrary
     {
         public Drone Drone { get; private set; }
 
-        public bool CanStart { get { return Drone.IsConnected && Drone.Data.State != DroneState.Flying; } }
+        public bool CanStart { get { return Drone.IsConnected && !Drone.Data.State.AreMotorsRunning(); } }
         public bool IsRunning { get { return Drone.IsConnected && Drone.Data.State == DroneState.OTA; } }
 
         public bool Started { get; private set; } 

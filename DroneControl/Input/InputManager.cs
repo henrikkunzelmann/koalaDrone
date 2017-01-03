@@ -102,7 +102,7 @@ namespace DroneControl.Input
                 {
                     SendTargetData(new TargetData(0, 0, 0, 0));
 
-                    if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
+                    if (drone.Data.State.AreMotorsRunning())
                         StopDrone();
                 }
 
@@ -139,7 +139,7 @@ namespace DroneControl.Input
             TargetData = data;
             OnTargetDataChanged?.Invoke(this, EventArgs.Empty);
 
-            if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
+            if (drone.Data.State.AreMotorsRunning())
                 drone.SendMovementData((short)data.Roll, (short)data.Pitch, (short)data.Yaw, (short)data.Thrust);
         }
 
@@ -147,7 +147,7 @@ namespace DroneControl.Input
         {
             if (drone.Data.State == DroneState.Idle)
                 ArmDrone();
-            else if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
+            else if (drone.Data.State.AreMotorsRunning())
                 DisarmDrone();
         }
 
@@ -159,7 +159,7 @@ namespace DroneControl.Input
 
         public void DisarmDrone()
         {
-            if (drone.Data.State == DroneState.Armed || drone.Data.State == DroneState.Flying)
+            if (drone.Data.State.AreMotorsRunning())
                 drone.SendDisarm();
         }
 

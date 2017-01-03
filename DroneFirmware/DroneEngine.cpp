@@ -97,7 +97,7 @@ void DroneEngine::arm() {
 }
 
 void DroneEngine::disarm() {
-	if (_state == StateArmed || _state == StateFlying) {
+	if (areMotorsRunning()) {
 		servos->setAllServos(config->ServoMin);
 
 		_state = StateIdle;
@@ -173,7 +173,7 @@ void DroneEngine::endOTA() {
 void DroneEngine::handle() {
 	Profiler::begin("DroneEngine::handle()");
 
-	if (_state == StateArmed || _state == StateFlying) {
+	if (areMotorsRunning()) {
 		blinkLED(1, 800);
 
 		if (millis() - lastHeartbeat >= config->MaximumNetworkTimeout) {
@@ -295,9 +295,16 @@ StopReason DroneEngine::getStopReason() const {
 	return _stopReason;
 }
 
+bool DroneEngine::isStateIdle() const {
+	return state() == StateReset || state() == StateStopped || state() == StateIdle;
+}
+
+bool DroneEngine::areMotorsRunning() const {
+	return state() == StateArmed || state() == StateFlying;
+}
 
 void DroneEngine::setTargetMovement(int16_t roll, int16_t pitch, int16_t yaw, int16_t thrust) {
-	if (_state != StateArmed && _state != StateFlying)
+	if (!areMotorsRunning())
 		return;
 
 	// Werte in richtigen Bereich bringen und setzen

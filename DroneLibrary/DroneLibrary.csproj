@@ -58,6 +58,7 @@
     <Compile Include="DroneEntry.cs" />
     <Compile Include="DroneList.cs" />
     <Compile Include="DroneListChangedEventArgs.cs" />
+    <Compile Include="DroneStateHelper.cs" />
     <Compile Include="LogFlushEventArgs.cs" />
     <Compile Include="LogStorage.cs" />
     <Compile Include="DroneOTA.cs" />

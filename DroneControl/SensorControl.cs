@@ -62,7 +62,7 @@ namespace DroneControl
             if (!float.IsNaN(data.Gyro.Yaw))
                 headingIndicator.SetHeadingIndicatorParameters((int)data.Gyro.Yaw);
 
-            calibrateGyroButton.Enabled = data.State != DroneState.Armed && data.State != DroneState.Flying;
+            calibrateGyroButton.Enabled = !data.State.AreMotorsRunning();
             calibrationRunningText.Visible = data.Gyro.InCalibration;
 
             orientationLabel.Text = string.Format("Roll: {0} Pitch: {1} Yaw: {2}",

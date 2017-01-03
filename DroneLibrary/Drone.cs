@@ -633,7 +633,7 @@ namespace DroneLibrary
             catch (Exception e)
             {
                 Log.Error(e);
-                if (Debugger.IsAttached)
+                if (!Data.State.AreMotorsRunning() && Debugger.IsAttached)
                     Debugger.Break();
             }
             finally
@@ -756,7 +756,7 @@ namespace DroneLibrary
             catch (Exception e)
             {
                 Log.Error(e);
-                if (Debugger.IsAttached)
+                if (!Data.State.AreMotorsRunning() && Debugger.IsAttached)
                     Debugger.Break();
             }
             finally

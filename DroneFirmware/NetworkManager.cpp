@@ -53,7 +53,7 @@ void NetworkManager::beginSaveConfig() {
 
 void NetworkManager::checkSaveConfig() {
 	if (saveConfig) {
-		if (engine->state() == StateFlying || engine->state() == StateArmed)
+		if (engine->areMotorsRunning())
 			return;
 		if (millis() - lastConfigSave  < TIME_CONFIG_SAVE)
 			return;
@@ -352,7 +352,7 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 		Log::debug("Network", "Client %s unsubscribed data", udp->remoteIP().toString().c_str());
 		break;
 	case CalibrateGyro:
-		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle) {
+		if (engine->isStateIdle()) {
 			bool calibrateMagnet = readBuffer->readBoolean();
 			if (readBuffer->getError())
 				return;
@@ -365,7 +365,7 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 		break;
 
 	case Reset:
-		if (engine->state() == StateReset || engine->state() == StateStopped || engine->state() == StateIdle)
+		if (engine->isStateIdle())
 			Hardware::restart();
 		break;
 	case SetConfig: {

@@ -86,6 +86,9 @@ class DroneEngine
 
 	DroneState state() const;
 	StopReason getStopReason() const;
+
+	bool isStateIdle() const;
+	bool areMotorsRunning() const;
 	
 	void handle();
 	void handleInternal();
