@@ -55,13 +55,13 @@ void setup() {
 
 	Log::emptyLine();
 	Log::info("Hardware", "Hardware: %s", Hardware::getName());
-	Log::info("Hardware", "Arduino core version: %s", Hardware::getArduinoCoreVersion());
+	Log::info("Hardware", "Arduino version: %d, core: %s", ARDUINO_VERSION, Hardware::getArduinoCoreVersion());
 	Log::info("Hardware", "SDK version: %s", Hardware::getSDKVersion());
 	Log::info("Hardware", "CPU freq: %u mhz", Hardware::getCPUFrequency());
 	Log::info("Hardware", "Flash size: %u kbyte", Hardware::getFlashSize() / 1024u);
 
 	Log::emptyLine();
-	Log::info("Memory", "Free heap (before boot): %llu", heapBefore);
+	Log::info("Memory", "Free heap (before boot): %lu", heapBefore);
 
 	rst_info* resetInfo = ESP.getResetInfoPtr();
 	Log::emptyLine();
@@ -191,7 +191,7 @@ void setup() {
 
 	uint64_t heapAfter = Hardware::getFreeHeap();
 	Log::emptyLine();
-	Log::info("Memory", "Free heap (after boot): %llu (diff: -%llu)", heapAfter, heapBefore - heapAfter);
+	Log::info("Memory", "Free heap (after boot): %lu", heapAfter);
 
 	Log::emptyLine();
 	Log::info("Boot", "done booting. ready.");

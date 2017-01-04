@@ -21,9 +21,7 @@ uint32_t Hardware::getChipID() {
 }
 
 const char* Hardware::getArduinoCoreVersion() {
-#if HARDWARE_ESP8266
-	return ESP.getCoreVersion().c_str();
-#endif
+	return "unknown";
 }
 
 const char* Hardware::getSDKVersion() {

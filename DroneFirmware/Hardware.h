@@ -16,6 +16,11 @@
 #error "Unknown hardware type"
 #endif
 
+#ifdef ARDUINO
+#define ARDUINO_VERSION ARDUINO
+#else
+#define ARDUINO_VERSION 0
+#endif
 
 class Hardware {
 public:
