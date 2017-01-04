@@ -67,7 +67,7 @@ namespace DroneControl
 
         private void resetButton_Click(object sender, EventArgs e)
         {
-            if (Drone.Data.State.IsIdle())
+            if (!Drone.Data.State.IsIdle())
                 return;
             Drone.SendReset();
         }

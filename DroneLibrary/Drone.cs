@@ -435,7 +435,7 @@ namespace DroneLibrary
         /// </summary>
         public void SendReset()
         {
-            if (Data.State != DroneState.Reset && Data.State != DroneState.Stopped && Data.State != DroneState.Idle)
+            if (Data.State.AreMotorsRunning())
                 throw new InvalidOperationException("Drone in invalid state: " + Data.State);
 
             SendPacket(new PacketReset(), false);
