@@ -39,12 +39,11 @@ float MathHelper::mixMotor(Config* config, int motorIndex, float pitch, float ro
 	if (config->NegativeMixing) {
 		value += motorsPitch[motorIndex] * pitch;
 		value += motorsRoll[motorIndex] * roll;
-		value += motorsYaw[motorIndex] * yaw;
 	}
 	else {
 		value += max(0, motorsPitch[motorIndex] * pitch);
 		value += max(0, motorsRoll[motorIndex] * roll);
-		value += max(0, motorsYaw[motorIndex] * yaw);
 	}
+	value += motorsYaw[motorIndex] * yaw;
 	return value;
 }
