@@ -83,7 +83,7 @@ namespace DroneControl
             if (running)
                 return;
 
-            string recordingName = "recording_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+            string recordingName = "recording__" + DateTime.Now.ToString("yyyy_MM_dd___HH_mm_ss");
             fileLabel.Text = string.Format("Recording to \"{0}\"", recordingName);
 
             path = Path.Combine(Environment.CurrentDirectory, "recordings", recordingName);
@@ -123,6 +123,8 @@ namespace DroneControl
         {
             if (!running)
                 return;
+
+            EmitData();
 
             running = false;
 
