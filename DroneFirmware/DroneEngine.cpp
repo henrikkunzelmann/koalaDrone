@@ -34,9 +34,9 @@ void DroneEngine::createPID() {
 	if (angleRollPID)
 		delete angleRollPID;
 
-	pitchPID = createPID(config->PitchPid, 100, &pitchOutput);
-	rollPID = createPID(config->RollPid, 100, &rollOutput);
-	yawPID = createPID(config->YawPid, 200, &yawOutput);
+	pitchPID = createPID(config->PitchPid, 200, &pitchOutput);
+	rollPID = createPID(config->RollPid, 200, &rollOutput);
+	yawPID = createPID(config->YawPid, 300, &yawOutput);
 
 	anglePitchPID = createPID(config->AngleStabilization, 200, &anglePitchOutput);
 	angleRollPID = createPID(config->AngleStabilization, 200, &angleRollOutput);
@@ -56,6 +56,11 @@ bool DroneEngine::isGyroSafe() {
 
 void DroneEngine::arm() {
 	if (_state == StateIdle) {
+		if (!sensor->getGyro()->isOK()) {
+			blinkLED(5, 300);
+			Log::info("Engine", "Can not arm motors, gyro is not OK");
+			return;
+		}
 		if (sensor->getGyro()->inCalibration()) {
 			blinkLED(5, 300);
 			Log::info("Engine", "Can not arm motors, gyro is in calibration");
