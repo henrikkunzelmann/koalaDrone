@@ -55,12 +55,12 @@ bool Gyro6050::getValues(GyroValues* values) {
 	mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 	yield();
 
-	values->AccX = -ax * accRes;
-	values->AccY = -ay * accRes;
+	values->AccX = ay * accRes;
+	values->AccY = ax * accRes;
 	values->AccZ = -az * accRes;
 
-	values->GyroX = -gx * gyroRes;
-	values->GyroY = -gy * gyroRes;
+	values->GyroX = gy * gyroRes;
+	values->GyroY = gx * gyroRes;
 	values->GyroZ = -gz * gyroRes;
 
 	values->MagnetX = 0;
