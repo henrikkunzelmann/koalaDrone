@@ -211,18 +211,20 @@ void DroneEngine::handleInternal() {
 
 	GyroValues gyroValues = sensor->getGyro()->getValues();
 
-	float sensitivity = (1.0f / 500.0f) * config->InputScale;
+	const float cmdScale = (1.0f / 500.0f);
+	float sensitivity = cmdScale * config->InputScale;
 	float pitchCmd = targetPitch * sensitivity;
 	float rollCmd = targetRoll * sensitivity;
 	float yawCmd = targetYaw * sensitivity;
 
 	if (config->EnableStabilization) {
 		if (sensor->getGyro()->hasValidImuData()) {
-			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetPitch);
-			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetRoll);
+			float horzSensivitiy = cmdScale * 40;
+			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetPitch * horzSensivitiy);
+			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetRoll * horzSensivitiy);
 
-			pitchCmd = -anglePitchOutput;
-			rollCmd = -angleRollOutput;
+			pitchCmd = anglePitchOutput;
+			rollCmd = angleRollOutput;
 		}
 		else
 			FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidImuData()");
