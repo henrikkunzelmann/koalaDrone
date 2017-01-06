@@ -29,8 +29,8 @@ bool Gyro6050::init() {
 
 	mpu.setClockSource(MPU6050_CLOCK_PLL_ZGYRO);
 	mpu.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
-	mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_2000);
-	mpu.setDLPFMode(MPU6050_DLPF_BW_20);
+	mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_1000);
+	mpu.setDLPFMode(MPU6050_DLPF_BW_98);
 
 	double accRange[4] = { 2, 4, 8, 16 }; // g
 	double gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s

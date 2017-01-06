@@ -28,9 +28,9 @@ bool Gyro9250::init() {
 	mpu.initialize();
 
 	mpu.setClockSource(MPU9250_CLOCK_PLL_ZGYRO);
-	mpu.setFullScaleAccelRange(MPU9250_ACCEL_FS_16);
-	mpu.setFullScaleGyroRange(MPU9250_GYRO_FS_500);
-	mpu.setDLPFMode(MPU9250_DLPF_BW_20);
+	mpu.setFullScaleAccelRange(MPU9250_ACCEL_FS_8);
+	mpu.setFullScaleGyroRange(MPU9250_GYRO_FS_1000);
+	mpu.setDLPFMode(MPU9250_DLPF_BW_98);
 
 
 	if (!mpu.magCheckConnection()) {
