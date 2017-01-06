@@ -76,10 +76,10 @@ namespace DroneControl.Input
                 deadZone = 0;
 
             TargetData target = new TargetData();
-            target.Roll = DeadZone.Compute(currentState.Gamepad.LeftThumbX, short.MaxValue, deadZone);
-            target.Pitch = -DeadZone.Compute(currentState.Gamepad.LeftThumbY, short.MaxValue, deadZone);
-            target.Yaw = DeadZone.Compute(currentState.Gamepad.RightThumbX, short.MaxValue, deadZone);
-            target.Thrust = DeadZone.Compute(currentState.Gamepad.RightThumbY + short.MaxValue, short.MaxValue * 2, deadZone);
+            target.Roll = DeadZone.Compute(currentState.Gamepad.RightThumbX, short.MaxValue, deadZone);
+            target.Pitch = -DeadZone.Compute(currentState.Gamepad.RightThumbY, short.MaxValue, deadZone);
+            target.Yaw = DeadZone.Compute(currentState.Gamepad.LeftThumbX, short.MaxValue, deadZone);
+            target.Thrust = DeadZone.Compute(currentState.Gamepad.LeftThumbY + short.MaxValue, short.MaxValue * 2, deadZone);
 
             float x = GetButtonValue(GamepadButtonFlags.DPadRight) - GetButtonValue(GamepadButtonFlags.DPadLeft);
             float y = -GetButtonValue(GamepadButtonFlags.DPadDown) - GetButtonValue(GamepadButtonFlags.DPadUp);

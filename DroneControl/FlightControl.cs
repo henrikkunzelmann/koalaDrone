@@ -234,15 +234,17 @@ namespace DroneControl
             InputManager.RollExp = (float)rollExpTextBox.Value;
             InputManager.PitchExp = (float)pitchExpTextBox.Value;
             InputManager.YawExp = (float)yawExpTextBox.Value;
+            InputManager.ThrustExp = (float)thrustExpTextBox.Value;
+            InputManager.ThrustBase = (float)thrustBaseTextBox.Value;
 
             CreateInputGraph(inputCurves.LeftTop.History, InputManager.RollExp);
-            CreateInputGraph(inputCurves.LeftBottom.History, InputManager.PitchExp);
-            CreateInputGraph(inputCurves.RightTop.History, InputManager.YawExp);
+            CreateInputGraph(inputCurves.RightTop.History, InputManager.PitchExp);
+            CreateInputGraph(inputCurves.LeftBottom.History, InputManager.YawExp);
 
             inputCurves.RightBottom.ValueMin = 0;
-            inputCurves.RightBottom.ValueMax = 1000;
+            inputCurves.RightBottom.ValueMax = InputManager.ThrustMax;
             inputCurves.RightBottom.ShowHalfScaling = true;
-            inputCurves.RightBottom.BaseLine = 500;
+            inputCurves.RightBottom.BaseLine = InputManager.ThrustMax / 2;
             CreateThrustGraph(inputCurves.RightBottom.History);
 
             inputCurves.Invalidate();
@@ -271,11 +273,7 @@ namespace DroneControl
 
             float scale = 1000.0f / (data.Count - 1);
             for (float x = -500; x <= 500.0f; x += scale)
-            {
-                double v = 500.0f * Math.Pow(Math.Abs(x) / 500.0f, exp);
-                v *= Math.Sign(x);
-                data.UpdateValue(v);
-            }
+                data.UpdateValue(500 * InputManager.MapInputOneToOne(x / 500.0f, 0.5, exp));
         }
 
         private void CreateThrustGraph(DataHistory data)
@@ -283,8 +281,10 @@ namespace DroneControl
             data.Clear();
             float scale = 1000.0f / (data.Count - 1);
             for (float x = 0; x <= 1000.0f; x += scale)
-                data.UpdateValue(x);
+                data.UpdateValue(InputManager.ThrustMax * InputManager.MapThrust(x / 1000.0f));
         }
+
+        
 
         private void calibrateButton_Click(object sender, EventArgs e)
         {

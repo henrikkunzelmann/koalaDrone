@@ -32,6 +32,8 @@
             System.Windows.Forms.Label pitchExpText;
             System.Windows.Forms.Label rollExpText;
             System.Windows.Forms.GroupBox inputGraphsGroupBox;
+            System.Windows.Forms.Label thrustExpText;
+            System.Windows.Forms.Label thrustBaseText;
             this.calibrateButton = new System.Windows.Forms.Button();
             this.searchDeviceButton = new System.Windows.Forms.Button();
             this.deviceBatteryLabel = new System.Windows.Forms.Label();
@@ -49,6 +51,8 @@
             this.inputCurves = new DroneControl.QuadGraphControl();
             this.searchTimer = new System.Windows.Forms.Timer(this.components);
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.thrustExpTextBox = new System.Windows.Forms.NumericUpDown();
+            this.thrustBaseTextBox = new System.Windows.Forms.NumericUpDown();
             deviceGroupBox = new System.Windows.Forms.GroupBox();
             dataGroupBox = new System.Windows.Forms.GroupBox();
             inputConfigGroupBox = new System.Windows.Forms.GroupBox();
@@ -56,6 +60,8 @@
             pitchExpText = new System.Windows.Forms.Label();
             rollExpText = new System.Windows.Forms.Label();
             inputGraphsGroupBox = new System.Windows.Forms.GroupBox();
+            thrustExpText = new System.Windows.Forms.Label();
+            thrustBaseText = new System.Windows.Forms.Label();
             deviceGroupBox.SuspendLayout();
             dataGroupBox.SuspendLayout();
             inputConfigGroupBox.SuspendLayout();
@@ -63,6 +69,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pitchExpTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollExpTextBox)).BeginInit();
             inputGraphsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustExpTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustBaseTextBox)).BeginInit();
             this.SuspendLayout();
             // 
             // deviceGroupBox
@@ -202,6 +210,10 @@
             // 
             // inputConfigGroupBox
             // 
+            inputConfigGroupBox.Controls.Add(this.thrustBaseTextBox);
+            inputConfigGroupBox.Controls.Add(thrustBaseText);
+            inputConfigGroupBox.Controls.Add(this.thrustExpTextBox);
+            inputConfigGroupBox.Controls.Add(thrustExpText);
             inputConfigGroupBox.Controls.Add(this.yawExpTextBox);
             inputConfigGroupBox.Controls.Add(yawExpText);
             inputConfigGroupBox.Controls.Add(this.pitchExpTextBox);
@@ -224,7 +236,7 @@
             0,
             0,
             65536});
-            this.yawExpTextBox.Location = new System.Drawing.Point(182, 68);
+            this.yawExpTextBox.Location = new System.Drawing.Point(194, 68);
             this.yawExpTextBox.Maximum = new decimal(new int[] {
             10,
             0,
@@ -248,7 +260,7 @@
             // yawExpText
             // 
             yawExpText.AutoSize = true;
-            yawExpText.Location = new System.Drawing.Point(131, 70);
+            yawExpText.Location = new System.Drawing.Point(140, 70);
             yawExpText.Name = "yawExpText";
             yawExpText.Size = new System.Drawing.Size(48, 13);
             yawExpText.TabIndex = 42;
@@ -262,7 +274,7 @@
             0,
             0,
             65536});
-            this.pitchExpTextBox.Location = new System.Drawing.Point(182, 42);
+            this.pitchExpTextBox.Location = new System.Drawing.Point(194, 42);
             this.pitchExpTextBox.Maximum = new decimal(new int[] {
             10,
             0,
@@ -286,7 +298,7 @@
             // pitchExpText
             // 
             pitchExpText.AutoSize = true;
-            pitchExpText.Location = new System.Drawing.Point(131, 44);
+            pitchExpText.Location = new System.Drawing.Point(137, 44);
             pitchExpText.Name = "pitchExpText";
             pitchExpText.Size = new System.Drawing.Size(51, 13);
             pitchExpText.TabIndex = 40;
@@ -300,7 +312,7 @@
             0,
             0,
             65536});
-            this.rollExpTextBox.Location = new System.Drawing.Point(182, 16);
+            this.rollExpTextBox.Location = new System.Drawing.Point(194, 16);
             this.rollExpTextBox.Maximum = new decimal(new int[] {
             10,
             0,
@@ -324,7 +336,7 @@
             // rollExpText
             // 
             rollExpText.AutoSize = true;
-            rollExpText.Location = new System.Drawing.Point(131, 18);
+            rollExpText.Location = new System.Drawing.Point(143, 18);
             rollExpText.Name = "rollExpText";
             rollExpText.Size = new System.Drawing.Size(45, 13);
             rollExpText.TabIndex = 38;
@@ -382,6 +394,77 @@
             this.updateTimer.Interval = 16;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
+            // thrustExpTextBox
+            // 
+            this.thrustExpTextBox.DecimalPlaces = 2;
+            this.thrustExpTextBox.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.thrustExpTextBox.Location = new System.Drawing.Point(194, 94);
+            this.thrustExpTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.thrustExpTextBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.thrustExpTextBox.Name = "thrustExpTextBox";
+            this.thrustExpTextBox.Size = new System.Drawing.Size(62, 20);
+            this.thrustExpTextBox.TabIndex = 45;
+            this.thrustExpTextBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.thrustExpTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // thrustExpText
+            // 
+            thrustExpText.AutoSize = true;
+            thrustExpText.Location = new System.Drawing.Point(131, 96);
+            thrustExpText.Name = "thrustExpText";
+            thrustExpText.Size = new System.Drawing.Size(57, 13);
+            thrustExpText.TabIndex = 44;
+            thrustExpText.Text = "Thrust exp";
+            // 
+            // thrustBaseTextBox
+            // 
+            this.thrustBaseTextBox.DecimalPlaces = 2;
+            this.thrustBaseTextBox.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.thrustBaseTextBox.Location = new System.Drawing.Point(341, 94);
+            this.thrustBaseTextBox.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.thrustBaseTextBox.Name = "thrustBaseTextBox";
+            this.thrustBaseTextBox.Size = new System.Drawing.Size(62, 20);
+            this.thrustBaseTextBox.TabIndex = 47;
+            this.thrustBaseTextBox.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.thrustBaseTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // thrustBaseText
+            // 
+            thrustBaseText.AutoSize = true;
+            thrustBaseText.Location = new System.Drawing.Point(272, 96);
+            thrustBaseText.Name = "thrustBaseText";
+            thrustBaseText.Size = new System.Drawing.Size(63, 13);
+            thrustBaseText.TabIndex = 46;
+            thrustBaseText.Text = "Thrust base";
+            // 
             // FlightControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -403,7 +486,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pitchExpTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollExpTextBox)).EndInit();
             inputGraphsGroupBox.ResumeLayout(false);
-            inputGraphsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustExpTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thrustBaseTextBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -426,5 +510,7 @@
         private System.Windows.Forms.NumericUpDown yawExpTextBox;
         private System.Windows.Forms.NumericUpDown pitchExpTextBox;
         private System.Windows.Forms.NumericUpDown rollExpTextBox;
+        private System.Windows.Forms.NumericUpDown thrustBaseTextBox;
+        private System.Windows.Forms.NumericUpDown thrustExpTextBox;
     }
 }

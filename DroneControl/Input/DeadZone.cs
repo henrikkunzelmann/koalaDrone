@@ -14,10 +14,10 @@ namespace DroneControl.Input
             if (Math.Abs(value) < deadZone)
                 return 0;
 
-            float newValue = Math.Abs(value); // Wert ins positive bringen fürs bessere Rechnen
-            newValue -= deadZone; // Dead Zone subtrahieren
-            newValue /= 1 - deadZone; // Normalisieren
-            return newValue * Math.Sign(value); // Wert wieder ins negative bringen, wenn der orginale Wert negativ ist
+            float newValue = Math.Abs(value);       // Wert ins positive bringen fürs bessere Rechnen
+            newValue -= deadZone;                   // Dead Zone subtrahieren
+            newValue /= 1 - deadZone;               // Normalisieren
+            return newValue * Math.Sign(value);     // Wert wieder ins negative bringen, wenn der orginale Wert negativ ist
         }
     }
 }

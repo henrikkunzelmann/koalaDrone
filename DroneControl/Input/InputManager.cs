@@ -23,6 +23,10 @@ namespace DroneControl.Input
         public float PitchExp { get; set; } = 1;
         public float YawExp { get; set; } = 1;
 
+        public const float ThrustMax = 400;
+        public float ThrustBase { get; set; } = 0.5f;
+        public float ThrustExp { get; set; } = 1;
+
         /// <summary>
         /// Gibt aktuelle Ziel Daten zurück.
         /// </summary>
@@ -126,14 +130,17 @@ namespace DroneControl.Input
         {
             RawTargetData = data;
 
-            data.Roll = (float)(Math.Pow(Math.Abs(data.Roll), RollExp) * Math.Sign(data.Roll));
-            data.Pitch = (float)(Math.Pow(Math.Abs(data.Pitch), PitchExp) * Math.Sign(data.Pitch));
-            data.Yaw = (float)(Math.Pow(Math.Abs(data.Yaw), YawExp) * Math.Sign(data.Yaw));
+            
+
+            data.Roll = (float)MapInputOneToOne(data.Roll, 0.5, RollExp);
+            data.Pitch = (float)MapInputOneToOne(data.Yaw, 0.5, PitchExp);
+            data.Yaw = (float)MapInputOneToOne(data.Yaw, 0.5, YawExp);
+            data.Thrust = (float)MapThrust(data.Thrust);
 
             data.Roll *= 500;
             data.Pitch *= 500;
             data.Yaw *= 200;
-            data.Thrust *= 400;
+            data.Thrust *= ThrustMax;
 
             // Daten setzen und senden
             TargetData = data;
@@ -141,6 +148,42 @@ namespace DroneControl.Input
 
             if (drone.Data.State.AreMotorsRunning())
                 drone.SendMovementData((short)data.Roll, (short)data.Pitch, (short)data.Yaw, (short)data.Thrust);
+        }
+
+        public double MapThrust(double thrust)
+        {
+            return (MapInput(thrust, ThrustBase, ThrustExp) + 1) * 0.5;
+        }
+
+        /// <summary>
+        /// Wandelt den Input [-1, 1] in eine Kurve [-1, 1] um
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="b"></param>
+        /// <param name="exp"></param>
+        /// <returns></returns>
+        public double MapInputOneToOne(double v, double b, double exp)
+        {
+            return MapInput((v + 1) * 0.5, b, exp);
+        }
+
+        /// <summary>
+        /// Wandelt den Input [0, 1] in eine Kurve [-1, 1] um
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="b"></param>
+        /// <param name="exp"></param>
+        /// <returns></returns>
+        public double MapInput(double v, double b, double exp)
+        {
+            if (exp == 1)
+                return (v * 2) - 1;
+
+            if (v == b)
+                return 0;
+            if (v < b)
+                return -Math.Pow(1 - (v / b), exp);
+            return Math.Pow((v - b) / (1 - b), exp);
         }
 
         public void ToogleArmStatus()
