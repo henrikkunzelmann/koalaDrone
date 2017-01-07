@@ -29,7 +29,7 @@ namespace DroneControl
 
             this.drone.OnDebugDataChange += Drone_OnDebugDataChange;
 
-            SearchInputDevices();
+            SearchInputDevices(true);
             UpdateTargetData();
             UpdateDeviceInfo();
             UpdateInputConfig();
@@ -80,7 +80,7 @@ namespace DroneControl
         {
             if (DesignMode)
                 return;
-            SearchInputDevices();
+            SearchInputDevices(false);
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)
@@ -94,7 +94,7 @@ namespace DroneControl
 
         private void searchDeviceButton_Click(object sender, EventArgs e)
         {
-            SearchInputDevices();
+            SearchInputDevices(false);
         }
 
         private void inputDeviceComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -110,7 +110,7 @@ namespace DroneControl
             UpdateInputConfig();
         }
 
-        private void SearchInputDevices()
+        private void SearchInputDevices(bool firstSearch)
         {
             bool changed;
             IInputDevice[] devices = InputManager.FindDevices(out changed);
@@ -125,7 +125,7 @@ namespace DroneControl
             inputDeviceComboBox.Items.AddRange(devices);
 
             // wenn nur ein Gerät gefunden und keins ausgewählt, dann neues auswählen
-            if (devices.Length == 1 && InputManager.CurrentDevice == null)
+            if (firstSearch && devices.Length == 1 && InputManager.CurrentDevice == null)
                 InputManager.CurrentDevice = devices[0];
 
 
