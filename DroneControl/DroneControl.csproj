@@ -139,6 +139,9 @@
     <Compile Include="Input\IDeviceFinder.cs" />
     <Compile Include="Input\IInputDevice.cs" />
     <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Input\Remote\FlightController.cs" />
+    <Compile Include="Input\Remote\RemoteInputDevice.cs" />
+    <Compile Include="Input\Remote\RemoteInputDeviceFinder.cs" />
     <Compile Include="Input\TargetData.cs" />
     <Compile Include="Input\XboxController.cs" />
     <Compile Include="Input\XboxDeviceFinder.cs" />
