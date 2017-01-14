@@ -133,7 +133,7 @@ namespace DroneControl.Input
             
 
             data.Roll = (float)MapInputOneToOne(data.Roll, 0.5, RollExp);
-            data.Pitch = (float)MapInputOneToOne(data.Yaw, 0.5, PitchExp);
+            data.Pitch = (float)MapInputOneToOne(data.Pitch, 0.5, PitchExp);
             data.Yaw = (float)MapInputOneToOne(data.Yaw, 0.5, YawExp);
             data.Thrust = (float)MapThrust(data.Thrust);
 
