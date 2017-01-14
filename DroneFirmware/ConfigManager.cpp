@@ -89,7 +89,7 @@ Config ConfigManager::getDefault() {
 	config.NetworkControlPort = 4711;
 	config.NetworkDataPort = 4712;
 	config.NetworkPacketBufferSize = 1024;
-	config.MaximumNetworkTimeout = 1500;
+	config.MaximumNetworkTimeout = 1000;
 
 	config.VerboseSerialLog = true;
 	config.MaxTemperature = 60;
@@ -104,17 +104,17 @@ Config ConfigManager::getDefault() {
 	config.PinBackRight = 14;
 	config.PinLed = 0;
 
-	config.PitchPid.Kp = 1.3f;
-	config.PitchPid.Ki = 0.0002f;
-	config.PitchPid.Kd = 0.06f;
+	config.PitchPid.Kp = 0.7f;
+	config.PitchPid.Ki = 0;
+	config.PitchPid.Kd = 0;
 
-	config.RollPid.Kp = 1.3f;
-	config.RollPid.Ki = 0.0002f;
-	config.RollPid.Kd = 0.06f;
+	config.RollPid.Kp = 0.7f;
+	config.RollPid.Ki = 0;
+	config.RollPid.Kd = 0;
 
-	config.YawPid.Kp = 4.0f;
-	config.YawPid.Ki = 0.00008f;
-	config.YawPid.Kd = 0.0f;
+	config.YawPid.Kp = 1.9f;
+	config.YawPid.Ki = 0;
+	config.YawPid.Kd = 0;
 
 	config.InputScale = 164.0f;
 
@@ -134,7 +134,7 @@ Config ConfigManager::getDefault() {
 
 	config.EnableImuAcc = true;
 	config.EnableImuMag = false;
-	config.GyroFilter = 0.02f;
+	config.GyroFilter = 0.6f;
 	config.AccFilter = 0.2f;
 	
 	config.CalibrateServos = false;
