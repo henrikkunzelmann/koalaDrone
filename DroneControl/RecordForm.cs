@@ -196,6 +196,8 @@ namespace DroneControl
         {
             "Time ms",
 
+            "Ping ms",
+
             "State", "RSSI", "BatteryV", "FreeHeap",
             "GyroTemp", "Pitch", "Roll", "Yaw",
 
@@ -245,6 +247,8 @@ namespace DroneControl
             object[] values = new object[]
                 {
                     time.ElapsedMilliseconds,
+
+                    drone.IsConnected ? drone.Ping.ToString() : "DISCONNECTED",
 
                     drone.Data.State,
                     drone.Data.WifiRssi,
