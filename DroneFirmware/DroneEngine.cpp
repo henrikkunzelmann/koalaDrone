@@ -220,11 +220,11 @@ void DroneEngine::handleInternal() {
 	if (config->EnableStabilization) {
 		if (sensor->getGyro()->hasValidImuData()) {
 			float horzSensivitiy = cmdScale * 40;
-			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetPitch * horzSensivitiy);
-			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetRoll * horzSensivitiy);
+			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), 0); // targetPitch * horzSensivitiy);
+			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), 0); // targetRoll * horzSensivitiy);
 
-			pitchCmd = anglePitchOutput;
-			rollCmd = angleRollOutput;
+			pitchCmd += anglePitchOutput;
+			rollCmd += angleRollOutput;
 		}
 		else
 			FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidImuData()");
