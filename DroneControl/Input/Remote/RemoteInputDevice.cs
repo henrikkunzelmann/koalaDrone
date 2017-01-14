@@ -83,8 +83,8 @@ namespace DroneControl.Input.Remote
 
             int[] data = controller.Data;
 
-            const int aux1 = 5;
-            const int aux2 = 6;
+            const int aux1 = 4;
+            const int aux2 = 5;
 
             if (CheckButtonPressed(data, aux1, true))
                 manager.ArmDrone();
@@ -97,7 +97,7 @@ namespace DroneControl.Input.Remote
                 manager.StopDrone();
 
             TargetData target = new TargetData();
-            target.Thrust = MapValue(data, 0);
+            target.Thrust = MapValueThrust(data, 0);
             target.Roll = MapValue(data, 1);
             target.Pitch = -MapValue(data, 2);
             target.Yaw = MapValue(data, 3);
@@ -111,7 +111,12 @@ namespace DroneControl.Input.Remote
 
         private float MapValue(int[] data, int index)
         {
-            return (data[index] - 1500) / 500;
+            return (data[index] - 1500) / 500.0f;
+        }
+
+        private float MapValueThrust(int[] data, int index)
+        {
+            return (data[index] - 1000) / 1000.0f;
         }
 
         private bool CheckButtonPressed(int[] data, int index, bool isHighPressed)
