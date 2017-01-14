@@ -8,13 +8,26 @@ namespace DroneControl.Input.Remote
     public class FlightController : IDisposable
     {
         private SerialPort port;
-        
+
+        public const int ChannelCount = 6;
+
         public string ComPort { get; private set; }
 
         public bool IsConnected { get; private set; }
         public bool IsOK { get; private set; }
 
-        public int[] Data { get; private set; }
+        private int[] data;
+
+        public int[] Data
+        {
+            get
+            {
+                lock (readThread)
+                {
+                    return data;
+                }
+            }
+        }
 
         private Thread readThread;
 
@@ -56,6 +69,9 @@ namespace DroneControl.Input.Remote
                 {
                     string line = port.ReadLine();
 
+                    if (line.StartsWith("&"))
+                        continue;
+
                     if (!line.StartsWith("%"))
                     {
                         SetDisconnectedState();
@@ -85,17 +101,28 @@ namespace DroneControl.Input.Remote
                     {
                         int v;
                         if (!int.TryParse(values[i + 1], out v))
+                        {
+                            data[i] = 1000;
                             ok = false;
+                        }
                         else
                             data[i] = Clamp(v, 1000, 2000);
                     }
 
-                    Data = data;
-                    IsConnected = true;
-                    IsOK = ok;
+                    lock (readThread)
+                    {
+                        if (data.Length == ChannelCount)
+                        {
+                            this.data = data;
+                            IsOK = ok;
+                        }
+                        else
+                            IsOK = false;
+                        IsConnected = true;
+                    }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
 
             }
@@ -103,7 +130,7 @@ namespace DroneControl.Input.Remote
             SetDisconnectedState();
         }
 
-        private int Clamp(int value, int min, int max)
+        public int Clamp(int value, int min, int max)
         {
             if (value < min)
                 return min;
