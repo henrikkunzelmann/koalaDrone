@@ -279,6 +279,7 @@ namespace DroneControl
 
         private void stopButton_Click(object sender, EventArgs e)
         {
+            Log.Info("Stopping because stop button is clicked");
             drone.SendStop();
         }
 

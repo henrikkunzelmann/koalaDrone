@@ -438,6 +438,7 @@ namespace DroneLibrary
             if (Data.State.AreMotorsRunning())
                 throw new InvalidOperationException("Drone in invalid state: " + Data.State);
 
+            Log.Info("SendReset()");
             SendPacket(new PacketReset(), false);
         }
 
@@ -454,6 +455,7 @@ namespace DroneLibrary
         /// </summary>
         public void SendArm()
         {
+            Log.Info("SendArm()");
             SendPacket(new PacketArm(true), true);
         }
 
@@ -462,6 +464,7 @@ namespace DroneLibrary
         /// </summary>
         public void SendDisarm()
         {
+            Log.Info("SendDisarm()");
             SendPacket(new PacketArm(false), true);
         }
 
@@ -492,6 +495,7 @@ namespace DroneLibrary
         /// </summary>
         public void SendStop()
         {
+            Log.Info("SendStop()");
             SendPacket(new PacketStop(), true);
         }
 
@@ -500,6 +504,7 @@ namespace DroneLibrary
         /// </summary>
         public void SendClearStatus()
         {
+            Log.Info("SendClearStatus()");
             SendPacket(new PacketClearStatus(), true);
         }
 

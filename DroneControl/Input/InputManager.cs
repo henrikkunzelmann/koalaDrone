@@ -107,7 +107,10 @@ namespace DroneControl.Input
                     SendTargetData(new TargetData(0, 0, 0, 0));
 
                     if (drone.Data.State.AreMotorsRunning())
+                    {
+                        Log.Warning("Stopping because input device is disconnceted");
                         StopDrone();
+                    }
                 }
 
                 // schauen ob sich Informationen vom Gerät geändert haben
@@ -129,8 +132,6 @@ namespace DroneControl.Input
         public void SendTargetData(TargetData data)
         {
             RawTargetData = data;
-
-            
 
             data.Roll = (float)MapInputOneToOne(data.Roll, 0.5, RollExp);
             data.Pitch = (float)MapInputOneToOne(data.Pitch, 0.5, PitchExp);
