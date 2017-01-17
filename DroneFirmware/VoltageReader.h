@@ -6,15 +6,18 @@
 class VoltageReader {
 private:
 	int inputPin;
+
+	bool firstSample = true;
+
 	float maxVoltage;
-	float maxInputVoltage;
 	float voltage;
 
+	float readRawVoltage();
+
 public:
-	VoltageReader(int pin, float maxVoltage, float maxInputVoltage);
+	VoltageReader(int pin, float maxVoltage);
 
 	float readVoltage();
-	float readRawVoltage();
 };
 
 #endif
