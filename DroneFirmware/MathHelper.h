@@ -17,7 +17,6 @@ class MathHelper
 	 static float toRadians(float degress);
 
 	 static float angleDifference(float a, float b);
-	 static float mixMotor(Config* config, int motorIndex, float pitch, float roll, float yaw);
 };
 
 #endif

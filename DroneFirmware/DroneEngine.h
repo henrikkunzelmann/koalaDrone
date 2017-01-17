@@ -7,6 +7,7 @@
 #include "ServoManager.h"
 #include "SensorHAL.h"
 #include "MathHelper.h"
+#include "Quadcopter.h"
 #include "Log.h"
 #include "LED.h"
 #include "StopReason.h"

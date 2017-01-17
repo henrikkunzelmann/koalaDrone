@@ -18,6 +18,7 @@
 #include "MemoryAdapter.h"
 #include "MathHelper.h"
 #include "DroneEngine.h"
+#include "Quadcopter.h"
 #include "ServoManager.h"
 #include "BinaryHelper.h"
 #include "LED.h"

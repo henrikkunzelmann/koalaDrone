@@ -135,6 +135,9 @@
     <ClInclude Include="Hardware.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Quadcopter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigManager.cpp">
@@ -202,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="VoltageReader.cpp">
       <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="Quadcopter.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Hardware.cpp">
       <Filter>Source Files</Filter>

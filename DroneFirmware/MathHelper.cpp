@@ -28,22 +28,3 @@ float MathHelper::fixValue(float value, float begin, float end) {
 		value -= range;
 	return value;
 }
-
-float motorsPitch[] = { 1, 1, -1, -1 };
-float motorsRoll[] = { 1, -1, 1, -1 };
-float motorsYaw[] = { -1, 1, 1, -1 };
-
-float MathHelper::mixMotor(Config* config, int motorIndex, float pitch, float roll, float yaw) {
-	float value = 0;
-
-	if (config->NegativeMixing) {
-		value += motorsPitch[motorIndex] * pitch;
-		value += motorsRoll[motorIndex] * roll;
-	}
-	else {
-		value += max(0, motorsPitch[motorIndex] * pitch);
-		value += max(0, motorsRoll[motorIndex] * roll);
-	}
-	value += motorsYaw[motorIndex] * yaw;
-	return value;
-}
