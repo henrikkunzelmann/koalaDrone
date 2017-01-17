@@ -201,7 +201,7 @@ void Gyro::processData() {
 	values = rawValues;
 
 	// Werte überprüfen
-	const float gyroRange = 800.0f;
+	const float gyroRange = 300.0f;
 	const float accRange = 10.0f;
 
 	validGyroData = true;
