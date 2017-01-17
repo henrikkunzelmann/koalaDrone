@@ -125,7 +125,7 @@ namespace DroneControl.Input.Remote
             return (data[index] - 1000) / 1000.0f;
         }
 
-        private bool CheckButtonPressed(int[] data, int index, ButtonState state, bool triState)
+        private bool IsButtonPressed(int[] data, int index, ButtonState state, bool triState)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -134,46 +134,34 @@ namespace DroneControl.Input.Remote
             if (state == ButtonState.Middle && !triState)
                 throw new ArgumentException("Middle is used without triState flag", nameof(triState));
 
-            if (lastData == null)
-                return false;
-
-
-            bool current = false;
-            bool last = false;
-
             const int middleSize = 200;
 
-            switch(state)
+            switch (state)
             {
                 case ButtonState.Low:
                     if (triState)
-                    {
-                        current = data[index] < 1500 - middleSize;
-                        last = lastData[index] < 1500 - middleSize;
-                    }
+                        return data[index] < 1500 - middleSize;
                     else
-                    {
-                        current = data[index] < 1500;
-                        last = lastData[index] < 1500;
-                    }
-                    break;
+                        return data[index] < 1500;
                 case ButtonState.Middle:
-                    current = Math.Abs(1500 - data[index]) <= middleSize;
-                    last = Math.Abs(1500 - lastData[index]) <= middleSize;
-                    break;
+                    return Math.Abs(1500 - data[index]) <= middleSize;
                 case ButtonState.High:
                     if (triState)
-                    {
-                        current = data[index] > 1500 + middleSize;
-                        last = lastData[index] > 1500 + middleSize;
-                    }
+                        return data[index] > 1500 + middleSize;
                     else
-                    {
-                        current = data[index] >= 1500;
-                        last = lastData[index] >= 1500;
-                    }
-                    break;
+                        return data[index] >= 1500;
             }
+            return false;
+        }
+
+        private bool CheckButtonPressed(int[] data, int index, ButtonState state, bool triState)
+        {
+            if (lastData == null)
+                return false;
+
+            bool current = IsButtonPressed(data, index, state, triState);
+            bool last = IsButtonPressed(lastData, index, state, triState);
+
             return current && !last;
         }
 
