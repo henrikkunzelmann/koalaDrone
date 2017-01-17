@@ -259,13 +259,16 @@ namespace DroneControl
             {
                 case DroneState.Reset:
                 case DroneState.Stopped:
+                    Log.Info("Clear status from status button");
                     drone.SendClearStatus();
                     break;
                 case DroneState.Idle:
+                    Log.Info("Arm from status button");
                     drone.SendArm();
                     break;
                 case DroneState.Armed:
                 case DroneState.Flying:
+                    Log.Info("Disarm from status button");
                     drone.SendDisarm();
                     break;
             }

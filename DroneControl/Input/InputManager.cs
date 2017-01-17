@@ -197,23 +197,27 @@ namespace DroneControl.Input
 
         public void ArmDrone()
         {
+            Log.Info("Arm from InputManager");
             if (drone.Data.State == DroneState.Idle)
                 drone.SendArm();
         }
 
         public void DisarmDrone()
         {
+            Log.Info("Disarm from InputManager");
             if (drone.Data.State.AreMotorsRunning())
                 drone.SendDisarm();
         }
 
         public void StopDrone()
         {
+            Log.Info("Stopping from InputManager");
             drone.SendStop();
         }
 
         public void SendClear()
         {
+            Log.Info("Clearing from InputManager");
             drone.SendClearStatus();
         }
     }
