@@ -2,12 +2,15 @@
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace DroneControl.Input.Remote
 {
     public class FlightController : IDisposable
     {
         private SerialPort port;
+        private Stopwatch notOkWatch = new Stopwatch();
 
         public const int ChannelCount = 6;
 
@@ -29,13 +32,19 @@ namespace DroneControl.Input.Remote
             }
         }
 
+        public TimeSpan UpdateInterval { get; private set; }
+
         private Thread readThread;
 
         public FlightController(string comPort)
         {
             this.ComPort = comPort;
+            Connect();
+        }
 
-            port = new SerialPort(comPort, 115200, Parity.None, 8, StopBits.One);
+        private void Connect()
+        {
+            port = new SerialPort(ComPort, 115200, Parity.None, 8, StopBits.One);
             port.NewLine = "\r\n";
             port.Open();
 
@@ -46,13 +55,54 @@ namespace DroneControl.Input.Remote
             }
         }
 
+        public void Reconnect()
+        {
+            if (IsConnected)
+                return;
+
+            if (!port.IsOpen)
+            {
+                Dispose();
+                Connect();
+            }
+        }
+
         public void Dispose()
         {
             if (readThread != null)
                 readThread.Abort();
             if (port != null)
-                port.Close();
+            {
+                try
+                {
+                    port.Close();
+                }
+                catch (Exception)
+                {
+
+                }
+                port = null;
+            }
             SetDisconnectedState();
+        }
+
+        private void SetOK(bool ok, bool becauseWrongData)
+        {
+            IsOK = ok;
+
+            if (ok || becauseWrongData)
+            {
+                IsConnected = true;
+                notOkWatch.Stop();
+            }
+            else
+            {
+                if (!notOkWatch.IsRunning)
+                    notOkWatch.Restart();
+
+                if (notOkWatch.Elapsed.TotalSeconds > 5)
+                    SetDisconnectedState();
+            }
         }
 
         private void SetDisconnectedState()
@@ -65,60 +115,63 @@ namespace DroneControl.Input.Remote
         {
             try
             {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
                 while (port.IsOpen)
                 {
                     string line = port.ReadLine();
 
-                    if (line.StartsWith("&"))
-                        continue;
-
-                    if (!line.StartsWith("%"))
-                    {
-                        SetDisconnectedState();
-                        continue;
-                    }
-
-                    string[] values = line.Substring(1).Trim().Split(',').Select(v => v.Trim()).ToArray();
-                    if (values.Length == 0)
-                    {
-                        SetDisconnectedState();
-                        continue;
-                    }
-
                     bool ok;
-                    if (values[0] == "OK")
+                    if (line.StartsWith("%O"))
                         ok = true;
-                    else if (values[0] == "NOTOK")
+                    else if (line.StartsWith("%N"))
                         ok = false;
                     else
                     {
-                        SetDisconnectedState();
+                        SetOK(false, false);
+                        continue;
+                    }
+
+                    string[] values = line.Substring(2).Trim().Split(',').Select(v => v.Trim()).ToArray();
+                    if (values.Length == 0)
+                    {
+                        SetOK(false, false);
                         continue;
                     }
 
                     int[] data = new int[values.Length - 1];
+
+                    int valueSum = 0;
                     for (int i = 0; i < data.Length; i++)
                     {
                         int v;
-                        if (!int.TryParse(values[i + 1], out v))
+                        if (!int.TryParse(values[i], NumberStyles.AllowHexSpecifier, null, out v))
                         {
                             data[i] = 1000;
                             ok = false;
                         }
                         else
                             data[i] = Clamp(v, 1000, 2000);
+                        valueSum += data[i];
                     }
+
+                    int sentValueSum;
+                    if (!int.TryParse(values.Last(), NumberStyles.AllowHexSpecifier, null, out sentValueSum) || sentValueSum != valueSum)
+                        SetOK(false, false);
+
 
                     lock (readThread)
                     {
                         if (data.Length == ChannelCount)
                         {
                             this.data = data;
-                            IsOK = ok;
+                            SetOK(ok, true);
                         }
                         else
-                            IsOK = false;
-                        IsConnected = true;
+                            SetOK(false, false);
+
+                        UpdateInterval = sw.Elapsed;
+                        sw.Restart();
                     }
                 }
             }

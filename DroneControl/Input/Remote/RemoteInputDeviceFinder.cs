@@ -8,21 +8,30 @@ namespace DroneControl.Input.Remote
 {
     public class RemoteInputDeviceFinder : IDeviceFinder
     {
+        private RemoteInputDevice device;
+
         public RemoteInputDeviceFinder()
         {
         }
 
         public void Dispose()
         {
+            if (device != null)
+                device.Dispose();
         }
 
         public IInputDevice[] FindDevices()
         {
             try
             {
+                if (device == null)
+                    device = new RemoteInputDevice("COM5");
+                else if (!device.IsConnected)
+                    device.Reconnect();
+
                 return new IInputDevice[]
                 {
-                    new RemoteInputDevice("COM5")
+                    device
                 };
             }
             catch(Exception)

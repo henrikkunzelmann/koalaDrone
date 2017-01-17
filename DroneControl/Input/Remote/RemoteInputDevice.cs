@@ -13,7 +13,7 @@ namespace DroneControl.Input.Remote
 
         public bool IsConnected
         {
-            get { return controller.IsConnected && controller.IsOK; }
+            get { return controller.IsConnected; }
         }
 
         public string Name
@@ -76,9 +76,15 @@ namespace DroneControl.Input.Remote
             return Name;
         }
 
+        public void Reconnect()
+        {
+            if (controller != null)
+                controller.Reconnect();
+        }
+
         public void Update(InputManager manager)
         {
-            if (!IsConnected)
+            if (!IsConnected || !controller.IsOK)
                 return;
 
             int[] data = controller.Data;
@@ -86,14 +92,14 @@ namespace DroneControl.Input.Remote
             const int aux1 = 4;
             const int aux2 = 5;
 
-            if (CheckButtonPressed(data, aux1, true))
+            if (CheckButtonPressed(data, aux1, ButtonState.High, false))
                 manager.ArmDrone();
-            else if (CheckButtonPressed(data, aux1, false))
+            else if (CheckButtonPressed(data, aux1, ButtonState.Low, false))
                 manager.DisarmDrone();
 
-            if (CheckButtonPressed(data, aux2, true))
+            if (CheckButtonPressed(data, aux2, ButtonState.Low, true))
                 manager.SendClear();
-            else if (CheckButtonPressed(data, aux2, false))
+            else if (CheckButtonPressed(data, aux2, ButtonState.High, true))
                 manager.StopDrone();
 
             TargetData target = new TargetData();
@@ -119,25 +125,63 @@ namespace DroneControl.Input.Remote
             return (data[index] - 1000) / 1000.0f;
         }
 
-        private bool CheckButtonPressed(int[] data, int index, bool isHighPressed)
+        private bool CheckButtonPressed(int[] data, int index, ButtonState state, bool triState)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+            if (index < 0 || index >= data.Length)
+                throw new ArgumentOutOfRangeException(nameof(index));
+            if (state == ButtonState.Middle && !triState)
+                throw new ArgumentException("Middle is used without triState flag", nameof(triState));
+
             if (lastData == null)
                 return false;
 
-            bool current; 
-            bool last;
 
-            if (isHighPressed)
+            bool current = false;
+            bool last = false;
+
+            const int middleSize = 200;
+
+            switch(state)
             {
-                current = data[index] > 1500;
-                last = lastData[index] > 1500;
-            }
-            else
-            {
-                current = data[index] < 1500;
-                last = lastData[index] < 1500;
+                case ButtonState.Low:
+                    if (triState)
+                    {
+                        current = data[index] < 1500 - middleSize;
+                        last = lastData[index] < 1500 - middleSize;
+                    }
+                    else
+                    {
+                        current = data[index] < 1500;
+                        last = lastData[index] < 1500;
+                    }
+                    break;
+                case ButtonState.Middle:
+                    current = Math.Abs(1500 - data[index]) <= middleSize;
+                    last = Math.Abs(1500 - lastData[index]) <= middleSize;
+                    break;
+                case ButtonState.High:
+                    if (triState)
+                    {
+                        current = data[index] > 1500 + middleSize;
+                        last = lastData[index] > 1500 + middleSize;
+                    }
+                    else
+                    {
+                        current = data[index] >= 1500;
+                        last = lastData[index] >= 1500;
+                    }
+                    break;
             }
             return current && !last;
+        }
+
+        private enum ButtonState
+        {
+            Low,
+            Middle,
+            High
         }
     }
 }
