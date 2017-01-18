@@ -77,6 +77,7 @@ void Gyro::logCalibration(CalibrationData* data) {
 	Log::debug("Gyro", "max: %f, %f, %f", data->Max[0], data->Max[1], data->Max[2]);
 	Log::debug("Gyro", "average: %f, %f, %f", data->Average[0], data->Average[1], data->Average[2]);
 	Log::debug("Gyro", "length: %f", data->Length);
+	Log::emptyLine();
 }
 
 void Gyro::beginCalibration(CalibrationState state) {

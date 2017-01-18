@@ -23,6 +23,8 @@ void SensorHAL::initSensors() {
 
 	if (!gyroInit)
 		FaultManager::fault(FaultHardware, "SensorHAL", "initSensors() Gyro");
+
+	Log::emptyLine();
 }
 
 bool SensorHAL::initGyro(Gyro* gyro) {

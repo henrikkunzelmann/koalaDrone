@@ -196,6 +196,7 @@ void setup() {
 
 	Log::emptyLine();
 	Log::info("Boot", "done booting. ready.");
+	Log::emptyLine();
 }
 
 void loop() {

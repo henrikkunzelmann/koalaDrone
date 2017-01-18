@@ -80,8 +80,8 @@ Config ConfigManager::getDefault() {
 	strncpy(config.DroneName, "koalaDrone", sizeof(config.DroneName));
 	config.SaveConfig = true;
 
-	strncpy(config.NetworkSSID, "", sizeof(config.NetworkSSID));
-	strncpy(config.NetworkPassword, "", sizeof(config.NetworkPassword));
+	strncpy(config.NetworkSSID, "FRITZ!Box 7490", sizeof(config.NetworkSSID));
+	strncpy(config.NetworkPassword, "09116718844874426682", sizeof(config.NetworkPassword));
 
 	strncpy(config.AccessPointPassword, "12345678", sizeof(config.AccessPointPassword));
 
