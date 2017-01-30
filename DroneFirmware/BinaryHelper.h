@@ -1,7 +1,7 @@
 #ifndef _BINARYHELPER_h
 #define _BINARYHELPER_h
 
-#include "arduino.h"
+#include <Arduino.h>
 
 #ifdef  __IEEE_LITTLE_ENDIAN
 #define BINARY_NEED_SWAPPING 1

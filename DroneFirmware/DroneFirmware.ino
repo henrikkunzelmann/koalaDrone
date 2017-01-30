@@ -1,17 +1,10 @@
-#include <Wire.h>
-#include <I2Cdev.h>
-#include <WiFiUdp.h>
-#include <ESP8266WiFi.h>
-#include <Servo.h>
-#include <EEPROM.h>
-#include <MPU6050.h>
-#include <MPU9250.h>
-#include <BME280.h>
-
 #include "Build.h"
 #include "Hardware.h"
+#include "Model.h"
+
 #include "Log.h"
 #include "NetworkManager.h"
+#include "WiFiCompat.h"
 #include "Config.h"
 #include "ConfigManager.h"
 #include "EEPROM_MemoryAdapter.h"
@@ -46,6 +39,8 @@ void setup() {
 	Serial.begin(115200);
 	Serial.println();
 
+	setupLED();
+
 	uint64_t heapBefore = Hardware::getFreeHeap();
 
 	Log::emptyLine();
@@ -64,11 +59,10 @@ void setup() {
 	Log::emptyLine();
 	Log::info("Memory", "Free heap (before boot): %lu", heapBefore);
 
-	rst_info* resetInfo = ESP.getResetInfoPtr();
 	Log::emptyLine();
-	Log::debug("Boot", "Reset info: r: %u, ex: %u   0x%x, 0x%x, 0x%x, 0x%x, 0x%x", 
-		resetInfo->reason, resetInfo->exccause,
-		resetInfo->epc1, resetInfo->epc2, resetInfo->epc3, resetInfo->excvaddr, resetInfo->depc);
+	ResetInfo resetInfo = Hardware::getResetInfo();
+	Log::debug("Boot", "Reset info: r: %u, ex: %u, epc: 0x%x, excvaddr: 0x%x", 
+		resetInfo.reason, resetInfo.exception, resetInfo.epc, resetInfo.excvaddr);
 
 	ESP.eraseConfig();
 
@@ -77,6 +71,7 @@ void setup() {
 	getBuildSerialCode(serialCode, sizeof(serialCode));
 	Log::emptyLine();
 	Log::info("Boot", "Serial code: %s", serialCode);
+	Log::emptyLine();
 
 	config = ConfigManager::loadConfig();
 
@@ -86,14 +81,12 @@ void setup() {
 	// ServoManager initialisieren
 	servos = new ServoManager(&config);
 
-	setupLED(&config);
-
 	bool saveConfig = false;
 	// Calibrate servos
 	if (config.CalibrateServos) {
 		Log::info("Boot", "Calibration of servos...");
 
-		if (resetInfo->reason == REASON_DEFAULT_RST || resetInfo->reason == REASON_EXT_SYS_RST) {
+		if (Hardware::isNormalBoot()) {
 			turnLedOn();
 			servos->calibrate();
 			turnLedOff();
@@ -101,10 +94,8 @@ void setup() {
 
 			blinkLED(5, 1000);
 		}
-		else
-		{
-
-			Log::error("Boot", "Invalid reset reason: %u", resetInfo->reason);
+		else {
+			Log::error("Boot", "No normal boot occured! Reset reason: %u", resetInfo.reason);
 			blinkLED(10, 500);
 		}
 
@@ -127,16 +118,15 @@ void setup() {
 
 	// WiFi Einstellungen setzen
 	WiFi.persistent(false);
-	WiFi.hostname(name);
-	WiFi.setOutputPower(20.5f);
-	WiFi.setPhyMode(WIFI_PHY_MODE_11N);
+	WiFiCompat::initSettings();
+	WiFiCompat::setHostname(name);
 
 	// versuchen mit dem in der Config gespeicherten AP zu verbinden
 	if (strlen(config.NetworkSSID) > 0) {
 		Log::info("Boot", "Trying to connect to %s", config.NetworkSSID);
 
 		WiFi.mode(WIFI_STA);
-		WiFi.setAutoReconnect(true);
+
 		if (WiFi.begin(config.NetworkSSID, config.NetworkPassword) == WL_CONNECT_FAILED)
 			Log::error("Boot", "WiFi.begin() failed");
 

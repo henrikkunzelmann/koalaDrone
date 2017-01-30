@@ -1,5 +1,6 @@
 #include "EEPROM_MemoryAdapter.h"
 
+#ifdef HARDWARE_ESP8266
 EEPROM_MemoryAdapter::EEPROM_MemoryAdapter(size_t size, uint16_t offset) {
 	this->size = size;
 	this->offset = offset;
@@ -34,7 +35,7 @@ void EEPROM_MemoryAdapter::writeByte(uint32_t address, uint8_t val) {
 
 uint8_t EEPROM_MemoryAdapter::readByte(uint32_t address) {
 	if (assertAddress(address, sizeof(uint8_t)))
-		return EEPROM.read(offset + address);
+		return EEPROM.read(offset + address); 
 	return 0;
 }
 
@@ -49,4 +50,4 @@ void EEPROM_MemoryAdapter::write(uint32_t address, uint8_t* data, size_t length)
 	if (assertAddress(address, length))
 		memcpy(EEPROM.getDataPtr() + offset + address, data, length);
 }
-
+#endif

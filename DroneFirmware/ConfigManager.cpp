@@ -1,6 +1,7 @@
 #include "ConfigManager.h"
 
 Config ConfigManager::loadConfig() {
+#if HARDWARE_ESP8266
 	EEPROM_MemoryAdapter* adapter = new EEPROM_MemoryAdapter(1024, 64);
 
 	adapter->begin();
@@ -9,6 +10,10 @@ Config ConfigManager::loadConfig() {
 
 	delete adapter;
 	return config;
+#else
+	Log::info("Config", "Loading config not supported on this hardware");
+	return getDefault();
+#endif
 }
 
 Config ConfigManager::loadConfig(MemoryAdapter* memory) {
@@ -44,6 +49,7 @@ Config ConfigManager::loadConfig(MemoryAdapter* memory) {
 }
 
 void ConfigManager::saveConfig(const Config config) {
+#if HARDWARE_ESP8266
 	Profiler::begin("saveConfig()");
 	EEPROM_MemoryAdapter* adapter = new EEPROM_MemoryAdapter(1024, 64);
 
@@ -55,6 +61,9 @@ void ConfigManager::saveConfig(const Config config) {
 
 	delete adapter;
 	Profiler::end();
+#else
+	Log::info("Config", "Saving config not supported on this hardware");
+#endif
 }
 
 void ConfigManager::saveConfig(MemoryAdapter* memory, const Config config) {
@@ -94,15 +103,9 @@ Config ConfigManager::getDefault() {
 	config.VerboseSerialLog = true;
 	config.MaxTemperature = 60;
 
-	config.ServoMin = 1000;
-	config.ServoMax = 2000;
-	config.ServoIdle = 1040;
-
-	config.PinFrontLeft = 12;
-	config.PinFrontRight = 13;
-	config.PinBackLeft = 16;
-	config.PinBackRight = 14;
-	config.PinLed = 0;
+	config.ServoMin = DEFAULT_SERVO_MIN;
+	config.ServoMax = DEFAULT_SERVO_MAX;
+	config.ServoIdle = DEFAULT_SERVO_IDLE;
 
 	config.PitchPid.Kp = 0.7f;
 	config.PitchPid.Ki = 0;

@@ -1,7 +1,7 @@
 #ifndef _FAULTMANAGER_h
 #define _FAULTMANAGER_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include "Log.h"
 
 #include "Fault.h"

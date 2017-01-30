@@ -1,7 +1,7 @@
 #ifndef _MATHHELPER_h
 #define _MATHHELPER_h
 
-#include "arduino.h"
+#include <Arduino.h>
 
 #include "Config.h"
 

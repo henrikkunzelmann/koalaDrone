@@ -1,7 +1,7 @@
 #ifndef _BARO280_h
 #define _BARO280_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include <Wire.h>
 #include <I2Cdev.h>
 #include <BME280.h>

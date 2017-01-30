@@ -1,7 +1,7 @@
 #ifndef _LOG_h
 #define _LOG_h
 
-#include "arduino.h"
+#include <Arduino.h>
 #include <stdarg.h>
 
 enum LogLevel {

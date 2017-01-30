@@ -58,7 +58,7 @@ namespace DroneLibrary
 
         public void SendHello()
         {
-            Log.Debug("Sending hello broadcast");
+            Log.Debug("DroneList: Sending hello broadcast");
 
             IPAddress[] addresses = NetworkHelper.GetLocalBroadcastAddresses();
             if (addresses == null)
@@ -91,7 +91,7 @@ namespace DroneLibrary
                 IPEndPoint sender = null;
                 byte[] packet = client.EndReceive(result, ref sender);
 
-                Log.Debug("Got hello answer from {0}", sender.Address);
+                Log.Debug("DroneList: Got hello answer from {0}", sender.Address);
 
                 HandlePacket(packet, sender);
 
@@ -116,7 +116,7 @@ namespace DroneLibrary
 
                     if (packet.Length < 3 || buffer.ReadByte() != 'F' || buffer.ReadByte() != 'L' || buffer.ReadByte() != 'Y')
                     {
-                        Log.Debug("Hello: Invalid magic value!");
+                        Log.Debug("DroneList: Invalid magic value!");
                         return;
                     }
 
@@ -137,6 +137,7 @@ namespace DroneLibrary
             }
             catch (Exception e)
             {
+				Log.Error("Error while searching for drones:");
                 Log.Error(e);
             }
         }

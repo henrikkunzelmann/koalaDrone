@@ -314,18 +314,13 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 		writeBuffer->writeString(serialCode);
 
 		writeBuffer->writeString(BUILD_NAME);
-
 		writeBuffer->write(uint8_t(BUILD_VERSION));
 
-		rst_info* resetInfo = ESP.getResetInfoPtr();
-
-		writeBuffer->write(uint8_t(resetInfo->reason));
-		writeBuffer->write(uint8_t(resetInfo->exccause));
-		writeBuffer->write(resetInfo->epc1);
-		writeBuffer->write(resetInfo->epc2);
-		writeBuffer->write(resetInfo->epc3);
-		writeBuffer->write(resetInfo->excvaddr);
-		writeBuffer->write(resetInfo->depc);
+		ResetInfo resetInfo = Hardware::getResetInfo();
+		writeBuffer->write(uint8_t(resetInfo.reason));
+		writeBuffer->write(uint8_t(resetInfo.exception));
+		writeBuffer->write(resetInfo.epc);
+		writeBuffer->write(resetInfo.excvaddr);
 
 		writeBuffer->write(uint8_t(engine->getStopReason()));
 
@@ -398,18 +393,16 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 
 		char* md5 = readBuffer->readString();
 		uint32_t size = readBuffer->readUint32();
-
-		if (readBuffer->getError())
-			return;
-
-		if (!engine->beginOTA()) {
-			free(md5);
+		if (readBuffer->getError() || !engine->beginOTA()) {
+			if (md5 != NULL)
+				free(md5);
 			return;
 		}
 
+#if HARDWARE_SUPPORTS_OTA
 		Log::info("Network", "OTA begin with size %u and md5 %s", size, md5);
 
-		if (ESP.getFreeSketchSpace() < size) {
+		if (Hardware::getFreeSketchSpace() > 0 && Hardware::getFreeSketchSpace() < size) {
 			Log::error("Network", "OTA begin failed (not enough free space)");
 			engine->endOTA();
 			free(md5);
@@ -425,7 +418,9 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 
 		if (!Update.setMD5(md5))
 			free(md5);
-
+#else
+		Log::error("Network", "BeginOTA: OTA not supported on hardware");
+#endif
 		break;
 	}
 	case DataOTA: {
@@ -436,6 +431,7 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 
 		lastOtaRevision = revision;
 
+#if HARDWARE_SUPPORTS_OTA
 		if (engine->state() != StateOTA) {
 			sendAck(udp, revision);
 			return;
@@ -459,6 +455,9 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 
 		Update.write(data, chunkSize);
 		sendAck(udp, revision);
+#else
+		Log::error("Network", "DataOTA: OTA not supported on hardware");
+#endif
 		break;
 	}
 	case EndOTA:
@@ -467,6 +466,7 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 
 		lastOtaRevision = revision;
 
+#if HARDWARE_SUPPORTS_OTA
 		if (engine->state() == StateOTA) {
 			if (Update.end(!readBuffer->readBoolean())) {
 				Log::info("Network", "OTA update done");
@@ -479,6 +479,9 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 
 			engine->endOTA();
 		}
+#else
+		Log::error("Network", "EndOTA: OTA not supported on hardware");
+#endif
 		break;
 	default: 
 		Log::error("Network", "Unknown packet: %u", type);
@@ -537,7 +540,7 @@ void NetworkManager::sendDroneData(WiFiUDP* udp) {
 		writeBuffer->write(sensor->getBaro()->getAltitude());
 
 		writeBuffer->write(voltageReader->readVoltage());
-		writeBuffer->write(WiFi.RSSI());
+		writeBuffer->write(uint32_t(WiFi.RSSI()));
 
 		sendData(udp);
 		_lastDataSend = millis();

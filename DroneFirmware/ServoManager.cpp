@@ -13,10 +13,10 @@ ServoManager::ServoManager(Config* config) {
 }
 
 void ServoManager::internalAttach() {
-	frontLeft.attach(config->PinFrontLeft);
-	frontRight.attach(config->PinFrontRight);
-	backLeft.attach(config->PinBackLeft);
-	backRight.attach(config->PinBackRight);
+	frontLeft.attach(PIN_FRONT_LEFT);
+	frontRight.attach(PIN_FRONT_RIGHT);
+	backLeft.attach(PIN_BACK_LEFT);
+	backRight.attach(PIN_BACK_RIGHT);
 	attached = true;
 	yield();
 }
@@ -52,7 +52,7 @@ void ServoManager::waitForDetach() {
 	if (attached)
 		detach();
 
-	delayMicroseconds(REFRESH_INTERVAL);
+	delayMicroseconds(SERVO_REFRESH_INTERVAL);
 	waitForDetach(frontLeft);
 	waitForDetach(frontRight);
 	waitForDetach(backLeft);

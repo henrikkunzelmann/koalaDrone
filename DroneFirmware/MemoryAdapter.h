@@ -1,7 +1,7 @@
 #ifndef _MEMORYADAPTER_h
 #define _MEMORYADAPTER_h
 
-#include "arduino.h"
+#include <Arduino.h>
 
 class MemoryAdapter {
 protected:
