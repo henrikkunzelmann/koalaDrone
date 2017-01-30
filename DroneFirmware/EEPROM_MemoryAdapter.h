@@ -1,7 +1,9 @@
-#ifndef _EEPROM_MEMORYADAPTER_h
-#define _EEPROM_MEMORYADAPTER_h
+#pragma once
 
-#include "arduino.h"
+#include "Hardware.h"
+
+#if HARDWARE_ESP8266
+#include <Arduino.h>
 #include <EEPROM.h>
 
 #include "MemoryAdapter.h"
@@ -25,6 +27,5 @@ public:
 	void read(uint32_t address, uint8_t* data, size_t length) override;
 
 };
-
 #endif
 

@@ -1,7 +1,5 @@
 #include "LED.h"
 
-int ledPin = 0;
-
 bool shouldBlink = false;
 bool blinkCooldown = false;
 
@@ -9,9 +7,8 @@ int32_t blinkCount = 0;
 uint32_t blinkCooldownTime = 0;
 uint32_t blinkTimer = 0;
 
-void setupLED(Config* config) {
-	ledPin = config->PinLed;
-	pinMode(ledPin, OUTPUT);
+void setupLED() {
+	pinMode(PIN_LED0, OUTPUT);
 	turnLedOff();
 }
 
@@ -55,14 +52,14 @@ void turnLedOn() {
 	shouldBlink = false;
 	blinkCooldown = false;
 
-	digitalWrite(ledPin, HIGH);
+	digitalWrite(PIN_LED0, HIGH);
 }
 
 void turnLedOff() {
 	shouldBlink = false;
 	blinkCooldown = false;
 
-	digitalWrite(ledPin, LOW);
+	digitalWrite(PIN_LED0, LOW);
 }
 
 

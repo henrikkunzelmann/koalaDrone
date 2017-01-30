@@ -1,13 +1,14 @@
 #ifndef _SERVOMANAGER_h
 #define _SERVOMANAGER_h
 
-#include "arduino.h"
-#include <Servo.h>
+#include <Arduino.h>
 
 #include "Config.h"
 #include "Log.h"
 #include "MathHelper.h"
 #include "Profiler.h"
+#include "Servo.h"
+#include "Model.h"
 
 
 class ServoManager

@@ -1,7 +1,7 @@
 #ifndef _BARO_h
 #define _BARO_h
 
-#include "arduino.h"
+#include <Arduino.h>
 
 #include "MathHelper.h"
 #include "SensorCalibration.h"

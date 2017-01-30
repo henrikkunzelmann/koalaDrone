@@ -1,8 +1,9 @@
-#ifndef _CONFIGMANAGER_h
-#define _CONFIGMANAGER_h
+#pragma once
 
-#include "arduino.h"
+#include <Arduino.h>
 
+#include "Hardware.h"
+#include "Model.h"
 #include "MemoryAdapter.h"
 #include "Config.h"
 #include "Log.h"
@@ -24,6 +25,3 @@ class ConfigManager
 
 	 static Config getDefault();
 };
-
-#endif
-

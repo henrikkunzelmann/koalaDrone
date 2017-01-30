@@ -37,14 +37,32 @@
     <Filter Include="Header Files\diagnostics">
       <UniqueIdentifier>{e515b202-3515-4603-b02c-f25134c7be3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\hardware">
+      <UniqueIdentifier>{8b7bc186-9983-4b95-b3b1-75c5248d626d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\hardware\esp8266">
+      <UniqueIdentifier>{48f5792c-1306-4b95-9349-d294fad7807a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\hardware\esp32">
+      <UniqueIdentifier>{52890ab4-f0a8-4f59-a679-927df7c63577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\hardware">
+      <UniqueIdentifier>{2a6e0446-1f17-48bd-ba76-aac928d882a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\hardware\esp8266">
+      <UniqueIdentifier>{cbea857a-4d26-4afe-920e-d7d98a0df60c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\hardware\esp32">
+      <UniqueIdentifier>{16d27d22-582e-42f5-a9f8-6b9ea504e593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\models">
+      <UniqueIdentifier>{b1129264-1171-4f02-80c0-a2d0d695525c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DroneFirmware.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.DroneFirmware.vsarduino.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ServoManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -132,11 +150,62 @@
     <ClInclude Include="VoltageReader.h">
       <Filter>Header Files\sensor</Filter>
     </ClInclude>
-    <ClInclude Include="Hardware.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Quadcopter.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.DroneFirmware.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware8266.h">
+      <Filter>Header Files\hardware\esp8266</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware32.h">
+      <Filter>Header Files\hardware\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="Servo8266.h">
+      <Filter>Header Files\hardware\esp8266</Filter>
+    </ClInclude>
+    <ClInclude Include="Servo32.h">
+      <Filter>Header Files\hardware\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="Servo.h">
+      <Filter>Header Files\hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware.h">
+      <Filter>Header Files\hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Updater.h">
+      <Filter>Header Files\hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="Updater32.h">
+      <Filter>Header Files\hardware\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="Updater8266.h">
+      <Filter>Header Files\hardware\esp8266</Filter>
+    </ClInclude>
+    <ClInclude Include="WiFi.h">
+      <Filter>Header Files\hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="WiFi32.h">
+      <Filter>Header Files\hardware\esp32</Filter>
+    </ClInclude>
+    <ClInclude Include="WiFi8266.h">
+      <Filter>Header Files\hardware\esp8266</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetInfo.h">
+      <Filter>Header Files\hardware</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelOne.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelTwo.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="WiFiCompat.h">
+      <Filter>Header Files\hardware</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -160,9 +229,6 @@
     </ClCompile>
     <ClCompile Include="BinaryHelper.cpp">
       <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="LED.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PacketType.cpp">
       <Filter>Source Files\net</Filter>
@@ -209,8 +275,23 @@
     <ClCompile Include="Quadcopter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Hardware.cpp">
+    <ClCompile Include="Hardware32.cpp">
+      <Filter>Source Files\hardware\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="Hardware8266.cpp">
+      <Filter>Source Files\hardware\esp8266</Filter>
+    </ClCompile>
+    <ClCompile Include="LED.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Servo32.cpp">
+      <Filter>Source Files\hardware\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="WiFiCompat32.cpp">
+      <Filter>Source Files\hardware\esp32</Filter>
+    </ClCompile>
+    <ClCompile Include="WiFiCompat8266.cpp">
+      <Filter>Source Files\hardware\esp8266</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

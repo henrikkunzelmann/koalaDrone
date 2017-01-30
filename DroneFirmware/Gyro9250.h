@@ -1,7 +1,7 @@
 #ifndef _GYRO9250_h
 #define _GYRO9250_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include <Wire.h>
 #include <I2Cdev.h>
 #include <MPU9250.h>

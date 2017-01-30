@@ -1,7 +1,7 @@
 #ifndef _PACKETTYPE_h
 #define _PACKETTYPE_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 enum HelloPacketType : uint8_t {
 	HelloQuestion = 1,

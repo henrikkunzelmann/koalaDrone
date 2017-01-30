@@ -1,7 +1,7 @@
 #ifndef _CONFIG_h
 #define _CONFIG_h
 
-#include "arduino.h"
+#include <Arduino.h>
 
 #include "SensorCalibration.h"
 
@@ -52,17 +52,6 @@ struct Config {
 	uint16_t ServoMax;
 	//The output value for the ESC's, at which they start to turn
 	uint16_t ServoIdle;
-
-	//The pin of the front-left motor
-	uint8_t PinFrontLeft;
-	//The pin of the front-right motor
-	uint8_t PinFrontRight;
-	//The pin of the back-left motor
-	uint8_t PinBackLeft;
-	//The pin of the back-right motor
-	uint8_t PinBackRight;
-	//The pin of the LED
-	uint8_t PinLed;
 
 	PIDSettings PitchPid;
 	PIDSettings RollPid;

@@ -1,7 +1,7 @@
 #ifndef _GYRO_h
 #define _GYRO_h
 
-#include "arduino.h"
+#include <Arduino.h>
 
 #include "LED.h"
 #include "MathHelper.h"

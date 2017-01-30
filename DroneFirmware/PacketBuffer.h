@@ -1,5 +1,6 @@
-#ifndef _PACKETBUFFER_h
-#define _PACKETBUFFER_h
+#pragma once
+
+#include <Arduino.h>
 
 #include "Hardware.h"
 #include "BinaryHelper.h"
@@ -92,5 +93,3 @@ public:
 	void writeString(char* str);
 	void writeString(const char* str);
 };
-#endif
-

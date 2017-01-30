@@ -1,67 +1,71 @@
 #include "Hardware.h"
 
+#if HARDWARE_ESP32
 const char* Hardware::getName() {
 	return HARDWARE_NAME;
 }
 
 void Hardware::halt() {
-	while (1);
+	while (1) yield();
 }
 
 void Hardware::restart() {
-#if HARDWARE_ESP8266
 	ESP.restart();
-#endif
 }
 
 uint32_t Hardware::getChipID() {
-#if HARDWARE_ESP8266
-	return ESP.getChipId();
-#endif
+	static uint32_t chipID = UINT32_MAX;
+
+	if (chipID == UINT32_MAX) {
+		uint8_t mac[6];
+		if (esp_efuse_read_mac(mac) == ESP_OK)
+			chipID = mac[2] << 24 | mac[3] << 16 | mac[4] << 8 | mac[5];
+		else
+			chipID = 0x12345678u;
+	}
+	return chipID;
 }
 
 const char* Hardware::getArduinoCoreVersion() {
-	return "unknown";
+	return "Unknown";
 }
 
 const char* Hardware::getSDKVersion() {
-#if HARDWARE_ESP8266
 	return ESP.getSdkVersion();
-#endif
 }
 
 uint32_t Hardware::getCPUFrequency() {
-#if HARDWARE_ESP8266
-	return ESP.getCpuFreqMHz();
-#endif
+	return F_CPU / (1000 * 1000);
 }
 
 uint64_t Hardware::getFlashSize() {
-#if HARDWARE_ESP8266
-	return ESP.getFlashChipRealSize();
-#endif
+	return 0;
+}
+
+uint64_t Hardware::getFreeSketchSpace() {
+	return 0;
 }
 
 uint64_t Hardware::getFreeHeap() {
-#if HARDWARE_ESP8266
 	return ESP.getFreeHeap();
-#endif
 }
 
 void Hardware::enableWatchDog() {
-#if HARDWARE_ESP8266
-	ESP.wdtEnable(WDTO_0MS);
-#endif
 }
 
 void Hardware::enableWatchDog(uint32_t time) {
-#if HARDWARE_ESP8266
-	ESP.wdtEnable(time);
-#endif
 }
 
 void Hardware::disableWatchDog() {
-#if HARDWARE_ESP8266
-	ESP.wdtDisable();
-#endif
 }
+
+boolean Hardware::isNormalBoot() {
+	return true;
+}
+
+ResetInfo Hardware::getResetInfo() {
+	ResetInfo info;
+	memset(&info, 0, sizeof(info));
+	return info;
+}
+#endif

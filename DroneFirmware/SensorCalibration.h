@@ -1,7 +1,7 @@
 #ifndef _SENSORCALIBRATION_h
 #define _SENSORCALIBRATION_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 struct CalibrationData {
 	float Min[3];

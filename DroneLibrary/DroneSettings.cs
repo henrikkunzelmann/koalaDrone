@@ -74,26 +74,6 @@ namespace DroneLibrary
         [Description("Value when the servo motors begin to start")]
         public ushort ServoIdle;
 
-        [Category("Pins")]
-        [Description("The pin of the front-left motor")]
-        public byte PinFrontLeft;
-
-        [Category("Pins")]
-        [Description("The pin of the front-right motor")]
-        public byte PinFrontRight;
-
-        [Category("Pins")]
-        [Description("The pin of the back-left motor")]
-        public byte PinBackLeft;
-
-        [Category("Pins")]
-        [Description("The pin of the back-right motor")]
-        public byte PinBackRight;
-
-        [Category("Pins")]
-        [Description("The pin of the LED")]
-        public byte PinLed;
-
         [Category("PID Flying")]
         public PidSettings PitchPid;
 

@@ -1,7 +1,7 @@
 #ifndef _VOLTAGEREADER_h
 #define _VOLTAGEREADER_h
 
-#include "arduino.h"
+#include <Arduino.h>
 
 class VoltageReader {
 private:

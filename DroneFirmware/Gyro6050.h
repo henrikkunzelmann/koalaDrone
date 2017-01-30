@@ -1,7 +1,7 @@
 #ifndef _GYRO6050_h
 #define _GYRO6050_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include <Wire.h>
 #include <I2Cdev.h>
 #include <MPU6050.h>

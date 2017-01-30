@@ -1,7 +1,7 @@
 #ifndef _SENSORHAL_h
 #define _SENSORHAL_h
 
-#include "arduino.h"
+#include <Arduino.h>
 
 #include "Config.h"
 #include "FaultManager.h"
