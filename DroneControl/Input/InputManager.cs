@@ -35,6 +35,8 @@ namespace DroneControl.Input
         public TargetData RawTargetData { get; set; }
 
         public bool DeadZone { get; set; } = true;
+        public bool EnableStopButton { get; set; } = true;
+        public bool EnableClearButton { get; set; } = true;
 
         public event EventHandler OnDeviceInfoChanged;
         public event EventHandler OnTargetDataChanged;
@@ -195,30 +197,45 @@ namespace DroneControl.Input
                 DisarmDrone();
         }
 
+        private void LogAction(string name)
+        {
+            Log.Info("{0} used by InputManager with device {1}", name, CurrentDevice == null ? "Unknown" : CurrentDevice.Name);
+        }
+
         public void ArmDrone()
         {
-            Log.Info("Arm from InputManager");
             if (drone.Data.State == DroneState.Idle)
+            {
+                LogAction("Arm");
                 drone.SendArm();
+            }
         }
 
         public void DisarmDrone()
         {
-            Log.Info("Disarm from InputManager");
             if (drone.Data.State.AreMotorsRunning())
+            {
+                LogAction("Disarm");
                 drone.SendDisarm();
+            }
         }
 
         public void StopDrone()
         {
-            Log.Info("Stopping from InputManager");
-            drone.SendStop();
+            if (EnableStopButton)
+            {
+                LogAction("Stop");
+                drone.SendStop();
+            }
         }
 
         public void SendClear()
         {
-            Log.Info("Clearing from InputManager");
-            drone.SendClearStatus();
+            if (EnableClearButton)
+            {
+                LogAction("ClearStatus");
+                drone.SendClearStatus();
+            }
         }
     }
 }

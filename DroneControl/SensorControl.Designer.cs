@@ -41,8 +41,8 @@
             this.orientationLabel = new System.Windows.Forms.Label();
             this.temperatureLabel = new System.Windows.Forms.Label();
             this.accelerationLabel = new System.Windows.Forms.Label();
-            this.calibrateGyroButton = new System.Windows.Forms.Button();
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
+            this.calibrateGyroButton = new System.Windows.Forms.Button();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
             sensorGroupBox = new System.Windows.Forms.GroupBox();
             sensorGroupBox.SuspendLayout();
@@ -183,25 +183,25 @@
             this.accelerationLabel.TabIndex = 17;
             this.accelerationLabel.Text = "Acceleration";
             // 
+            // headingIndicator
+            // 
+            this.headingIndicator.CausesValidation = false;
+            this.headingIndicator.Location = new System.Drawing.Point(216, 19);
+            this.headingIndicator.Name = "headingIndicator";
+            this.headingIndicator.RotateAircraft = true;
+            this.headingIndicator.Size = new System.Drawing.Size(175, 175);
+            this.headingIndicator.TabIndex = 16;
+            this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
+            // 
             // calibrateGyroButton
             // 
-            this.calibrateGyroButton.Location = new System.Drawing.Point(186, 19);
+            this.calibrateGyroButton.Location = new System.Drawing.Point(187, 19);
             this.calibrateGyroButton.Name = "calibrateGyroButton";
             this.calibrateGyroButton.Size = new System.Drawing.Size(23, 23);
             this.calibrateGyroButton.TabIndex = 15;
             this.calibrateGyroButton.Text = "0";
             this.calibrateGyroButton.UseVisualStyleBackColor = true;
             this.calibrateGyroButton.Click += new System.EventHandler(this.calibrateGyroButton_Click);
-            // 
-            // headingIndicator
-            // 
-            this.headingIndicator.CausesValidation = false;
-            this.headingIndicator.Location = new System.Drawing.Point(215, 18);
-            this.headingIndicator.Name = "headingIndicator";
-            this.headingIndicator.RotateAircraft = true;
-            this.headingIndicator.Size = new System.Drawing.Size(175, 175);
-            this.headingIndicator.TabIndex = 16;
-            this.headingIndicator.Text = "headingIndicatorInstrumentControl1";
             // 
             // artificialHorizon
             // 

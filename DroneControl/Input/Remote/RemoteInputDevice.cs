@@ -9,7 +9,9 @@ namespace DroneControl.Input.Remote
     public class RemoteInputDevice : IInputDevice
     {
         private FlightController controller;
-        private int[] lastData;
+
+        private const int maxDataCount = 6;
+        private List<int[]> dataSets = new List<int[]>();
 
         public bool IsConnected
         {
@@ -89,17 +91,21 @@ namespace DroneControl.Input.Remote
 
             int[] data = controller.Data;
 
+            if (dataSets.Count >= maxDataCount)
+                dataSets.RemoveAt(0);
+            dataSets.Add(data);
+
             const int aux1 = 4;
             const int aux2 = 5;
 
-            if (CheckButtonPressed(data, aux1, ButtonState.High, false))
+            if (CheckButtonPressed(aux1, ButtonState.High, true))
                 manager.ArmDrone();
-            else if (CheckButtonPressed(data, aux1, ButtonState.Low, false))
+            else if (CheckButtonPressed(aux1, ButtonState.Low, true))
                 manager.DisarmDrone();
 
-            if (CheckButtonPressed(data, aux2, ButtonState.Low, true))
+            if (CheckButtonPressed(aux2, ButtonState.Low, true))
                 manager.SendClear();
-            else if (CheckButtonPressed(data, aux2, ButtonState.High, true))
+            else if (CheckButtonPressed(aux2, ButtonState.High, true))
                 manager.StopDrone();
 
             TargetData target = new TargetData();
@@ -109,10 +115,6 @@ namespace DroneControl.Input.Remote
             target.Yaw = MapValue(data, 3);
 
             manager.SendTargetData(target);
-
-            if (lastData == null)
-                lastData = new int[data.Length];
-            data.CopyTo(lastData, 0);
         }
 
         private float MapValue(int[] data, int index)
@@ -154,13 +156,22 @@ namespace DroneControl.Input.Remote
             return false;
         }
 
-        private bool CheckButtonPressed(int[] data, int index, ButtonState state, bool triState)
+        private bool CheckButtonPressed(int index, ButtonState state, bool triState)
         {
-            if (lastData == null)
+            if (dataSets.Count != maxDataCount)
                 return false;
 
-            bool current = IsButtonPressed(data, index, state, triState);
-            bool last = IsButtonPressed(lastData, index, state, triState);
+            int mid = dataSets.Count / 2;
+
+            bool last = false;
+            for (int i = 0; i < mid; i++)
+                if (IsButtonPressed(dataSets[i], index, state, triState))
+                    last = true;
+
+            bool current = true;
+            for (int i = mid; i < dataSets.Count; i++)
+                if (!IsButtonPressed(dataSets[i], index, state, triState))
+                    current = false;
 
             return current && !last;
         }

@@ -231,6 +231,9 @@ namespace DroneControl
         private void UpdateInputConfig()
         {
             InputManager.DeadZone = deadZoneCheckBox.Checked;
+            InputManager.EnableStopButton = enableStop.Checked;
+            InputManager.EnableClearButton = enableClear.Checked;
+
             InputManager.RollExp = (float)rollExpTextBox.Value;
             InputManager.PitchExp = (float)pitchExpTextBox.Value;
             InputManager.YawExp = (float)yawExpTextBox.Value;
