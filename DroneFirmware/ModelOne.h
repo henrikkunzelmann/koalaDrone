@@ -5,7 +5,7 @@
 
 #define PIN_FRONT_LEFT 12
 #define PIN_FRONT_RIGHT 13
-#define PIN_BACK_LEFT 26
+#define PIN_BACK_LEFT 16
 #define PIN_BACK_RIGHT 14
 
 #define PIN_LED0 0
