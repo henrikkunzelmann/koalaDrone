@@ -15,6 +15,7 @@ namespace DroneControl
         {
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
             Log.Info("DroneControl booting up... Version: {0}", version);
+            Log.LogSystemInfo();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

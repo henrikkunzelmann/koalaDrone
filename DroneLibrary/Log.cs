@@ -330,5 +330,21 @@ namespace DroneLibrary
             foreach (var property in properties)
                 Log.Write(level, "...{0} = {1}", property.Name, property.GetValue(obj));
         }
+
+        /// <summary>
+        /// Schreibt Systeminformationen in den Log.
+        /// </summary>
+        public static void LogSystemInfo()
+        {
+            Log.Debug("System Information:");
+            Log.Debug("OS: {0}", Environment.OSVersion);
+            Log.Debug("64bit: os ({0}) process ({1})", Environment.Is64BitOperatingSystem, Environment.Is64BitProcess);
+            Log.Debug("CLR: {0}", Environment.Version);
+            if (BitConverter.IsLittleEndian)
+                Log.Debug("System is little endian");
+            else
+                Log.Debug("System is big endian");
+            Log.Debug("=================");
+        }
     }
 }

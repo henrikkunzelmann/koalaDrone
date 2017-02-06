@@ -108,6 +108,8 @@ namespace DroneControl
             log = Log.Storage.CreateView(true);
             droneLog = drone.DroneLog.CreateView(true);
 
+            Log.LogSystemInfo();
+
             Log.Debug("Drone info:");
             Log.WriteProperties(LogLevel.Debug, drone.Info);
 
