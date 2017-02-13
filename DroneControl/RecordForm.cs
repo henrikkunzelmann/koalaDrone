@@ -256,7 +256,7 @@ namespace DroneControl
                     drone.Data.State,
                     drone.Data.WifiRssi,
                     drone.Data.BatteryVoltage,
-                    drone.DebugData.FreeHeapBytes,
+                    drone.DebugProfilerData.FreeHeapBytes,
 
                     drone.Data.Gyro.Temperature,
                     drone.Data.Gyro.Pitch,
@@ -285,9 +285,9 @@ namespace DroneControl
                     inputManager.TargetData.Yaw,
                     inputManager.TargetData.Thrust,
 
-                    drone.DebugData.PitchOutput,
-                    drone.DebugData.RollOutput,
-                    drone.DebugData.YawOutput,
+                    drone.DebugOutputData.PitchOutput,
+                    drone.DebugOutputData.RollOutput,
+                    drone.DebugOutputData.YawOutput,
 
                     drone.Data.MotorValues.FrontLeft,
                     drone.Data.MotorValues.FrontRight,

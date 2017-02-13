@@ -4,6 +4,7 @@
     {
         Drone = 1,
         Log = 2,
-        Debug = 3
+        DebugOutput = 3,
+        DebugProfiler = 4
     }
 }

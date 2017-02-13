@@ -2,17 +2,25 @@
 
 namespace DroneLibrary
 {
-    public struct DebugProfiler
+    public struct ProfilerData
     {
+        /// <summary>
+        /// The freep heap on the hardware in bytes.
+        /// </summary>
+        public readonly ulong FreeHeapBytes;
+        /// <summary>
+        /// All profiler entries that were profiled.
+        /// </summary>
         public readonly Entry[] Entries;
 
-        public DebugProfiler(PacketBuffer buffer)
+        public ProfilerData(PacketBuffer buffer)
         {
             if (buffer == null)
                 throw new ArgumentNullException(nameof(buffer));
 
-            uint count = buffer.ReadUInt();
+            FreeHeapBytes = buffer.ReadULong();
 
+            uint count = buffer.ReadUInt();
             Entries = new Entry[count];
             for (int i = 0; i < count; i++)
                 Entries[i] = new Entry(buffer);

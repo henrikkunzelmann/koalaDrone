@@ -1,4 +1,5 @@
-﻿using DroneLibrary.Debug;
+﻿using DroneLibrary.Data;
+using DroneLibrary.Debug;
 using DroneLibrary.Protocol;
 using System;
 using System.Collections.Generic;
@@ -78,10 +79,8 @@ namespace DroneLibrary
         /// </summary>
         private int lastDataLogRevision = 0;
 
-        /// <summary>
-        /// Gibt die letzte Revision der Daten an die von der Drohne mit Debug Daten geschickt wurden.
-        /// </summary>
-        private int lastDataDebugRevision = 0;
+        private int lastDataOutputRevision = 0;
+        private int lastDataProfilerRevision = 0;
 
         /// <summary>
         /// Gibt die IPAdress der Drohne zurück.
@@ -202,32 +201,10 @@ namespace DroneLibrary
             }
         }
 
-        public event EventHandler<DebugDataChangedEventArgs> OnDebugDataChange;
+        public event EventHandler OnDebugDataChanged;
 
-        private DebugData debugData;
-
-        /// <summary>
-        /// Gibt aktuelle Debug-Daten über das Verhalten der Drohne zurück.
-        /// </summary>
-        public DebugData DebugData
-        {
-            get
-            {
-                lock (debugDataLock)
-                {
-                    return debugData;
-                }
-            }
-            set
-            {
-                lock (dataLock)
-                {
-                    debugData = value;
-                }
-
-                OnDebugDataChange?.Invoke(this, new DebugDataChangedEventArgs(this));
-            }
-        }
+        public OutputData DebugOutputData { get; private set; }
+        public ProfilerData DebugProfilerData { get; private set; }
 
         /// <summary>
         /// Gibt den Socket an mit dem die Drohne mit der Hardware per UDP verbunden ist.
@@ -311,7 +288,8 @@ namespace DroneLibrary
                 currentRevision = 1;
                 lastDataDroneRevision = 0;
                 lastDataLogRevision = 0;
-                lastDataDebugRevision = 0;
+                lastDataOutputRevision = 0;
+                lastDataProfilerRevision = 0;
 
                 lastPing = Environment.TickCount;
                 lastDataTime = Environment.TickCount;
@@ -819,15 +797,31 @@ namespace DroneLibrary
 
                         lastDataLogRevision = revision;
                         break;
-                    case DataPacketType.Debug:
-                        if (!CheckRevision(lastDataDebugRevision, revision))
+                    case DataPacketType.DebugOutput:
+                        if (!CheckRevision(lastDataOutputRevision, revision))
                             return;
 
-                        DebugData = new DebugData(buffer);
-                        lastDataDebugRevision = revision;
+                        DebugOutputData = new OutputData(buffer);
+                        lastDataOutputRevision = revision;
+
+                        NotifyDebugDataChanged();
+                        break;
+                    case DataPacketType.DebugProfiler:
+                        if (!CheckRevision(lastDataProfilerRevision, revision))
+                            return;
+
+                        DebugProfilerData = new ProfilerData(buffer);
+                        lastDataProfilerRevision = revision;
+
+                        NotifyDebugDataChanged();
                         break;
                 }
             }
+        }
+
+        private void NotifyDebugDataChanged()
+        {
+            OnDebugDataChanged?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

@@ -37,7 +37,8 @@ enum ControlPacketType : uint8_t {
 enum DataPacketType : uint8_t {
 	DataDrone = 1,
 	DataLog = 2,
-	DataDebug = 3
+	DataDebugOutput = 3,
+	DataDebugProfiler = 4
 };
 
 const char* getHelloPacketName(HelloPacketType type);

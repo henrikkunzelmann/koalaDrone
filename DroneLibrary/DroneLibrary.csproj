@@ -48,13 +48,12 @@
     <Compile Include="BaroData.cs" />
     <Compile Include="BinaryHelper.cs" />
     <Compile Include="CalibrationData.cs" />
-    <Compile Include="DataChangedEventArgs.cs" />
+    <Compile Include="Data\DataChangedEventArgs.cs" />
+    <Compile Include="Data\OutputData.cs" />
     <Compile Include="Debug\DataHistory.cs" />
-    <Compile Include="DebugData.cs" />
-    <Compile Include="DebugDataChangedEventArgs.cs" />
-    <Compile Include="DebugProfiler.cs" />
+    <Compile Include="Data\ProfilerData.cs" />
     <Compile Include="Drone.cs" />
-    <Compile Include="DroneData.cs" />
+    <Compile Include="Data\DroneData.cs" />
     <Compile Include="DroneEntry.cs" />
     <Compile Include="DroneList.cs" />
     <Compile Include="DroneListChangedEventArgs.cs" />
@@ -67,7 +66,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="DroneSettingsTypeConverter.cs" />
     <Compile Include="DroneState.cs" />
-    <Compile Include="GyroData.cs" />
+    <Compile Include="Data\GyroData.cs" />
     <Compile Include="InfoChangedEventArgs.cs" />
     <Compile Include="Debug\Log.cs" />
     <Compile Include="Debug\LogLevel.cs" />
@@ -99,7 +98,7 @@
     <Compile Include="Protocol\PacketSetRawValues.cs" />
     <Compile Include="Protocol\PacketTypeHelper.cs" />
     <Compile Include="Protocol\PacketUnsubscribeDataFeed.cs" />
-    <Compile Include="QuadMotorValues.cs" />
+    <Compile Include="Data\QuadMotorValues.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="ResetException.cs" />
     <Compile Include="ResetReason.cs" />

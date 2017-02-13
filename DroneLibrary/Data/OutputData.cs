@@ -1,17 +1,19 @@
-﻿namespace DroneLibrary
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DroneLibrary.Data
 {
-    public struct DebugData
+    public struct OutputData
     {
-        public readonly ulong FreeHeapBytes;
-        public readonly DebugProfiler Profiler;
         public readonly float PitchOutput;
         public readonly float RollOutput;
         public readonly float YawOutput;
 
-        public DebugData(PacketBuffer buffer)
+        public OutputData(PacketBuffer buffer)
         {
-            FreeHeapBytes = buffer.ReadULong();
-            Profiler = new DebugProfiler(buffer);
             PitchOutput = buffer.ReadFloat();
             RollOutput = buffer.ReadFloat();
             YawOutput = buffer.ReadFloat();

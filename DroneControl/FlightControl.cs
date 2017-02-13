@@ -28,7 +28,7 @@ namespace DroneControl
             this.InputManager.OnDeviceInfoChanged += InputManager_OnDeviceInfoChanged;
             this.InputManager.OnTargetDataChanged += InputManager_OnTargetDataChanged;
 
-            this.drone.OnDebugDataChange += Drone_OnDebugDataChange;
+            this.drone.OnDebugDataChanged += Drone_OnDebugDataChange;
 
             SearchInputDevices(true);
             UpdateTargetData();
@@ -36,22 +36,22 @@ namespace DroneControl
             UpdateInputConfig();
         }
 
-        private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)
+        private void Drone_OnDebugDataChange(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
-                Invoke(new EventHandler<DebugDataChangedEventArgs>(Drone_OnDebugDataChange), sender, e);
+                Invoke(new EventHandler<EventArgs>(Drone_OnDebugDataChange), sender, e);
                 return;
             }
 
             if (drone.Data.State == DroneState.Flying)
             {
                 StringBuilder pidData = new StringBuilder();
-                pidData.AppendFormat("Roll:  {0}", Formatting.FormatDecimal(e.DebugData.RollOutput, 2, 3));
+                pidData.AppendFormat("Roll:  {0}", Formatting.FormatDecimal(drone.DebugOutputData.RollOutput, 2, 3));
                 pidData.AppendLine();
-                pidData.AppendFormat("Pitch: {0}", Formatting.FormatDecimal(e.DebugData.PitchOutput, 2, 3));
+                pidData.AppendFormat("Pitch: {0}", Formatting.FormatDecimal(drone.DebugOutputData.PitchOutput, 2, 3));
                 pidData.AppendLine();
-                pidData.AppendFormat("Yaw:   {0}", Formatting.FormatDecimal(e.DebugData.YawOutput, 2, 3));
+                pidData.AppendFormat("Yaw:   {0}", Formatting.FormatDecimal(drone.DebugOutputData.YawOutput, 2, 3));
 
                 pidDataLabel.Text = pidData.ToString();
                 pidDataLabel.Visible = true;

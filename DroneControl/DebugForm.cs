@@ -19,34 +19,36 @@ namespace DroneControl
             InitializeComponent();
 
             this.Drone = drone;
-            this.Drone.OnDebugDataChange += Drone_OnDebugDataChange;
+            this.Drone.OnDebugDataChanged += Drone_OnDebugDataChange;
             this.InputManager = inputManager;
 
-            UpdateDebugData(drone.DebugData);
+            UpdateDebugData();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            this.Drone.OnDebugDataChange -= Drone_OnDebugDataChange;
+            this.Drone.OnDebugDataChanged -= Drone_OnDebugDataChange;
             base.OnFormClosing(e);
         }
 
-        private void UpdateDebugData(DebugData data)
+        private void UpdateDebugData()
         {
+            ProfilerData data = Drone.DebugProfilerData;
+
             StringBuilder profilerString = new StringBuilder();
 
             profilerString.AppendFormat("Free heap: {0}", Formatting.FormatDataSize(data.FreeHeapBytes));
             profilerString.AppendLine();
 
-            if (data.Profiler.Entries != null)
+            if (data.Entries != null)
             {
-                for (int i = 0; i < data.Profiler.Entries.Length; i++)
+                for (int i = 0; i < data.Entries.Length; i++)
                 {
-                    DebugProfiler.Entry entry = data.Profiler.Entries[i];
+                    ProfilerData.Entry entry = data.Entries[i];
                     profilerString.AppendFormat("{0} {1}ms ({2}ms)",
                         entry.Name.PadLeft(25),
-                        Formatting.FormatDecimal(entry.Time.TotalMilliseconds, 1, 4),
-                        Formatting.FormatDecimal(entry.TimeMax.TotalMilliseconds, 1, 4));
+                        Formatting.FormatDecimal(entry.Time.TotalMilliseconds, 1, 8),
+                        Formatting.FormatDecimal(entry.TimeMax.TotalMilliseconds, 1, 8));
                     profilerString.AppendLine();
                 }
 
@@ -54,15 +56,15 @@ namespace DroneControl
             }
         }
 
-        private void Drone_OnDebugDataChange(object sender, DebugDataChangedEventArgs e)
+        private void Drone_OnDebugDataChange(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
-                Invoke(new EventHandler<DebugDataChangedEventArgs>(Drone_OnDebugDataChange), sender, e);
+                Invoke(new EventHandler<EventArgs>(Drone_OnDebugDataChange), sender, e);
                 return;
             }
 
-            UpdateDebugData(e.DebugData);
+            UpdateDebugData();
         }
 
         private void resetButton_Click(object sender, EventArgs e)

@@ -58,8 +58,10 @@ const char* getDataPacketName(DataPacketType type) {
 		return "Drone";
 	case DataLog:
 		return "Log";
-	case DataDebug:
-		return "Debug";
+	case DataDebugOutput:
+		return "DebugOutput";
+	case DataDebugProfiler:
+		return "DebugProfiler";
 	}
 	return "Unknown";
 }

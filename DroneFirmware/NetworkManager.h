@@ -37,7 +37,9 @@ protected:
 	bool _dataFeedSubscribed;
 	long _lastDataSend;
 	long _lastLogSend;
-	long _lastDebugDataSend;
+	long _lastOutputDataSend;
+	long _lastProfilerDataSend;
+
 
 	bool saveConfig;
 	int lastConfigSave;
@@ -77,7 +79,8 @@ protected:
 
 	void sendDroneData(WiFiUDP* udp);
 	void sendLog(WiFiUDP* udp);
-	void sendDebugData(WiFiUDP* udp);
+	void sendOutputData(WiFiUDP* udp);
+	void sendProfilerData(WiFiUDP* udp);
 public:
 	explicit NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEngine* engine, Config* config, VoltageReader* voltageReader);
 	

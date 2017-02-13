@@ -10,7 +10,8 @@ NetworkManager::NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEng
 	_dataFeedSubscribed = false;
 	_lastDataSend = 0;
 	_lastLogSend = 0;
-	_lastDebugDataSend = 0;
+	_lastOutputDataSend = 0;
+	_lastProfilerDataSend = 0;
 	dataRevision = 1;
 
 	lastMovementRevision = 0;
@@ -497,7 +498,8 @@ void NetworkManager::handleData(WiFiUDP* udp) {
 	Profiler::begin("handleData()");
 	sendDroneData(udp);
 	sendLog(udp);
-	sendDebugData(udp);
+	sendOutputData(udp);
+	sendProfilerData(udp);
 	Profiler::end();
 }
 
@@ -574,19 +576,27 @@ void NetworkManager::sendLog(WiFiUDP* udp) {
 	}
 }
 
-void NetworkManager::sendDebugData(WiFiUDP* udp) {
-	if (millis() - _lastDebugDataSend > CYCLE_DEBUG_DATA) {
-		writeDataHeader(udp, dataRevision++, DataDebug);
-
-		writeBuffer->write(Hardware::getFreeHeap());
-
-		Profiler::write(writeBuffer);
+void NetworkManager::sendOutputData(WiFiUDP* udp) {
+	if (millis() - _lastOutputDataSend > CYCLE_OUTPUT_DATA) {
+		writeDataHeader(udp, dataRevision++, DataDebugOutput);
 
 		writeBuffer->write(engine->getPitchOutput());
 		writeBuffer->write(engine->getRollOutput());
 		writeBuffer->write(engine->getYawOutput());
 
 		sendData(udp);
-		_lastDebugDataSend = millis();
+		_lastOutputDataSend = millis();
+	}
+}
+
+void NetworkManager::sendProfilerData(WiFiUDP* udp) {
+	if (millis() - _lastProfilerDataSend > CYCLE_PROFILER_DATA) {
+		writeDataHeader(udp, dataRevision++, DataDebugProfiler);
+
+		writeBuffer->write(Hardware::getFreeHeap());
+		Profiler::write(writeBuffer);
+
+		sendData(udp);
+		_lastProfilerDataSend = millis();
 	}
 }
