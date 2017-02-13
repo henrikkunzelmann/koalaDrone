@@ -1,6 +1,7 @@
 ﻿using DroneLibrary;
 using System;
 using System.Net;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace DroneControl
@@ -86,6 +87,7 @@ namespace DroneControl
                 Invoke(new EventHandler<DroneListChangedEventArgs>(DroneList_OnListChanged), sender, e);
             else
             {
+                SuspendLayout();
                 if (e.Entries.Length == 0)
                     searchStatus.Text = "Searching drones...";
                 else if (e.Entries.Length == 1)
@@ -93,9 +95,12 @@ namespace DroneControl
                 else
                     searchStatus.Text = string.Format("Found {0} drones...", e.Entries.Length);
 
+                droneListBox.BeginUpdate();
                 droneListBox.Items.Clear();
                 foreach (DroneEntry entry in e.Entries)
                     droneListBox.Items.Add(entry);
+                droneListBox.EndUpdate();
+                ResumeLayout();
             }
         }
 

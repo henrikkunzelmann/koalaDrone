@@ -1,4 +1,5 @@
 ﻿using DroneLibrary;
+using DroneLibrary.Debug;
 using System;
 using System.Windows.Forms;
 
@@ -22,8 +23,8 @@ namespace DroneControl
 
             AppendLog();
 
-            Log.Storage.OnAddedLines += LogBuffer_OnAddedLines;
-            drone.DroneLog.OnAddedLines += LogBuffer_OnAddedLines;
+            Log.Storage.OnLineAdded += LogBuffer_OnAddedLines;
+            drone.DroneLog.OnLineAdded += LogBuffer_OnAddedLines;
         }
 
         private void AppendLog()
@@ -60,8 +61,8 @@ namespace DroneControl
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            Log.Storage.OnAddedLines -= LogBuffer_OnAddedLines;
-            drone.DroneLog.OnAddedLines -= LogBuffer_OnAddedLines;
+            Log.Storage.OnLineAdded -= LogBuffer_OnAddedLines;
+            drone.DroneLog.OnLineAdded -= LogBuffer_OnAddedLines;
 
             base.OnFormClosing(e);
         }

@@ -1,5 +1,6 @@
 ﻿using DroneControl.Input;
 using DroneLibrary;
+using DroneLibrary.Debug;
 using System;
 using System.Drawing;
 using System.Text;
@@ -120,9 +121,11 @@ namespace DroneControl
                 return;
 
             // Liste erstellen
+            inputDeviceComboBox.BeginUpdate();
             inputDeviceComboBox.Items.Clear();
             inputDeviceComboBox.Items.Add("\nNone"); // \n damit der Eintrag ganz am Anfang kommt
             inputDeviceComboBox.Items.AddRange(devices);
+            inputDeviceComboBox.EndUpdate();
 
             // wenn nur ein Gerät gefunden und keins ausgewählt, dann neues auswählen
             if (firstSearch && devices.Length == 1 && InputManager.CurrentDevice == null)
@@ -274,7 +277,7 @@ namespace DroneControl
         {
             data.Clear();
 
-            float scale = 1000.0f / (data.Count - 1);
+            float scale = 1000.0f / (data.MaxLength - 1);
             for (float x = -500; x <= 500.0f; x += scale)
                 data.UpdateValue(500 * InputManager.MapInputOneToOne(x / 500.0f, 0.5, exp));
         }
@@ -282,7 +285,7 @@ namespace DroneControl
         private void CreateThrustGraph(DataHistory data)
         {
             data.Clear();
-            float scale = 1000.0f / (data.Count - 1);
+            float scale = 1000.0f / (data.MaxLength - 1);
             for (float x = 0; x <= 1000.0f; x += scale)
                 data.UpdateValue(InputManager.ThrustMax * InputManager.MapThrust(x / 1000.0f));
         }

@@ -1,4 +1,4 @@
-﻿using DroneLibrary;
+﻿using DroneLibrary.Debug;
 using System;
 using System.Reflection;
 using System.Windows.Forms;

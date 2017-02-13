@@ -49,7 +49,7 @@
     <Compile Include="BinaryHelper.cs" />
     <Compile Include="CalibrationData.cs" />
     <Compile Include="DataChangedEventArgs.cs" />
-    <Compile Include="DataHistory.cs" />
+    <Compile Include="Debug\DataHistory.cs" />
     <Compile Include="DebugData.cs" />
     <Compile Include="DebugDataChangedEventArgs.cs" />
     <Compile Include="DebugProfiler.cs" />
@@ -59,8 +59,8 @@
     <Compile Include="DroneList.cs" />
     <Compile Include="DroneListChangedEventArgs.cs" />
     <Compile Include="DroneStateHelper.cs" />
-    <Compile Include="LogFlushEventArgs.cs" />
-    <Compile Include="LogStorage.cs" />
+    <Compile Include="Debug\LogFlushEventArgs.cs" />
+    <Compile Include="Debug\LogStorage.cs" />
     <Compile Include="DroneOTA.cs" />
     <Compile Include="DroneSettings.cs" />
     <Compile Include="DroneInfo.cs" />
@@ -69,9 +69,9 @@
     <Compile Include="DroneState.cs" />
     <Compile Include="GyroData.cs" />
     <Compile Include="InfoChangedEventArgs.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="LogLevel.cs" />
-    <Compile Include="LogView.cs" />
+    <Compile Include="Debug\Log.cs" />
+    <Compile Include="Debug\LogLevel.cs" />
+    <Compile Include="Debug\LogView.cs" />
     <Compile Include="NetworkHelper.cs" />
     <Compile Include="PacketBuffer.cs" />
     <Compile Include="PidSettings.cs" />

@@ -1,4 +1,5 @@
 ﻿using DroneLibrary;
+using DroneLibrary.Debug;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -163,7 +164,7 @@ namespace DroneControl
         public void UpdateValue(double value)
         {
             // wenn unsere History nicht mehr Daten fassen kann, dann Grid verschieben
-            if (History.Count == History.ValueCount)
+            if (History.MaxLength == History.ValueCount)
             {
                 offsetX--;
                 if (offsetX < 0)
