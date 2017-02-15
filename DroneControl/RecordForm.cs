@@ -1,5 +1,6 @@
 ﻿using DroneControl.Input;
 using DroneLibrary;
+using DroneLibrary.Data;
 using DroneLibrary.Debug;
 using System;
 using System.Collections.Generic;
@@ -202,14 +203,16 @@ namespace DroneControl
             "Ping ms",
 
             "State", "RSSI", "BatteryV", "FreeHeap",
-            "GyroTemp", "Pitch", "Roll", "Yaw",
+            "Pitch", "Roll", "Yaw",
 
             "GyroX", "GyroY", "GyroZ",
             "AccX", "AccY", "AccZ",
             "MagX", "MagY", "MagZ",
 
             "Pressure", "Altitude",
-            "Humidity", "BaroTemp",
+            "Humidity",
+
+            "Temps",
 
             "Target Pitch",
             "Target Roll",
@@ -258,27 +261,27 @@ namespace DroneControl
                     drone.Data.BatteryVoltage,
                     drone.DebugProfilerData.FreeHeapBytes,
 
-                    drone.Data.Gyro.Temperature,
-                    drone.Data.Gyro.Pitch,
-                    drone.Data.Gyro.Roll,
-                    drone.Data.Gyro.Yaw,
+                    drone.Data.Sensor.Pitch,
+                    drone.Data.Sensor.Roll,
+                    drone.Data.Sensor.Yaw,
 
-                    drone.Data.Gyro.GyroX,
-                    drone.Data.Gyro.GyroY,
-                    drone.Data.Gyro.GyroZ,
+                    drone.Data.Sensor.Gyro.X,
+                    drone.Data.Sensor.Gyro.Y,
+                    drone.Data.Sensor.Gyro.Z,
 
-                    drone.Data.Gyro.AccelerationX,
-                    drone.Data.Gyro.AccelerationY,
-                    drone.Data.Gyro.AccelerationZ,
+                    drone.Data.Sensor.Acceleration.X,
+                    drone.Data.Sensor.Acceleration.Y,
+                    drone.Data.Sensor.Acceleration.Z,
 
-                    drone.Data.Gyro.MagnetX,
-                    drone.Data.Gyro.MagnetY,
-                    drone.Data.Gyro.MagnetZ,
+                    drone.Data.Sensor.Magnet.X,
+                    drone.Data.Sensor.Magnet.Y,
+                    drone.Data.Sensor.Magnet.Z,
 
-                    drone.Data.Baro.Pressure,
-                    drone.Data.Baro.Altitude,
-                    drone.Data.Baro.Humidity,
-                    drone.Data.Baro.Temperature,
+                    drone.Data.Sensor.Baro.Pressure,
+                    drone.Data.Sensor.Baro.Altitude,
+                    drone.Data.Sensor.Baro.Humidity,
+
+                    string.Join(", ", drone.Data.Sensor.Temperatures),
 
                     inputManager.TargetData.Pitch,
                     inputManager.TargetData.Roll,

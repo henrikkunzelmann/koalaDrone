@@ -773,12 +773,12 @@ namespace DroneLibrary
 
                         DroneState state = (DroneState)buffer.ReadByte();
                         QuadMotorValues motorValues = new QuadMotorValues(buffer);
-                        GyroData gyro = new GyroData(buffer);
-                        BaroData baro = new BaroData(buffer);
+                        SensorData sensor = new SensorData(buffer);
+
                         float batteryVoltage = buffer.ReadFloat();
                         int wifiRssi = buffer.ReadInt();
 
-                        Data = new DroneData(state, motorValues, gyro, baro, batteryVoltage, wifiRssi);
+                        Data = new DroneData(state, motorValues, sensor, batteryVoltage, wifiRssi);
 
                         lastDataDroneRevision = revision;
                         break;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DroneLibrary
+namespace DroneLibrary.Data
 {
     public class DataChangedEventArgs : EventArgs
     {

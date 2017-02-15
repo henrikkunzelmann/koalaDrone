@@ -1,6 +1,8 @@
 ﻿using DroneLibrary;
+using DroneLibrary.Data;
 using DroneLibrary.Protocol;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace DroneControl
@@ -57,63 +59,51 @@ namespace DroneControl
         {
             SuspendLayout();
 
-            if (!float.IsNaN(data.Gyro.Pitch) && !float.IsNaN(data.Gyro.Roll))
-                artificialHorizon.SetAttitudeIndicatorParameters(data.Gyro.Pitch, -data.Gyro.Roll);
-            if (!float.IsNaN(data.Gyro.Yaw))
-                headingIndicator.SetHeadingIndicatorParameters((int)data.Gyro.Yaw);
+            if (!float.IsNaN(data.Sensor.Pitch) && !float.IsNaN(data.Sensor.Roll))
+                artificialHorizon.SetAttitudeIndicatorParameters(data.Sensor.Pitch, -data.Sensor.Roll);
+            if (!float.IsNaN(data.Sensor.Yaw))
+                headingIndicator.SetHeadingIndicatorParameters((int)data.Sensor.Yaw);
 
             calibrateGyroButton.Enabled = !data.State.AreMotorsRunning();
-            calibrationRunningText.Visible = data.Gyro.InCalibration;
+            calibrationRunningText.Visible = data.Sensor.InCalibration;
 
             orientationLabel.Text = string.Format("Roll: {0} Pitch: {1} Yaw: {2}",
-                Formatting.FormatDecimal(data.Gyro.Roll, 2),
-                Formatting.FormatDecimal(data.Gyro.Pitch, 2),
-                Formatting.FormatDecimal(data.Gyro.Yaw, 2));
+                Formatting.FormatDecimal(data.Sensor.Roll, 2),
+                Formatting.FormatDecimal(data.Sensor.Pitch, 2),
+                Formatting.FormatDecimal(data.Sensor.Yaw, 2));
 
             rotationLabel.Text = string.Format("Rotation x: {0} y: {1} z: {2}",
-                Formatting.FormatDecimal(data.Gyro.GyroX, 2),
-                Formatting.FormatDecimal(data.Gyro.GyroY, 2),
-                Formatting.FormatDecimal(data.Gyro.GyroZ, 2));
+                Formatting.FormatDecimal(data.Sensor.Gyro.X, 2),
+                Formatting.FormatDecimal(data.Sensor.Gyro.Y, 2),
+                Formatting.FormatDecimal(data.Sensor.Gyro.Z, 2));
 
-            float ax = data.Gyro.AccelerationX;
-            float ay = data.Gyro.AccelerationY;
-            float az = data.Gyro.AccelerationZ;
-
-            float len = (float)Math.Sqrt(ax * ax + ay * ay + az * az);
             accelerationLabel.Text = string.Format("Acceleration x: {0} y: {1} z: {2} len: {3} g",
-                Formatting.FormatDecimal(ax, 2),
-                Formatting.FormatDecimal(ay, 2),
-                Formatting.FormatDecimal(az, 2),
-                Formatting.FormatDecimal(len, 2));
+                Formatting.FormatDecimal(data.Sensor.Acceleration.X, 2),
+                Formatting.FormatDecimal(data.Sensor.Acceleration.Y, 2),
+                Formatting.FormatDecimal(data.Sensor.Acceleration.Z, 2),
+                Formatting.FormatDecimal(data.Sensor.Acceleration.Length, 2));
 
-            float mx = data.Gyro.MagnetX;
-            float my = data.Gyro.MagnetY;
-            float mz = data.Gyro.MagnetZ;
-            float magLen = (float)Math.Sqrt(mx * mx + my * my + mz * mz);
             magnetLabel.Text = string.Format("Magnet x: {0} y: {1} z: {2}{3}Magnet strengh: {4} µT",
-                Formatting.FormatDecimal(mx, 2),
-                Formatting.FormatDecimal(my, 2),
-                Formatting.FormatDecimal(mz, 2),
+                Formatting.FormatDecimal(data.Sensor.Magnet.X, 2),
+                Formatting.FormatDecimal(data.Sensor.Magnet.Y, 2),
+                Formatting.FormatDecimal(data.Sensor.Magnet.Z, 2),
                 Environment.NewLine,
-                Formatting.FormatDecimal(magLen, 2));
-
-            temperatureLabel.Text = string.Format("Temperature: {0}°C",
-                Formatting.FormatDecimal(data.Gyro.Temperature, 2));
+                Formatting.FormatDecimal(data.Sensor.Magnet.Length, 2));
 
             batteryVoltageLabel.Text = string.Format("Battery voltage: {0} V",
                 Formatting.FormatDecimal(data.BatteryVoltage, 2));
 
             pressureLabel.Text = string.Format("Pressure: {0} hPa",
-                Formatting.FormatDecimal(data.Baro.Pressure, 2, 4));
+                Formatting.FormatDecimal(data.Sensor.Baro.Pressure, 2, 4));
 
             humidityLabel.Text = string.Format("Humidity: {0} %RH",
-                Formatting.FormatDecimal(data.Baro.Humidity, 2, 3));
-
-            temperatureBaroLabel.Text = string.Format("Temperature: {0}°C",
-                Formatting.FormatDecimal(data.Baro.Temperature, 2));
+                Formatting.FormatDecimal(data.Sensor.Baro.Humidity, 2, 3));
 
             altitudeLabel.Text = string.Format("Altitude: {0} m",
-                Formatting.FormatDecimal(data.Baro.Altitude, 2, 4));
+                Formatting.FormatDecimal(data.Sensor.Baro.Altitude, 2, 4));
+
+            temperatureLabel.Text = string.Format("Temperatures °C: {0}",
+                string.Join("  ", data.Sensor.Temperatures.Select(t => Formatting.FormatDecimal(t, 2))));
 
             ResumeLayout();
             Invalidate(true);

@@ -1,4 +1,5 @@
 ﻿using DroneLibrary;
+using DroneLibrary.Data;
 using System;
 using System.Windows.Forms;
 
@@ -71,9 +72,9 @@ namespace DroneControl
 
             UpdateGraph(servoGraph, e.Data.MotorValues);
 
-            orientationGraphList.UpdateValue(e.Data.Gyro.Roll, e.Data.Gyro.Pitch, e.Data.Gyro.Yaw);
-            rotationGraphList.UpdateValue(e.Data.Gyro.GyroX, e.Data.Gyro.GyroY, e.Data.Gyro.GyroZ);
-            accelerationGraphList.UpdateValue(e.Data.Gyro.AccelerationX, e.Data.Gyro.AccelerationY, e.Data.Gyro.AccelerationZ);
+            orientationGraphList.UpdateValue(e.Data.Sensor.Roll, e.Data.Sensor.Pitch, e.Data.Sensor.Yaw);
+            rotationGraphList.UpdateValue(e.Data.Sensor.Gyro.X, e.Data.Sensor.Gyro.X, e.Data.Sensor.Gyro.Z);
+            accelerationGraphList.UpdateValue(e.Data.Sensor.Acceleration.X, e.Data.Sensor.Acceleration.Y, e.Data.Sensor.Acceleration.Z);
         }
 
         private void UpdateGraph(QuadGraphControl graph, QuadMotorValues values)

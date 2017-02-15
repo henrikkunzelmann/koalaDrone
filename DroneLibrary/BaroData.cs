@@ -6,7 +6,6 @@ namespace DroneLibrary
     {
         public float Pressure;
         public float Humidity;
-        public float Temperature;
         public float Altitude;
 
         public BaroData(PacketBuffer buffer)
@@ -16,7 +15,6 @@ namespace DroneLibrary
 
             Pressure = buffer.ReadFloat();
             Humidity = buffer.ReadFloat();
-            Temperature = buffer.ReadFloat();
             Altitude = buffer.ReadFloat();
         }
     }

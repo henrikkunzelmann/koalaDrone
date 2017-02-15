@@ -30,7 +30,6 @@
         {
             System.Windows.Forms.GroupBox sensorGroupBox;
             this.calibrateMagnetButton = new System.Windows.Forms.Button();
-            this.temperatureBaroLabel = new System.Windows.Forms.Label();
             this.altitudeLabel = new System.Windows.Forms.Label();
             this.humidityLabel = new System.Windows.Forms.Label();
             this.pressureLabel = new System.Windows.Forms.Label();
@@ -51,7 +50,6 @@
             // sensorGroupBox
             // 
             sensorGroupBox.Controls.Add(this.calibrateMagnetButton);
-            sensorGroupBox.Controls.Add(this.temperatureBaroLabel);
             sensorGroupBox.Controls.Add(this.altitudeLabel);
             sensorGroupBox.Controls.Add(this.humidityLabel);
             sensorGroupBox.Controls.Add(this.pressureLabel);
@@ -82,15 +80,6 @@
             this.calibrateMagnetButton.Text = "M";
             this.calibrateMagnetButton.UseVisualStyleBackColor = true;
             this.calibrateMagnetButton.Click += new System.EventHandler(this.calibrateMagnetButton_Click);
-            // 
-            // temperatureBaroLabel
-            // 
-            this.temperatureBaroLabel.AutoSize = true;
-            this.temperatureBaroLabel.Location = new System.Drawing.Point(210, 294);
-            this.temperatureBaroLabel.Name = "temperatureBaroLabel";
-            this.temperatureBaroLabel.Size = new System.Drawing.Size(91, 13);
-            this.temperatureBaroLabel.TabIndex = 27;
-            this.temperatureBaroLabel.Text = "Temperature baro";
             // 
             // altitudeLabel
             // 
@@ -239,7 +228,6 @@
         private System.Windows.Forms.Label altitudeLabel;
         private System.Windows.Forms.Label humidityLabel;
         private System.Windows.Forms.Label pressureLabel;
-        private System.Windows.Forms.Label temperatureBaroLabel;
         private System.Windows.Forms.Button calibrateMagnetButton;
     }
 }
