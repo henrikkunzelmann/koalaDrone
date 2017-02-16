@@ -20,7 +20,6 @@ Gyro::Gyro(Config* config) {
 	calibrationWrongDataCount = 0;
 
 	firstSample = true;
-	lastSample = micros();
 	lastMagnetData = millis();
 
 	validGyroData = false;
@@ -256,12 +255,10 @@ void Gyro::processData() {
 }
 
 void Gyro::update() {
-	uint32_t interval = micros() - lastSample;
-	if (interval < CYCLE_GYRO * 1000)
+	if (!sampleTimer.shouldTick())
 		return;
-	Profiler::pushData("Gyro::jitter()", interval - CYCLE_GYRO * 1000);
-	lastSample = micros();
 
+	Profiler::pushData("Gyro::jitter()", sampleTimer.getJitter());
 	Profiler::begin("Gyro::update()");
 
 	validGyroData = false;

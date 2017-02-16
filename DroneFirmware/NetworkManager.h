@@ -1,5 +1,4 @@
-#ifndef _NETWORKMANAGER_h
-#define _NETWORKMANAGER_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -20,6 +19,7 @@
 #include "FaultManager.h"
 #include "VoltageReader.h"
 #include "Updater.h"
+#include "Timer.h"
 
 
 #define VERBOSE_PACKET_LOG false
@@ -35,11 +35,11 @@ protected:
 
 	IPAddress _dataFeedSubscriptor;
 	bool _dataFeedSubscribed;
-	long _lastDataSend;
-	long _lastLogSend;
-	long _lastOutputDataSend;
-	long _lastProfilerDataSend;
 
+	Timer timerData = Timer(CYCLE_DATA);
+	Timer timerLog = Timer(CYCLE_LOG);
+	Timer timerOutputData = Timer(CYCLE_OUTPUT_DATA);
+	Timer timerProfilerData = Timer(CYCLE_PROFILER_DATA);
 
 	bool saveConfig;
 	int lastConfigSave;
@@ -89,6 +89,3 @@ public:
 	void handlePackets();
 	void handleData();
 };
-
-#endif
-

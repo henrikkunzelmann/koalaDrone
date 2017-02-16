@@ -10,7 +10,6 @@ Baro::Baro(Config* config) {
 	this->altitude = 0;
 
 	this->firstSample = true;
-	this->lastSample = micros();
 }
 
 Baro::~Baro() {
@@ -18,12 +17,10 @@ Baro::~Baro() {
 }
 
 void Baro::update() {
-	uint32_t interval = micros() - lastSample;
-	if (interval < CYCLE_BARO * 1000)
+	if (!sampleTimer.shouldTick())
 		return;
-	Profiler::pushData("Baro::jitter()", interval - CYCLE_BARO * 1000);
-	lastSample = micros();
 
+	Profiler::pushData("Baro::jitter()", sampleTimer.getJitter());
 	Profiler::begin("Baro::update()");
 
 	getValues(&values);

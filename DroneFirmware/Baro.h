@@ -7,6 +7,7 @@
 #include "SensorCalibration.h"
 #include "Log.h"
 #include "Profiler.h"
+#include "Timer.h"
 
 struct BaroValues {
 	float Temperature;
@@ -18,7 +19,7 @@ class Baro
 {
 private:
 	bool firstSample;
-	uint32_t lastSample;
+	Timer sampleTimer = Timer(CYCLE_BARO);
 	BaroValues last;
 
 	BaroValues values;

@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "Profiler.h"
 #include "FaultManager.h"
+#include "Timer.h"
 
 struct GyroValues {
 	float AccX, AccY, AccZ;
@@ -30,7 +31,7 @@ class Gyro
 {
 private:
 	bool firstSample = true;
-	uint32_t lastSample;
+	Timer sampleTimer = Timer(CYCLE_GYRO);
 	GyroValues last;
 
 	CalibrationState calibrationState;

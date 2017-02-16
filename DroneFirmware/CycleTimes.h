@@ -1,5 +1,4 @@
-#ifndef _CYCLETIMES_h
-#define _CYCLETIMES_h
+#pragma once
 
 #define CYCLE_PID			5
 #define CYCLE_GYRO			5
@@ -11,6 +10,4 @@
 #define CYCLE_PROFILER_DATA	500
 #define CYCLE_PROFILER_MAX  20000
 
-#define TIME_CONFIG_SAVE 5000
-
-#endif
+#define TIME_CONFIG_SAVE	5000

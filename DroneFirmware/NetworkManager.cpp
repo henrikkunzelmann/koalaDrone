@@ -8,10 +8,6 @@ NetworkManager::NetworkManager(SensorHAL* sensor, ServoManager* servos, DroneEng
 	this->voltageReader = voltageReader;
 
 	_dataFeedSubscribed = false;
-	_lastDataSend = 0;
-	_lastLogSend = 0;
-	_lastOutputDataSend = 0;
-	_lastProfilerDataSend = 0;
 	dataRevision = 1;
 
 	lastMovementRevision = 0;
@@ -504,101 +500,100 @@ void NetworkManager::handleData(WiFiUDP* udp) {
 }
 
 void NetworkManager::sendDroneData(WiFiUDP* udp) {
-	if (millis() - _lastDataSend >= CYCLE_DATA) {
-		writeDataHeader(udp, dataRevision++, DataDrone);
+	if (!timerData.shouldTick())
+		return;
 
-		writeBuffer->write(uint8_t(engine->state()));
-		writeBuffer->write(uint16_t(servos->getFrontLeft()));
-		writeBuffer->write(uint16_t(servos->getFrontRight()));
-		writeBuffer->write(uint16_t(servos->getBackLeft()));
-		writeBuffer->write(uint16_t(servos->getBackRight()));
+	writeDataHeader(udp, dataRevision++, DataDrone);
 
-		writeBuffer->write(sensor->getGyro()->inCalibration());
+	writeBuffer->write(uint8_t(engine->state()));
+	writeBuffer->write(uint16_t(servos->getFrontLeft()));
+	writeBuffer->write(uint16_t(servos->getFrontRight()));
+	writeBuffer->write(uint16_t(servos->getBackLeft()));
+	writeBuffer->write(uint16_t(servos->getBackRight()));
 
-		writeBuffer->write(sensor->getGyro()->getRoll());
-		writeBuffer->write(sensor->getGyro()->getPitch());
-		writeBuffer->write(sensor->getGyro()->getYaw());
+	writeBuffer->write(sensor->getGyro()->inCalibration());
 
-		GyroValues values = sensor->getGyro()->getValues();
+	writeBuffer->write(sensor->getGyro()->getRoll());
+	writeBuffer->write(sensor->getGyro()->getPitch());
+	writeBuffer->write(sensor->getGyro()->getYaw());
 
-		writeBuffer->write(values.GyroX);
-		writeBuffer->write(values.GyroY);
-		writeBuffer->write(values.GyroZ);
+	GyroValues values = sensor->getGyro()->getValues();
 
-		writeBuffer->write(values.AccX);
-		writeBuffer->write(values.AccY);
-		writeBuffer->write(values.AccZ);
+	writeBuffer->write(values.GyroX);
+	writeBuffer->write(values.GyroY);
+	writeBuffer->write(values.GyroZ);
 
-		writeBuffer->write(values.MagnetX);
-		writeBuffer->write(values.MagnetY);
-		writeBuffer->write(values.MagnetZ);
+	writeBuffer->write(values.AccX);
+	writeBuffer->write(values.AccY);
+	writeBuffer->write(values.AccZ);
 
-		BaroValues baroValues = sensor->getBaro()->getValues();
-		writeBuffer->write(baroValues.Pressure);
-		writeBuffer->write(baroValues.Humidity);
-		writeBuffer->write(sensor->getBaro()->getAltitude());
+	writeBuffer->write(values.MagnetX);
+	writeBuffer->write(values.MagnetY);
+	writeBuffer->write(values.MagnetZ);
 
-		// Temperature Array
-		writeBuffer->write(uint8_t(2));
-		writeBuffer->write(values.Temperature);
-		writeBuffer->write(baroValues.Temperature);
+	BaroValues baroValues = sensor->getBaro()->getValues();
+	writeBuffer->write(baroValues.Pressure);
+	writeBuffer->write(baroValues.Humidity);
+	writeBuffer->write(sensor->getBaro()->getAltitude());
 
-		writeBuffer->write(voltageReader->readVoltage());
-		writeBuffer->write(uint32_t(WiFi.RSSI()));
+	// Temperature Array
+	writeBuffer->write(uint8_t(2));
+	writeBuffer->write(values.Temperature);
+	writeBuffer->write(baroValues.Temperature);
 
-		sendData(udp);
-		_lastDataSend = millis();
-	}
+	writeBuffer->write(voltageReader->readVoltage());
+	writeBuffer->write(uint32_t(WiFi.RSSI()));
+
+	sendData(udp);
 }
 
 void NetworkManager::sendLog(WiFiUDP* udp) {
-	if (millis() - _lastLogSend > CYCLE_LOG) {
-		if (Log::getBuffer() == NULL)
-			return;
+	if (!timerLog.shouldTick())
+		return;
 
-		while (Log::getBufferLines() > 0) {
-			writeDataHeader(udp, dataRevision++, DataLog);
+	if (Log::getBuffer() == NULL)
+		return;
 
-			uint32_t messagesToSend = Log::getBufferLines();
-			if (messagesToSend > 5)
-				messagesToSend = 5;
+	while (Log::getBufferLines() > 0) {
+		writeDataHeader(udp, dataRevision++, DataLog);
 
-			writeBuffer->write(messagesToSend);
+		uint32_t messagesToSend = Log::getBufferLines();
+		if (messagesToSend > 5)
+			messagesToSend = 5;
 
-			for (uint32_t i = 0; i < messagesToSend; i++) {
-				char* msg = Log::popMessage();
-				writeBuffer->writeString(msg);
-				free(msg);
-			}
+		writeBuffer->write(messagesToSend);
 
-			sendData(udp);
+		for (uint32_t i = 0; i < messagesToSend; i++) {
+			char* msg = Log::popMessage();
+			writeBuffer->writeString(msg);
+			free(msg);
 		}
 
-		_lastLogSend = millis();
+		sendData(udp);
 	}
 }
 
 void NetworkManager::sendOutputData(WiFiUDP* udp) {
-	if (millis() - _lastOutputDataSend > CYCLE_OUTPUT_DATA) {
-		writeDataHeader(udp, dataRevision++, DataDebugOutput);
+	if (!timerOutputData.shouldTick())
+		return;
 
-		writeBuffer->write(engine->getPitchOutput());
-		writeBuffer->write(engine->getRollOutput());
-		writeBuffer->write(engine->getYawOutput());
+	writeDataHeader(udp, dataRevision++, DataDebugOutput);
 
-		sendData(udp);
-		_lastOutputDataSend = millis();
-	}
+	writeBuffer->write(engine->getPitchOutput());
+	writeBuffer->write(engine->getRollOutput());
+	writeBuffer->write(engine->getYawOutput());
+
+	sendData(udp);
 }
 
 void NetworkManager::sendProfilerData(WiFiUDP* udp) {
-	if (millis() - _lastProfilerDataSend > CYCLE_PROFILER_DATA) {
-		writeDataHeader(udp, dataRevision++, DataDebugProfiler);
+	if (!timerProfilerData.shouldTick())
+		return;
 
-		writeBuffer->write(Hardware::getFreeHeap());
-		Profiler::write(writeBuffer);
+	writeDataHeader(udp, dataRevision++, DataDebugProfiler);
 
-		sendData(udp);
-		_lastProfilerDataSend = millis();
-	}
+	writeBuffer->write(Hardware::getFreeHeap());
+	Profiler::write(writeBuffer);
+
+	sendData(udp);
 }

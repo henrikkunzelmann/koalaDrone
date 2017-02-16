@@ -207,6 +207,9 @@
     <ClInclude Include="WiFiCompat.h">
       <Filter>Header Files\hardware</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigManager.cpp">
@@ -292,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="WiFiCompat8266.cpp">
       <Filter>Source Files\hardware\esp8266</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
