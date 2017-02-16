@@ -64,8 +64,6 @@ void setup() {
 	Log::debug("Boot", "Reset info: r: %u, ex: %u, epc: 0x%x, excvaddr: 0x%x", 
 		resetInfo.reason, resetInfo.exception, resetInfo.epc, resetInfo.excvaddr);
 
-	ESP.eraseConfig();
-
 	// Serialnummer schreiben
 	char serialCode[32];
 	getBuildSerialCode(serialCode, sizeof(serialCode));
