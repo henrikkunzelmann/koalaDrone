@@ -528,48 +528,56 @@ namespace DroneLibrary
                     return false;
             }
 
-            lock (controlSocket)
+            try
             {
-                bool alreadySent;
-                lock (packetsToAcknowledge)
+                lock (controlSocket)
                 {
-                    alreadySent = packetsToAcknowledge.ContainsKey(revision);
-                    if (guaranteed)
+                    bool alreadySent;
+                    lock (packetsToAcknowledge)
                     {
-                        if (!stopwatch.IsRunning)
-                            stopwatch.Start();
-                        packetsToAcknowledge[revision] = packet;
-                        packetSendTime[revision] = stopwatch.ElapsedMilliseconds;
+                        alreadySent = packetsToAcknowledge.ContainsKey(revision);
+                        if (guaranteed)
+                        {
+                            if (!stopwatch.IsRunning)
+                                stopwatch.Start();
+                            packetsToAcknowledge[revision] = packet;
+                            packetSendTime[revision] = stopwatch.ElapsedMilliseconds;
 
-                        if (handler != null)
-                            packetAcknowlegdeEvents[revision] = handler;
+                            if (handler != null)
+                                packetAcknowlegdeEvents[revision] = handler;
+                        }
                     }
+
+                    packetBuffer.ResetPosition();
+
+                    // Paket-Header schreiben
+                    packetBuffer.Write((byte)'F');
+                    packetBuffer.Write((byte)'L');
+                    packetBuffer.Write((byte)'Y');
+
+                    // Alle Daten werden nach dem Netzwerkstandard BIG-Endian übertragen
+                    packetBuffer.Write(revision);
+
+                    // wenn die Drohne eine Antwort schickt dann wird kein Ack-Paket angefordert, sonst kann es passieren, dass das Ack-Paket die eigentliche Antwort verdrängt
+                    packetBuffer.Write(guaranteed && !packet.Type.DoesAnswer());
+                    packetBuffer.Write((byte)packet.Type);
+
+                    // Paket Inhalt schreiben
+                    packet.Write(packetBuffer);
+
+                    controlSocket.BeginSend(packetStream.GetBuffer(), (int)packetBuffer.Position, SendPacket, null);
+                    if (Config.VerbosePacketSending
+                        && (Config.LogPingPacket || packet.Type != PacketType.Ping)
+                        && (Config.LogNoisyPackets || !packet.Type.IsNosiy()))
+                        Log.Verbose("[{0}] Packet:      [{1}] {2}, size: {3} bytes {4} {5}", Address.ToString(), revision, packet.Type, packetBuffer.Position, guaranteed ? "(guaranteed)" : "", alreadySent ? "(resend)" : "");
                 }
-
-                packetBuffer.ResetPosition();
-
-                // Paket-Header schreiben
-                packetBuffer.Write((byte)'F');
-                packetBuffer.Write((byte)'L');
-                packetBuffer.Write((byte)'Y');
-
-                // Alle Daten werden nach dem Netzwerkstandard BIG-Endian übertragen
-                packetBuffer.Write(revision);
-
-                // wenn die Drohne eine Antwort schickt dann wird kein Ack-Paket angefordert, sonst kann es passieren, dass das Ack-Paket die eigentliche Antwort verdrängt
-                packetBuffer.Write(guaranteed && !packet.Type.DoesAnswer());
-                packetBuffer.Write((byte)packet.Type);
-
-                // Paket Inhalt schreiben
-                packet.Write(packetBuffer);
-
-                controlSocket.BeginSend(packetStream.GetBuffer(), (int)packetBuffer.Position, SendPacket, null);
-                if (Config.VerbosePacketSending
-                    && (Config.LogPingPacket || packet.Type != PacketType.Ping)
-                    && (Config.LogNoisyPackets || !packet.Type.IsNosiy()))
-                    Log.Verbose("[{0}] Packet:      [{1}] {2}, size: {3} bytes {4} {5}", Address.ToString(), revision, packet.Type, packetBuffer.Position, guaranteed ? "(guaranteed)" : "", alreadySent ? "(resend)" : "");
+                return true;
             }
-            return true;
+            catch(Exception e)
+            {
+                Log.Error(e);
+            }
+            return false;
         }
 
         private void SendPacket(IAsyncResult result)
