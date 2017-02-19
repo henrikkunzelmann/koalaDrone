@@ -1,7 +1,7 @@
 ﻿using DroneControl.Input;
 using DroneLibrary;
 using DroneLibrary.Data;
-using DroneLibrary.Debug;
+using DroneLibrary.Diagnostics;
 using System;
 using System.Drawing;
 using System.Text;

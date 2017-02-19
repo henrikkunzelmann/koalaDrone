@@ -1,5 +1,5 @@
 ﻿using DroneLibrary;
-using DroneLibrary.Debug;
+using DroneLibrary.Diagnostics;
 using System;
 using System.Net;
 using System.Windows.Forms;

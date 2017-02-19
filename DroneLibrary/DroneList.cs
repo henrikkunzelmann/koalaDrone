@@ -1,4 +1,4 @@
-﻿using DroneLibrary.Debug;
+﻿using DroneLibrary.Diagnostics;
 using DroneLibrary.Protocol;
 using System;
 using System.Collections.Generic;
