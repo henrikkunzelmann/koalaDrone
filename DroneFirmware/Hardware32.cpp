@@ -39,7 +39,7 @@ uint32_t Hardware::getCPUFrequency() {
 }
 
 uint64_t Hardware::getFlashSize() {
-	return 0;
+	return ESP.getFlashChipSize();
 }
 
 uint64_t Hardware::getFreeSketchSpace() {
