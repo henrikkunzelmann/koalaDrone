@@ -9,6 +9,9 @@
 #define PIN_BACK_RIGHT 14
 
 #define PIN_LED0 0
+#define PIN_BATTERY A0
+
+#define BATTERY_MAX_VOLTAGE (16.894f)
 
 #define DEFAULT_SERVO_MIN 1000
 #define DEFAULT_SERVO_MAX 2000
