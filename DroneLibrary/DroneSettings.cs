@@ -22,12 +22,12 @@ namespace DroneLibrary
         [Description("The SIID of the WiFi network")]
         public string NetworkSSID;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
         [Category("Network")]
         [Description("The password of the WiFi network")]
         public string NetworkPassword;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
         [Category("Network")]
         [Description("The password of the WiFi access point")]
         public string AccessPointPassword;

@@ -22,10 +22,10 @@ struct Config {
 	char NetworkSSID[30];
 
 	//The password of the WiFi network
-	char NetworkPassword[30];
+	char NetworkPassword[64];
 
 	//The password for the WiFi access point
-	char AccessPointPassword[30];
+	char AccessPointPassword[64];
 
 	//The UDP-Port for the hello packets
 	uint16_t NetworkHelloPort;
