@@ -153,9 +153,6 @@
     <ClInclude Include="Quadcopter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="__vm\.DroneFirmware.vsarduino.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Hardware8266.h">
       <Filter>Header Files\hardware\esp8266</Filter>
     </ClInclude>
