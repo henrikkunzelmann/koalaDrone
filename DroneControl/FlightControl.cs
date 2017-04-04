@@ -47,9 +47,13 @@ namespace DroneControl
             if (drone.Data.State == DroneState.Flying)
             {
                 StringBuilder pidData = new StringBuilder();
-                pidData.AppendFormat("Roll:  {0}", Formatting.FormatDecimal(drone.DebugOutputData.RollOutput, 2, 3));
+                pidData.AppendFormat("Roll:  {0} (stab: {1})",
+                    Formatting.FormatDecimal(drone.DebugOutputData.RollOutput, 2, 3),
+                    Formatting.FormatDecimal(drone.DebugOutputData.AngleRollOutput, 2, 3));
                 pidData.AppendLine();
-                pidData.AppendFormat("Pitch: {0}", Formatting.FormatDecimal(drone.DebugOutputData.PitchOutput, 2, 3));
+                pidData.AppendFormat("Pitch: {0} (stab: {1})", 
+                    Formatting.FormatDecimal(drone.DebugOutputData.PitchOutput, 2, 3),
+                    Formatting.FormatDecimal(drone.DebugOutputData.AnglePitchOutput, 2, 3));
                 pidData.AppendLine();
                 pidData.AppendFormat("Yaw:   {0}", Formatting.FormatDecimal(drone.DebugOutputData.YawOutput, 2, 3));
 

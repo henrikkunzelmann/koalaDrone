@@ -12,11 +12,17 @@ namespace DroneLibrary.Data
         public readonly float RollOutput;
         public readonly float YawOutput;
 
+        public readonly float AnglePitchOutput;
+        public readonly float AngleRollOutput;
+
         public OutputData(PacketBuffer buffer)
         {
             PitchOutput = buffer.ReadFloat();
             RollOutput = buffer.ReadFloat();
             YawOutput = buffer.ReadFloat();
+
+            AnglePitchOutput = buffer.ReadFloat();
+            AngleRollOutput = buffer.ReadFloat();
         }
     }
 }

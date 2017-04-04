@@ -112,6 +112,9 @@ class DroneEngine
 	float getPitchOutput() const;
 	float getRollOutput() const;
 	float getYawOutput() const;
+
+	float getAnglePitchOutput() const;
+	float getAngleRollOutput() const;
 };
 
 #endif

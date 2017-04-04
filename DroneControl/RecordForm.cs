@@ -222,6 +222,8 @@ namespace DroneControl
             "PID Pitch",
             "PID Roll",
             "PID Yaw",
+            "PID Stab Pitch",
+            "PID Stab Roll",
             "FL", "FR", "BL", "BR"
         };
 
@@ -291,6 +293,9 @@ namespace DroneControl
                     drone.DebugOutputData.PitchOutput,
                     drone.DebugOutputData.RollOutput,
                     drone.DebugOutputData.YawOutput,
+
+                    drone.DebugOutputData.AnglePitchOutput,
+                    drone.DebugOutputData.AngleRollOutput,
 
                     drone.Data.MotorValues.FrontLeft,
                     drone.Data.MotorValues.FrontRight,

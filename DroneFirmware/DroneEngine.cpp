@@ -354,3 +354,13 @@ float DroneEngine::getRollOutput() const {
 float DroneEngine::getYawOutput() const {
 	return yawOutput;
 }
+
+float DroneEngine::getAnglePitchOutput() const
+{
+	return anglePitchOutput;
+}
+
+float DroneEngine::getAngleRollOutput() const
+{
+	return angleRollOutput;
+}

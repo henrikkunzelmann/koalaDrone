@@ -583,6 +583,9 @@ void NetworkManager::sendOutputData(WiFiUDP* udp) {
 	writeBuffer->write(engine->getRollOutput());
 	writeBuffer->write(engine->getYawOutput());
 
+	writeBuffer->write(engine->getAnglePitchOutput());
+	writeBuffer->write(engine->getAngleRollOutput());
+
 	sendData(udp);
 }
 
