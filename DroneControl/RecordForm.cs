@@ -242,7 +242,7 @@ namespace DroneControl
                 if (fileSize < 1024 * 1024)
                     statusLabel.Text = string.Format("Running ({0}kbyte)", fileSize / 1024);
                 else
-                    statusLabel.Text = string.Format("Running ({0}mkbyte)", fileSize / (1024 * 1024));
+                    statusLabel.Text = string.Format("Running ({0}mbyte)", fileSize / (1024 * 1024));
             }
             catch (Exception e)
             {
