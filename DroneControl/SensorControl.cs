@@ -102,8 +102,13 @@ namespace DroneControl
             altitudeLabel.Text = string.Format("Altitude: {0} m",
                 Formatting.FormatDecimal(data.Sensor.Baro.Altitude, 2, 4));
 
-            temperatureLabel.Text = string.Format("Temperatures °C: {0}",
-                string.Join("  ", data.Sensor.Temperatures.Select(t => Formatting.FormatDecimal(t, 2))));
+            if (data.Sensor.Temperatures == null || data.Sensor.Temperatures.Length == 0)
+                temperatureLabel.Text = "Temperatures °C: n/a";
+            else
+            {
+                temperatureLabel.Text = string.Format("Temperatures °C: {0}",
+                    string.Join("  ", data.Sensor.Temperatures.Select(t => Formatting.FormatDecimal(t, 2))));
+            }
 
             ResumeLayout();
             Invalidate(true);
