@@ -23,23 +23,26 @@ DroneEngine::DroneEngine(SensorHAL* sensor, ServoManager* servos, Config* config
 }
 
 void DroneEngine::createPID() {
-	if (pitchPID)
-		delete pitchPID;
 	if (rollPID)
 		delete rollPID;
+	if (pitchPID)
+		delete pitchPID;
 	if (yawPID)
 		delete yawPID;
-	if (anglePitchPID)
-		delete anglePitchPID;
 	if (angleRollPID)
 		delete angleRollPID;
+	if (anglePitchPID)
+		delete anglePitchPID;
+	if (angleYawPID)
+		delete angleYawPID;
 
-	pitchPID = createPID(config->PitchPid, 200, &pitchOutput);
 	rollPID = createPID(config->RollPid, 200, &rollOutput);
+	pitchPID = createPID(config->PitchPid, 200, &pitchOutput);
 	yawPID = createPID(config->YawPid, 300, &yawOutput);
 
-	anglePitchPID = createPID(config->AngleStabilization, 200, &anglePitchOutput);
 	angleRollPID = createPID(config->AngleStabilization, 200, &angleRollOutput);
+	anglePitchPID = createPID(config->AngleStabilization, 200, &anglePitchOutput);
+	angleYawPID = createPID(config->AngleStabilization, 50, &angleYawOutput);
 }
 
 PID* DroneEngine::createPID(PIDSettings settings, double limit, double* output) {
@@ -119,12 +122,13 @@ void DroneEngine::fly() {
 	if (thrust > config->MaxThrustForFlying)
 		return;
 
-	pitchOutput = 0;
 	rollOutput = 0;
+	pitchOutput = 0;
 	yawOutput = 0;
 
-	anglePitchOutput = 0;
 	angleRollOutput = 0;
+	anglePitchOutput = 0;
+	angleYawOutput = 0;
 
 	createPID();
 
@@ -213,18 +217,21 @@ void DroneEngine::handleInternal() {
 
 	const float cmdScale = (1.0f / 500.0f);
 	float sensitivity = cmdScale * config->InputScale;
-	float pitchCmd = targetPitch * sensitivity;
-	float rollCmd = targetRoll * sensitivity;
-	float yawCmd = targetYaw * sensitivity;
+
+	float rollCmd = targetGyroX * sensitivity;
+	float pitchCmd = targetGyroY * sensitivity;
+	float yawCmd = targetGyroZ * sensitivity;
 
 	if (config->EnableStabilization) {
 		if (sensor->getGyro()->hasValidImuData()) {
 			float horzSensivitiy = cmdScale * 40;
-			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), 0); // targetPitch * horzSensivitiy);
-			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), 0); // targetRoll * horzSensivitiy);
+			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), 0); // targetGyroX * horzSensivitiy);
+			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), 0); // targetGyroY * horzSensivitiy);
+			calculatePID(angleYawPID, sensor->getGyro()->getYaw(), 0); // targetGyroZ * horzSensivitiy);
 
-			pitchCmd += anglePitchOutput;
 			rollCmd += angleRollOutput;
+			pitchCmd += anglePitchOutput;
+			yawCmd += angleYawOutput;
 		}
 		else
 			FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidImuData()");
@@ -238,8 +245,8 @@ void DroneEngine::handleInternal() {
 	else {
 		FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidGyroData()");
 
-		pitchOutput = 0;
 		rollOutput = 0;
+		pitchOutput = 0;
 		yawOutput = 0;
 	}
 
@@ -262,12 +269,13 @@ void DroneEngine::handleInternal() {
 }
 
 void DroneEngine::updateTunings() {
-	updateTuning(pitchPID, config->PitchPid);
 	updateTuning(rollPID, config->RollPid);
+	updateTuning(pitchPID, config->PitchPid);
 	updateTuning(yawPID, config->YawPid);
 
-	updateTuning(anglePitchPID, config->AngleStabilization);
 	updateTuning(angleRollPID, config->AngleStabilization);
+	updateTuning(anglePitchPID, config->AngleStabilization);
+	updateTuning(angleYawPID, config->AngleStabilization);
 }
 
 void DroneEngine::updateTuning(PID* pid, PIDSettings settings) {
@@ -315,9 +323,9 @@ void DroneEngine::setTargetMovement(int16_t roll, int16_t pitch, int16_t yaw, in
 		return;
 
 	// Werte in richtigen Bereich bringen und setzen
-	this->targetPitch = MathHelper::clampValue(pitch, -500, 500);
-	this->targetRoll = MathHelper::clampValue(roll, -500, 500);
-	this->targetYaw = MathHelper::clampValue(yaw, -500, 500);
+	this->targetGyroX = MathHelper::clampValue(roll, -500, 500);
+	this->targetGyroY = MathHelper::clampValue(pitch, -500, 500);
+	this->targetGyroZ = MathHelper::clampValue(yaw, -500, 500);
 	this->thrust = MathHelper::clampValue(thrust, 0, config->ServoMax - config->ServoMin);
 
 	// in den Fliegen Modus gehen
@@ -327,32 +335,37 @@ void DroneEngine::setTargetMovement(int16_t roll, int16_t pitch, int16_t yaw, in
 	Profiler::restart("DroneEngine::input()");
 }
 
-int DroneEngine::getTargetRoll() const {
-	return targetRoll;
+int DroneEngine::getTargetGyroX() const {
+	return targetGyroX;
 }
 
-int DroneEngine::getTargetPitch() const {
-	return targetPitch;
+int DroneEngine::getTargetGyroY() const {
+	return targetGyroY;
 }
 
-int DroneEngine::getTargetYaw() const {
-	return targetYaw;
+int DroneEngine::getTargetGyroZ() const {
+	return targetGyroZ;
 }
 
 int DroneEngine::getThrust() const {
 	return thrust;
 }
 
-float DroneEngine::getPitchOutput() const {
-	return pitchOutput;
-}
-
 float DroneEngine::getRollOutput() const {
 	return rollOutput;
 }
 
+float DroneEngine::getPitchOutput() const {
+	return pitchOutput;
+}
+
 float DroneEngine::getYawOutput() const {
 	return yawOutput;
+}
+
+float DroneEngine::getAngleRollOutput() const
+{
+	return angleRollOutput;
 }
 
 float DroneEngine::getAnglePitchOutput() const
@@ -360,7 +373,7 @@ float DroneEngine::getAnglePitchOutput() const
 	return anglePitchOutput;
 }
 
-float DroneEngine::getAngleRollOutput() const
+float DroneEngine::getAngleYawOutput() const
 {
-	return angleRollOutput;
+	return angleYawOutput;
 }

@@ -53,14 +53,14 @@ struct Config {
 	//The output value for the ESC's, at which they start to turn
 	uint16_t ServoIdle;
 
-	PIDSettings PitchPid;
 	PIDSettings RollPid;
+	PIDSettings PitchPid;
 	PIDSettings YawPid;
 
 	float InputScale;
 
-	float SafePitch;
 	float SafeRoll;
+	float SafePitch;
 	int32_t SafeServoValue;
 
 	bool EnableStabilization;

@@ -4,7 +4,9 @@ namespace DroneLibrary.Protocol
 {
     public struct PacketSetMovement : IPacket
     {
-        public readonly short Roll, Pitch, Yaw;
+        public readonly short Roll;
+        public readonly short Pitch;
+        public readonly short Yaw;
         public readonly short Thrust;
 
         public PacketType Type => PacketType.Movement;

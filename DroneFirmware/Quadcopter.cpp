@@ -12,13 +12,13 @@
 #define _CW -1
 #define _CCW 1
 
+float motorsRoll[] = {
+	1, -1,
+	1, -1
+};
 float motorsPitch[] = { 
 	1,  1, 
 	-1, -1 
-};
-float motorsRoll[] = {
-	1, -1, 
-	1, -1 
 };
 float motorsYaw[] = { 
 	_CW, _CCW,
@@ -33,12 +33,12 @@ float Quadcopter::mixMotor(Config* config, int motorIndex, float roll, float pit
 
 	float value = 0;
 	if (config->NegativeMixing) {
-		value += motorsPitch[motorIndex] * pitch;
 		value += motorsRoll[motorIndex] * roll;
+		value += motorsPitch[motorIndex] * pitch;
 	}
 	else {
-		value += max(0, motorsPitch[motorIndex] * pitch);
 		value += max(0, motorsRoll[motorIndex] * roll);
+		value += max(0, motorsPitch[motorIndex] * pitch);
 	}
 	value += motorsYaw[motorIndex] * yaw;
 	return value;

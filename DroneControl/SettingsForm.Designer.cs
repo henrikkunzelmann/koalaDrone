@@ -413,7 +413,7 @@
             // minValueLabel
             // 
             minValueLabel.AutoSize = true;
-            minValueLabel.Location = new System.Drawing.Point(8, 22);
+            minValueLabel.Location = new System.Drawing.Point(6, 22);
             minValueLabel.Name = "minValueLabel";
             minValueLabel.Size = new System.Drawing.Size(54, 13);
             minValueLabel.TabIndex = 2;
@@ -422,7 +422,7 @@
             // maxValueLabel
             // 
             maxValueLabel.AutoSize = true;
-            maxValueLabel.Location = new System.Drawing.Point(9, 77);
+            maxValueLabel.Location = new System.Drawing.Point(6, 77);
             maxValueLabel.Name = "maxValueLabel";
             maxValueLabel.Size = new System.Drawing.Size(57, 13);
             maxValueLabel.TabIndex = 8;
@@ -445,7 +445,7 @@
             // idleValueLabel
             // 
             idleValueLabel.AutoSize = true;
-            idleValueLabel.Location = new System.Drawing.Point(9, 48);
+            idleValueLabel.Location = new System.Drawing.Point(6, 48);
             idleValueLabel.Name = "idleValueLabel";
             idleValueLabel.Size = new System.Drawing.Size(54, 13);
             idleValueLabel.TabIndex = 12;
@@ -477,7 +477,7 @@
             // 
             // safeRollTextBox
             // 
-            this.safeRollTextBox.Location = new System.Drawing.Point(109, 98);
+            this.safeRollTextBox.Location = new System.Drawing.Point(109, 72);
             this.safeRollTextBox.Name = "safeRollTextBox";
             this.safeRollTextBox.Size = new System.Drawing.Size(142, 20);
             this.safeRollTextBox.TabIndex = 15;
@@ -494,7 +494,7 @@
             // safeRollLabel
             // 
             safeRollLabel.AutoSize = true;
-            safeRollLabel.Location = new System.Drawing.Point(8, 101);
+            safeRollLabel.Location = new System.Drawing.Point(9, 74);
             safeRollLabel.Name = "safeRollLabel";
             safeRollLabel.Size = new System.Drawing.Size(50, 13);
             safeRollLabel.TabIndex = 14;
@@ -511,7 +511,7 @@
             // 
             // safePitchTextBox
             // 
-            this.safePitchTextBox.Location = new System.Drawing.Point(109, 71);
+            this.safePitchTextBox.Location = new System.Drawing.Point(109, 98);
             this.safePitchTextBox.Name = "safePitchTextBox";
             this.safePitchTextBox.Size = new System.Drawing.Size(142, 20);
             this.safePitchTextBox.TabIndex = 13;
@@ -526,7 +526,7 @@
             // safePitchLabel
             // 
             safePitchLabel.AutoSize = true;
-            safePitchLabel.Location = new System.Drawing.Point(8, 74);
+            safePitchLabel.Location = new System.Drawing.Point(8, 101);
             safePitchLabel.Name = "safePitchLabel";
             safePitchLabel.Size = new System.Drawing.Size(56, 13);
             safePitchLabel.TabIndex = 12;
@@ -540,7 +540,7 @@
             pidPitchGroupBox.Controls.Add(pitchKpLabel);
             pidPitchGroupBox.Controls.Add(pitchKiLabel);
             pidPitchGroupBox.Controls.Add(pitchKdLabel);
-            pidPitchGroupBox.Location = new System.Drawing.Point(272, 6);
+            pidPitchGroupBox.Location = new System.Drawing.Point(395, 6);
             pidPitchGroupBox.Name = "pidPitchGroupBox";
             pidPitchGroupBox.Size = new System.Drawing.Size(117, 101);
             pidPitchGroupBox.TabIndex = 19;
@@ -636,7 +636,7 @@
             pidRollGroupBox.Controls.Add(rollKpLabel);
             pidRollGroupBox.Controls.Add(rollKiLabel);
             pidRollGroupBox.Controls.Add(rollKdLabel);
-            pidRollGroupBox.Location = new System.Drawing.Point(395, 6);
+            pidRollGroupBox.Location = new System.Drawing.Point(272, 6);
             pidRollGroupBox.Name = "pidRollGroupBox";
             pidRollGroupBox.Size = new System.Drawing.Size(117, 101);
             pidRollGroupBox.TabIndex = 20;

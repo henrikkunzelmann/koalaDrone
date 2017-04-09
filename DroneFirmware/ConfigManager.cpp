@@ -107,22 +107,22 @@ Config ConfigManager::getDefault() {
 	config.ServoMax = DEFAULT_SERVO_MAX;
 	config.ServoIdle = DEFAULT_SERVO_IDLE;
 
-	config.PitchPid.Kp = 0.7f;
-	config.PitchPid.Ki = 0;
-	config.PitchPid.Kd = 0;
-
-	config.RollPid.Kp = 0.7f;
+	config.RollPid.Kp = 0.8f;
 	config.RollPid.Ki = 0;
 	config.RollPid.Kd = 0;
 
-	config.YawPid.Kp = 1.9f;
+	config.PitchPid.Kp = 0.8f;
+	config.PitchPid.Ki = 0;
+	config.PitchPid.Kd = 0;
+
+	config.YawPid.Kp = 3.5f;
 	config.YawPid.Ki = 0;
 	config.YawPid.Kd = 0;
 
 	config.InputScale = 164.0f;
 
-	config.SafePitch = 100;
 	config.SafeRoll = 100;
+	config.SafePitch = 100;
 	config.SafeServoValue = 1850;
 
 	config.EnableStabilization = false;
@@ -131,9 +131,9 @@ Config ConfigManager::getDefault() {
 	config.MaxThrustForFlying = 50;
 	config.OnlyArmWhenStill = false;
 
-	config.AngleStabilization.Kp = 5.0f;
+	config.AngleStabilization.Kp = 2.5f;
 	config.AngleStabilization.Ki = 0;
-	config.AngleStabilization.Kd = 0;
+	config.AngleStabilization.Kd = 0.15f;
 
 	config.EnableImuAcc = true;
 	config.EnableImuMag = false;

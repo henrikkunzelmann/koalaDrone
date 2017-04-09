@@ -75,10 +75,10 @@ namespace DroneLibrary
         public ushort ServoIdle;
 
         [Category("PID Flying")]
-        public PidSettings PitchPid;
+        public PidSettings RollPid;
 
         [Category("PID Flying")]
-        public PidSettings RollPid;
+        public PidSettings PitchPid;
 
         [Category("PID Flying")]
         public PidSettings YawPid;

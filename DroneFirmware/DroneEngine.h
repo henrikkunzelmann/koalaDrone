@@ -30,9 +30,6 @@ class DroneEngine
 	long lastMovementUpdate;
 	long lastHeartbeat;
 
-	float maxTilt;
-	float maxRotationSpeed;
-
 	int lastValues[4];
 
  protected:
@@ -44,27 +41,29 @@ class DroneEngine
 	 SensorHAL* sensor;
 	 ServoManager* servos;
 
-	 int16_t targetRoll;
-	 int16_t targetPitch;
-	 int16_t targetYaw;
+	 int16_t targetGyroX;
+	 int16_t targetGyroY;
+	 int16_t targetGyroZ;
 	 int16_t thrust;
 
 	 double pidInput;
 	 double pidSetpoint;
 	 
-	 double pitchOutput;
 	 double rollOutput;
+	 double pitchOutput;
 	 double yawOutput;
 
-	 double anglePitchOutput;
 	 double angleRollOutput;
+	 double anglePitchOutput;
+	 double angleYawOutput;
 	 
-	 PID* pitchPID;
 	 PID* rollPID;
+	 PID* pitchPID;
 	 PID* yawPID;
 
-	 PID* anglePitchPID;
 	 PID* angleRollPID;
+	 PID* anglePitchPID;
+	 PID* angleYawPID;
 
 	 void createPID();
 	 PID* createPID(PIDSettings settings, double limit, double* output);
@@ -104,17 +103,18 @@ class DroneEngine
 
 	void setTargetMovement(int16_t roll, int16_t pitch, int16_t yaw, int16_t thrust);
 
-	int getTargetRoll() const;
-	int getTargetPitch() const;
-	int getTargetYaw() const;
+	int getTargetGyroX() const;
+	int getTargetGyroY() const;
+	int getTargetGyroZ() const;
 	int getThrust() const;
 
-	float getPitchOutput() const;
 	float getRollOutput() const;
+	float getPitchOutput() const;
 	float getYawOutput() const;
 
-	float getAnglePitchOutput() const;
 	float getAngleRollOutput() const;
+	float getAnglePitchOutput() const;
+	float getAngleYawOutput() const;
 };
 
 #endif

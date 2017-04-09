@@ -45,16 +45,16 @@ namespace DroneControl
 
             Bind(safeMotorValueTextBox, "data.SafeServoValue");
             Bind(safeTemperatureTextBox, "data.MaxTemperature");
-            Bind(safePitchTextBox, "data.SafePitch");
             Bind(safeRollTextBox, "data.SafeRoll");
-
-            Bind(pitchKpTextBox, "data.PitchPid.Kp");
-            Bind(pitchKiTextBox, "data.PitchPid.Ki");
-            Bind(pitchKdTextBox, "data.PitchPid.Kd");
+            Bind(safePitchTextBox, "data.SafePitch");
 
             Bind(rollKpTextBox, "data.RollPid.Kp");
             Bind(rollKiTextBox, "data.RollPid.Ki");
             Bind(rollKdTextBox, "data.RollPid.Kd");
+
+            Bind(pitchKpTextBox, "data.PitchPid.Kp");
+            Bind(pitchKiTextBox, "data.PitchPid.Ki");
+            Bind(pitchKdTextBox, "data.PitchPid.Kd");
 
             Bind(yawKpTextBox, "data.YawPid.Kp");
             Bind(yawKiTextBox, "data.YawPid.Ki");
@@ -195,13 +195,13 @@ namespace DroneControl
             v = v && CheckSetting("Idle Value", data.ServoIdle, originalData.ServoIdle);
             v = v && CheckSetting("Max Value", data.ServoMax, originalData.ServoMax);
 
-            v = v && CheckSetting("PID Pitch Kp", data.PitchPid.Kp, originalData.PitchPid.Kp);
-            v = v && CheckSetting("PID Pitch Ki", data.PitchPid.Ki, originalData.PitchPid.Ki);
-            v = v && CheckSetting("PID Pitch Kd", data.PitchPid.Kd, originalData.PitchPid.Kd);
-
             v = v && CheckSetting("PID Roll Kp", data.RollPid.Kp, originalData.RollPid.Kp);
             v = v && CheckSetting("PID Roll Ki", data.RollPid.Ki, originalData.RollPid.Ki);
             v = v && CheckSetting("PID Roll Kd", data.RollPid.Kd, originalData.RollPid.Kd);
+
+            v = v && CheckSetting("PID Pitch Kp", data.PitchPid.Kp, originalData.PitchPid.Kp);
+            v = v && CheckSetting("PID Pitch Ki", data.PitchPid.Ki, originalData.PitchPid.Ki);
+            v = v && CheckSetting("PID Pitch Kd", data.PitchPid.Kd, originalData.PitchPid.Kd);
 
             v = v && CheckSetting("PID Yaw Kp", data.YawPid.Kp, originalData.YawPid.Kp);
             v = v && CheckSetting("PID Yaw Ki", data.YawPid.Ki, originalData.YawPid.Ki);

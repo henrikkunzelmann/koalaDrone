@@ -203,7 +203,7 @@ namespace DroneControl
             "Ping ms",
 
             "State", "RSSI", "BatteryV", "FreeHeap",
-            "Pitch", "Roll", "Yaw",
+            "Roll", "Pitch", "Yaw",
 
             "GyroX", "GyroY", "GyroZ",
             "AccX", "AccY", "AccZ",
@@ -214,16 +214,17 @@ namespace DroneControl
 
             "Temps",
 
-            "Target Pitch",
             "Target Roll",
+            "Target Pitch",
             "Target Yaw",
 
             "Thrust",
-            "PID Pitch",
             "PID Roll",
+            "PID Pitch",
             "PID Yaw",
-            "PID Stab Pitch",
             "PID Stab Roll",
+            "PID Stab Pitch",
+            "PID Stab Yaw",
             "FL", "FR", "BL", "BR"
         };
 
@@ -263,8 +264,8 @@ namespace DroneControl
                     drone.Data.BatteryVoltage,
                     drone.DebugProfilerData.FreeHeapBytes,
 
-                    drone.Data.Sensor.Pitch,
                     drone.Data.Sensor.Roll,
+                    drone.Data.Sensor.Pitch,
                     drone.Data.Sensor.Yaw,
 
                     drone.Data.Sensor.Gyro.X,
@@ -285,17 +286,18 @@ namespace DroneControl
 
                     string.Join(", ", drone.Data.Sensor.Temperatures),
 
-                    inputManager.TargetData.Pitch,
                     inputManager.TargetData.Roll,
+                    inputManager.TargetData.Pitch,
                     inputManager.TargetData.Yaw,
                     inputManager.TargetData.Thrust,
 
-                    drone.DebugOutputData.PitchOutput,
                     drone.DebugOutputData.RollOutput,
+                    drone.DebugOutputData.PitchOutput,
                     drone.DebugOutputData.YawOutput,
 
-                    drone.DebugOutputData.AnglePitchOutput,
                     drone.DebugOutputData.AngleRollOutput,
+                    drone.DebugOutputData.AnglePitchOutput,
+                    drone.DebugOutputData.AngleYawOutput,
 
                     drone.Data.MotorValues.FrontLeft,
                     drone.Data.MotorValues.FrontRight,

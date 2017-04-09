@@ -12,7 +12,7 @@
 #include "Profiler.h"
 
 #define CONFIG_MAGIC_VALUE 124
-#define CONFIG_VERSION 3
+#define CONFIG_VERSION 4
 
 class ConfigManager
 {
