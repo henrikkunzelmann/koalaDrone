@@ -12,6 +12,8 @@ namespace DroneControl
     {
         private Drone drone;
         private DroneInfo info;
+
+        private DroneSettings originalData;
         private DroneSettings data;
 
         private List<Binding> bindings = new List<Binding>();
@@ -22,6 +24,7 @@ namespace DroneControl
 
             this.drone = drone;
             this.info = drone.Info;
+            this.originalData = drone.Settings;
             this.data = drone.Settings;
 
             Bind(nameTextBox, "data.DroneName");
@@ -80,6 +83,7 @@ namespace DroneControl
 
         private void Drone_OnSettingsChange(object sender, SettingsChangedEventArgs e)
         {
+            originalData = e.Settings;
             data = e.Settings;
             UpdateValues();
         }
@@ -117,14 +121,41 @@ namespace DroneControl
         /// <summary>
         /// Applys the settings to the connected drone.
         /// </summary>
-        private void Apply()
+        private void Apply(bool force)
         {
-            drone.SendConfig(data);
-            
+            // Only send config when settings were changed by user
+            if (force || IsAnyBindingChanged())
+            {
+                drone.SendConfig(data);
+                originalData = data;
+            }
+
+            ClearChangedByUser();
+        }
+
+        /// <summary>
+        /// Reverts all settings to the original settings saved on the drone.
+        /// </summary>
+        private void Revert()
+        {
+            data = originalData;
+            ClearChangedByUser();
+            UpdateValues();
+        }
+
+        private bool IsAnyBindingChanged()
+        {
+            foreach (Binding binding in bindings)
+                if (binding.ChangedByUser)
+                    return true;
+            return false;
+        }
+
+        private void ClearChangedByUser()
+        {
             applyButton.ForeColor = Color.Black;
             foreach (Binding binding in bindings)
                 binding.ClearChangedByUser();
-
         }
 
         private void updateFirmwareButton_Click(object sender, EventArgs e)
@@ -139,14 +170,60 @@ namespace DroneControl
 
         private void applyButton_Click(object sender, EventArgs e)
         {
-            Apply();
+            if (CheckSettings())
+                Apply(false);
         }
 
         private void calibrateButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Power off the drone and turn it back on. The motors will then start the calibration.");
             data.CalibrateServos = true;
-            Apply();
+            if (CheckSettings())
+                Apply(true);
+        }
+
+        private void revertButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This will revert all settings to the original settings saved on the drone.", "Revert settings?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                Revert();
+        }
+
+        private bool CheckSettings()
+        {
+            bool v = true;
+            v = v && CheckSetting("Min Value", data.ServoMin, originalData.ServoMin);
+            v = v && CheckSetting("Idle Value", data.ServoIdle, originalData.ServoIdle);
+            v = v && CheckSetting("Max Value", data.ServoMax, originalData.ServoMax);
+
+            v = v && CheckSetting("PID Pitch Kp", data.PitchPid.Kp, originalData.PitchPid.Kp);
+            v = v && CheckSetting("PID Pitch Ki", data.PitchPid.Ki, originalData.PitchPid.Ki);
+            v = v && CheckSetting("PID Pitch Kd", data.PitchPid.Kd, originalData.PitchPid.Kd);
+
+            v = v && CheckSetting("PID Roll Kp", data.RollPid.Kp, originalData.RollPid.Kp);
+            v = v && CheckSetting("PID Roll Ki", data.RollPid.Ki, originalData.RollPid.Ki);
+            v = v && CheckSetting("PID Roll Kd", data.RollPid.Kd, originalData.RollPid.Kd);
+
+            v = v && CheckSetting("PID Yaw Kp", data.YawPid.Kp, originalData.YawPid.Kp);
+            v = v && CheckSetting("PID Yaw Ki", data.YawPid.Ki, originalData.YawPid.Ki);
+            v = v && CheckSetting("PID Yaw Kd", data.YawPid.Kd, originalData.YawPid.Kd);
+
+            v = v && CheckSetting("PID Angle Kp", data.AngleStabilization.Kp, originalData.AngleStabilization.Kp);
+            v = v && CheckSetting("PID Angle Ki", data.AngleStabilization.Ki, originalData.AngleStabilization.Ki);
+            v = v && CheckSetting("PID Angle Kd", data.AngleStabilization.Kd, originalData.AngleStabilization.Kd);
+            return v;
+        }
+
+        private bool CheckSetting(string name, float newValue, float oldValue)
+        {
+            float percentage = Math.Abs(newValue - oldValue) / oldValue;
+
+            if (percentage > 0.2f)
+            {
+                return MessageBox.Show(
+                    string.Format("Setting {0} (value: {1}) differs from the old value ({2}). Check the value and confirm the change.", name, newValue, oldValue),
+                    "Confirm the value", MessageBoxButtons.OKCancel) == DialogResult.OK;
+            }
+            return true;
         }
     }
 }

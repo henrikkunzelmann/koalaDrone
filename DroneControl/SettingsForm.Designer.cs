@@ -104,6 +104,7 @@
             this.negativeMixingCheckBox = new System.Windows.Forms.CheckBox();
             this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
             this.applyButton = new System.Windows.Forms.Button();
+            this.revertButton = new System.Windows.Forms.Button();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -550,11 +551,16 @@
             // 
             this.pitchKdTextBox.DecimalPlaces = 5;
             this.pitchKdTextBox.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
-            131072});
+            196608});
             this.pitchKdTextBox.Location = new System.Drawing.Point(34, 72);
+            this.pitchKdTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.pitchKdTextBox.Name = "pitchKdTextBox";
             this.pitchKdTextBox.Size = new System.Drawing.Size(70, 20);
             this.pitchKdTextBox.TabIndex = 15;
@@ -563,11 +569,16 @@
             // 
             this.pitchKiTextBox.DecimalPlaces = 5;
             this.pitchKiTextBox.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
-            131072});
+            196608});
             this.pitchKiTextBox.Location = new System.Drawing.Point(34, 46);
+            this.pitchKiTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.pitchKiTextBox.Name = "pitchKiTextBox";
             this.pitchKiTextBox.Size = new System.Drawing.Size(70, 20);
             this.pitchKiTextBox.TabIndex = 14;
@@ -576,11 +587,16 @@
             // 
             this.pitchKpTextBox.DecimalPlaces = 2;
             this.pitchKpTextBox.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
             131072});
             this.pitchKpTextBox.Location = new System.Drawing.Point(34, 18);
+            this.pitchKpTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.pitchKpTextBox.Name = "pitchKpTextBox";
             this.pitchKpTextBox.Size = new System.Drawing.Size(70, 20);
             this.pitchKpTextBox.TabIndex = 13;
@@ -631,11 +647,16 @@
             // 
             this.rollKdTextBox.DecimalPlaces = 5;
             this.rollKdTextBox.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
-            131072});
+            196608});
             this.rollKdTextBox.Location = new System.Drawing.Point(34, 72);
+            this.rollKdTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.rollKdTextBox.Name = "rollKdTextBox";
             this.rollKdTextBox.Size = new System.Drawing.Size(70, 20);
             this.rollKdTextBox.TabIndex = 15;
@@ -644,11 +665,16 @@
             // 
             this.rollKiTextBox.DecimalPlaces = 5;
             this.rollKiTextBox.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
-            131072});
+            196608});
             this.rollKiTextBox.Location = new System.Drawing.Point(34, 46);
+            this.rollKiTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.rollKiTextBox.Name = "rollKiTextBox";
             this.rollKiTextBox.Size = new System.Drawing.Size(70, 20);
             this.rollKiTextBox.TabIndex = 14;
@@ -657,11 +683,16 @@
             // 
             this.rollKpTextBox.DecimalPlaces = 2;
             this.rollKpTextBox.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
             131072});
             this.rollKpTextBox.Location = new System.Drawing.Point(34, 18);
+            this.rollKpTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.rollKpTextBox.Name = "rollKpTextBox";
             this.rollKpTextBox.Size = new System.Drawing.Size(70, 20);
             this.rollKpTextBox.TabIndex = 13;
@@ -712,11 +743,16 @@
             // 
             this.yawKdTextBox.DecimalPlaces = 5;
             this.yawKdTextBox.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
-            131072});
+            196608});
             this.yawKdTextBox.Location = new System.Drawing.Point(34, 72);
+            this.yawKdTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.yawKdTextBox.Name = "yawKdTextBox";
             this.yawKdTextBox.Size = new System.Drawing.Size(70, 20);
             this.yawKdTextBox.TabIndex = 15;
@@ -725,11 +761,16 @@
             // 
             this.yawKiTextBox.DecimalPlaces = 5;
             this.yawKiTextBox.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
-            131072});
+            196608});
             this.yawKiTextBox.Location = new System.Drawing.Point(34, 46);
+            this.yawKiTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.yawKiTextBox.Name = "yawKiTextBox";
             this.yawKiTextBox.Size = new System.Drawing.Size(70, 20);
             this.yawKiTextBox.TabIndex = 14;
@@ -738,11 +779,16 @@
             // 
             this.yawKpTextBox.DecimalPlaces = 2;
             this.yawKpTextBox.Increment = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
             131072});
             this.yawKpTextBox.Location = new System.Drawing.Point(34, 18);
+            this.yawKpTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.yawKpTextBox.Name = "yawKpTextBox";
             this.yawKpTextBox.Size = new System.Drawing.Size(70, 20);
             this.yawKpTextBox.TabIndex = 13;
@@ -807,6 +853,11 @@
             0,
             131072});
             this.angleKdTextBox.Location = new System.Drawing.Point(34, 72);
+            this.angleKdTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.angleKdTextBox.Name = "angleKdTextBox";
             this.angleKdTextBox.Size = new System.Drawing.Size(70, 20);
             this.angleKdTextBox.TabIndex = 15;
@@ -820,6 +871,11 @@
             0,
             131072});
             this.angleKiTextBox.Location = new System.Drawing.Point(34, 46);
+            this.angleKiTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.angleKiTextBox.Name = "angleKiTextBox";
             this.angleKiTextBox.Size = new System.Drawing.Size(70, 20);
             this.angleKiTextBox.TabIndex = 14;
@@ -833,6 +889,11 @@
             0,
             131072});
             this.angleKpTextBox.Location = new System.Drawing.Point(34, 18);
+            this.angleKpTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.angleKpTextBox.Name = "angleKpTextBox";
             this.angleKpTextBox.Size = new System.Drawing.Size(70, 20);
             this.angleKpTextBox.TabIndex = 13;
@@ -952,14 +1013,28 @@
             this.applyButton.UseVisualStyleBackColor = true;
             this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
             // 
+            // revertButton
+            // 
+            this.revertButton.Location = new System.Drawing.Point(577, -1);
+            this.revertButton.Name = "revertButton";
+            this.revertButton.Size = new System.Drawing.Size(62, 25);
+            this.revertButton.TabIndex = 2;
+            this.revertButton.Text = "Revert";
+            this.revertButton.UseVisualStyleBackColor = true;
+            this.revertButton.Click += new System.EventHandler(this.revertButton_Click);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(706, 438);
+            this.Controls.Add(this.revertButton);
             this.Controls.Add(this.applyButton);
             this.Controls.Add(this.tabControl1);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "SettingsForm";
             this.Text = "Settings";
             firmwareGroupBox.ResumeLayout(false);
@@ -1040,5 +1115,6 @@
         private System.Windows.Forms.NumericUpDown angleKiTextBox;
         private System.Windows.Forms.NumericUpDown angleKpTextBox;
         private System.Windows.Forms.TextBox baroSensorTextBox;
+        private System.Windows.Forms.Button revertButton;
     }
 }
