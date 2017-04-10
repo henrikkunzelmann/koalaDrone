@@ -77,6 +77,12 @@ struct Config {
 	float GyroFilter;
 	float AccFilter;
 
+	bool StabOnlyHelp;
+	float StabInputScale;
+
+	float YawCorrectionFactor;
+	float YawMaxCorrection;
+
 	bool CalibrateServos;
 	SensorCalibration SensorCalibrationData;
 };

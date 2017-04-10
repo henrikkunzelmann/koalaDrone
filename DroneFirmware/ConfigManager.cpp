@@ -139,6 +139,12 @@ Config ConfigManager::getDefault() {
 	config.EnableImuMag = false;
 	config.GyroFilter = 0.6f;
 	config.AccFilter = 0.2f;
+
+	config.StabOnlyHelp = true;
+	config.StabInputScale = 40.0f;
+
+	config.YawCorrectionFactor = 2.0f;
+	config.YawMaxCorrection = 50.0f;
 	
 	config.CalibrateServos = false;
 	memset(&config.SensorCalibrationData, 0, sizeof(SensorCalibration));

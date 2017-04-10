@@ -128,6 +128,19 @@ namespace DroneLibrary
         public float AccFilter;
 
         [MarshalAs(UnmanagedType.U1)]
+        [Category("Debug")]
+        public bool StabOnlyHelp;
+
+        [Category("Debug")]
+        public float StabInputScale;
+
+        [Category("Debug")]
+        public float YawCorrectionFactor;
+
+        [Category("Debug")]
+        public float YawMaxCorrection;
+
+        [MarshalAs(UnmanagedType.U1)]
         [Category("Motors")]
         public bool CalibrateServos;
 

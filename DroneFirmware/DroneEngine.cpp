@@ -224,13 +224,27 @@ void DroneEngine::handleInternal() {
 
 	if (config->EnableStabilization) {
 		if (sensor->getGyro()->hasValidImuData()) {
-			float horzSensivitiy = cmdScale * 40;
-			calculatePID(angleRollPID, sensor->getGyro()->getRoll(), 0); // targetGyroX * horzSensivitiy);
-			calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), 0); // targetGyroY * horzSensivitiy);
-			calculatePID(angleYawPID, sensor->getGyro()->getYaw(), 0); // targetGyroZ * horzSensivitiy);
+			float horzSensivitiy = cmdScale * config->StabInputScale;
 
-			rollCmd += angleRollOutput;
-			pitchCmd += anglePitchOutput;
+			if (config->StabOnlyHelp) {
+				calculatePID(angleRollPID, sensor->getGyro()->getRoll(), 0);
+				calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), 0);
+			}
+			else {
+				calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetGyroX * horzSensivitiy);
+				calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetGyroY * horzSensivitiy);
+			}
+
+			angleYawOutput = max(-config->YawMaxCorrection, min(config->YawMaxCorrection, MathHelper::angleDifference(sensor->getGyro()->getYaw(), 0) * -config->YawCorrectionFactor));
+
+			if (config->StabOnlyHelp) {
+				rollCmd += angleRollOutput;
+				pitchCmd += anglePitchOutput;
+			}
+			else {
+				rollCmd = angleRollOutput;
+				pitchCmd = anglePitchOutput;
+			}
 			yawCmd += angleYawOutput;
 		}
 		else

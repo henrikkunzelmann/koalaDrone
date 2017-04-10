@@ -55,7 +55,7 @@ namespace DroneControl
                     Formatting.FormatDecimal(drone.DebugOutputData.PitchOutput, 2, 3),
                     Formatting.FormatDecimal(drone.DebugOutputData.AnglePitchOutput, 2, 3));
                 pidData.AppendLine();
-                pidData.AppendFormat("Yaw: {0} (stab: {1})",
+                pidData.AppendFormat("Yaw:   {0} (stab: {1})",
                   Formatting.FormatDecimal(drone.DebugOutputData.YawOutput, 2, 3),
                   Formatting.FormatDecimal(drone.DebugOutputData.AngleYawOutput, 2, 3));
                 pidData.AppendLine();
