@@ -108,11 +108,15 @@ namespace DroneControl.Input.Remote
             else if (CheckButtonPressed(aux2, ButtonState.High, true))
                 manager.StopDrone();
 
+            float deadZone = 0.075f;
+            if (!manager.DeadZone)
+                deadZone = 0;
+
             TargetData target = new TargetData();
             target.Thrust = MapValueThrust(data, 0);
-            target.Roll = MapValue(data, 1);
-            target.Pitch = -MapValue(data, 2);
-            target.Yaw = MapValue(data, 3);
+            target.Roll = DeadZone.Compute(MapValue(data, 1), deadZone);
+            target.Pitch = -DeadZone.Compute(MapValue(data, 2), deadZone);
+            target.Yaw = DeadZone.Compute(MapValue(data, 3), deadZone);
 
             manager.SendTargetData(target);
         }
