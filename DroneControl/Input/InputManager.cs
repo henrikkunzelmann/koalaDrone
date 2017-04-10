@@ -24,6 +24,10 @@ namespace DroneControl.Input
         public float PitchExp { get; set; } = 1;
         public float YawExp { get; set; } = 1;
 
+        public float RollScale { get; set; } = 1;
+        public float PitchScale { get; set; } = 1;
+        public float YawScale { get; set; } = 1;
+
         public const float ThrustMax = 400;
         public float ThrustBase { get; set; } = 0.5f;
         public float ThrustExp { get; set; } = 1;
@@ -140,6 +144,10 @@ namespace DroneControl.Input
             data.Pitch = (float)MapInputOneToOne(data.Pitch, 0.5, PitchExp);
             data.Yaw = (float)MapInputOneToOne(data.Yaw, 0.5, YawExp);
             data.Thrust = (float)MapThrust(data.Thrust);
+
+            data.Roll *= RollScale;
+            data.Pitch *= PitchScale;
+            data.Yaw *= YawScale;
 
             data.Roll *= 500;
             data.Pitch *= 500;

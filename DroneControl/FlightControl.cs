@@ -247,6 +247,11 @@ namespace DroneControl
             InputManager.RollExp = (float)rollExpTextBox.Value;
             InputManager.PitchExp = (float)pitchExpTextBox.Value;
             InputManager.YawExp = (float)yawExpTextBox.Value;
+
+            InputManager.RollScale = (float)rollScaleTextBox.Value;
+            InputManager.PitchScale = (float)pitchScaleTextBox.Value;
+            InputManager.YawScale = (float)yawScaleTextBox.Value;
+
             InputManager.ThrustExp = (float)thrustExpTextBox.Value;
             InputManager.ThrustBase = (float)thrustBaseTextBox.Value;
 
