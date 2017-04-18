@@ -9,7 +9,7 @@ struct PIDSettings {
 	float Kp;
 	float Ki;
 	float Kd;
-};
+} __attribute__((__packed__));
 
 struct Config {
 	//A user-friendly name for the drone
@@ -85,7 +85,7 @@ struct Config {
 
 	bool CalibrateServos;
 	SensorCalibration SensorCalibrationData;
-};
+} __attribute__((__packed__));
 
 #endif
 
