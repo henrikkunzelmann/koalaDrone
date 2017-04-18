@@ -1,5 +1,4 @@
-#ifndef _MEMORYADAPTER_h
-#define _MEMORYADAPTER_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -17,6 +16,3 @@ public:
 	virtual void read(uint32_t address, uint8_t* data, size_t length) = 0;
 	virtual bool end() = 0;
 };
-
-#endif
-

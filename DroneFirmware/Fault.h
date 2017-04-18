@@ -1,5 +1,6 @@
-#ifndef _FAULT_h
-#define _FAULT_h
+#pragma once
+
+#include <Arduino.h>
 
 #include "FaultType.h"
 
@@ -13,5 +14,3 @@ struct Fault {
 	char source[25];
 	char function[25];
 };
-
-#endif

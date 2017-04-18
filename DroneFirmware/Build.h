@@ -1,5 +1,4 @@
-#ifndef _BUILD_h
-#define _BUILD_h
+#pragma once
 
 #include <Arduino.h>
 #include <stdio.h>
@@ -12,5 +11,3 @@
 inline void getBuildSerialCode(char* buffer, int length) {
 	snprintf(buffer, length, "%X", Hardware::getChipID());
 }
-
-#endif

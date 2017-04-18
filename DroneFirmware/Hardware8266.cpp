@@ -53,7 +53,7 @@ void Hardware::disableWatchDog() {
 	ESP.wdtDisable();
 }
 
-boolean Hardware::isNormalBoot() {
+bool Hardware::isNormalBoot() {
 	uint8_t reason = Hardware::getResetInfo().reason;
 	return reason == REASON_DEFAULT_RST || reason == REASON_EXT_SYS_RST;
 }

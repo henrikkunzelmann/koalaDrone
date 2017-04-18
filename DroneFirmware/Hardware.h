@@ -59,7 +59,7 @@ public:
 	static void disableWatchDog();
 
 	// Returns true when the hardware was booted normal and no exception or reset occured.
-	static boolean isNormalBoot();
+	static bool isNormalBoot();
 
 	// Returns the reset info.
 	static ResetInfo getResetInfo();

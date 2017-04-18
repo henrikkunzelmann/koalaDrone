@@ -1,5 +1,4 @@
-#ifndef _CONFIG_h
-#define _CONFIG_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -86,6 +85,3 @@ struct Config {
 	bool CalibrateServos;
 	SensorCalibration SensorCalibrationData;
 } __attribute__((__packed__));
-
-#endif
-

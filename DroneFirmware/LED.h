@@ -1,5 +1,4 @@
-#ifndef _LED_h
-#define _LED_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -18,4 +17,3 @@ void handleBlink();
 void blinkLED(int count, uint32_t time);
 void turnLedOn();
 void turnLedOff();
-#endif

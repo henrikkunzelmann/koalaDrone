@@ -1,5 +1,4 @@
-#ifndef _SERVOMANAGER_h
-#define _SERVOMANAGER_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -71,7 +70,3 @@ public:
 		return d;
 	}
 };
-
-
-#endif
-

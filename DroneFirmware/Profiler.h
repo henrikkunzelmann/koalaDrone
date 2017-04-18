@@ -1,5 +1,4 @@
-#ifndef _PROFILER_h
-#define _PROFILER_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -49,4 +48,3 @@ public:
 	static void pushData(const char* name, uint32_t value);
 	static void write(PacketBuffer* buffer);
 };
-#endif

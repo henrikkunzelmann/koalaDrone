@@ -360,7 +360,7 @@ void PacketBuffer::writeString(char* str) {
 	if (!assertNull(str))
 		return;
 
-	int size = sizeof(char) * strlen(str);
+	size_t size = sizeof(char) * strlen(str);
 	if (!assertPositionWrite(size + sizeof(uint16_t)))
 		return;
 

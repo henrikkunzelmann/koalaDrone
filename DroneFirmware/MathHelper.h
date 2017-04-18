@@ -1,5 +1,4 @@
-#ifndef _MATHHELPER_h
-#define _MATHHELPER_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -18,6 +17,3 @@ class MathHelper
 
 	 static float angleDifference(float a, float b);
 };
-
-#endif
-

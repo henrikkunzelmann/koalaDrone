@@ -18,5 +18,5 @@ public:
 	uint32_t getJitter();
 
 	// Returns true when the timer has elapsed and some action should be performed.
-	boolean shouldTick();
+	bool shouldTick();
 };

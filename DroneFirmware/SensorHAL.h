@@ -1,5 +1,4 @@
-#ifndef _SENSORHAL_h
-#define _SENSORHAL_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -36,4 +35,3 @@ public:
 
 	void update();
 };
-#endif

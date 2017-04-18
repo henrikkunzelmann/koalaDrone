@@ -59,7 +59,7 @@ void Hardware::enableWatchDog(uint32_t time) {
 void Hardware::disableWatchDog() {
 }
 
-boolean Hardware::isNormalBoot() {
+bool Hardware::isNormalBoot() {
 	return true;
 }
 

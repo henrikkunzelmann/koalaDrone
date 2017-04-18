@@ -1,5 +1,4 @@
-#ifndef _SENSORCALIBRATION_h
-#define _SENSORCALIBRATION_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -13,5 +12,3 @@ struct CalibrationData {
 struct SensorCalibration {
 	CalibrationData MagnetCalibration;
 } __attribute__((__packed__));
-
-#endif

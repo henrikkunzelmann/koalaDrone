@@ -1,5 +1,4 @@
-#ifndef _BARO_h
-#define _BARO_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -46,6 +45,3 @@ public:
 	BaroValues getValues() const;
 	float getAltitude() const;
 };
-
-#endif
-

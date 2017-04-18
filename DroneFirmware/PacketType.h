@@ -1,5 +1,4 @@
-#ifndef _PACKETTYPE_h
-#define _PACKETTYPE_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -44,5 +43,3 @@ enum DataPacketType : uint8_t {
 const char* getHelloPacketName(HelloPacketType type);
 const char* getControlPacketName(ControlPacketType type);
 const char* getDataPacketName(DataPacketType type);
-
-#endif

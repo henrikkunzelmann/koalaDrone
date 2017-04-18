@@ -1,5 +1,4 @@
-#ifndef _VOLTAGEREADER_h
-#define _VOLTAGEREADER_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -19,6 +18,3 @@ public:
 
 	float readVoltage();
 };
-
-#endif
-

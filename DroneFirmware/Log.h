@@ -1,5 +1,4 @@
-#ifndef _LOG_h
-#define _LOG_h
+#pragma once
 
 #include <Arduino.h>
 #include <stdarg.h>
@@ -47,7 +46,3 @@ public:
 
 	static void setPrintToSerial(bool value);
 };
-
-
-#endif
-

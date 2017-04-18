@@ -1,5 +1,4 @@
-#ifndef _BARO280_h
-#define _BARO280_h
+#pragma once
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -27,5 +26,3 @@ public:
 	bool init();
 	void reset();
 };
-
-#endif

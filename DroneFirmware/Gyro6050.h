@@ -1,5 +1,4 @@
-#ifndef _GYRO6050_h
-#define _GYRO6050_h
+#pragma once
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -34,5 +33,3 @@ public:
 	bool hasMagnetometer() const;
 	bool hasIMU() const;
 };
-
-#endif

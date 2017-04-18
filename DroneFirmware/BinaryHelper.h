@@ -1,5 +1,4 @@
-#ifndef _BINARYHELPER_h
-#define _BINARYHELPER_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -40,6 +39,3 @@ class BinaryHelper
 	 static void writeDouble(uint8_t* buf, int32_t offset, double val);
 	 static double readDouble(uint8_t* buf, int32_t offset);
 };
-
-#endif
-

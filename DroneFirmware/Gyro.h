@@ -1,5 +1,4 @@
-#ifndef _GYRO_h
-#define _GYRO_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -117,6 +116,4 @@ public:
 	bool isMoving() const;
 	bool isFlat() const;
 };
-
-#endif
 

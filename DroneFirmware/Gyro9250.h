@@ -1,5 +1,4 @@
-#ifndef _GYRO9250_h
-#define _GYRO9250_h
+#pragma once
 
 #include <Arduino.h>
 #include <Wire.h>

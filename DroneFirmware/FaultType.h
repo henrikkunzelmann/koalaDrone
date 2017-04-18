@@ -1,5 +1,6 @@
-#ifndef _FAULTTYPE_h
-#define _FAULTTYPE_h
+#pragma once
+
+#include <Arduino.h>
 
 enum FaultType {
 	FaultUnknown,			// unbekannter Fehler
@@ -12,5 +13,3 @@ enum FaultType {
 
 	FaultHardware			// Hardware Fehler
 };
-
-#endif

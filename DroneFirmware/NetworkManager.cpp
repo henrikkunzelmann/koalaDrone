@@ -97,10 +97,9 @@ bool NetworkManager::beginParse(WiFiUDP* udp) {
 	int size = udp->parsePacket();
 	Profiler::end();
 
-	if (size <= 0)
+	if (size <= 0 || size > readBuffer->getBufferSize())
 		return false;
 
-	// setSize vor readBytes sorgt dafür, dass wenn Paket länger als interner Buffer ist eine Exception geworfen wird
 	readBuffer->getError(); // Fehler löschen
 	readBuffer->resetPosition();
 	readBuffer->setSize(size);

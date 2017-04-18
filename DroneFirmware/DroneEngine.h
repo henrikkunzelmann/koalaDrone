@@ -1,5 +1,4 @@
-#ifndef _DRONEENGINE_h
-#define _DRONEENGINE_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -116,6 +115,3 @@ class DroneEngine
 	float getAnglePitchOutput() const;
 	float getAngleYawOutput() const;
 };
-
-#endif
-

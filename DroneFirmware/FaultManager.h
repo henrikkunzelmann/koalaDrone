@@ -1,9 +1,8 @@
-#ifndef _FAULTMANAGER_h
-#define _FAULTMANAGER_h
+#pragma once
 
 #include <Arduino.h>
-#include "Log.h"
 
+#include "Log.h"
 #include "Fault.h"
 #include "FaultType.h"
 
@@ -28,6 +27,3 @@ public:
 	static void fault(FaultType type, const char* source, const char* function);
 	
 };
-
-
-#endif

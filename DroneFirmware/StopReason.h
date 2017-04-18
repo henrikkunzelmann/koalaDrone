@@ -1,5 +1,6 @@
-#ifndef _STOPREASON_h
-#define _STOPREASON_h
+#pragma once
+
+#include <Arduino.h>
 
 enum StopReason : uint8_t {
 	Unknown,
@@ -10,5 +11,3 @@ enum StopReason : uint8_t {
 	InvalidGyro,
 	WifiDisconnect
 };
-
-#endif
