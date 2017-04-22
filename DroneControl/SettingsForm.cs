@@ -16,6 +16,7 @@ namespace DroneControl
         private DroneSettings originalData;
         private DroneSettings data;
 
+        private bool bindingError = false;
         private List<Binding> bindings = new List<Binding>();
 
         public SettingsForm(Drone drone)
@@ -27,51 +28,61 @@ namespace DroneControl
             this.originalData = drone.Settings;
             this.data = drone.Settings;
 
-            Bind(nameTextBox, "data.DroneName");
-            Bind(saveConfigCheckBox, "data.SaveConfig");
+            try
+            {
+                Bind(nameTextBox, "data.DroneName");
+                Bind(saveConfigCheckBox, "data.SaveConfig");
 
-            Bind(firmwareVersionTextBox, "info.BuildVersion");
-            Bind(buildDateTextBox, "info.BuildName");
+                Bind(firmwareVersionTextBox, "info.BuildVersion");
+                Bind(buildDateTextBox, "info.BuildName");
 
-            Bind(modelTextBox, "info.ModelName");
-            Bind(idTextBox, "info.SerialCode");
-            Bind(gyroSensorTextBox, "info.GyroSensor");
-            Bind(magnetometerTextBox, "info.Magnetometer");
-            Bind(baroSensorTextBox, "info.BaroSensor");
+                Bind(modelTextBox, "info.ModelName");
+                Bind(idTextBox, "info.SerialCode");
+                Bind(gyroSensorTextBox, "info.GyroSensor");
+                Bind(magnetometerTextBox, "info.Magnetometer");
+                Bind(baroSensorTextBox, "info.BaroSensor");
 
-            Bind(minValueTextBox, "data.ServoMin");
-            Bind(idleValueTextBox, "data.ServoIdle");
-            Bind(maxValueTextBox, "data.ServoMax");
+                Bind(minValueTextBox, "data.ServoMin");
+                Bind(idleValueTextBox, "data.ServoIdle");
+                Bind(maxValueTextBox, "data.ServoMax");
 
-            Bind(safeMotorValueTextBox, "data.SafeServoValue");
-            Bind(safeTemperatureTextBox, "data.MaxTemperature");
-            Bind(safeRollTextBox, "data.SafeRoll");
-            Bind(safePitchTextBox, "data.SafePitch");
+                Bind(safeMotorValueTextBox, "data.SafeServoValue");
+                Bind(safeTemperatureTextBox, "data.MaxTemperature");
+                Bind(safeRollTextBox, "data.SafeRoll");
+                Bind(safePitchTextBox, "data.SafePitch");
 
-            Bind(rollKpTextBox, "data.RollPid.Kp");
-            Bind(rollKiTextBox, "data.RollPid.Ki");
-            Bind(rollKdTextBox, "data.RollPid.Kd");
+                Bind(rollKpTextBox, "data.RollPid.Kp");
+                Bind(rollKiTextBox, "data.RollPid.Ki");
+                Bind(rollKdTextBox, "data.RollPid.Kd");
 
-            Bind(pitchKpTextBox, "data.PitchPid.Kp");
-            Bind(pitchKiTextBox, "data.PitchPid.Ki");
-            Bind(pitchKdTextBox, "data.PitchPid.Kd");
+                Bind(pitchKpTextBox, "data.PitchPid.Kp");
+                Bind(pitchKiTextBox, "data.PitchPid.Ki");
+                Bind(pitchKdTextBox, "data.PitchPid.Kd");
 
-            Bind(yawKpTextBox, "data.YawPid.Kp");
-            Bind(yawKiTextBox, "data.YawPid.Ki");
-            Bind(yawKdTextBox, "data.YawPid.Kd");
+                Bind(yawKpTextBox, "data.YawPid.Kp");
+                Bind(yawKiTextBox, "data.YawPid.Ki");
+                Bind(yawKdTextBox, "data.YawPid.Kd");
 
-            Bind(enableStabilizationCheckBox, "data.EnableStabilization");
-            Bind(negativeMixingCheckBox, "data.NegativeMixing");
+                Bind(enableStabilizationCheckBox, "data.EnableStabilization");
+                Bind(negativeMixingCheckBox, "data.NegativeMixing");
 
-            Bind(maxThrustForFlyingTextBox, "data.MaxThrustForFlying");
-            Bind(onlyArmWhenStillCheckBox, "data.OnlyArmWhenStill");
+                Bind(maxThrustForFlyingTextBox, "data.MaxThrustForFlying");
+                Bind(onlyArmWhenStillCheckBox, "data.OnlyArmWhenStill");
 
-            Bind(angleKpTextBox, "data.AngleStabilization.Kp");
-            Bind(angleKiTextBox, "data.AngleStabilization.Ki");
-            Bind(angleKdTextBox, "data.AngleStabilization.Kd");
+                Bind(angleKpTextBox, "data.AngleStabilization.Kp");
+                Bind(angleKiTextBox, "data.AngleStabilization.Ki");
+                Bind(angleKdTextBox, "data.AngleStabilization.Kd");
 
-            drone.OnSettingsChange += Drone_OnSettingsChange;
-            drone.OnInfoChange += Drone_OnInfoChange;
+                drone.OnSettingsChange += Drone_OnSettingsChange;
+                drone.OnInfoChange += Drone_OnInfoChange;
+            }
+            catch(Exception e)
+            {
+                bindingError = true;
+
+                Log.Error(e);
+                MessageBox.Show("Could not load the settings.", "Error while loading settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         protected override void OnHandleDestroyed(EventArgs e)
@@ -102,8 +113,19 @@ namespace DroneControl
                 return;
             }
 
-            foreach (Binding binding in bindings)
-                binding.NotifyValueChanged();
+            try
+            {
+                foreach (Binding binding in bindings)
+                    binding.NotifyValueChanged();
+            }
+            catch(Exception e)
+            {
+                bindingError = true;
+
+                Log.Error(e);
+                if (MessageBox.Show("Could not load the settings.", "Error while loading settings", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error) == DialogResult.Retry)
+                    UpdateValues();
+            }
         }
 
         private void Bind(Control control, string member)
@@ -160,22 +182,34 @@ namespace DroneControl
 
         private void updateFirmwareButton_Click(object sender, EventArgs e)
         {
+            if (bindingError)
+                return;
+
             new UpdateOTAForm(drone).Show(this);
         }
 
         private void restartButton_Click(object sender, EventArgs e)
         {
+            if (bindingError)
+                return;
+
             drone.SendReset();
         }
 
         private void applyButton_Click(object sender, EventArgs e)
         {
+            if (bindingError)
+                return;
+
             if (CheckSettings())
                 Apply(false);
         }
 
         private void calibrateButton_Click(object sender, EventArgs e)
         {
+            if (bindingError)
+                return;
+
             MessageBox.Show("Power off the drone and turn it back on. The motors will then start the calibration.");
             data.CalibrateServos = true;
             if (CheckSettings())
@@ -184,6 +218,9 @@ namespace DroneControl
 
         private void revertButton_Click(object sender, EventArgs e)
         {
+            if (bindingError)
+                return;
+
             if (MessageBox.Show("This will revert all settings to the original settings saved on the drone.", "Revert settings?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 Revert();
         }

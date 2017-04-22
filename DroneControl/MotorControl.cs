@@ -154,7 +154,7 @@ namespace DroneControl
 
             valueTrackBar.Minimum = min;
             valueTrackBar.Maximum = max;
-            valueTrackBar.Value = min;
+            valueTrackBar.Value = Math.Min(max, min);
 
             servoValueNumericUpDown.Value = min;
             SetServoValueToAll();
