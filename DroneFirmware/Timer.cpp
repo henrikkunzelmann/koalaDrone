@@ -12,7 +12,7 @@ uint32_t Timer::getJitter()
 	return jitter;
 }
 
-boolean Timer::shouldTick()
+bool Timer::shouldTick()
 {
 	uint32_t time = millis();
 	uint32_t diff = time - last;

@@ -36,5 +36,3 @@ public:
 	bool hasMagnetometer() const;
 	bool hasIMU() const;
 };
-
-#endif

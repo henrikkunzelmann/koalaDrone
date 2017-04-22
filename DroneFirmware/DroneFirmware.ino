@@ -156,8 +156,7 @@ void setup() {
 	// I2C initialisieren
 	Log::emptyLine();
 	Log::info("Boot", "Init I2C...");
-	Wire.begin(SDA, SCL);
-	Wire.setClock(400000L);
+	Wire.begin(SDA, SCL, 400000U);
 
 	// Batterie Voltage Reader laden
 	Log::info("Boot", "Init voltage reader...");
@@ -208,7 +207,6 @@ void loop() {
 
 	if (engine->state() == StateArmed)
 		servos->handleTick();
-
 
 	network->handleData();
 	Profiler::end();
