@@ -71,6 +71,11 @@ void setup() {
 	Log::info("Boot", "Serial code: %s", serialCode);
 	Log::emptyLine();
 
+	// I2C initialisieren
+	Log::info("Boot", "Init I2C...");
+	Wire.begin(SDA, SCL);
+	Wire.setClock(400000U);
+
 	config = ConfigManager::loadConfig();
 
 	// Log setzen
@@ -152,14 +157,8 @@ void setup() {
 		Log::info("Boot", "AP IP address: %s", WiFi.softAPIP().toString().c_str());
 	}
 
-
-	// I2C initialisieren
-	Log::emptyLine();
-	Log::info("Boot", "Init I2C...");
-	Wire.begin(SDA, SCL);
-	Wire.setClock(400000U);
-
 	// Batterie Voltage Reader laden
+	Log::emptyLine();
 	Log::info("Boot", "Init voltage reader...");
 	voltageReader = new VoltageReader(PIN_BATTERY, BATTERY_MAX_VOLTAGE);
 

@@ -8,11 +8,11 @@ FlashMemoryAdapter::FlashMemoryAdapter(size_t size, uint16_t offset) {
 
 bool FlashMemoryAdapter::assertAddress(uint32_t address, size_t length) {
 	if (address >= size) {
-		Log::error("EEPROM", "Invalid value for address");
+		Log::error("FlashMemory", "Invalid value for address");
 		return false;
 	}
 	if (address + length > size) {
-		Log::error("EEPROM", "Invalid value for length");
+		Log::error("FlashMemory", "Invalid value for length");
 		return false;
 	}
 	return true;

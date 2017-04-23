@@ -8,6 +8,7 @@
 #include "Config.h"
 #include "Log.h"
 #include "FlashMemoryAdapter.h"
+#include "EEPROMMemoryAdapter.h"
 #include "PacketBuffer.h"
 #include "Profiler.h"
 

@@ -1,19 +1,32 @@
 #include "ConfigManager.h"
 
 Config ConfigManager::loadConfig() {
-#if HARDWARE_ESP8266
-	FlashMemoryAdapter* adapter = new FlashMemoryAdapter(1024, 64);
-
-	adapter->begin();
-	Config config = loadConfig(adapter);
-	adapter->end();
-
-	delete adapter;
-	return config;
-#else
-	Log::info("Config", "Loading config not supported on this hardware");
-	return getDefault();
+	MemoryAdapter* adapter = NULL;
+#if MEMORY_I2C_ENABLE
+	adapter = new EEPROMMemoryAdapter();
 #endif
+#if HARDWARE_ESP8266
+	adapter = new FlashMemoryAdapter(1024, 64);
+#endif
+
+	if (adapter != NULL) {
+		Config config;
+		if (adapter->begin()) {
+			config = loadConfig(adapter);
+			adapter->end();
+		}
+		else {
+			Log::error("Config", "Error while loading config");
+			config = getDefault();
+		}
+		
+		delete adapter;
+		return config;
+	}
+	else {
+		Log::info("Config", "Loading config not supported on this hardware");
+		return getDefault();
+	}
 }
 
 Config ConfigManager::loadConfig(MemoryAdapter* memory) {
@@ -49,21 +62,34 @@ Config ConfigManager::loadConfig(MemoryAdapter* memory) {
 }
 
 void ConfigManager::saveConfig(const Config config) {
-#if HARDWARE_ESP8266
+
 	Profiler::begin("saveConfig()");
-	FlashMemoryAdapter* adapter = new FlashMemoryAdapter(1024, 64);
+	
 
-	adapter->begin();
-	saveConfig(adapter, config);
-	adapter->end();
-
-	yield();
-
-	delete adapter;
-	Profiler::end();
-#else
-	Log::info("Config", "Saving config not supported on this hardware");
+	MemoryAdapter* adapter = NULL;
+#if MEMORY_I2C_ENABLE
+	adapter = new EEPROMMemoryAdapter();
 #endif
+#if HARDWARE_ESP8266
+	adapter = new FlashMemoryAdapter(1024, 64);
+#endif
+
+	if (adapter != NULL) {
+		if (adapter->begin()) {
+			saveConfig(adapter, config);
+			adapter->end();
+		}
+		else 
+			Log::error("Config", "Error while saving config");
+		yield();
+
+		delete adapter;
+	}
+	else {
+		Log::info("Config", "Saving config not supported on this hardware");
+	}
+	Profiler::end();
+
 }
 
 void ConfigManager::saveConfig(MemoryAdapter* memory, const Config config) {
