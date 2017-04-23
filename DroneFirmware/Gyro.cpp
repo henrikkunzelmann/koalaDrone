@@ -4,9 +4,9 @@ Gyro::Gyro(Config* config) {
 	this->config = config;
 	this->calibration = &config->SensorCalibrationData;
 
-	memset(&last, 0, sizeof(GyroValues));
-	memset(&rawValues, 0, sizeof(GyroValues));
-	memset(&values, 0, sizeof(GyroValues));
+	memset(&last, 0, sizeof(last));
+	memset(&rawValues, 0, sizeof(rawValues));
+	memset(&values, 0, sizeof(values));
 	resetCalibration(&gyroCalibration);
 	resetCalibration(&accCalibration);
 	resetCalibration(&orientationCalibration);
@@ -296,7 +296,7 @@ void Gyro::update() {
 
 
 	// Data Interval messen
-	if (memcmp(&last, &values, sizeof(GyroValues)) != 0) {
+	if (memcmp(&last, &values, sizeof(values)) != 0) {
 		Profiler::restart("Gyro::data()");
 		last = values;
 	}

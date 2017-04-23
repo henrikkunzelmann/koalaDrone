@@ -14,6 +14,7 @@ DroneEngine::DroneEngine(SensorHAL* sensor, ServoManager* servos, Config* config
 
 	this->anglePitchPID = NULL;
 	this->angleRollPID = NULL;
+	this->angleYawPID = NULL;
 
 	createPID();
 
@@ -235,7 +236,7 @@ void DroneEngine::handleInternal() {
 				calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetGyroY * horzSensivitiy);
 			}
 
-			angleYawOutput = max(-config->YawMaxCorrection, min(config->YawMaxCorrection, MathHelper::angleDifference(sensor->getGyro()->getYaw(), 0) * -config->YawCorrectionFactor));
+			angleYawOutput = _max(-config->YawMaxCorrection, _min(config->YawMaxCorrection, MathHelper::angleDifference(sensor->getGyro()->getYaw(), 0) * -config->YawCorrectionFactor));
 
 			if (config->StabOnlyHelp) {
 				rollCmd += angleRollOutput;
@@ -267,7 +268,7 @@ void DroneEngine::handleInternal() {
 	for (int i = 0; i < 4; i++) {
 		if (thrust > config->MaxThrustForFlying) {
 			int value = (int)(config->ServoMin + thrust + Quadcopter::mixMotor(config, i, rollOutput, pitchOutput, yawOutput));
-			values[i] = max(config->ServoIdle, value);
+			values[i] = _max(config->ServoIdle, value);
 		}
 		else
 			values[i] = config->ServoMin;

@@ -45,11 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaroData.cs" />
+    <Compile Include="Data\BaroData.cs" />
     <Compile Include="BinaryHelper.cs" />
     <Compile Include="CalibrationData.cs" />
     <Compile Include="Data\DataChangedEventArgs.cs" />
     <Compile Include="Data\OutputData.cs" />
+    <Compile Include="Data\PositionData.cs" />
     <Compile Include="Data\Vector.cs" />
     <Compile Include="Diagnostics\DataHistory.cs" />
     <Compile Include="Data\ProfilerData.cs" />
