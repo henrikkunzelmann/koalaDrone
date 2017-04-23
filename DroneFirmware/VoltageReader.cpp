@@ -1,9 +1,6 @@
 #include "VoltageReader.h"
 
-VoltageReader::VoltageReader(int pin, float maxVoltage) {
-	this->inputPin = pin;
-	this->maxVoltage = maxVoltage;
-
+VoltageReader::VoltageReader() {
 	this->voltage = 0;
 }
 
@@ -18,5 +15,5 @@ float VoltageReader::readVoltage() {
 }
 
 float VoltageReader::readRawVoltage() {
-	return (analogRead(inputPin) / 1024.0f) * maxVoltage;
+	return (analogRead(PIN_BATTERY) / BATTERY_MAX_VALUE) * BATTERY_MAX_VOLTAGE;
 }

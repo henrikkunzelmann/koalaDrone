@@ -160,7 +160,7 @@ void setup() {
 	// Batterie Voltage Reader laden
 	Log::emptyLine();
 	Log::info("Boot", "Init voltage reader...");
-	voltageReader = new VoltageReader(PIN_BATTERY, BATTERY_MAX_VOLTAGE);
+	voltageReader = new VoltageReader();
 
 	Log::info("Boot", "Init sensor hal...");
 	sensor = new SensorHAL(&config);
