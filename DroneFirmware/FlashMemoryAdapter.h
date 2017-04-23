@@ -9,7 +9,7 @@
 #include "MemoryAdapter.h"
 #include "Log.h"
 
-class EEPROM_MemoryAdapter : public MemoryAdapter {
+class FlashMemoryAdapter : public MemoryAdapter {
 protected:
 	size_t size;
 	uint16_t offset;
@@ -17,7 +17,7 @@ protected:
 	bool assertAddress(uint32_t address, size_t length);
 
 public:
-	EEPROM_MemoryAdapter(size_t size, uint16_t offset);
+	FlashMemoryAdapter(size_t size, uint16_t offset);
 
 	bool begin() override;
 	bool end() override;

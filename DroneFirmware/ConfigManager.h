@@ -7,7 +7,7 @@
 #include "MemoryAdapter.h"
 #include "Config.h"
 #include "Log.h"
-#include "EEPROM_MemoryAdapter.h"
+#include "FlashMemoryAdapter.h"
 #include "PacketBuffer.h"
 #include "Profiler.h"
 

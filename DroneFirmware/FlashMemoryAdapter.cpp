@@ -1,12 +1,12 @@
-#include "EEPROM_MemoryAdapter.h"
+#include "FlashMemoryAdapter.h"
 
 #ifdef HARDWARE_ESP8266
-EEPROM_MemoryAdapter::EEPROM_MemoryAdapter(size_t size, uint16_t offset) {
+FlashMemoryAdapter::FlashMemoryAdapter(size_t size, uint16_t offset) {
 	this->size = size;
 	this->offset = offset;
 }
 
-bool EEPROM_MemoryAdapter::assertAddress(uint32_t address, size_t length) {
+bool FlashMemoryAdapter::assertAddress(uint32_t address, size_t length) {
 	if (address >= size) {
 		Log::error("EEPROM", "Invalid value for address");
 		return false;
@@ -18,35 +18,35 @@ bool EEPROM_MemoryAdapter::assertAddress(uint32_t address, size_t length) {
 	return true;
 }
 
-bool EEPROM_MemoryAdapter::begin() {
+bool FlashMemoryAdapter::begin() {
 	EEPROM.begin(size);
 	return true;
 }
 
-bool EEPROM_MemoryAdapter::end() {
+bool FlashMemoryAdapter::end() {
 	EEPROM.end();
 	return true;
 }
 
-void EEPROM_MemoryAdapter::writeByte(uint32_t address, uint8_t val) {
+void FlashMemoryAdapter::writeByte(uint32_t address, uint8_t val) {
 	if (assertAddress(address, sizeof(uint8_t)))
 		EEPROM.write(offset + address, val);
 }
 
-uint8_t EEPROM_MemoryAdapter::readByte(uint32_t address) {
+uint8_t FlashMemoryAdapter::readByte(uint32_t address) {
 	if (assertAddress(address, sizeof(uint8_t)))
 		return EEPROM.read(offset + address); 
 	return 0;
 }
 
-void EEPROM_MemoryAdapter::read(uint32_t address, uint8_t* data, size_t length) {
+void FlashMemoryAdapter::read(uint32_t address, uint8_t* data, size_t length) {
 	if (assertAddress(address, length))
 		memcpy(data, EEPROM.getDataPtr() + offset + address, length);
 	else
 		memset(data, 0, length); // Daten mit 0 befüllen, damit der Leser bei Fehlern keine zufällige Werte bekommt
 }
 
-void EEPROM_MemoryAdapter::write(uint32_t address, uint8_t* data, size_t length) {
+void FlashMemoryAdapter::write(uint32_t address, uint8_t* data, size_t length) {
 	if (assertAddress(address, length))
 		memcpy(EEPROM.getDataPtr() + offset + address, data, length);
 }

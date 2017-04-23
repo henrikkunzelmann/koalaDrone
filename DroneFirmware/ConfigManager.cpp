@@ -2,7 +2,7 @@
 
 Config ConfigManager::loadConfig() {
 #if HARDWARE_ESP8266
-	EEPROM_MemoryAdapter* adapter = new EEPROM_MemoryAdapter(1024, 64);
+	FlashMemoryAdapter* adapter = new FlashMemoryAdapter(1024, 64);
 
 	adapter->begin();
 	Config config = loadConfig(adapter);
@@ -51,7 +51,7 @@ Config ConfigManager::loadConfig(MemoryAdapter* memory) {
 void ConfigManager::saveConfig(const Config config) {
 #if HARDWARE_ESP8266
 	Profiler::begin("saveConfig()");
-	EEPROM_MemoryAdapter* adapter = new EEPROM_MemoryAdapter(1024, 64);
+	FlashMemoryAdapter* adapter = new FlashMemoryAdapter(1024, 64);
 
 	adapter->begin();
 	saveConfig(adapter, config);

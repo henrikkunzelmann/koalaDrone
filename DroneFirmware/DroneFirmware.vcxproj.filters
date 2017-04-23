@@ -69,9 +69,6 @@
     <ClInclude Include="MemoryAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EEPROM_MemoryAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConfigManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -219,6 +216,9 @@
     <ClInclude Include="__vm\.DroneFirmware.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FlashMemoryAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigManager.cpp">
@@ -244,9 +244,6 @@
     </ClCompile>
     <ClCompile Include="PacketType.cpp">
       <Filter>Source Files\net</Filter>
-    </ClCompile>
-    <ClCompile Include="EEPROM_MemoryAdapter.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Profiler.cpp">
       <Filter>Source Files</Filter>
@@ -316,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="NMEA.cpp">
       <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlashMemoryAdapter.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

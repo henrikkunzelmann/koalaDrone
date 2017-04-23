@@ -7,7 +7,7 @@
 #include "WiFiCompat.h"
 #include "Config.h"
 #include "ConfigManager.h"
-#include "EEPROM_MemoryAdapter.h"
+#include "FlashMemoryAdapter.h"
 #include "MemoryAdapter.h"
 #include "MathHelper.h"
 #include "DroneEngine.h"
