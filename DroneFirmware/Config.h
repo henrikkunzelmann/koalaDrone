@@ -82,6 +82,8 @@ struct Config {
 	float YawCorrectionFactor;
 	float YawMaxCorrection;
 
+	bool PassThroughSerialNMEA;
+
 	bool CalibrateServos;
 	SensorCalibration SensorCalibrationData;
 };

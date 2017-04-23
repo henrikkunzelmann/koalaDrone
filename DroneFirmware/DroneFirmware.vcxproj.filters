@@ -207,6 +207,18 @@
     <ClInclude Include="Timer.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionNMEA.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="NMEA.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.DroneFirmware.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigManager.cpp">
@@ -295,6 +307,15 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionNMEA.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="NMEA.cpp">
+      <Filter>Source Files\sensor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

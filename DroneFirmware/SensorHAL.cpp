@@ -4,6 +4,7 @@ SensorHAL::SensorHAL(Config* config) {
 	this->config = config;
 	this->gyro = NULL;
 	this->baro = NULL;
+	this->position = NULL;
 
 	initSensors();
 }
@@ -16,10 +17,12 @@ void SensorHAL::initSensors() {
 		gyroInit = initGyro(new Gyro6050(config));
 
 	initBaro(new Baro280(config));
+	initPosition(new PositionNMEA(config));
 	
 	Log::info("Boot", "Gyro sensor: \"%s\"", getGyroName());
 	Log::info("Boot", "Magnetometer: \"%s\"", getMagnetometerName());
 	Log::info("Boot", "Baro sensor: \"%s\"", getBaroName());
+	Log::info("Boot", "Position sensor: \"%s\"", getPositionName());
 
 	if (!gyroInit)
 		FaultManager::fault(FaultHardware, "SensorHAL", "initSensors() Gyro");
@@ -46,6 +49,14 @@ bool SensorHAL::initBaro(Baro* baro) {
 	return baro->init();
 }
 
+bool SensorHAL::initPosition(Position* position) {
+	if (this->position != NULL)
+		delete this->position;
+
+	this->position = position;
+	return position->init();
+}
+
 const char* SensorHAL::getGyroName() const {
 	if (gyro == NULL || !gyro->isOK())
 		return "";
@@ -64,6 +75,12 @@ const char* SensorHAL::getBaroName() const {
 	return baro->name();
 }
 
+const char* SensorHAL::getPositionName() const {
+	if (position == NULL || !position->isOK())
+		return "";
+	return position->name();
+}
+
 
 Gyro* SensorHAL::getGyro() const {
 	return gyro;
@@ -73,6 +90,10 @@ Baro* SensorHAL::getBaro() const {
 	return baro;
 }
 
+Position* SensorHAL::getPosition() const {
+	return position;
+}
+
 SensorCalibration* SensorHAL::getCalibrationData() {
 	return &config->SensorCalibrationData;
 }
@@ -80,9 +101,13 @@ SensorCalibration* SensorHAL::getCalibrationData() {
 void SensorHAL::update() {
 	if (gyro != NULL)
 		gyro->update();
-
 	yield();
 
 	if (baro != NULL)
 		baro->update();
+	yield();
+
+	if (position != NULL)
+		position->update();
+	yield();
 }

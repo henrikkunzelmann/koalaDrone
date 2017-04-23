@@ -3,6 +3,7 @@
 #define CYCLE_PID			5
 #define CYCLE_GYRO			5
 #define CYCLE_BARO			50
+#define CYCLE_POSITION      250
 
 #define CYCLE_DATA			30
 #define CYCLE_LOG			500

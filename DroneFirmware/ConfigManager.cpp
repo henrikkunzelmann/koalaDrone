@@ -145,6 +145,8 @@ Config ConfigManager::getDefault() {
 
 	config.YawCorrectionFactor = 2.0f;
 	config.YawMaxCorrection = 50.0f;
+
+	config.PassThroughSerialNMEA = false;
 	
 	config.CalibrateServos = false;
 	memset(&config.SensorCalibrationData, 0, sizeof(SensorCalibration));

@@ -102,6 +102,15 @@ namespace DroneControl
             altitudeLabel.Text = string.Format("Altitude: {0} m",
                 Formatting.FormatDecimal(data.Sensor.Baro.Altitude, 2, 4));
 
+            latitudeLabel.Text = string.Format("Latitude: {0}°",
+                Formatting.FormatDecimal(data.Sensor.Position.Latitude, 2, 4));
+            longitudeLabel.Text = string.Format("Longitude: {0}°",
+                Formatting.FormatDecimal(data.Sensor.Position.Longitude, 2, 4));
+            altitudePositionLabel.Text = string.Format("Altitude: {0} m",
+                Formatting.FormatDecimal(data.Sensor.Position.Altitude, 2, 4));
+            velocityLabel.Text = string.Format("Velocity: {0} km/h",
+                Formatting.FormatDecimal(data.Sensor.Position.Velocity, 2, 4));
+
             if (data.Sensor.Temperatures == null || data.Sensor.Temperatures.Length == 0)
                 temperatureLabel.Text = "Temperatures °C: n/a";
             else

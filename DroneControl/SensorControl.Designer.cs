@@ -43,12 +43,20 @@
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.calibrateGyroButton = new System.Windows.Forms.Button();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
+            this.altitudePositionLabel = new System.Windows.Forms.Label();
+            this.longitudeLabel = new System.Windows.Forms.Label();
+            this.latitudeLabel = new System.Windows.Forms.Label();
+            this.velocityLabel = new System.Windows.Forms.Label();
             sensorGroupBox = new System.Windows.Forms.GroupBox();
             sensorGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // sensorGroupBox
             // 
+            sensorGroupBox.Controls.Add(this.velocityLabel);
+            sensorGroupBox.Controls.Add(this.altitudePositionLabel);
+            sensorGroupBox.Controls.Add(this.longitudeLabel);
+            sensorGroupBox.Controls.Add(this.latitudeLabel);
             sensorGroupBox.Controls.Add(this.calibrateMagnetButton);
             sensorGroupBox.Controls.Add(this.altitudeLabel);
             sensorGroupBox.Controls.Add(this.humidityLabel);
@@ -66,7 +74,7 @@
             sensorGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             sensorGroupBox.Location = new System.Drawing.Point(0, 0);
             sensorGroupBox.Name = "sensorGroupBox";
-            sensorGroupBox.Size = new System.Drawing.Size(410, 312);
+            sensorGroupBox.Size = new System.Drawing.Size(410, 409);
             sensorGroupBox.TabIndex = 0;
             sensorGroupBox.TabStop = false;
             sensorGroupBox.Text = "Sensors";
@@ -200,13 +208,49 @@
             this.artificialHorizon.TabIndex = 14;
             this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
             // 
+            // altitudePositionLabel
+            // 
+            this.altitudePositionLabel.AutoSize = true;
+            this.altitudePositionLabel.Location = new System.Drawing.Point(6, 335);
+            this.altitudePositionLabel.Name = "altitudePositionLabel";
+            this.altitudePositionLabel.Size = new System.Drawing.Size(42, 13);
+            this.altitudePositionLabel.TabIndex = 31;
+            this.altitudePositionLabel.Text = "Altitude";
+            // 
+            // longitudeLabel
+            // 
+            this.longitudeLabel.AutoSize = true;
+            this.longitudeLabel.Location = new System.Drawing.Point(212, 322);
+            this.longitudeLabel.Name = "longitudeLabel";
+            this.longitudeLabel.Size = new System.Drawing.Size(54, 13);
+            this.longitudeLabel.TabIndex = 30;
+            this.longitudeLabel.Text = "Longitude";
+            // 
+            // latitudeLabel
+            // 
+            this.latitudeLabel.AutoSize = true;
+            this.latitudeLabel.Location = new System.Drawing.Point(6, 322);
+            this.latitudeLabel.Name = "latitudeLabel";
+            this.latitudeLabel.Size = new System.Drawing.Size(45, 13);
+            this.latitudeLabel.TabIndex = 29;
+            this.latitudeLabel.Text = "Latitude";
+            // 
+            // velocityLabel
+            // 
+            this.velocityLabel.AutoSize = true;
+            this.velocityLabel.Location = new System.Drawing.Point(211, 335);
+            this.velocityLabel.Name = "velocityLabel";
+            this.velocityLabel.Size = new System.Drawing.Size(44, 13);
+            this.velocityLabel.TabIndex = 32;
+            this.velocityLabel.Text = "Velocity";
+            // 
             // SensorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(sensorGroupBox);
             this.Name = "SensorControl";
-            this.Size = new System.Drawing.Size(410, 312);
+            this.Size = new System.Drawing.Size(410, 409);
             sensorGroupBox.ResumeLayout(false);
             sensorGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -229,5 +273,9 @@
         private System.Windows.Forms.Label humidityLabel;
         private System.Windows.Forms.Label pressureLabel;
         private System.Windows.Forms.Button calibrateMagnetButton;
+        private System.Windows.Forms.Label altitudePositionLabel;
+        private System.Windows.Forms.Label longitudeLabel;
+        private System.Windows.Forms.Label latitudeLabel;
+        private System.Windows.Forms.Label velocityLabel;
     }
 }

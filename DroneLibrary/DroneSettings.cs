@@ -141,6 +141,10 @@ namespace DroneLibrary
         public float YawMaxCorrection;
 
         [MarshalAs(UnmanagedType.U1)]
+        [Category("Debug")]
+        public bool PassThroughSerialNMEA;
+
+        [MarshalAs(UnmanagedType.U1)]
         [Category("Motors")]
         public bool CalibrateServos;
 

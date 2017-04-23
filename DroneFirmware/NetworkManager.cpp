@@ -535,6 +535,12 @@ void NetworkManager::sendDroneData(WiFiUDP* udp) {
 	writeBuffer->write(baroValues.Humidity);
 	writeBuffer->write(sensor->getBaro()->getAltitude());
 
+	PositionValue positionValue = sensor->getPosition()->getValue();
+	writeBuffer->write(positionValue.latitude);
+	writeBuffer->write(positionValue.longitude);
+	writeBuffer->write(positionValue.altitude);
+	writeBuffer->write(positionValue.velocity);
+
 	// Temperature Array
 	writeBuffer->write(uint8_t(2));
 	writeBuffer->write(values.Temperature);

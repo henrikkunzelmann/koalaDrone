@@ -14,6 +14,7 @@ namespace DroneLibrary.Data
         public Vector Acceleration { get; }
         public Vector Magnet { get; }
         public BaroData Baro { get; }
+        public PositionData Position { get; }
 
         public float[] Temperatures { get; }
 
@@ -33,6 +34,7 @@ namespace DroneLibrary.Data
             Magnet = Vector.ReadFromBuffer(buffer);
 
             Baro = new BaroData(buffer);
+            Position = new PositionData(buffer);
 
             int tempCount = buffer.ReadByte();
             Temperatures = new float[tempCount];
