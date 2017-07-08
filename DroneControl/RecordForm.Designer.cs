@@ -28,13 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecordForm));
             this.startButton = new System.Windows.Forms.Button();
             this.fileLabel = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.timer = new System.Windows.Forms.Timer(this.components);
             this.autoStartCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
@@ -74,11 +72,6 @@
             this.progressBar.Size = new System.Drawing.Size(383, 23);
             this.progressBar.TabIndex = 3;
             // 
-            // timer
-            // 
-            this.timer.Interval = 25;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
             // autoStartCheckBox
             // 
             this.autoStartCheckBox.AutoSize = true;
@@ -116,7 +109,6 @@
         private System.Windows.Forms.Label fileLabel;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.ProgressBar progressBar;
-        private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.CheckBox autoStartCheckBox;
     }
 }

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace DroneControl
 {
@@ -25,17 +26,25 @@ namespace DroneControl
         private bool running;
         private string path;
 
+        private Thread thread;
+        private AutoResetEvent resetEvent;
+
         private Stopwatch time;
 
         private StreamWriter dataStream;
         private StreamWriter logStream;
 
+        private LogView log;
+        private LogView droneLog;
         private DroneState lastState;
 
         public RecordForm(Drone drone, InputManager inputManager)
         {
             this.drone = drone;
             this.inputManager = inputManager;
+
+            thread = new Thread(Run);
+            resetEvent = new AutoResetEvent(false);
 
             lastState = drone.Data.State;
             drone.OnDataChange += Drone_OnDataChange;
@@ -45,10 +54,14 @@ namespace DroneControl
 
         private void Drone_OnDataChange(object sender, DataChangedEventArgs e)
         {
+            // wake up Thread
+            resetEvent.Set();
+
             if (InvokeRequired)
                 Invoke(new EventHandler<DataChangedEventArgs>(Drone_OnDataChange), sender, e);
             else
             {
+                // Check if we should auto start or auto stop
                 if (!autoStartCheckBox.Checked)
                     return;
 
@@ -118,9 +131,10 @@ namespace DroneControl
             Log.Debug("Drone settings:");
             Log.WriteFields(LogLevel.Debug, drone.Settings);
 
-            EmitData();
-
-            timer.Enabled = true;
+            // Start thread
+            resetEvent.Reset();
+            thread.Start();
+            resetEvent.Set();
         }
 
         public void Stop()
@@ -132,6 +146,10 @@ namespace DroneControl
 
             running = false;
 
+            // signal thread that it should stop
+            resetEvent.Set();
+
+            // Update ui
             Log.Info("Stopped recording");
 
             progressBar.Style = ProgressBarStyle.Continuous;
@@ -140,7 +158,6 @@ namespace DroneControl
             statusLabel.Text = "Stopped";
             startButton.Text = "Start";
 
-            timer.Enabled = false;
             CloseFiles();
         }
 
@@ -196,6 +213,33 @@ namespace DroneControl
             }
         }
 
+        private void Run()
+        {
+            try
+            {
+                while(running)
+                {
+                    EmitData();
+
+                    // wait till new data
+                    resetEvent.WaitOne();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+
+        private void UpdateUI()
+        {
+            long fileSize = dataStream.BaseStream.Length + logStream.BaseStream.Length;
+            if (fileSize < 1024 * 1024)
+                statusLabel.Text = string.Format("Running ({0}kbyte)", fileSize / 1024);
+            else
+                statusLabel.Text = string.Format("Running ({0}mbyte)", fileSize / (1024 * 1024));
+        }
+
         private static string[] columns = new string[]
         {
             "Time ms",
@@ -229,8 +273,6 @@ namespace DroneControl
         };
 
         private StringBuilder line = new StringBuilder();
-        private LogView log;
-        private LogView droneLog;
 
         private void EmitData()
         {
@@ -239,11 +281,7 @@ namespace DroneControl
                 EmitLine();
                 EmitLog();
 
-                long fileSize = dataStream.BaseStream.Length + logStream.BaseStream.Length;
-                if (fileSize < 1024 * 1024)
-                    statusLabel.Text = string.Format("Running ({0}kbyte)", fileSize / 1024);
-                else
-                    statusLabel.Text = string.Format("Running ({0}mbyte)", fileSize / (1024 * 1024));
+                Invoke(new Action(UpdateUI));
             }
             catch (Exception e)
             {
@@ -253,36 +291,39 @@ namespace DroneControl
 
         private void EmitLine()
         {
+            DroneData data = drone.Data;
+            OutputData outputData = drone.DebugOutputData;
+
             object[] values = new object[]
                 {
                     time.ElapsedMilliseconds,
 
                     drone.IsConnected ? drone.Ping.ToString() : "DISCONNECTED",
 
-                    drone.Data.State,
-                    drone.Data.WifiRssi,
-                    drone.Data.BatteryVoltage,
+                    data.State,
+                    data.WifiRssi,
+                    data.BatteryVoltage,
                     drone.DebugProfilerData.FreeHeapBytes,
 
-                    drone.Data.Sensor.Roll,
-                    drone.Data.Sensor.Pitch,
-                    drone.Data.Sensor.Yaw,
-
-                    drone.Data.Sensor.Gyro.X,
-                    drone.Data.Sensor.Gyro.Y,
-                    drone.Data.Sensor.Gyro.Z,
-
-                    drone.Data.Sensor.Acceleration.X,
-                    drone.Data.Sensor.Acceleration.Y,
-                    drone.Data.Sensor.Acceleration.Z,
-
-                    drone.Data.Sensor.Magnet.X,
-                    drone.Data.Sensor.Magnet.Y,
-                    drone.Data.Sensor.Magnet.Z,
-
-                    drone.Data.Sensor.Baro.Pressure,
-                    drone.Data.Sensor.Baro.Altitude,
-                    drone.Data.Sensor.Baro.Humidity,
+                    data.Sensor.Roll,
+                    data.Sensor.Pitch,
+                    data.Sensor.Yaw,
+                    
+                    data.Sensor.Gyro.X,
+                    data.Sensor.Gyro.Y,
+                    data.Sensor.Gyro.Z,
+                    
+                    data.Sensor.Acceleration.X,
+                    data.Sensor.Acceleration.Y,
+                    data.Sensor.Acceleration.Z,
+                    
+                    data.Sensor.Magnet.X,
+                    data.Sensor.Magnet.Y,
+                    data.Sensor.Magnet.Z,
+                    
+                    data.Sensor.Baro.Pressure,
+                    data.Sensor.Baro.Altitude,
+                    data.Sensor.Baro.Humidity,
 
                     string.Join(", ", drone.Data.Sensor.Temperatures),
 
@@ -291,18 +332,18 @@ namespace DroneControl
                     inputManager.TargetData.Yaw,
                     inputManager.TargetData.Thrust,
 
-                    drone.DebugOutputData.RollOutput,
-                    drone.DebugOutputData.PitchOutput,
-                    drone.DebugOutputData.YawOutput,
+                    outputData.RollOutput,
+                    outputData.PitchOutput,
+                    outputData.YawOutput,
+                    
+                    outputData.AngleRollOutput,
+                    outputData.AnglePitchOutput,
+                    outputData.AngleYawOutput,
 
-                    drone.DebugOutputData.AngleRollOutput,
-                    drone.DebugOutputData.AnglePitchOutput,
-                    drone.DebugOutputData.AngleYawOutput,
-
-                    drone.Data.MotorValues.FrontLeft,
-                    drone.Data.MotorValues.FrontRight,
-                    drone.Data.MotorValues.BackLeft,
-                    drone.Data.MotorValues.BackRight
+                    data.MotorValues.FrontLeft,
+                    data.MotorValues.FrontRight,
+                    data.MotorValues.BackLeft,
+                    data.MotorValues.BackRight
                 };
 
             line.Clear();
@@ -337,11 +378,6 @@ namespace DroneControl
                 logStream.WriteLine(line);
             foreach (string line in droneLog.GetNewLines())
                 logStream.WriteLine(line);
-        }
-
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            EmitData();
         }
 
         private void startButton_Click(object sender, EventArgs e)
