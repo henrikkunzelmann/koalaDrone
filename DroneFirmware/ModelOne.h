@@ -21,3 +21,8 @@
 #define MEMORY_I2C_ENABLE false
 #define MEMORY_I2C_SIZE 0
 #define MEMORY_I2C_PAGE_SIZE 0
+
+#define SWAP_GYRO_XY false
+#define NEGATE_GYRO_X false
+#define NEGATE_GYRO_Y false
+#define NEGATE_GYRO_Z false

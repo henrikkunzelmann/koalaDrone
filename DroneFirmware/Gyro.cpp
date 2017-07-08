@@ -266,8 +266,30 @@ void Gyro::update() {
 	validMagData = false;
 	validImu = false;
 
-	if (getValues(&rawValues))
+	if (getValues(&rawValues)) {
+#if SWAP_GYRO_XY
+#define __SWAP(a, b) { float _f = a; a = b; b = _f; }
+		__SWAP(rawValues.GyroX, rawValues.GyroY);
+		__SWAP(rawValues.AccX, rawValues.AccY);
+		__SWAP(rawValues.MagnetX, rawValues.MagnetY);
+#endif
+#if NEGATE_GYRO_X
+		rawValues.GyroX *= -1.0f;
+		rawValues.AccX *= -1.0f;
+		rawValues.MagnetX *= -1.0f;
+#endif
+#if NEGATE_GYRO_Y
+		rawValues.GyroY *= -1.0f;
+		rawValues.AccY *= -1.0f;
+		rawValues.MagnetY *= -1.0f;
+#endif
+#if NEGATE_GYRO_Z
+		rawValues.GyroZ *= -1.0f;
+		rawValues.AccZ *= -1.0f;
+		rawValues.MagnetZ *= -1.0f;
+#endif
 		processData();
+	}
 
 	if (inCalibration() && calibrationState != CalibrationOrientation)
 		runCalibration();
