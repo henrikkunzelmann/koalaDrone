@@ -22,6 +22,7 @@ uint8_t Servo::attach(int pin) {
 
 void Servo::detach() {
 	ledcDetachPin(pin);
+	digitalWrite(pin, LOW);
 	isAttached = false;
 }
 

@@ -3,6 +3,16 @@
 ServoManager::ServoManager(Config* config) {
 	this->config = config;
 
+	// prepare all pins
+	pinMode(PIN_FRONT_LEFT, OUTPUT);
+	pinMode(PIN_FRONT_RIGHT, OUTPUT);
+	pinMode(PIN_BACK_LEFT, OUTPUT);
+	pinMode(PIN_BACK_RIGHT, OUTPUT);
+	digitalWrite(PIN_FRONT_LEFT, LOW);
+	digitalWrite(PIN_FRONT_RIGHT, LOW);
+	digitalWrite(PIN_BACK_LEFT, LOW);
+	digitalWrite(PIN_BACK_RIGHT, LOW);
+
 	servoFLValue = config->ServoMin;
 	servoFRValue = config->ServoMin;
 	servoBLValue = config->ServoMin;
@@ -90,15 +100,23 @@ void ServoManager::calibrate() {
 	if (attached)
 		return;
 
+	// wait 5000 ms until ESCs are ready
+	delay(5000);
+
+	// set values to maximum
 	frontLeft.writeMicroseconds(config->ServoMax);
 	frontRight.writeMicroseconds(config->ServoMax);
 	backLeft.writeMicroseconds(config->ServoMax);
 	backRight.writeMicroseconds(config->ServoMax);
+	// attach them
 	internalAttach();
 
-	delay(6000);
+	// wait 2000 ms until ESCs set the max value
+	delay(2000);
 
+	// set the minimum value and wait 2000 ms again
 	setAllServos(config->ServoMin);
+	delay(2000);
 }
 
 int ServoManager::getValue(int value) {
