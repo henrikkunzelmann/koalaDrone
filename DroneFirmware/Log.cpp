@@ -127,6 +127,8 @@ void Log::print(LogLevel level, const char* tag, const char* format, va_list arg
 	if (printToSerial)
 		Serial.println(message);
 
+	yield();
+
 	addMessage(message);
 }
 
