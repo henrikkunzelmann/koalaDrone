@@ -119,7 +119,7 @@ boolean NMEA::fillBuffer(const char* sentence)
 	// Copy to internal buffer
 	memset(buffer, 0, sizeof(buffer));
 	memcpy(buffer, sentence + start, msgLength);
-
+	return true;
 }
 
 char* NMEA::firstValue()
