@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Label rightBackLabel;
             System.Windows.Forms.Label rightFrontLabel;
             System.Windows.Forms.Label leftBackLabel;
@@ -43,6 +44,7 @@
             this.rightFrontTextBox = new System.Windows.Forms.NumericUpDown();
             this.leftBackTextBox = new System.Windows.Forms.NumericUpDown();
             this.leftFrontTextBox = new System.Windows.Forms.NumericUpDown();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             rightBackLabel = new System.Windows.Forms.Label();
             rightFrontLabel = new System.Windows.Forms.Label();
             leftBackLabel = new System.Windows.Forms.Label();
@@ -234,6 +236,11 @@
             this.leftFrontTextBox.TabIndex = 1;
             this.leftFrontTextBox.ValueChanged += new System.EventHandler(this.NumericTextBoxValueChanged);
             // 
+            // updateTimer
+            // 
+            this.updateTimer.Enabled = true;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            // 
             // MotorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -266,5 +273,6 @@
         private System.Windows.Forms.CheckBox rightFrontTick;
         private System.Windows.Forms.CheckBox leftBackTick;
         private System.Windows.Forms.CheckBox leftFrontTick;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }

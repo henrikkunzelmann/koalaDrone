@@ -25,6 +25,7 @@ namespace DroneControl
         }
 
         private long tickCount;
+        private bool dataDirty = true;
 
         public MainForm(Drone drone)
         {
@@ -51,9 +52,8 @@ namespace DroneControl
             sensorControl1.Init(drone);
 
             ipInfoLabel.Text = string.Format("Connecting to \"{0}\"", drone.Address);
-            UpdatePing(drone.IsConnected, drone.Ping);
             UpdateInfo(drone.Info);
-            UpdateData(drone.Data);
+            UpdateUI();
             UpdateSettings(drone.Settings);
         }
 
@@ -83,6 +83,8 @@ namespace DroneControl
             drone.ResendPendingPackets();
 
             tickCount++;
+
+            UpdateUI();
         }
 
         private Form ShowForm(Form form, Func<Form> onClosed)
@@ -99,9 +101,20 @@ namespace DroneControl
             return form;
         }
 
-        private void UpdatePing(bool isConnected, int ping)
+        private void UpdateUI()
         {
-            if (!isConnected)
+            if (!dataDirty)
+                return;
+
+            UpdatePing();
+            UpdateData();
+
+            dataDirty = false;
+        }
+
+        private void UpdatePing()
+        {
+            if (!drone.IsConnected)
             {
                 pingLabel.Text = "Not connected";
                 ipInfoLabel.Text = string.Format("IP-Address: \"{0}\"", drone.Address);
@@ -112,13 +125,10 @@ namespace DroneControl
                 ipInfoLabel.Text = string.Format("Connected to \"{0}\"", drone.Address);
             }
 
-            if (!isConnected || ping > 50)
+            if (!drone.IsConnected || drone.Ping > 50)
                 pingLabel.ForeColor = Color.Red;
             else
                 pingLabel.ForeColor = Color.Green;
-
-            if (!isConnected)
-                UpdateData(drone.Data);
         } 
 
         private void UpdateInfo(DroneInfo info)
@@ -132,10 +142,11 @@ namespace DroneControl
         }
 
 
-        private void UpdateData(DroneData data)
+        private void UpdateData()
         {
             SuspendLayout();
 
+            DroneData data = drone.Data;
             if (!drone.IsConnected)
             {
                 statusArmedLabel.ForeColor = Color.Red;
@@ -226,13 +237,12 @@ namespace DroneControl
 
         private void Drone_OnDataChange(object sender, DataChangedEventArgs eventArgs)
         {
-            if (InvokeRequired)
-            {
-                Invoke(new EventHandler<DataChangedEventArgs>(Drone_OnDataChange), this, eventArgs);
-                return;
-            }
+            dataDirty = true;
+        }
 
-            UpdateData(eventArgs.Data);
+        private void Drone_OnPingChange(object sender, PingChangedEventArgs e)
+        {
+            dataDirty = true;
         }
 
         private void Drone_OnSettingsChange(object sender, SettingsChangedEventArgs eventArgs)
@@ -245,15 +255,6 @@ namespace DroneControl
 
             UpdateSettings(eventArgs.Settings);
         }
-
-        private void Drone_OnPingChange(object sender, PingChangedEventArgs e)
-        {
-            if (pingLabel.InvokeRequired)
-                pingLabel.Invoke(new EventHandler<PingChangedEventArgs>(Drone_OnPingChange), sender, e);
-            else
-                UpdatePing(e.IsConnected, e.Ping);
-        }
-
 
         private void statusToogleButton_Click(object sender, EventArgs e)
         {

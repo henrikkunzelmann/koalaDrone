@@ -5,6 +5,7 @@ using System;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace DroneControl
 {
@@ -12,6 +13,11 @@ namespace DroneControl
     {
         private Drone drone;
         public InputManager InputManager { get; private set; }
+
+        private bool running = false;
+        private Thread thread;
+
+        private bool dirty = true;
 
         public FlightControl()
         {
@@ -31,45 +37,24 @@ namespace DroneControl
             this.drone.OnDebugDataChanged += Drone_OnDebugDataChange;
 
             SearchInputDevices(true);
-            UpdateTargetData();
+            UpdateUI();
             UpdateDeviceInfo();
             UpdateInputConfig();
+
+            running = true;
+
+            thread = new Thread(UpdateInput);
+            thread.Start();
         }
 
         private void Drone_OnDebugDataChange(object sender, EventArgs e)
         {
-            if (InvokeRequired)
-            {
-                Invoke(new EventHandler<EventArgs>(Drone_OnDebugDataChange), sender, e);
-                return;
-            }
-
-            if (drone.Data.State == DroneState.Flying)
-            {
-                StringBuilder pidData = new StringBuilder();
-                pidData.AppendFormat("Roll:  {0} (stab: {1})",
-                    Formatting.FormatDecimal(drone.DebugOutputData.RollOutput, 2, 3),
-                    Formatting.FormatDecimal(drone.DebugOutputData.AngleRollOutput, 2, 3));
-                pidData.AppendLine();
-                pidData.AppendFormat("Pitch: {0} (stab: {1})", 
-                    Formatting.FormatDecimal(drone.DebugOutputData.PitchOutput, 2, 3),
-                    Formatting.FormatDecimal(drone.DebugOutputData.AnglePitchOutput, 2, 3));
-                pidData.AppendLine();
-                pidData.AppendFormat("Yaw:   {0} (stab: {1})",
-                  Formatting.FormatDecimal(drone.DebugOutputData.YawOutput, 2, 3),
-                  Formatting.FormatDecimal(drone.DebugOutputData.AngleYawOutput, 2, 3));
-                pidData.AppendLine();
-
-                pidDataLabel.Text = pidData.ToString();
-                pidDataLabel.Visible = true;
-            }
-            else
-                pidDataLabel.Visible = false;
+            dirty = true;
         }
 
         private void InputManager_OnTargetDataChanged(object sender, EventArgs e)
         {
-            UpdateTargetData();
+            dirty = true;
         }
 
         private void InputManager_OnDeviceInfoChanged(object sender, EventArgs e)
@@ -79,6 +64,9 @@ namespace DroneControl
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
+            running = false;
+            if (thread != null)
+                thread.Abort();
             if (InputManager != null)
                 InputManager.Dispose();
             base.OnHandleDestroyed(e);
@@ -91,13 +79,15 @@ namespace DroneControl
             SearchInputDevices(false);
         }
 
-        private void updateTimer_Tick(object sender, EventArgs e)
+        private void UpdateInput()
         {
-            if (DesignMode)
-                return;
+            while (running)
+            {
+                if (InputManager != null)
+                    InputManager.Update();
 
-            if (InputManager != null)
-                InputManager.Update();
+                Thread.Sleep(40);
+            }
         }
 
         private void searchDeviceButton_Click(object sender, EventArgs e)
@@ -211,10 +201,22 @@ namespace DroneControl
             ResumeLayout();
         }
 
-        private void UpdateTargetData()
+        private void UpdateUI()
         {
+            if (!dirty)
+                return;
+
             SuspendLayout();
 
+            UpdateTargetData();
+            UpdateDebugData();
+
+            ResumeLayout();
+            dirty = false;
+        }
+
+        private void UpdateTargetData()
+        {
             bool deviceConnected = InputManager.CurrentDevice != null && InputManager.CurrentDevice.IsConnected;
             rollLabel.Visible = deviceConnected;
             pitchLabel.Visible = deviceConnected;
@@ -234,8 +236,31 @@ namespace DroneControl
 
                 HighlightInputGraph(InputManager.RawTargetData);
             }
+        }
 
-            ResumeLayout();
+        private void UpdateDebugData()
+        {
+            if (drone.Data.State == DroneState.Flying)
+            {
+                StringBuilder pidData = new StringBuilder();
+                pidData.AppendFormat("Roll:  {0} (stab: {1})",
+                    Formatting.FormatDecimal(drone.DebugOutputData.RollOutput, 2, 3),
+                    Formatting.FormatDecimal(drone.DebugOutputData.AngleRollOutput, 2, 3));
+                pidData.AppendLine();
+                pidData.AppendFormat("Pitch: {0} (stab: {1})",
+                    Formatting.FormatDecimal(drone.DebugOutputData.PitchOutput, 2, 3),
+                    Formatting.FormatDecimal(drone.DebugOutputData.AnglePitchOutput, 2, 3));
+                pidData.AppendLine();
+                pidData.AppendFormat("Yaw:   {0} (stab: {1})",
+                  Formatting.FormatDecimal(drone.DebugOutputData.YawOutput, 2, 3),
+                  Formatting.FormatDecimal(drone.DebugOutputData.AngleYawOutput, 2, 3));
+                pidData.AppendLine();
+
+                pidDataLabel.Text = pidData.ToString();
+                pidDataLabel.Visible = true;
+            }
+            else
+                pidDataLabel.Visible = false;
         }
 
         private void UpdateInputConfig()
@@ -251,6 +276,10 @@ namespace DroneControl
             InputManager.RollScale = (float)rollScaleTextBox.Value;
             InputManager.PitchScale = (float)pitchScaleTextBox.Value;
             InputManager.YawScale = (float)yawScaleTextBox.Value;
+
+            InputManager.RollTrim = (float)rollTrimTextBox.Value;
+            InputManager.PitchTrim = (float)pitchTrimTextBox.Value;
+            InputManager.YawTrim = (float)yawTrimTextBox.Value;
 
             InputManager.ThrustExp = (float)thrustExpTextBox.Value;
             InputManager.ThrustBase = (float)thrustBaseTextBox.Value;
@@ -302,12 +331,15 @@ namespace DroneControl
                 data.UpdateValue(InputManager.ThrustMax * InputManager.MapThrust(x / 1000.0f));
         }
 
-        
-
         private void calibrateButton_Click(object sender, EventArgs e)
         {
             if (InputManager.CurrentDevice != null)
                 InputManager.CurrentDevice.Calibrate();
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateTargetData();
         }
     }
 }

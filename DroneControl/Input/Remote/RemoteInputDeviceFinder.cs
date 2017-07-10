@@ -25,7 +25,7 @@ namespace DroneControl.Input.Remote
             try
             {
                 if (device == null)
-                    device = new RemoteInputDevice("COM5");
+                    device = new RemoteInputDevice("COM3");
                 else if (!device.IsConnected)
                     device.Reconnect();
 

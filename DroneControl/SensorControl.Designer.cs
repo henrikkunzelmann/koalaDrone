@@ -28,7 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.GroupBox sensorGroupBox;
+            this.velocityLabel = new System.Windows.Forms.Label();
+            this.altitudePositionLabel = new System.Windows.Forms.Label();
+            this.longitudeLabel = new System.Windows.Forms.Label();
+            this.latitudeLabel = new System.Windows.Forms.Label();
             this.calibrateMagnetButton = new System.Windows.Forms.Button();
             this.altitudeLabel = new System.Windows.Forms.Label();
             this.humidityLabel = new System.Windows.Forms.Label();
@@ -43,10 +48,7 @@
             this.headingIndicator = new DroneControl.Avionics.HeadingIndicatorInstrumentControl();
             this.calibrateGyroButton = new System.Windows.Forms.Button();
             this.artificialHorizon = new DroneControl.Avionics.AttitudeIndicatorInstrumentControl();
-            this.altitudePositionLabel = new System.Windows.Forms.Label();
-            this.longitudeLabel = new System.Windows.Forms.Label();
-            this.latitudeLabel = new System.Windows.Forms.Label();
-            this.velocityLabel = new System.Windows.Forms.Label();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             sensorGroupBox = new System.Windows.Forms.GroupBox();
             sensorGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -78,6 +80,42 @@
             sensorGroupBox.TabIndex = 0;
             sensorGroupBox.TabStop = false;
             sensorGroupBox.Text = "Sensors";
+            // 
+            // velocityLabel
+            // 
+            this.velocityLabel.AutoSize = true;
+            this.velocityLabel.Location = new System.Drawing.Point(211, 335);
+            this.velocityLabel.Name = "velocityLabel";
+            this.velocityLabel.Size = new System.Drawing.Size(44, 13);
+            this.velocityLabel.TabIndex = 32;
+            this.velocityLabel.Text = "Velocity";
+            // 
+            // altitudePositionLabel
+            // 
+            this.altitudePositionLabel.AutoSize = true;
+            this.altitudePositionLabel.Location = new System.Drawing.Point(6, 335);
+            this.altitudePositionLabel.Name = "altitudePositionLabel";
+            this.altitudePositionLabel.Size = new System.Drawing.Size(42, 13);
+            this.altitudePositionLabel.TabIndex = 31;
+            this.altitudePositionLabel.Text = "Altitude";
+            // 
+            // longitudeLabel
+            // 
+            this.longitudeLabel.AutoSize = true;
+            this.longitudeLabel.Location = new System.Drawing.Point(212, 322);
+            this.longitudeLabel.Name = "longitudeLabel";
+            this.longitudeLabel.Size = new System.Drawing.Size(54, 13);
+            this.longitudeLabel.TabIndex = 30;
+            this.longitudeLabel.Text = "Longitude";
+            // 
+            // latitudeLabel
+            // 
+            this.latitudeLabel.AutoSize = true;
+            this.latitudeLabel.Location = new System.Drawing.Point(6, 322);
+            this.latitudeLabel.Name = "latitudeLabel";
+            this.latitudeLabel.Size = new System.Drawing.Size(45, 13);
+            this.latitudeLabel.TabIndex = 29;
+            this.latitudeLabel.Text = "Latitude";
             // 
             // calibrateMagnetButton
             // 
@@ -208,41 +246,11 @@
             this.artificialHorizon.TabIndex = 14;
             this.artificialHorizon.Text = "attitudeIndicatorInstrumentControl1";
             // 
-            // altitudePositionLabel
+            // updateTimer
             // 
-            this.altitudePositionLabel.AutoSize = true;
-            this.altitudePositionLabel.Location = new System.Drawing.Point(6, 335);
-            this.altitudePositionLabel.Name = "altitudePositionLabel";
-            this.altitudePositionLabel.Size = new System.Drawing.Size(42, 13);
-            this.altitudePositionLabel.TabIndex = 31;
-            this.altitudePositionLabel.Text = "Altitude";
-            // 
-            // longitudeLabel
-            // 
-            this.longitudeLabel.AutoSize = true;
-            this.longitudeLabel.Location = new System.Drawing.Point(212, 322);
-            this.longitudeLabel.Name = "longitudeLabel";
-            this.longitudeLabel.Size = new System.Drawing.Size(54, 13);
-            this.longitudeLabel.TabIndex = 30;
-            this.longitudeLabel.Text = "Longitude";
-            // 
-            // latitudeLabel
-            // 
-            this.latitudeLabel.AutoSize = true;
-            this.latitudeLabel.Location = new System.Drawing.Point(6, 322);
-            this.latitudeLabel.Name = "latitudeLabel";
-            this.latitudeLabel.Size = new System.Drawing.Size(45, 13);
-            this.latitudeLabel.TabIndex = 29;
-            this.latitudeLabel.Text = "Latitude";
-            // 
-            // velocityLabel
-            // 
-            this.velocityLabel.AutoSize = true;
-            this.velocityLabel.Location = new System.Drawing.Point(211, 335);
-            this.velocityLabel.Name = "velocityLabel";
-            this.velocityLabel.Size = new System.Drawing.Size(44, 13);
-            this.velocityLabel.TabIndex = 32;
-            this.velocityLabel.Text = "Velocity";
+            this.updateTimer.Enabled = true;
+            this.updateTimer.Interval = 50;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
             // SensorControl
             // 
@@ -277,5 +285,6 @@
         private System.Windows.Forms.Label longitudeLabel;
         private System.Windows.Forms.Label latitudeLabel;
         private System.Windows.Forms.Label velocityLabel;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }

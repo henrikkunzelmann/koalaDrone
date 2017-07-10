@@ -28,6 +28,10 @@
             System.Windows.Forms.GroupBox deviceGroupBox;
             System.Windows.Forms.GroupBox dataGroupBox;
             System.Windows.Forms.GroupBox inputConfigGroupBox;
+            System.Windows.Forms.Label yawTrimLabel;
+            System.Windows.Forms.Label pitchTrimLabel;
+            System.Windows.Forms.Label rollTrimLabel;
+            System.Windows.Forms.Label yawScaleText;
             System.Windows.Forms.Label pitchScaleText;
             System.Windows.Forms.Label rollScaleText;
             System.Windows.Forms.Label thrustBaseText;
@@ -36,7 +40,6 @@
             System.Windows.Forms.Label pitchExpText;
             System.Windows.Forms.Label rollExpText;
             System.Windows.Forms.GroupBox inputGraphsGroupBox;
-            System.Windows.Forms.Label yawScaleText;
             this.calibrateButton = new System.Windows.Forms.Button();
             this.searchDeviceButton = new System.Windows.Forms.Button();
             this.deviceBatteryLabel = new System.Windows.Forms.Label();
@@ -47,6 +50,10 @@
             this.yawLabel = new System.Windows.Forms.Label();
             this.thrustLabel = new System.Windows.Forms.Label();
             this.pidDataLabel = new System.Windows.Forms.Label();
+            this.yawTrimTextBox = new System.Windows.Forms.NumericUpDown();
+            this.pitchTrimTextBox = new System.Windows.Forms.NumericUpDown();
+            this.rollTrimTextBox = new System.Windows.Forms.NumericUpDown();
+            this.yawScaleTextBox = new System.Windows.Forms.NumericUpDown();
             this.pitchScaleTextBox = new System.Windows.Forms.NumericUpDown();
             this.rollScaleTextBox = new System.Windows.Forms.NumericUpDown();
             this.enableClear = new System.Windows.Forms.CheckBox();
@@ -60,10 +67,13 @@
             this.inputCurves = new DroneControl.QuadGraphControl();
             this.searchTimer = new System.Windows.Forms.Timer(this.components);
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
-            this.yawScaleTextBox = new System.Windows.Forms.NumericUpDown();
             deviceGroupBox = new System.Windows.Forms.GroupBox();
             dataGroupBox = new System.Windows.Forms.GroupBox();
             inputConfigGroupBox = new System.Windows.Forms.GroupBox();
+            yawTrimLabel = new System.Windows.Forms.Label();
+            pitchTrimLabel = new System.Windows.Forms.Label();
+            rollTrimLabel = new System.Windows.Forms.Label();
+            yawScaleText = new System.Windows.Forms.Label();
             pitchScaleText = new System.Windows.Forms.Label();
             rollScaleText = new System.Windows.Forms.Label();
             thrustBaseText = new System.Windows.Forms.Label();
@@ -72,10 +82,13 @@
             pitchExpText = new System.Windows.Forms.Label();
             rollExpText = new System.Windows.Forms.Label();
             inputGraphsGroupBox = new System.Windows.Forms.GroupBox();
-            yawScaleText = new System.Windows.Forms.Label();
             deviceGroupBox.SuspendLayout();
             dataGroupBox.SuspendLayout();
             inputConfigGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.yawTrimTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchTrimTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rollTrimTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yawScaleTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchScaleTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollScaleTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thrustBaseTextBox)).BeginInit();
@@ -84,7 +97,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pitchExpTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollExpTextBox)).BeginInit();
             inputGraphsGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.yawScaleTextBox)).BeginInit();
             this.SuspendLayout();
             // 
             // deviceGroupBox
@@ -162,7 +174,7 @@
             dataGroupBox.Controls.Add(this.pidDataLabel);
             dataGroupBox.Location = new System.Drawing.Point(231, 14);
             dataGroupBox.Name = "dataGroupBox";
-            dataGroupBox.Size = new System.Drawing.Size(223, 154);
+            dataGroupBox.Size = new System.Drawing.Size(360, 154);
             dataGroupBox.TabIndex = 26;
             dataGroupBox.TabStop = false;
             dataGroupBox.Text = "Data";
@@ -172,7 +184,7 @@
             this.rollLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rollLabel.AutoSize = true;
             this.rollLabel.Font = new System.Drawing.Font("Consolas", 9F);
-            this.rollLabel.Location = new System.Drawing.Point(90, 19);
+            this.rollLabel.Location = new System.Drawing.Point(227, 19);
             this.rollLabel.Name = "rollLabel";
             this.rollLabel.Size = new System.Drawing.Size(70, 14);
             this.rollLabel.TabIndex = 18;
@@ -183,7 +195,7 @@
             this.pitchLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pitchLabel.AutoSize = true;
             this.pitchLabel.Font = new System.Drawing.Font("Consolas", 9F);
-            this.pitchLabel.Location = new System.Drawing.Point(83, 33);
+            this.pitchLabel.Location = new System.Drawing.Point(220, 33);
             this.pitchLabel.Name = "pitchLabel";
             this.pitchLabel.Size = new System.Drawing.Size(77, 14);
             this.pitchLabel.TabIndex = 17;
@@ -194,7 +206,7 @@
             this.yawLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.yawLabel.AutoSize = true;
             this.yawLabel.Font = new System.Drawing.Font("Consolas", 9F);
-            this.yawLabel.Location = new System.Drawing.Point(97, 47);
+            this.yawLabel.Location = new System.Drawing.Point(234, 47);
             this.yawLabel.Name = "yawLabel";
             this.yawLabel.Size = new System.Drawing.Size(63, 14);
             this.yawLabel.TabIndex = 19;
@@ -205,7 +217,7 @@
             this.thrustLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.thrustLabel.AutoSize = true;
             this.thrustLabel.Font = new System.Drawing.Font("Consolas", 9F);
-            this.thrustLabel.Location = new System.Drawing.Point(76, 61);
+            this.thrustLabel.Location = new System.Drawing.Point(213, 61);
             this.thrustLabel.Name = "thrustLabel";
             this.thrustLabel.Size = new System.Drawing.Size(84, 14);
             this.thrustLabel.TabIndex = 20;
@@ -216,7 +228,7 @@
             this.pidDataLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pidDataLabel.AutoSize = true;
             this.pidDataLabel.Font = new System.Drawing.Font("Consolas", 9F);
-            this.pidDataLabel.Location = new System.Drawing.Point(6, 87);
+            this.pidDataLabel.Location = new System.Drawing.Point(143, 87);
             this.pidDataLabel.Name = "pidDataLabel";
             this.pidDataLabel.Size = new System.Drawing.Size(63, 14);
             this.pidDataLabel.TabIndex = 21;
@@ -224,6 +236,12 @@
             // 
             // inputConfigGroupBox
             // 
+            inputConfigGroupBox.Controls.Add(this.yawTrimTextBox);
+            inputConfigGroupBox.Controls.Add(yawTrimLabel);
+            inputConfigGroupBox.Controls.Add(this.pitchTrimTextBox);
+            inputConfigGroupBox.Controls.Add(pitchTrimLabel);
+            inputConfigGroupBox.Controls.Add(this.rollTrimTextBox);
+            inputConfigGroupBox.Controls.Add(rollTrimLabel);
             inputConfigGroupBox.Controls.Add(this.yawScaleTextBox);
             inputConfigGroupBox.Controls.Add(yawScaleText);
             inputConfigGroupBox.Controls.Add(this.pitchScaleTextBox);
@@ -245,10 +263,142 @@
             inputConfigGroupBox.Controls.Add(this.deadZoneCheckBox);
             inputConfigGroupBox.Location = new System.Drawing.Point(10, 174);
             inputConfigGroupBox.Name = "inputConfigGroupBox";
-            inputConfigGroupBox.Size = new System.Drawing.Size(444, 127);
+            inputConfigGroupBox.Size = new System.Drawing.Size(581, 127);
             inputConfigGroupBox.TabIndex = 27;
             inputConfigGroupBox.TabStop = false;
             inputConfigGroupBox.Text = "Input Config";
+            // 
+            // yawTrimTextBox
+            // 
+            this.yawTrimTextBox.DecimalPlaces = 2;
+            this.yawTrimTextBox.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.yawTrimTextBox.Location = new System.Drawing.Point(483, 68);
+            this.yawTrimTextBox.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.yawTrimTextBox.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            -2147483648});
+            this.yawTrimTextBox.Name = "yawTrimTextBox";
+            this.yawTrimTextBox.Size = new System.Drawing.Size(62, 20);
+            this.yawTrimTextBox.TabIndex = 61;
+            this.yawTrimTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // yawTrimLabel
+            // 
+            yawTrimLabel.AutoSize = true;
+            yawTrimLabel.Location = new System.Drawing.Point(414, 70);
+            yawTrimLabel.Name = "yawTrimLabel";
+            yawTrimLabel.Size = new System.Drawing.Size(47, 13);
+            yawTrimLabel.TabIndex = 60;
+            yawTrimLabel.Text = "Yaw trim";
+            // 
+            // pitchTrimTextBox
+            // 
+            this.pitchTrimTextBox.DecimalPlaces = 2;
+            this.pitchTrimTextBox.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.pitchTrimTextBox.Location = new System.Drawing.Point(483, 44);
+            this.pitchTrimTextBox.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.pitchTrimTextBox.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            -2147483648});
+            this.pitchTrimTextBox.Name = "pitchTrimTextBox";
+            this.pitchTrimTextBox.Size = new System.Drawing.Size(62, 20);
+            this.pitchTrimTextBox.TabIndex = 59;
+            this.pitchTrimTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // pitchTrimLabel
+            // 
+            pitchTrimLabel.AutoSize = true;
+            pitchTrimLabel.Location = new System.Drawing.Point(414, 46);
+            pitchTrimLabel.Name = "pitchTrimLabel";
+            pitchTrimLabel.Size = new System.Drawing.Size(50, 13);
+            pitchTrimLabel.TabIndex = 58;
+            pitchTrimLabel.Text = "Pitch trim";
+            // 
+            // rollTrimTextBox
+            // 
+            this.rollTrimTextBox.DecimalPlaces = 2;
+            this.rollTrimTextBox.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.rollTrimTextBox.Location = new System.Drawing.Point(483, 18);
+            this.rollTrimTextBox.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.rollTrimTextBox.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            -2147483648});
+            this.rollTrimTextBox.Name = "rollTrimTextBox";
+            this.rollTrimTextBox.Size = new System.Drawing.Size(62, 20);
+            this.rollTrimTextBox.TabIndex = 57;
+            this.rollTrimTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // rollTrimLabel
+            // 
+            rollTrimLabel.AutoSize = true;
+            rollTrimLabel.Location = new System.Drawing.Point(414, 20);
+            rollTrimLabel.Name = "rollTrimLabel";
+            rollTrimLabel.Size = new System.Drawing.Size(44, 13);
+            rollTrimLabel.TabIndex = 56;
+            rollTrimLabel.Text = "Roll trim";
+            // 
+            // yawScaleTextBox
+            // 
+            this.yawScaleTextBox.DecimalPlaces = 2;
+            this.yawScaleTextBox.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.yawScaleTextBox.Location = new System.Drawing.Point(341, 68);
+            this.yawScaleTextBox.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.yawScaleTextBox.Name = "yawScaleTextBox";
+            this.yawScaleTextBox.Size = new System.Drawing.Size(62, 20);
+            this.yawScaleTextBox.TabIndex = 55;
+            this.yawScaleTextBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.yawScaleTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
+            // 
+            // yawScaleText
+            // 
+            yawScaleText.AutoSize = true;
+            yawScaleText.Location = new System.Drawing.Point(272, 70);
+            yawScaleText.Name = "yawScaleText";
+            yawScaleText.Size = new System.Drawing.Size(56, 13);
+            yawScaleText.TabIndex = 54;
+            yawScaleText.Text = "Yaw scale";
             // 
             // pitchScaleTextBox
             // 
@@ -576,41 +726,8 @@
             // updateTimer
             // 
             this.updateTimer.Enabled = true;
-            this.updateTimer.Interval = 16;
+            this.updateTimer.Interval = 40;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
-            // 
-            // yawScaleTextBox
-            // 
-            this.yawScaleTextBox.DecimalPlaces = 2;
-            this.yawScaleTextBox.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.yawScaleTextBox.Location = new System.Drawing.Point(341, 68);
-            this.yawScaleTextBox.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.yawScaleTextBox.Name = "yawScaleTextBox";
-            this.yawScaleTextBox.Size = new System.Drawing.Size(62, 20);
-            this.yawScaleTextBox.TabIndex = 55;
-            this.yawScaleTextBox.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.yawScaleTextBox.ValueChanged += new System.EventHandler(this.OnInputConfigChange);
-            // 
-            // yawScaleText
-            // 
-            yawScaleText.AutoSize = true;
-            yawScaleText.Location = new System.Drawing.Point(272, 70);
-            yawScaleText.Name = "yawScaleText";
-            yawScaleText.Size = new System.Drawing.Size(56, 13);
-            yawScaleText.TabIndex = 54;
-            yawScaleText.Text = "Yaw scale";
             // 
             // FlightControl
             // 
@@ -622,13 +739,17 @@
             this.Controls.Add(deviceGroupBox);
             this.DoubleBuffered = true;
             this.Name = "FlightControl";
-            this.Size = new System.Drawing.Size(464, 719);
+            this.Size = new System.Drawing.Size(594, 719);
             deviceGroupBox.ResumeLayout(false);
             deviceGroupBox.PerformLayout();
             dataGroupBox.ResumeLayout(false);
             dataGroupBox.PerformLayout();
             inputConfigGroupBox.ResumeLayout(false);
             inputConfigGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.yawTrimTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchTrimTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rollTrimTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yawScaleTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pitchScaleTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollScaleTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thrustBaseTextBox)).EndInit();
@@ -637,7 +758,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pitchExpTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rollExpTextBox)).EndInit();
             inputGraphsGroupBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.yawScaleTextBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -667,5 +787,8 @@
         private System.Windows.Forms.NumericUpDown pitchScaleTextBox;
         private System.Windows.Forms.NumericUpDown rollScaleTextBox;
         private System.Windows.Forms.NumericUpDown yawScaleTextBox;
+        private System.Windows.Forms.NumericUpDown yawTrimTextBox;
+        private System.Windows.Forms.NumericUpDown pitchTrimTextBox;
+        private System.Windows.Forms.NumericUpDown rollTrimTextBox;
     }
 }

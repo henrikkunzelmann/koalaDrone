@@ -11,6 +11,11 @@ namespace DroneControl
     {
         public Drone Drone { get; private set; }
 
+        /// <summary>
+        /// Is true when the data was changed since last UI update.
+        /// </summary>
+        private bool dirty = true;
+
         public SensorControl()
         {
             InitializeComponent();
@@ -31,18 +36,12 @@ namespace DroneControl
 
             this.Drone = drone;
             this.Drone.OnDataChange += Drone_OnDataChange;
-            UpdateData(drone.Data);
+            UpdateData();
         }
 
         private void Drone_OnDataChange(object sender, DataChangedEventArgs e)
         {
-            if (InvokeRequired)
-            {
-                Invoke(new EventHandler<DataChangedEventArgs>(Drone_OnDataChange), sender, e);
-                return;
-            }
-
-            UpdateData(e.Data);
+            dirty = true;
         }
 
         private void calibrateGyroButton_Click(object sender, EventArgs e)
@@ -55,8 +54,12 @@ namespace DroneControl
             Drone.SendPacket(new PacketCalibrateGyro(true), true);
         }
 
-        private void UpdateData(DroneData data)
+        private void UpdateData()
         {
+            if (!dirty)
+                return;
+
+            DroneData data = Drone.Data;
             SuspendLayout();
 
             if (!float.IsNaN(data.Sensor.Pitch) && !float.IsNaN(data.Sensor.Roll))
@@ -121,6 +124,12 @@ namespace DroneControl
 
             ResumeLayout();
             Invalidate(true);
+            dirty = false;
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateData();
         }
     }
 }

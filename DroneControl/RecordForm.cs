@@ -43,7 +43,6 @@ namespace DroneControl
             this.drone = drone;
             this.inputManager = inputManager;
 
-            thread = new Thread(Run);
             resetEvent = new AutoResetEvent(false);
 
             lastState = drone.Data.State;
@@ -133,6 +132,7 @@ namespace DroneControl
 
             // Start thread
             resetEvent.Reset();
+            thread = new Thread(Run);
             thread.Start();
             resetEvent.Set();
         }
@@ -233,6 +233,9 @@ namespace DroneControl
 
         private void UpdateUI()
         {
+            if (!running)
+                return;
+
             long fileSize = dataStream.BaseStream.Length + logStream.BaseStream.Length;
             if (fileSize < 1024 * 1024)
                 statusLabel.Text = string.Format("Running ({0}kbyte)", fileSize / 1024);

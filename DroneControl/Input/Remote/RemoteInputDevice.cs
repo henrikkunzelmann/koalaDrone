@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DroneLibrary.Diagnostics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,8 @@ namespace DroneControl.Input.Remote
         {
             get { return false; }
         }
+
+        private bool lastDataOk;
 
         public RemoteInputDevice(string comPort)
         {
@@ -86,8 +89,15 @@ namespace DroneControl.Input.Remote
 
         public void Update(InputManager manager)
         {
-            if (!IsConnected || !controller.IsOK)
+            if (!IsConnected)
                 return;
+
+            if (!controller.IsOK)
+            {
+                if (lastDataOk)
+                    Log.Error("RemoteInputDevice data is not ok");
+                return;
+            }
 
             int[] data = controller.Data;
 
@@ -119,6 +129,7 @@ namespace DroneControl.Input.Remote
             target.Yaw = DeadZone.Compute(MapValue(data, 3), deadZone);
 
             manager.SendTargetData(target);
+            lastDataOk = true;
         }
 
         private float MapValue(int[] data, int index)

@@ -13,6 +13,11 @@ namespace DroneControl
         private Drone drone;
         private bool changingValues = false;
 
+        /// <summary>
+        /// Is true when the data was changed since last UI update.
+        /// </summary>
+        private bool dirty = true;
+
         public MotorControl()
         {
             InitializeComponent();
@@ -55,17 +60,20 @@ namespace DroneControl
 
         private void OnDroneDataChange(object sender, DataChangedEventArgs args)
         {
-            if (InvokeRequired)
-            {
-                Invoke(new EventHandler<DataChangedEventArgs>(OnDroneDataChange), sender, args);
-                return;
-            }
+            dirty = true;
+        }
 
-            QuadMotorValues motorValues = args.Data.MotorValues;
+        private void UpdateData()
+        {
+            if (!dirty)
+                return;
+
+            QuadMotorValues motorValues = drone.Data.MotorValues;
 
             SetServoValues(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
             UpdateServoValue(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
-            UpdateEnabled(args.Data.State);
+            UpdateEnabled(drone.Data.State);
+            dirty = false;
         }
 
         private void setValuesButton_Click(object sender, EventArgs e)
@@ -259,6 +267,11 @@ namespace DroneControl
                 SetServoValueToAll();
                 SendValues();
             }
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateData();
         }
     }
 }
