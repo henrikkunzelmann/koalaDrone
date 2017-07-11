@@ -239,7 +239,7 @@ namespace DroneLibrary
         /// <summary>
         /// EventHandler der aufgerufen werden soll, wenn ein Paket bestätigt wird.
         /// </summary>
-        private Dictionary<int, EventHandler<IPacket>> packetAcknowlegdeEvents = new Dictionary<int, EventHandler<IPacket>>();
+        private Dictionary<int, EventHandler<IPacket>> packetAcknowledgeEvents = new Dictionary<int, EventHandler<IPacket>>();
 
         /// <summary>
         /// Gibt zurück ob Pakete noch warten von der Drohne bestätigt zu werden.
@@ -299,7 +299,7 @@ namespace DroneLibrary
                 {
                     packetsToAcknowledge.Clear();
                     packetSendTime.Clear();
-                    packetAcknowlegdeEvents.Clear();
+                    packetAcknowledgeEvents.Clear();
                 }
 
                 SendGetInfo();
@@ -544,7 +544,7 @@ namespace DroneLibrary
                             packetSendTime[revision] = stopwatch.ElapsedMilliseconds;
 
                             if (handler != null)
-                                packetAcknowlegdeEvents[revision] = handler;
+                                packetAcknowledgeEvents[revision] = handler;
                         }
                     }
 
@@ -681,21 +681,21 @@ namespace DroneLibrary
                         if (wasNotConnected)
                             OnConnected?.Invoke(this, EventArgs.Empty);
 
-                        RemovePacketToAcknowlegde(revision);
+                        RemovePacketToAcknowledge(revision);
                         break;
                     case PacketType.Ack:
                         IPacket acknowlegdedPacket;
                         if (!packetsToAcknowledge.TryGetValue(revision, out acknowlegdedPacket))
                         {
                             if (Config.VerbosePacketReceive)
-                                Log.Verbose("[{0}] Unknown acknowlegde: [{1}]", Address.ToString(), revision);
+                                Log.Verbose("[{0}] Unknown acknowledge: [{1}]", Address.ToString(), revision);
                             break;
                         }
 
                         if (Config.VerbosePacketReceive)
-                            Log.Verbose("[{0}] Acknowlegde: [{1}] {2}", Address.ToString(), revision, acknowlegdedPacket.Type);
+                            Log.Verbose("[{0}] Acknowledge: [{1}] {2}", Address.ToString(), revision, acknowlegdedPacket.Type);
 
-                        RemovePacketToAcknowlegde(revision);
+                        RemovePacketToAcknowledge(revision);
                         break;
 
                     case PacketType.Info:
@@ -710,7 +710,7 @@ namespace DroneLibrary
                             firstInfo = false;
                         }
 
-                        RemovePacketToAcknowlegde(revision);
+                        RemovePacketToAcknowledge(revision);
                         break;
                     default:
                         throw new InvalidDataException("Invalid packet type received.");
@@ -838,7 +838,7 @@ namespace DroneLibrary
         /// Entfernt ein Paket von der Liste der noch zu bestätigen Pakete.
         /// </summary>
         /// <param name="packetID"></param>
-        private void RemovePacketToAcknowlegde(int packetID)
+        private void RemovePacketToAcknowledge(int packetID)
         {
             EventHandler<IPacket> handler = null;
             IPacket packet = null;
@@ -846,10 +846,10 @@ namespace DroneLibrary
             {
                 lock (packetsToAcknowledge)
                 {
-                    if (packetAcknowlegdeEvents.TryGetValue(packetID, out handler))
+                    if (packetAcknowledgeEvents.TryGetValue(packetID, out handler))
                     {
                         packet = packetsToAcknowledge[packetID];
-                        packetAcknowlegdeEvents.Remove(packetID);
+                        packetAcknowledgeEvents.Remove(packetID);
                     }
                     packetsToAcknowledge.Remove(packetID);
                     packetSendTime.Remove(packetID);
