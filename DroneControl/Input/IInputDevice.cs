@@ -24,8 +24,9 @@ namespace DroneControl.Input
         /// </summary>
         bool CanCalibrate { get; }
 
-        void Calibrate();
+        bool HasError { get; }
 
+        void Calibrate();
         void Update(InputManager manager);
     }
 }

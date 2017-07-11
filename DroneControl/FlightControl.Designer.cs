@@ -67,6 +67,7 @@
             this.inputCurves = new DroneControl.QuadGraphControl();
             this.searchTimer = new System.Windows.Forms.Timer(this.components);
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.deviceErrorLabel = new System.Windows.Forms.Label();
             deviceGroupBox = new System.Windows.Forms.GroupBox();
             dataGroupBox = new System.Windows.Forms.GroupBox();
             inputConfigGroupBox = new System.Windows.Forms.GroupBox();
@@ -101,6 +102,7 @@
             // 
             // deviceGroupBox
             // 
+            deviceGroupBox.Controls.Add(this.deviceErrorLabel);
             deviceGroupBox.Controls.Add(this.calibrateButton);
             deviceGroupBox.Controls.Add(this.searchDeviceButton);
             deviceGroupBox.Controls.Add(this.deviceBatteryLabel);
@@ -729,6 +731,16 @@
             this.updateTimer.Interval = 40;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
+            // deviceErrorLabel
+            // 
+            this.deviceErrorLabel.AutoSize = true;
+            this.deviceErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.deviceErrorLabel.Location = new System.Drawing.Point(6, 107);
+            this.deviceErrorLabel.Name = "deviceErrorLabel";
+            this.deviceErrorLabel.Size = new System.Drawing.Size(65, 13);
+            this.deviceErrorLabel.TabIndex = 14;
+            this.deviceErrorLabel.Text = "Device error";
+            // 
             // FlightControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -790,5 +802,6 @@
         private System.Windows.Forms.NumericUpDown yawTrimTextBox;
         private System.Windows.Forms.NumericUpDown pitchTrimTextBox;
         private System.Windows.Forms.NumericUpDown rollTrimTextBox;
+        private System.Windows.Forms.Label deviceErrorLabel;
     }
 }

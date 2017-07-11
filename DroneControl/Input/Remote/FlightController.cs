@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 using System.Globalization;
+using DroneLibrary.Diagnostics;
 
 namespace DroneControl.Input.Remote
 {
@@ -175,11 +176,12 @@ namespace DroneControl.Input.Remote
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Log.Error(e);
             }
 
+            Log.Warning("FlightController.ReadData() no longer running");
             SetDisconnectedState();
         }
 

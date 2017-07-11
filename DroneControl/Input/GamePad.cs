@@ -1,4 +1,5 @@
-﻿using SharpDX.DirectInput;
+﻿using DroneLibrary.Diagnostics;
+using SharpDX.DirectInput;
 using System;
 
 namespace DroneControl.Input
@@ -40,6 +41,8 @@ namespace DroneControl.Input
             get { return IsConnected; }
         }
 
+        public bool HasError { get; private set; }
+
         public GamePad(DirectInput directInput, DeviceInstance deviceInstance)
         {
             this.directInput = directInput;
@@ -71,35 +74,44 @@ namespace DroneControl.Input
 
         public void Update(InputManager manager)
         {
-            if (!UpdateState())
-                return;
+            try
+            {
+                if (!UpdateState())
+                    return;
 
-            if (CheckButtonPressed(2))
-                manager.SendClear();
+                if (CheckButtonPressed(2))
+                    manager.SendClear();
 
-            if (CheckButtonPressed(1))
-                manager.StopDrone();
+                if (CheckButtonPressed(1))
+                    manager.StopDrone();
 
-            if (CheckButtonPressed(0))
-                manager.ArmDrone();
+                if (CheckButtonPressed(0))
+                    manager.ArmDrone();
 
-            if (CheckButtonReleased(0))
-                manager.DisarmDrone();
+                if (CheckButtonReleased(0))
+                    manager.DisarmDrone();
 
-            float deadZone = 0.075f;
-            if (!manager.DeadZone)
-                deadZone = 0;
+                float deadZone = 0.075f;
+                if (!manager.DeadZone)
+                    deadZone = 0;
 
-            const int maxValue = UInt16.MaxValue / 2;
-            TargetData target = new TargetData();
-            target.Roll = DeadZone.Compute(currentState.X - maxValue, maxValue, deadZone);
-            target.Pitch = DeadZone.Compute(currentState.Y - maxValue, maxValue, deadZone);
-            target.Yaw = DeadZone.Compute(currentState.RotationZ - maxValue, maxValue, deadZone);
-            target.Thrust = DeadZone.Compute(UInt16.MaxValue - currentState.Z, UInt16.MaxValue, deadZone);
+                const int maxValue = UInt16.MaxValue / 2;
+                TargetData target = new TargetData();
+                target.Roll = DeadZone.Compute(currentState.X - maxValue, maxValue, deadZone);
+                target.Pitch = DeadZone.Compute(currentState.Y - maxValue, maxValue, deadZone);
+                target.Yaw = DeadZone.Compute(currentState.RotationZ - maxValue, maxValue, deadZone);
+                target.Thrust = DeadZone.Compute(UInt16.MaxValue - currentState.Z, UInt16.MaxValue, deadZone);
 
-            manager.SendTargetData(target);
+                manager.SendTargetData(target);
 
-            lastState = currentState;
+                lastState = currentState;
+                HasError = false;
+            }
+            catch(Exception e)
+            {
+                HasError = true;
+                Log.Error(e);
+            }
         }
 
         private bool CheckButtonReleased(int button)

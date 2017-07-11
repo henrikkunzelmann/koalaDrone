@@ -37,7 +37,7 @@ namespace DroneControl.Input.Remote
             get { return false; }
         }
 
-        private bool lastDataOk;
+        public bool HasError { get; private set; }
 
         public RemoteInputDevice(string comPort)
         {
@@ -89,47 +89,56 @@ namespace DroneControl.Input.Remote
 
         public void Update(InputManager manager)
         {
-            if (!IsConnected)
-                return;
-
-            if (!controller.IsOK)
+            try
             {
-                if (lastDataOk)
-                    Log.Error("RemoteInputDevice data is not ok");
-                return;
+                if (!IsConnected)
+                    return;
+
+                if (!controller.IsOK)
+                {
+                    if (!HasError)
+                        Log.Error("RemoteInputDevice data is not ok");
+                    HasError = true;
+                    return;
+                }
+
+                int[] data = controller.Data;
+
+                if (dataSets.Count >= maxDataCount)
+                    dataSets.RemoveAt(0);
+                dataSets.Add(data);
+
+                const int aux1 = 4;
+                const int aux2 = 5;
+
+                if (CheckButtonPressed(aux1, ButtonState.High, true))
+                    manager.ArmDrone();
+                else if (CheckButtonPressed(aux1, ButtonState.Low, true))
+                    manager.DisarmDrone();
+
+                if (CheckButtonPressed(aux2, ButtonState.Low, true))
+                    manager.SendClear();
+                else if (CheckButtonPressed(aux2, ButtonState.High, true))
+                    manager.StopDrone();
+
+                float deadZone = 0.075f;
+                if (!manager.DeadZone)
+                    deadZone = 0;
+
+                TargetData target = new TargetData();
+                target.Thrust = MapValueThrust(data, 0);
+                target.Roll = DeadZone.Compute(MapValue(data, 1), deadZone);
+                target.Pitch = -DeadZone.Compute(MapValue(data, 2), deadZone);
+                target.Yaw = DeadZone.Compute(MapValue(data, 3), deadZone);
+
+                manager.SendTargetData(target);
+                HasError = false;
             }
-
-            int[] data = controller.Data;
-
-            if (dataSets.Count >= maxDataCount)
-                dataSets.RemoveAt(0);
-            dataSets.Add(data);
-
-            const int aux1 = 4;
-            const int aux2 = 5;
-
-            if (CheckButtonPressed(aux1, ButtonState.High, true))
-                manager.ArmDrone();
-            else if (CheckButtonPressed(aux1, ButtonState.Low, true))
-                manager.DisarmDrone();
-
-            if (CheckButtonPressed(aux2, ButtonState.Low, true))
-                manager.SendClear();
-            else if (CheckButtonPressed(aux2, ButtonState.High, true))
-                manager.StopDrone();
-
-            float deadZone = 0.075f;
-            if (!manager.DeadZone)
-                deadZone = 0;
-
-            TargetData target = new TargetData();
-            target.Thrust = MapValueThrust(data, 0);
-            target.Roll = DeadZone.Compute(MapValue(data, 1), deadZone);
-            target.Pitch = -DeadZone.Compute(MapValue(data, 2), deadZone);
-            target.Yaw = DeadZone.Compute(MapValue(data, 3), deadZone);
-
-            manager.SendTargetData(target);
-            lastDataOk = true;
+            catch(Exception e)
+            {
+                HasError = true;
+                Log.Error(e);
+            }
         }
 
         private float MapValue(int[] data, int index)

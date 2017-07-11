@@ -1,4 +1,5 @@
-﻿using SharpDX.XInput;
+﻿using DroneLibrary.Diagnostics;
+using SharpDX.XInput;
 using System;
 
 namespace DroneControl.Input
@@ -39,6 +40,8 @@ namespace DroneControl.Input
             get { return false; }
         }
 
+        public bool HasError { get; private set; }
+
         public XboxController(Controller controller)
         {
             if (controller == null)
@@ -57,40 +60,50 @@ namespace DroneControl.Input
 
         public void Update(InputManager manager)
         {
-            if (!IsConnected)
-                return;
+            try
+            {
+                if (!IsConnected)
+                    return;
 
-            currentState = controller.GetState();
+                currentState = controller.GetState();
 
-            if (CheckButtonPressed(GamepadButtonFlags.A))
-                manager.SendClear();
+                if (CheckButtonPressed(GamepadButtonFlags.A))
+                    manager.SendClear();
 
-            if (CheckButtonPressed(GamepadButtonFlags.B))
-                manager.StopDrone();
+                if (CheckButtonPressed(GamepadButtonFlags.B))
+                    manager.StopDrone();
 
-            if (CheckButtonPressed(GamepadButtonFlags.Y))
-                manager.ToogleArmStatus();
+                if (CheckButtonPressed(GamepadButtonFlags.Y))
+                    manager.ToogleArmStatus();
 
-            float deadZone = 0.075f;
-            if (!manager.DeadZone)
-                deadZone = 0;
+                float deadZone = 0.075f;
+                if (!manager.DeadZone)
+                    deadZone = 0;
 
-            TargetData target = new TargetData();
-            target.Roll = DeadZone.Compute(currentState.Gamepad.RightThumbX, short.MaxValue, deadZone);
-            target.Pitch = -DeadZone.Compute(currentState.Gamepad.RightThumbY, short.MaxValue, deadZone);
-            target.Yaw = DeadZone.Compute(currentState.Gamepad.LeftThumbX, short.MaxValue, deadZone);
-            target.Thrust = DeadZone.Compute(currentState.Gamepad.LeftThumbY + short.MaxValue, short.MaxValue * 2, deadZone);
+                TargetData target = new TargetData();
+                target.Roll = DeadZone.Compute(currentState.Gamepad.RightThumbX, short.MaxValue, deadZone);
+                target.Pitch = -DeadZone.Compute(currentState.Gamepad.RightThumbY, short.MaxValue, deadZone);
+                target.Yaw = DeadZone.Compute(currentState.Gamepad.LeftThumbX, short.MaxValue, deadZone);
+                target.Thrust = DeadZone.Compute(currentState.Gamepad.LeftThumbY + short.MaxValue, short.MaxValue * 2, deadZone);
 
-            float x = GetButtonValue(GamepadButtonFlags.DPadRight) - GetButtonValue(GamepadButtonFlags.DPadLeft);
-            float y = -GetButtonValue(GamepadButtonFlags.DPadDown) - GetButtonValue(GamepadButtonFlags.DPadUp);
-            target.Roll += x * 0.1f;
-            target.Pitch += y * 0.1f;
+                float x = GetButtonValue(GamepadButtonFlags.DPadRight) - GetButtonValue(GamepadButtonFlags.DPadLeft);
+                float y = -GetButtonValue(GamepadButtonFlags.DPadDown) - GetButtonValue(GamepadButtonFlags.DPadUp);
+                target.Roll += x * 0.1f;
+                target.Pitch += y * 0.1f;
 
 
-            manager.SendTargetData(target);
+                manager.SendTargetData(target);
 
-            lastState = currentState;
-            firstUpdate = false;
+                lastState = currentState;
+                firstUpdate = false;
+
+                HasError = false;
+            }
+            catch(Exception e)
+            {
+                HasError = true;
+                Log.Error(e);
+            }
         }
 
         private float GetButtonValue(GamepadButtonFlags button)
