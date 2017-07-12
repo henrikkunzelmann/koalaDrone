@@ -134,6 +134,8 @@ void DroneEngine::fly() {
 	createPID();
 
 	_state = StateFlying;
+	_stopReason = None;
+
 	blinkLED(3, 550);
 	Log::info("Engine", "Flying");
 }
