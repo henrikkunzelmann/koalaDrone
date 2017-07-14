@@ -32,7 +32,7 @@ namespace DroneControl.Input
         public float PitchTrim { get; set; } = 0;
         public float YawTrim { get; set; } = 0;
 
-        public const float ThrustMax = 400;
+        public const float ThrustMax = 500;
         public float ThrustBase { get; set; } = 0.5f;
         public float ThrustExp { get; set; } = 1;
 
