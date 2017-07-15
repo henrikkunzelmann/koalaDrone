@@ -6,6 +6,7 @@ using System;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace DroneControl
 {
@@ -26,6 +27,8 @@ namespace DroneControl
 
         private long tickCount;
         private bool dataDirty = true;
+
+        private Stopwatch flyTimer = new Stopwatch();
 
         public MainForm(Drone drone)
         {
@@ -184,7 +187,15 @@ namespace DroneControl
                         break;
                 }
 
-                statusArmedLabel.Text = $"Status: {data.State}";
+                if (data.State.AreMotorsRunning() && !flyTimer.IsRunning)
+                    flyTimer.Start();
+                else if (!data.State.AreMotorsRunning() && flyTimer.IsRunning)
+                    flyTimer.Stop();
+
+                if (data.State == DroneState.Flying)
+                    statusArmedLabel.Text = string.Format("Status: {0} ({1:00}:{2:00})", data.State, (int)flyTimer.Elapsed.TotalMinutes, flyTimer.Elapsed.Seconds);
+                else
+                    statusArmedLabel.Text = $"Status: {data.State}";
 
                 // RSSI ist immer unter 0, wenn die Drohne mit einem Netzwerk verbunden ist
                 wifiRssiLabel.Visible = data.WifiRssi < 0;
