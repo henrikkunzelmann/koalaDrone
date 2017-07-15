@@ -238,7 +238,10 @@ void DroneEngine::handleInternal() {
 				calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetGyroY * horzSensivitiy);
 			}
 
-			angleYawOutput = _max(-config->YawMaxCorrection, _min(config->YawMaxCorrection, MathHelper::angleDifference(sensor->getGyro()->getYaw(), 0) * -config->YawCorrectionFactor));
+			if (yawCmd != 0 || thrust <= config->MaxThrustForFlying)
+				targetYaw = sensor->getGyro()->getYaw();
+
+			angleYawOutput = _max(-config->YawMaxCorrection, _min(config->YawMaxCorrection, MathHelper::angleDifference(sensor->getGyro()->getYaw(), targetYaw) * -config->YawCorrectionFactor));
 
 			if (config->StabOnlyHelp) {
 				rollCmd += angleRollOutput;

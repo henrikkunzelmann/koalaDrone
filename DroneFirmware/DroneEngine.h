@@ -45,6 +45,8 @@ class DroneEngine
 	 int16_t targetGyroZ;
 	 int16_t thrust;
 
+	 double targetYaw;
+
 	 double pidInput;
 	 double pidSetpoint;
 	 
