@@ -65,15 +65,25 @@ namespace DroneControl
 
         private void UpdateData()
         {
-            if (!dirty)
-                return;
+            try
+            {
+                if (!dirty)
+                    return;
 
-            QuadMotorValues motorValues = drone.Data.MotorValues;
+                SuspendLayout();
+                QuadMotorValues motorValues = drone.Data.MotorValues;
 
-            SetServoValues(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
-            UpdateServoValue(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
-            UpdateEnabled(drone.Data.State);
-            dirty = false;
+                SetServoValues(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
+                UpdateServoValue(motorValues.FrontLeft, motorValues.FrontRight, motorValues.BackLeft, motorValues.BackRight);
+                UpdateEnabled(drone.Data.State);
+
+                ResumeLayout();
+                dirty = false;
+            }
+            catch (Exception e)
+            {
+                ErrorHandler.HandleException(drone, e);
+            }
         }
 
         private void setValuesButton_Click(object sender, EventArgs e)

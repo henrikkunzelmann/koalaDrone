@@ -193,7 +193,7 @@ namespace DroneControl
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                ErrorHandler.HandleException(drone, e);
             }
             return false;
         }
@@ -209,7 +209,7 @@ namespace DroneControl
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                ErrorHandler.HandleException(drone, e);
             }
         }
 
@@ -227,20 +227,27 @@ namespace DroneControl
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                ErrorHandler.HandleException(drone, e);
             }
         }
 
         private void UpdateUI()
         {
-            if (!running)
-                return;
+            try
+            {
+                if (!running)
+                    return;
 
-            long fileSize = dataStream.BaseStream.Length + logStream.BaseStream.Length;
-            if (fileSize < 1024 * 1024)
-                statusLabel.Text = string.Format("Running ({0}kbyte)", fileSize / 1024);
-            else
-                statusLabel.Text = string.Format("Running ({0}mbyte)", fileSize / (1024 * 1024));
+                long fileSize = dataStream.BaseStream.Length + logStream.BaseStream.Length;
+                if (fileSize < 1024 * 1024)
+                    statusLabel.Text = string.Format("Running ({0}kbyte)", fileSize / 1024);
+                else
+                    statusLabel.Text = string.Format("Running ({0}mbyte)", fileSize / (1024 * 1024));
+            }
+            catch (Exception e)
+            {
+                ErrorHandler.HandleException(drone, e);
+            }
         }
 
         private static string[] columns = new string[]
@@ -288,7 +295,7 @@ namespace DroneControl
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                ErrorHandler.HandleException(drone, e);
             }
         }
 

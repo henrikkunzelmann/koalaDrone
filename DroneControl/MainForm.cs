@@ -147,87 +147,94 @@ namespace DroneControl
 
         private void UpdateData()
         {
-            SuspendLayout();
-
-            DroneData data = drone.Data;
-            if (!drone.IsConnected)
+            try
             {
-                statusArmedLabel.ForeColor = Color.Red;
-                statusArmedLabel.Text = "Status: not connected";
-                if (data.State != DroneState.Unknown)
-                    statusArmedLabel.Text += string.Format(" (last: {0})", data.State);
+                SuspendLayout();
 
-                statusButton.Enabled = false;
-                wifiRssiLabel.Visible = false;
-            }
-            else
-            {
-                statusButton.Enabled = true;
-
-                switch (drone.Data.State)
+                DroneData data = drone.Data;
+                if (!drone.IsConnected)
                 {
-                    case DroneState.Unknown:
-                        statusButton.Enabled = false;
-                        statusArmedLabel.ForeColor = Color.DarkRed;
-                        statusButton.Text = "Unknown";
-                        break;
-                    case DroneState.Stopped:
-                    case DroneState.Reset:
-                        statusArmedLabel.ForeColor = Color.Green;
-                        statusButton.Text = "Clear";
-                        break;
-                    case DroneState.Idle:
-                        statusArmedLabel.ForeColor = Color.DarkGreen;
-                        statusButton.Text = "Arm";
-                        break;
-                    case DroneState.Armed:
-                    case DroneState.Flying:
-                        statusArmedLabel.ForeColor = Color.DarkOrange;
-                        statusButton.Text = "Disarm";
-                        break;
+                    statusArmedLabel.ForeColor = Color.Red;
+                    statusArmedLabel.Text = "Status: not connected";
+                    if (data.State != DroneState.Unknown)
+                        statusArmedLabel.Text += string.Format(" (last: {0})", data.State);
+
+                    statusButton.Enabled = false;
+                    wifiRssiLabel.Visible = false;
                 }
-
-                if (data.State.AreMotorsRunning() && !flyTimer.IsRunning)
-                    flyTimer.Start();
-                else if (!data.State.AreMotorsRunning() && flyTimer.IsRunning)
-                    flyTimer.Stop();
-
-                if (flyTimer.ElapsedMilliseconds > 0)
-                    statusArmedLabel.Text = string.Format("Status: {0} ({1:00}:{2:00})", data.State, (int)flyTimer.Elapsed.TotalMinutes, flyTimer.Elapsed.Seconds);
                 else
-                    statusArmedLabel.Text = $"Status: {data.State}";
-
-                // RSSI ist immer unter 0, wenn die Drohne mit einem Netzwerk verbunden ist
-                wifiRssiLabel.Visible = data.WifiRssi < 0;
-
-                if (wifiRssiLabel.Visible)
                 {
-                    StringBuilder wifiText = new StringBuilder();
-                    wifiText.Append("WiFi signal: ");
-                    wifiText.Append(data.WifiRssi);
-                    wifiText.Append("dBm ");
+                    statusButton.Enabled = true;
 
-                    if (data.WifiRssi > -40)
+                    switch (drone.Data.State)
                     {
-                        wifiText.Append("very good");
-                        wifiRssiLabel.ForeColor = Color.DarkGreen;
+                        case DroneState.Unknown:
+                            statusButton.Enabled = false;
+                            statusArmedLabel.ForeColor = Color.DarkRed;
+                            statusButton.Text = "Unknown";
+                            break;
+                        case DroneState.Stopped:
+                        case DroneState.Reset:
+                            statusArmedLabel.ForeColor = Color.Green;
+                            statusButton.Text = "Clear";
+                            break;
+                        case DroneState.Idle:
+                            statusArmedLabel.ForeColor = Color.DarkGreen;
+                            statusButton.Text = "Arm";
+                            break;
+                        case DroneState.Armed:
+                        case DroneState.Flying:
+                            statusArmedLabel.ForeColor = Color.DarkOrange;
+                            statusButton.Text = "Disarm";
+                            break;
                     }
-                    else if (data.WifiRssi > -70)
-                    {
-                        wifiText.Append("good");
-                        wifiRssiLabel.ForeColor = Color.Green;
-                    }
+
+                    if (data.State.AreMotorsRunning() && !flyTimer.IsRunning)
+                        flyTimer.Start();
+                    else if (!data.State.AreMotorsRunning() && flyTimer.IsRunning)
+                        flyTimer.Stop();
+
+                    if (flyTimer.ElapsedMilliseconds > 0)
+                        statusArmedLabel.Text = string.Format("Status: {0} ({1:00}:{2:00})", data.State, (int)flyTimer.Elapsed.TotalMinutes, flyTimer.Elapsed.Seconds);
                     else
+                        statusArmedLabel.Text = $"Status: {data.State}";
+
+                    // RSSI ist immer unter 0, wenn die Drohne mit einem Netzwerk verbunden ist
+                    wifiRssiLabel.Visible = data.WifiRssi < 0;
+
+                    if (wifiRssiLabel.Visible)
                     {
-                        wifiText.Append("bad");
-                        wifiRssiLabel.ForeColor = Color.DarkRed;
+                        StringBuilder wifiText = new StringBuilder();
+                        wifiText.Append("WiFi signal: ");
+                        wifiText.Append(data.WifiRssi);
+                        wifiText.Append("dBm ");
+
+                        if (data.WifiRssi > -40)
+                        {
+                            wifiText.Append("very good");
+                            wifiRssiLabel.ForeColor = Color.DarkGreen;
+                        }
+                        else if (data.WifiRssi > -70)
+                        {
+                            wifiText.Append("good");
+                            wifiRssiLabel.ForeColor = Color.Green;
+                        }
+                        else
+                        {
+                            wifiText.Append("bad");
+                            wifiRssiLabel.ForeColor = Color.DarkRed;
+                        }
+
+                        wifiRssiLabel.Text = wifiText.ToString();
                     }
-
-                    wifiRssiLabel.Text = wifiText.ToString();
                 }
-            }
 
-            ResumeLayout();
+                ResumeLayout();
+            }
+            catch(Exception e)
+            {
+                ErrorHandler.HandleException(drone, e);
+            }
         }
 
         private void UpdateSettings(DroneSettings settings)

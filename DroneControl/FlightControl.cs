@@ -203,18 +203,25 @@ namespace DroneControl
 
         private void UpdateUI()
         {
-            SuspendLayout();
-
-            deviceErrorLabel.Visible = (InputManager.CurrentDevice != null && InputManager.CurrentDevice.HasError);
-
-            if (dirty)
+            try
             {
-                UpdateTargetData();
-                UpdateDebugData();
-                dirty = false;
-            }
+                SuspendLayout();
 
-            ResumeLayout();
+                deviceErrorLabel.Visible = (InputManager.CurrentDevice != null && InputManager.CurrentDevice.HasError);
+
+                if (dirty)
+                {
+                    UpdateTargetData();
+                    UpdateDebugData();
+                    dirty = false;
+                }
+
+                ResumeLayout();
+            }
+            catch (Exception e)
+            {
+                ErrorHandler.HandleException(drone, e);
+            }
         }
 
         private void UpdateTargetData()
