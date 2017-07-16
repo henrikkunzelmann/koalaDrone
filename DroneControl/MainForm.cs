@@ -192,7 +192,7 @@ namespace DroneControl
                 else if (!data.State.AreMotorsRunning() && flyTimer.IsRunning)
                     flyTimer.Stop();
 
-                if (data.State == DroneState.Flying)
+                if (flyTimer.ElapsedMilliseconds > 0)
                     statusArmedLabel.Text = string.Format("Status: {0} ({1:00}:{2:00})", data.State, (int)flyTimer.Elapsed.TotalMinutes, flyTimer.Elapsed.Seconds);
                 else
                     statusArmedLabel.Text = $"Status: {data.State}";
