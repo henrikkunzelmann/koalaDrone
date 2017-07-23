@@ -34,7 +34,7 @@ void Baro::update() {
 	values.Pressure = FILTER(last.Pressure, values.Pressure, 0.025f);
 	values.Humidity = FILTER(last.Humidity, values.Humidity, 0.025f);
 	values.Temperature = FILTER(last.Temperature, values.Temperature, 0.025f);
-	altitude = 44330 * (1.0 - pow(values.Pressure / 1013.25, 0.1903));
+	altitude = 44330 * (1.0 - pow(values.Pressure / 1013.25, 0.19029495718));
 
 	// Data Interval messen
 	if (memcmp(&last, &values, sizeof(values)) != 0) {
