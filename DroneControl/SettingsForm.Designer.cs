@@ -105,6 +105,7 @@
             this.enableStabilizationCheckBox = new System.Windows.Forms.CheckBox();
             this.applyButton = new System.Windows.Forms.Button();
             this.revertButton = new System.Windows.Forms.Button();
+            this.tuningButton = new System.Windows.Forms.Button();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -938,6 +939,7 @@
             // 
             // flyingPage
             // 
+            this.flyingPage.Controls.Add(this.tuningButton);
             this.flyingPage.Controls.Add(groupBox1);
             this.flyingPage.Controls.Add(this.onlyArmWhenStillCheckBox);
             this.flyingPage.Controls.Add(this.maxThrustForFlyingTextBox);
@@ -1022,6 +1024,16 @@
             this.revertButton.Text = "Revert";
             this.revertButton.UseVisualStyleBackColor = true;
             this.revertButton.Click += new System.EventHandler(this.revertButton_Click);
+            // 
+            // tuningButton
+            // 
+            this.tuningButton.Location = new System.Drawing.Point(272, 231);
+            this.tuningButton.Name = "tuningButton";
+            this.tuningButton.Size = new System.Drawing.Size(75, 23);
+            this.tuningButton.TabIndex = 28;
+            this.tuningButton.Text = "Tuning";
+            this.tuningButton.UseVisualStyleBackColor = true;
+            this.tuningButton.Click += new System.EventHandler(this.tuningButton_Click);
             // 
             // SettingsForm
             // 
@@ -1116,5 +1128,6 @@
         private System.Windows.Forms.NumericUpDown angleKpTextBox;
         private System.Windows.Forms.TextBox baroSensorTextBox;
         private System.Windows.Forms.Button revertButton;
+        private System.Windows.Forms.Button tuningButton;
     }
 }

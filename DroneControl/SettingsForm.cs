@@ -262,5 +262,10 @@ namespace DroneControl
             }
             return true;
         }
+
+        private void tuningButton_Click(object sender, EventArgs e)
+        {
+            new PIDTuningForm(drone).Show();
+        }
     }
 }
