@@ -257,6 +257,12 @@ void DroneEngine::handleInternal() {
 			FaultManager::fault(FaultInvalidSensorData, "DroneEngine", "hasValidImuData()");
 	}
 
+	// Add trims
+	rollCmd += config->RollTrim * sensitivity;
+	pitchCmd += config->PitchTrim * sensitivity;
+	yawCmd += config->YawTrim * sensitivity;
+
+
 	if (sensor->getGyro()->hasValidGyroData()) {
 		calculatePID(rollPID, gyroValues.GyroX, rollCmd);
 		calculatePID(pitchPID, gyroValues.GyroY, pitchCmd);

@@ -68,6 +68,10 @@ struct Config {
 	int32_t MaxThrustForFlying;
 	bool OnlyArmWhenStill;
 
+	float RollTrim;
+	float PitchTrim;
+	float YawTrim;
+
 	PIDSettings AngleStabilization;
 
 	// Debug Settings

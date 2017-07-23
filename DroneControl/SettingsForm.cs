@@ -73,6 +73,10 @@ namespace DroneControl
                 Bind(angleKiTextBox, "data.AngleStabilization.Ki");
                 Bind(angleKdTextBox, "data.AngleStabilization.Kd");
 
+                Bind(rollTrim, "data.RollTrim");
+                Bind(pitchTrim, "data.PitchTrim");
+                Bind(yawTrim, "data.YawTrim");
+
                 drone.OnSettingsChange += Drone_OnSettingsChange;
                 drone.OnInfoChange += Drone_OnInfoChange;
             }

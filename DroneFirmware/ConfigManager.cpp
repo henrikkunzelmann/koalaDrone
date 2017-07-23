@@ -157,6 +157,10 @@ Config ConfigManager::getDefault() {
 	config.MaxThrustForFlying = 50;
 	config.OnlyArmWhenStill = false;
 
+	config.RollTrim = 0;
+	config.PitchTrim = 0;
+	config.YawTrim = 0;
+
 	config.AngleStabilization.Kp = 2.5f;
 	config.AngleStabilization.Ki = 0;
 	config.AngleStabilization.Kd = 0.15f;

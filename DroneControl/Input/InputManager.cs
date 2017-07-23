@@ -28,10 +28,6 @@ namespace DroneControl.Input
         public float PitchScale { get; set; } = 1;
         public float YawScale { get; set; } = 1;
 
-        public float RollTrim { get; set; } = 0;
-        public float PitchTrim { get; set; } = 0;
-        public float YawTrim { get; set; } = 0;
-
         public const float ThrustMax = 500;
         public float ThrustBase { get; set; } = 0.5f;
         public float ThrustExp { get; set; } = 1;
@@ -157,10 +153,6 @@ namespace DroneControl.Input
             data.Pitch *= 500;
             data.Yaw *= 200;
             data.Thrust *= ThrustMax;
-
-            data.Roll += RollTrim;
-            data.Pitch += PitchTrim;
-            data.Yaw += YawTrim;
 
             // Daten setzen und senden
             TargetData = data;

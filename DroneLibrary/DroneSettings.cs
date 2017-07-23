@@ -110,6 +110,15 @@ namespace DroneLibrary
         [Category("Flying")]
         public bool OnlyArmWhenStill;
 
+        [Category("Flying")]
+        public float RollTrim;
+
+        [Category("Flying")]
+        public float PitchTrim;
+
+        [Category("Flying")]
+        public float YawTrim;
+
         [Category("PID Flying")]
         public PidSettings AngleStabilization;
 

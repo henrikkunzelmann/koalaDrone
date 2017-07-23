@@ -286,10 +286,6 @@ namespace DroneControl
             InputManager.PitchScale = (float)pitchScaleTextBox.Value;
             InputManager.YawScale = (float)yawScaleTextBox.Value;
 
-            InputManager.RollTrim = (float)rollTrimTextBox.Value;
-            InputManager.PitchTrim = (float)pitchTrimTextBox.Value;
-            InputManager.YawTrim = (float)yawTrimTextBox.Value;
-
             InputManager.ThrustExp = (float)thrustExpTextBox.Value;
             InputManager.ThrustBase = (float)thrustBaseTextBox.Value;
 

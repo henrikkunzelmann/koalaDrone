@@ -65,6 +65,10 @@
             System.Windows.Forms.Label label2;
             System.Windows.Forms.Label label3;
             System.Windows.Forms.Label label7;
+            System.Windows.Forms.GroupBox groupBox2;
+            System.Windows.Forms.Label label9;
+            System.Windows.Forms.Label label10;
+            System.Windows.Forms.Label label11;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.updateFirmwareButton = new System.Windows.Forms.Button();
             this.firmwareVersionTextBox = new System.Windows.Forms.TextBox();
@@ -106,6 +110,9 @@
             this.applyButton = new System.Windows.Forms.Button();
             this.revertButton = new System.Windows.Forms.Button();
             this.tuningButton = new System.Windows.Forms.Button();
+            this.yawTrim = new System.Windows.Forms.NumericUpDown();
+            this.pitchTrim = new System.Windows.Forms.NumericUpDown();
+            this.rollTrim = new System.Windows.Forms.NumericUpDown();
             nameLabel = new System.Windows.Forms.Label();
             modelLabel = new System.Windows.Forms.Label();
             idLabel = new System.Windows.Forms.Label();
@@ -143,6 +150,10 @@
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
+            groupBox2 = new System.Windows.Forms.GroupBox();
+            label9 = new System.Windows.Forms.Label();
+            label10 = new System.Windows.Forms.Label();
+            label11 = new System.Windows.Forms.Label();
             firmwareGroupBox.SuspendLayout();
             quadrocopterPage.SuspendLayout();
             hardwareGroupBox.SuspendLayout();
@@ -167,6 +178,10 @@
             this.tabControl1.SuspendLayout();
             this.flyingPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).BeginInit();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.yawTrim)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchTrim)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rollTrim)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -939,6 +954,7 @@
             // 
             // flyingPage
             // 
+            this.flyingPage.Controls.Add(groupBox2);
             this.flyingPage.Controls.Add(this.tuningButton);
             this.flyingPage.Controls.Add(groupBox1);
             this.flyingPage.Controls.Add(this.onlyArmWhenStillCheckBox);
@@ -1035,6 +1051,114 @@
             this.tuningButton.UseVisualStyleBackColor = true;
             this.tuningButton.Click += new System.EventHandler(this.tuningButton_Click);
             // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(this.yawTrim);
+            groupBox2.Controls.Add(this.pitchTrim);
+            groupBox2.Controls.Add(this.rollTrim);
+            groupBox2.Controls.Add(label9);
+            groupBox2.Controls.Add(label10);
+            groupBox2.Controls.Add(label11);
+            groupBox2.Location = new System.Drawing.Point(518, 220);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new System.Drawing.Size(117, 101);
+            groupBox2.TabIndex = 23;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Acc Trim";
+            // 
+            // yawTrim
+            // 
+            this.yawTrim.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.yawTrim.Location = new System.Drawing.Point(34, 72);
+            this.yawTrim.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.yawTrim.Minimum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            -2147483648});
+            this.yawTrim.Name = "yawTrim";
+            this.yawTrim.Size = new System.Drawing.Size(70, 20);
+            this.yawTrim.TabIndex = 15;
+            // 
+            // pitchTrim
+            // 
+            this.pitchTrim.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.pitchTrim.Location = new System.Drawing.Point(34, 46);
+            this.pitchTrim.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.pitchTrim.Minimum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            -2147483648});
+            this.pitchTrim.Name = "pitchTrim";
+            this.pitchTrim.Size = new System.Drawing.Size(70, 20);
+            this.pitchTrim.TabIndex = 14;
+            // 
+            // rollTrim
+            // 
+            this.rollTrim.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.rollTrim.Location = new System.Drawing.Point(34, 18);
+            this.rollTrim.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.rollTrim.Minimum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            -2147483648});
+            this.rollTrim.Name = "rollTrim";
+            this.rollTrim.Size = new System.Drawing.Size(70, 20);
+            this.rollTrim.TabIndex = 13;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new System.Drawing.Point(6, 22);
+            label9.Name = "label9";
+            label9.Size = new System.Drawing.Size(25, 13);
+            label9.TabIndex = 2;
+            label9.Text = "Roll";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new System.Drawing.Point(5, 48);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(31, 13);
+            label10.TabIndex = 8;
+            label10.Text = "Pitch";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new System.Drawing.Point(5, 74);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(28, 13);
+            label11.TabIndex = 12;
+            label11.Text = "Yaw";
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1083,6 +1207,11 @@
             this.flyingPage.ResumeLayout(false);
             this.flyingPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maxThrustForFlyingTextBox)).EndInit();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.yawTrim)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pitchTrim)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rollTrim)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1129,5 +1258,8 @@
         private System.Windows.Forms.TextBox baroSensorTextBox;
         private System.Windows.Forms.Button revertButton;
         private System.Windows.Forms.Button tuningButton;
+        private System.Windows.Forms.NumericUpDown yawTrim;
+        private System.Windows.Forms.NumericUpDown pitchTrim;
+        private System.Windows.Forms.NumericUpDown rollTrim;
     }
 }
