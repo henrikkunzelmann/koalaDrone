@@ -144,61 +144,73 @@ namespace DroneControl
 
         private void UpdateDeviceInfo()
         {
-            SuspendLayout();
-
-            if (InputManager.CurrentDevice == null)
+            try
             {
-                calibrateButton.Enabled = false;
-
-                deviceConnectionLabel.Text = "No device selected";
-                deviceConnectionLabel.ForeColor = SystemColors.ControlText;
-                deviceBatteryLabel.Visible = false;
-                ResumeLayout();
-                return;
-            }
-
-            if (InputManager.CurrentDevice.IsConnected)
-            {
-                calibrateButton.Enabled = InputManager.CurrentDevice.CanCalibrate;
-
-                deviceConnectionLabel.Text = "Device connected";
-                deviceConnectionLabel.ForeColor = Color.Green;
-
-                if (InputManager.CurrentDevice.Battery.HasBattery)
+                if (InvokeRequired)
+                    Invoke(new Action(UpdateDeviceInfo));
+                else
                 {
-                    deviceBatteryLabel.Visible = true;
-                    deviceBatteryLabel.Text = string.Format("Battery: {0}", InputManager.CurrentDevice.Battery.Level);
+                    SuspendLayout();
 
-                    switch (InputManager.CurrentDevice.Battery.Level)
+                    if (InputManager.CurrentDevice == null)
                     {
-                        case BatteryLevel.Empty:
-                            deviceBatteryLabel.ForeColor = Color.DarkRed;
-                            break;
-                        case BatteryLevel.Low:
-                            deviceBatteryLabel.ForeColor = Color.Red;
-                            break;
-                        case BatteryLevel.Medium:
-                            deviceBatteryLabel.ForeColor = Color.Orange;
-                            break;
-                        case BatteryLevel.Full:
-                            deviceBatteryLabel.ForeColor = Color.Green;
-                            break;
+                        calibrateButton.Enabled = false;
+
+                        deviceConnectionLabel.Text = "No device selected";
+                        deviceConnectionLabel.ForeColor = SystemColors.ControlText;
+                        deviceBatteryLabel.Visible = false;
+                        ResumeLayout();
+                        return;
                     }
 
+                    if (InputManager.CurrentDevice.IsConnected)
+                    {
+                        calibrateButton.Enabled = InputManager.CurrentDevice.CanCalibrate;
+
+                        deviceConnectionLabel.Text = "Device connected";
+                        deviceConnectionLabel.ForeColor = Color.Green;
+
+                        if (InputManager.CurrentDevice.Battery.HasBattery)
+                        {
+                            deviceBatteryLabel.Visible = true;
+                            deviceBatteryLabel.Text = string.Format("Battery: {0}", InputManager.CurrentDevice.Battery.Level);
+
+                            switch (InputManager.CurrentDevice.Battery.Level)
+                            {
+                                case BatteryLevel.Empty:
+                                    deviceBatteryLabel.ForeColor = Color.DarkRed;
+                                    break;
+                                case BatteryLevel.Low:
+                                    deviceBatteryLabel.ForeColor = Color.Red;
+                                    break;
+                                case BatteryLevel.Medium:
+                                    deviceBatteryLabel.ForeColor = Color.Orange;
+                                    break;
+                                case BatteryLevel.Full:
+                                    deviceBatteryLabel.ForeColor = Color.Green;
+                                    break;
+                            }
+
+                        }
+                        else
+                            deviceBatteryLabel.Visible = false;
+                    }
+                    else
+                    {
+                        calibrateButton.Enabled = false;
+
+                        deviceConnectionLabel.Text = "Device disconnected";
+                        deviceConnectionLabel.ForeColor = Color.Red;
+
+                        deviceBatteryLabel.Visible = false;
+                    }
+                    ResumeLayout();
                 }
-                else
-                    deviceBatteryLabel.Visible = false;
             }
-            else
+            catch(Exception e)
             {
-                calibrateButton.Enabled = false;
-
-                deviceConnectionLabel.Text = "Device disconnected";
-                deviceConnectionLabel.ForeColor = Color.Red;
-
-                deviceBatteryLabel.Visible = false;
+                ErrorHandler.HandleException(drone, e);
             }
-            ResumeLayout();
         }
 
         private void UpdateUI()
