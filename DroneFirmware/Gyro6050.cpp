@@ -1,18 +1,27 @@
 #include "Gyro6050.h"
 
-Gyro6050::Gyro6050(Config* config) : Gyro(config) {
+Gyro6050::Gyro6050(SensorHAL* hal, Config* config) : Gyro(hal, config) {
 	mpuOK = false;
 }
 
-const char* Gyro6050::name() const {
+const char* Gyro6050::getName() const {
 	return "InvenSense MPU-6050";
 }
 
-const char* Gyro6050::magnetometerName() const {
+const char* Gyro6050::getShortName() const {
+	return "Gyro6050";
+}
+
+const char* Gyro6050::getMagnetometerName() const {
 	return "";
 }
 
-bool Gyro6050::init() {
+boolean Gyro6050::isHardwareBased() const
+{
+	return true;
+}
+
+boolean Gyro6050::init() {
 	Log::info("Gyro6050", "init()");
 
 	if (!mpu.testConnection()) {
@@ -23,6 +32,7 @@ bool Gyro6050::init() {
 
 	Log::debug("Gyro6050", "mpu.reset()");
 	mpu.reset();
+	mpu.resetSensors();
 
 	Log::debug("Gyro6050", "mpu.initialize()");
 	mpu.initialize();
@@ -42,6 +52,11 @@ bool Gyro6050::init() {
 
 	mpuOK = true;
 	return mpuOK;
+}
+
+boolean Gyro6050::disable()
+{
+	return true;
 }
 
 bool Gyro6050::getValues(GyroValues* values) {
@@ -72,18 +87,6 @@ bool Gyro6050::getValues(GyroValues* values) {
 
 	Profiler::end();
 	return true;
-}
-
-void Gyro6050::reset() {
-	if (mpuOK)
-		mpu.resetSensors();
-}
-
-void Gyro6050::resetMagnet() {
-}
-
-bool Gyro6050::isOK() const {
-	return mpuOK;
 }
 
 bool Gyro6050::hasMagnetometer() const {

@@ -55,22 +55,22 @@ PID* DroneEngine::createPID(PIDSettings settings, double limit, double* output) 
 }
 
 bool DroneEngine::isGyroSafe() {
-	return abs(sensor->getGyro()->getRoll()) <= config->SafeRoll && abs(sensor->getGyro()->getPitch()) <= config->SafePitch;
+	return abs(sensor->getIMU()->getRoll()) <= config->SafeRoll && abs(sensor->getIMU()->getPitch()) <= config->SafePitch;
 }
 
 void DroneEngine::arm() {
 	if (_state == StateIdle) {
-		if (!sensor->getGyro()->isOK()) {
-			blinkLED(5, 300);
-			Log::info("Engine", "Can not arm motors, gyro is not OK");
-			return;
-		}
-		if (sensor->getGyro()->inCalibration()) {
+		if (sensor->getGyro()->isCalibrating()) {
 			blinkLED(5, 300);
 			Log::info("Engine", "Can not arm motors, gyro is in calibration");
 			return;
 		}
-		if (!sensor->getGyro()->hasValidGyroData()) {
+		if (sensor->getIMU()->isCalibrating()) {
+			blinkLED(5, 300);
+			Log::info("Engine", "Can not arm motors, imu is in calibration");
+			return;
+		}
+		if (!sensor->getGyro()->isDataOK()) {
 			blinkLED(5, 300);
 			Log::info("Engine", "Can not arm motors, gyro data is not valid");
 			return;
@@ -86,7 +86,7 @@ void DroneEngine::arm() {
 				Log::info("Engine", "Can not arm motors, not still (moving)");
 				still = false;
 			}
-			if (!sensor->getGyro()->isFlat()) {
+			if (!sensor->getIMU()->isFlat()) {
 				Log::info("Engine", "Can not arm motors, not still (not flat)");
 				still = false;
 			}
@@ -153,11 +153,6 @@ void DroneEngine::stop(StopReason reason) {
 }
 
 void DroneEngine::clearStatus() {
-	if (_state == StateStopped) {
-		Log::info("Engine", "Resetting gyro, because clearStatus()");
-		sensor->getGyro()->reset();
-	}
-
 	if (_state == StateReset || _state == StateStopped) {
 		_state = StateIdle;
 		Log::info("Engine", "Status cleared");
@@ -226,22 +221,22 @@ void DroneEngine::handleInternal() {
 	float yawCmd = targetGyroZ * sensitivity;
 
 	if (config->EnableStabilization) {
-		if (sensor->getGyro()->hasValidImuData()) {
+		if (sensor->getIMU()->isDataOK()) {
 			float horzSensivitiy = cmdScale * config->StabInputScale;
 
 			if (config->StabOnlyHelp) {
-				calculatePID(angleRollPID, sensor->getGyro()->getRoll(), 0);
-				calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), 0);
+				calculatePID(angleRollPID, sensor->getIMU()->getRoll(), 0);
+				calculatePID(anglePitchPID, sensor->getIMU()->getPitch(), 0);
 			}
 			else {
-				calculatePID(angleRollPID, sensor->getGyro()->getRoll(), targetGyroX * horzSensivitiy);
-				calculatePID(anglePitchPID, sensor->getGyro()->getPitch(), targetGyroY * horzSensivitiy);
+				calculatePID(angleRollPID, sensor->getIMU()->getRoll(), targetGyroX * horzSensivitiy);
+				calculatePID(anglePitchPID, sensor->getIMU()->getPitch(), targetGyroY * horzSensivitiy);
 			}
 
 			if (yawCmd != 0 || thrust <= config->MaxThrustForFlying)
-				targetYaw = sensor->getGyro()->getYaw();
+				targetYaw = sensor->getIMU()->getYaw();
 
-			angleYawOutput = _max(-config->YawMaxCorrection, _min(config->YawMaxCorrection, MathHelper::angleDifference(sensor->getGyro()->getYaw(), targetYaw) * -config->YawCorrectionFactor));
+			angleYawOutput = _max(-config->YawMaxCorrection, _min(config->YawMaxCorrection, MathHelper::angleDifference(sensor->getIMU()->getYaw(), targetYaw) * -config->YawCorrectionFactor));
 
 			if (config->StabOnlyHelp) {
 				rollCmd += angleRollOutput;
@@ -263,7 +258,7 @@ void DroneEngine::handleInternal() {
 	yawCmd += config->YawTrim * sensitivity;
 
 
-	if (sensor->getGyro()->hasValidGyroData()) {
+	if (sensor->getGyro()->isDataOK()) {
 		calculatePID(rollPID, gyroValues.GyroX, rollCmd);
 		calculatePID(pitchPID, gyroValues.GyroY, pitchCmd);
 		calculatePID(yawPID, gyroValues.GyroZ, yawCmd);

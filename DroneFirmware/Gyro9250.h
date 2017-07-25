@@ -23,16 +23,16 @@ protected:
 
 	bool getValues(GyroValues* values);
 public:
-	explicit Gyro9250(Config* config);
+	explicit Gyro9250(SensorHAL* hal, Config* config);
 
-	const char* name() const;
-	const char* magnetometerName() const;
+	const char* getName() const;
+	const char* getShortName() const;
+	const char* getMagnetometerName() const;
+	boolean isHardwareBased() const;
+	boolean disable();
 
-	bool init();
-	void reset();
-	void resetMagnet();
+	boolean init();
 
-	bool isOK() const;
 	bool hasMagnetometer() const;
 	bool hasIMU() const;
 };

@@ -2,12 +2,7 @@
 
 #include <Arduino.h>
 
-struct CalibrationData {
-	float Min[3];
-	float Max[3];
-	float Average[3];
-	float Length;
-};
+#include "CalibrationData.h"
 
 struct SensorCalibration {
 	CalibrationData MagnetCalibration;

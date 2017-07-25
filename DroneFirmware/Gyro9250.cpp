@@ -1,18 +1,32 @@
 #include "Gyro9250.h"
 
-Gyro9250::Gyro9250(Config* config) : Gyro(config) {
+Gyro9250::Gyro9250(SensorHAL* hal, Config* config) : Gyro(hal, config) {
 	mpuOK = false;
 }
 
-const char* Gyro9250::name() const {
+const char* Gyro9250::getName() const {
 	return "InvenSense MPU-9250";
 }
 
-const char* Gyro9250::magnetometerName() const {
+const char* Gyro9250::getShortName() const {
+	return "Gyro9250";
+}
+
+const char* Gyro9250::getMagnetometerName() const {
 	return "MPU-9250 (AK8963)";
 }
 
-bool Gyro9250::init() {
+boolean Gyro9250::isHardwareBased() const
+{
+	return true;
+}
+
+boolean Gyro9250::disable()
+{
+	return true;
+}
+
+boolean Gyro9250::init() {
 	Log::info("Gyro9250", "init()");
 
 	if (!mpu.testConnection()) {
@@ -23,6 +37,9 @@ bool Gyro9250::init() {
 
 	Log::debug("Gyro9250", "mpu.reset()");
 	mpu.reset();
+	mpu.resetSensors();
+	mpu.magSoftReset();
+	mpu.magInit();
 
 	Log::debug("Gyro9250", "mpu.initialize()");
 	mpu.initialize();
@@ -96,22 +113,6 @@ bool Gyro9250::getValues(GyroValues* values) {
 	values->Temperature = temp / 333.87f + 21.0f;
 	Profiler::end();
 	return true;
-}
-
-void Gyro9250::reset() {
-	if (mpuOK)
-		mpu.resetSensors();
-}
-
-void Gyro9250::resetMagnet() {
-	if (mpuOK) {
-		mpu.magSoftReset();
-		mpu.magInit();
-	}
-}
-
-bool Gyro9250::isOK() const {
-	return mpuOK;
 }
 
 bool Gyro9250::hasMagnetometer() const {

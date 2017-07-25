@@ -222,6 +222,21 @@
     <ClInclude Include="EEPROMMemoryAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sensor.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="CalibrationData.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorUpdateError.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorIMU.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="SoftwareIMU.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigManager.cpp">
@@ -322,6 +337,18 @@
     </ClCompile>
     <ClCompile Include="EEPROMMemoryAdapter.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sensor.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="CalibrationData.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorIMU.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="SoftwareIMU.cpp">
+      <Filter>Source Files\sensor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 
+#include "Sensor.h"
 #include "LED.h"
 #include "MathHelper.h"
 #include "SensorCalibration.h"
@@ -18,56 +19,41 @@ struct GyroValues {
 	float Temperature;
 };
 
-enum CalibrationState {
-	CalibrationNone,
-	CalibrationGyro,
-	CalibrationAcc,
-	CalibrationOrientation,
-	CalibrationMagnet
-};
-
-class Gyro
+class Gyro : public Sensor
 {
 private:
 	bool firstSample = true;
-	Timer sampleTimer = Timer(CYCLE_GYRO);
 	GyroValues last;
-
-	CalibrationState calibrationState;
-	int32_t calibrationCount;
-	int32_t calibrationWrongDataCount;
-	float calibrationSum[3];
 
 	CalibrationData gyroCalibration;
 	CalibrationData accCalibration;
-	CalibrationData orientationCalibration;
-
-	bool validGyroData;
-	bool validAccData;
-	bool validMagData;
-	bool validImu;
-
+	
 	GyroValues values;
 	GyroValues rawValues;
-
-	float roll;
-	float pitch;
-	float yaw;
-
-	void calculateIMU();
 
 	uint32_t lastMagnetData;
 	float getMagnetStrength() const;
 	bool isMagnetInterferenced() const;
 
-	void resetCalibration(CalibrationData* data);
-	void updateCalibrationData(CalibrationData* data, float x, float y, float z, bool averageByBounds);
-	void logCalibration(CalibrationData* data);
+	boolean startCalibration(uint8_t* savedData, size_t length);
+	boolean runCalibration(uint32_t ticks);
+	boolean processData();
 
-	void runCalibration();
-	void wrongCalibrationData();
+protected:
+	SensorCalibration* calibration;
+	virtual bool getValues(GyroValues* values) = 0;
 
-	void processData();
+	SensorUpdateError collectData();
+
+	explicit Gyro(SensorHAL* hal, Config* config);
+public:
+	virtual ~Gyro();
+	 
+	virtual const char* getMagnetometerName() const = 0;
+
+	virtual bool hasMagnetometer() const = 0;
+
+	GyroValues getValues() const;
 
 	bool isGyroXRotating() const;
 	bool isGyroYRotating() const;
@@ -77,43 +63,6 @@ private:
 	bool isGyroRotating() const;
 	bool canUseMagneticData() const;
 
-protected:
-	Config* config;
-	SensorCalibration* calibration;
-	virtual bool getValues(GyroValues* values) = 0;
-
-	explicit Gyro(Config* config);
-public:
-	virtual ~Gyro();
-
-	virtual const char* name() const = 0;
-	virtual const char* magnetometerName() const = 0;
-
-	virtual bool init() = 0;
-	virtual void reset() = 0;
-	virtual void resetMagnet() = 0;
-
-	virtual bool isOK() const = 0;
-	virtual bool hasMagnetometer() const = 0;
-	virtual bool hasIMU() const = 0;
-
-	void update();
-
-	void beginCalibration(CalibrationState state);
-	bool inCalibration() const;
-
-	bool hasValidGyroData() const;
-	bool hasValidAccData() const;
-	bool hasValidMagnetData() const;
-	bool hasValidImuData() const;
-
-	GyroValues getValues() const;
-
-	float getRoll() const;
-	float getPitch() const;
-	float getYaw() const;
-
 	bool isMoving() const;
-	bool isFlat() const;
 };
 

@@ -349,9 +349,9 @@ void NetworkManager::handleControl(WiFiUDP* udp) {
 				return;
 
 			if (calibrateMagnet)
-				sensor->getGyro()->beginCalibration(CalibrationMagnet);
+				Log::error("Network", "Magnet calibration not implemented");
 			else
-				sensor->getGyro()->beginCalibration(CalibrationGyro);
+				sensor->getGyro()->calibrate(NULL, 0);
 		}
 		break;
 
@@ -510,11 +510,11 @@ void NetworkManager::sendDroneData(WiFiUDP* udp) {
 	writeBuffer->write(uint16_t(servos->getBackLeft()));
 	writeBuffer->write(uint16_t(servos->getBackRight()));
 
-	writeBuffer->write(sensor->getGyro()->inCalibration());
+	writeBuffer->write(sensor->getGyro()->isCalibrating() || sensor->getIMU()->isCalibrating());
 
-	writeBuffer->write(sensor->getGyro()->getRoll());
-	writeBuffer->write(sensor->getGyro()->getPitch());
-	writeBuffer->write(sensor->getGyro()->getYaw());
+	writeBuffer->write(sensor->getIMU()->getRoll());
+	writeBuffer->write(sensor->getIMU()->getPitch());
+	writeBuffer->write(sensor->getIMU()->getYaw());
 
 	GyroValues values = sensor->getGyro()->getValues();
 
