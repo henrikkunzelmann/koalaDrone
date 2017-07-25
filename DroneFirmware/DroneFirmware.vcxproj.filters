@@ -237,6 +237,9 @@
     <ClInclude Include="SoftwareIMU.h">
       <Filter>Header Files\sensor</Filter>
     </ClInclude>
+    <ClInclude Include="MadgwickIMU.h">
+      <Filter>Header Files\sensor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigManager.cpp">
@@ -348,6 +351,9 @@
       <Filter>Source Files\sensor</Filter>
     </ClCompile>
     <ClCompile Include="SoftwareIMU.cpp">
+      <Filter>Source Files\sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="MadgwickIMU.cpp">
       <Filter>Source Files\sensor</Filter>
     </ClCompile>
   </ItemGroup>

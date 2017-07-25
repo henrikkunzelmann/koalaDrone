@@ -94,6 +94,7 @@
     <ClInclude Include="Fault.h" />
     <ClInclude Include="FaultManager.h" />
     <ClInclude Include="FaultType.h" />
+    <ClInclude Include="MadgwickIMU.h" />
     <ClInclude Include="NMEA.h" />
     <ClInclude Include="PositionNMEA.h" />
     <ClInclude Include="Position.h" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Gyro9250.cpp" />
     <ClCompile Include="Hardware32.cpp" />
     <ClCompile Include="Hardware8266.cpp" />
+    <ClCompile Include="MadgwickIMU.cpp" />
     <ClCompile Include="NMEA.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PositionNMEA.cpp" />

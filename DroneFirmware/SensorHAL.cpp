@@ -17,7 +17,7 @@ void SensorHAL::initSensors() {
 	if (!gyroInit)
 		gyroInit = initGyro(new Gyro6050(this, config));
 
-	initIMU(new SoftwareIMU(this, config));
+	initIMU(new MadgwickIMU(this, config));
 	initBaro(new Baro280(config));
 	initPosition(new PositionNMEA(config));
 	

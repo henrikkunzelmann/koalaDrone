@@ -9,6 +9,7 @@
 #include "Gyro9250.h"
 #include "SensorIMU.h"
 #include "SoftwareIMU.h"
+#include "MadgwickIMU.h"
 #include "Baro.h"
 #include "Baro280.h"
 #include "Position.h"
