@@ -124,11 +124,15 @@ SensorUpdateError Gyro::collectData() {
 	Profiler::pushData("Gyro::jitter()", updateTimer->getJitter());
 	Profiler::begin("Gyro::update()");
 
-	if (!getValues(&rawValues))
+	if (!getValues(&rawValues)) {
+		Profiler::end();
 		return UpdateError;
+	}
 
-	if (!processData())
+	if (!processData()) {
+		Profiler::end();
 		return UpdateError;
+	}
 
 	if (isCalibrated()) {
 		if (hasMagnetometer()) {

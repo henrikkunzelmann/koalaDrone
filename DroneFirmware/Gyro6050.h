@@ -18,6 +18,7 @@ protected:
 	double accRes;
 	double gyroRes;
 
+	bool setSettings();
 	bool getValues(GyroValues* values);
 public:
 	explicit Gyro6050(SensorHAL* hal, Config* config);

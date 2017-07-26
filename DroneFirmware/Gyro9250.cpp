@@ -44,12 +44,6 @@ boolean Gyro9250::init() {
 	Log::debug("Gyro9250", "mpu.initialize()");
 	mpu.initialize();
 
-	mpu.setClockSource(MPU9250_CLOCK_PLL_ZGYRO);
-	mpu.setFullScaleAccelRange(MPU9250_ACCEL_FS_8);
-	mpu.setFullScaleGyroRange(MPU9250_GYRO_FS_1000);
-	mpu.setDLPFMode(MPU9250_DLPF_BW_98);
-
-
 	if (!mpu.magCheckConnection()) {
 		Log::error("Gyro9250", "Mag connection failed");
 		FaultManager::fault(FaultHardware, "Gyro9250", "magCheckConnection()");
@@ -57,18 +51,27 @@ boolean Gyro9250::init() {
 
 	mpu.magGetAxisSensitivity(&sx, &sy, &sz);
 
-	double accRange[4] = { 2, 4, 8, 16 }; // g
-	double gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
-	double magRange[2] = { 0.6, 0.15 }; // microT
-
-	accRes = accRange[mpu.getFullScaleAccelRange()] / 32768.0; 
-	gyroRes = gyroRange[mpu.getFullScaleGyroRange()] / 32768.0; 
-	magRes = magRange[mpu.magGetSensitivity()];
-
+	setSettings();
 	Log::info("Gyro9250", "done with init");
 
 	mpuOK = true;
 	return mpuOK;
+}
+
+bool Gyro9250::setSettings() {
+	mpu.setClockSource(MPU9250_CLOCK_PLL_ZGYRO);
+	mpu.setFullScaleAccelRange(MPU9250_ACCEL_FS_8);
+	mpu.setFullScaleGyroRange(MPU9250_GYRO_FS_1000);
+	mpu.setDLPFMode(MPU9250_DLPF_BW_98);
+
+	double accRange[4] = { 2, 4, 8, 16 }; // g
+	double gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
+	double magRange[2] = { 0.6, 0.15 }; // microT
+
+	accRes = accRange[mpu.getFullScaleAccelRange()] / 32768.0;
+	gyroRes = gyroRange[mpu.getFullScaleGyroRange()] / 32768.0;
+	magRes = magRange[mpu.magGetSensitivity()];
+	return true;
 }
 
 bool Gyro9250::getValues(GyroValues* values) {
@@ -76,6 +79,14 @@ bool Gyro9250::getValues(GyroValues* values) {
 		return false;
 
 	Profiler::begin("Gyro9250::getValues()");
+
+	if (mpu.getFullScaleGyroRange() != MPU9250_GYRO_FS_1000) {
+		Log::error("Gyro9250", "FullScaleGyroRange set on chip does not match desired setting");
+		FaultManager::fault(FaultHardware, "Gyro9250", "getFullScaleGyroRange()");
+		setSettings();
+		Profiler::end();
+		return false;
+	}
 
 	int16_t ax, ay, az;
 	int16_t gx, gy, gz;

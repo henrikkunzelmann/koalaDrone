@@ -21,6 +21,7 @@ protected:
 
 	float sx, sy, sz;
 
+	bool setSettings();
 	bool getValues(GyroValues* values);
 public:
 	explicit Gyro9250(SensorHAL* hal, Config* config);

@@ -41,8 +41,6 @@ boolean MadgwickIMU::disable()
 
 bool MadgwickIMU::getValues(IMUValues* imuValues)
 {
-	const float dt = CYCLE_GYRO / 1000.f;
-
 	Gyro* gyro = hal->getGyro();
 	if (!gyro->isDataOK())
 		return false;

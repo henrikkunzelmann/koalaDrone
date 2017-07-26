@@ -37,16 +37,7 @@ boolean Gyro6050::init() {
 	Log::debug("Gyro6050", "mpu.initialize()");
 	mpu.initialize();
 
-	mpu.setClockSource(MPU6050_CLOCK_PLL_ZGYRO);
-	mpu.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
-	mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_1000);
-	mpu.setDLPFMode(MPU6050_DLPF_BW_98);
-
-	double accRange[4] = { 2, 4, 8, 16 }; // g
-	double gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
-
-	accRes = accRange[mpu.getFullScaleAccelRange()] / 32768.0;
-	gyroRes = gyroRange[mpu.getFullScaleGyroRange()] / 32768.0;
+	setSettings();
 
 	Log::info("Gyro6050", "done with init");
 
@@ -59,15 +50,41 @@ boolean Gyro6050::disable()
 	return true;
 }
 
+bool Gyro6050::setSettings() {
+	mpu.setClockSource(MPU6050_CLOCK_PLL_ZGYRO);
+	mpu.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);
+	mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_1000);
+	mpu.setDLPFMode(MPU6050_DLPF_BW_98);
+
+	double accRange[4] = { 2, 4, 8, 16 }; // g
+	double gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s
+
+	accRes = accRange[mpu.getFullScaleAccelRange()] / 32768.0;
+	gyroRes = gyroRange[mpu.getFullScaleGyroRange()] / 32768.0;
+	return true;
+}
+
 bool Gyro6050::getValues(GyroValues* values) {
 	if (!mpuOK)
 		return false;
 
 	Profiler::begin("Gyro6050::getValues()");
 
+	if (mpu.getFullScaleGyroRange() != MPU6050_GYRO_FS_1000) {
+		Log::error("Gyro6050", "FullScaleGyroRange set on chip does not match desired setting");
+		FaultManager::fault(FaultHardware, "Gyro6050", "getFullScaleGyroRange()");
+		setSettings();
+		Profiler::end();
+		return false;
+	}
+
 	int16_t ax, ay, az;
 	int16_t gx, gy, gz;
-	mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+	if (!mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz)) {
+		FaultManager::fault(FaultHardware, "Gyro6050", "getMotion6()");
+		Profiler::end();
+		return false;
+	}
 	yield();
 
 	values->AccX = ay * accRes;
