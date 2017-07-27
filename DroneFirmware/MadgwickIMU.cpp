@@ -48,7 +48,10 @@ bool MadgwickIMU::getValues(IMUValues* imuValues)
 	Profiler::begin("SoftwareIMU::getValues()");
 	GyroValues values = gyro->getValues();
 
-	updateIMU(values.GyroX, values.GyroY, values.GyroZ, -values.AccX, -values.AccY, -values.AccZ);
+	if (config->EnableImuAcc)
+		updateIMU(values.GyroX, values.GyroY, values.GyroZ, -values.AccX, -values.AccY, -values.AccZ);
+	else
+		updateIMU(values.GyroX, values.GyroY, values.GyroZ, 0, 0, 0);
 	computeAngles();
 
 	imuValues->roll = MathHelper::fixValue(roll, -180, 180);
