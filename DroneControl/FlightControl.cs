@@ -45,6 +45,13 @@ namespace DroneControl
 
             thread = new Thread(UpdateInput);
             thread.Start();
+
+            FindForm().FormClosing += FlightControl_FormClosing;
+        }
+
+        private void FlightControl_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            running = false;
         }
 
         private void Drone_OnDebugDataChange(object sender, EventArgs e)
@@ -64,7 +71,6 @@ namespace DroneControl
 
         protected override void OnHandleDestroyed(EventArgs e)
         {
-            running = false;
             if (thread != null)
                 thread.Abort();
             if (InputManager != null)
