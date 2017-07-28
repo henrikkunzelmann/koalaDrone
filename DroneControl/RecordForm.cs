@@ -167,11 +167,14 @@ namespace DroneControl
             {
                 Directory.CreateDirectory(path);
 
-                dataStream = File.CreateText(Path.Combine(path, "data.csv"));
-                logStream = File.CreateText(Path.Combine(path, "log.txt"));
+                DateTime now = DateTime.Now;
+
+                string time = now.ToString("HH_mm_ss");
+
+                dataStream = File.CreateText(Path.Combine(path, "data_" + time + ".csv"));
+                logStream = File.CreateText(Path.Combine(path, "log_" + time + ".txt"));
 
                 Version version = Assembly.GetExecutingAssembly().GetName().Version;
-                DateTime now = DateTime.Now;
 
                 string dataTag = string.Format("koalaDrone data (version {0}, date {1})", version, now);
                 logStream.WriteLine("koalaDrone log (version {0}, date {1})", version, now);
