@@ -154,6 +154,10 @@ namespace DroneLibrary
         public bool PassThroughSerialNMEA;
 
         [MarshalAs(UnmanagedType.U1)]
+        [Category("Debug")]
+        public bool IgnoreGyroSelfTest;
+
+        [MarshalAs(UnmanagedType.U1)]
         [Category("Motors")]
         public bool CalibrateServos;
 

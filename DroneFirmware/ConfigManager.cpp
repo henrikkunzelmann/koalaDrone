@@ -65,7 +65,6 @@ void ConfigManager::saveConfig(const Config config) {
 
 	Profiler::begin("saveConfig()");
 	
-
 	MemoryAdapter* adapter = NULL;
 #if MEMORY_I2C_ENABLE
 	adapter = new EEPROMMemoryAdapter();
@@ -177,6 +176,7 @@ Config ConfigManager::getDefault() {
 	config.YawMaxCorrection = 50.0f;
 
 	config.PassThroughSerialNMEA = false;
+	config.IgnoreGyroSelfTest = false;
 	
 	config.CalibrateServos = false;
 	memset(&config.SensorCalibrationData, 0, sizeof(SensorCalibration));

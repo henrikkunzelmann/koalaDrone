@@ -87,6 +87,7 @@ struct Config {
 	float YawMaxCorrection;
 
 	bool PassThroughSerialNMEA;
+	bool IgnoreGyroSelfTest;
 
 	bool CalibrateServos;
 	SensorCalibration SensorCalibrationData;
