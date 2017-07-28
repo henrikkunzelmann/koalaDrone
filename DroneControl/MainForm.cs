@@ -189,7 +189,7 @@ namespace DroneControl
                             break;
                     }
 
-                    if (data.State.AreMotorsRunning() && !flyTimer.IsRunning)
+                    if (drone.IsConnected && data.State.AreMotorsRunning() && !flyTimer.IsRunning)
                         flyTimer.Start();
                     else if (!data.State.AreMotorsRunning() && flyTimer.IsRunning)
                         flyTimer.Stop();
