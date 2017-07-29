@@ -16,6 +16,8 @@ private:
 	float pitch;
 	float yaw;
 
+	boolean firstAccSample;
+
 protected:
 	bool getValues(IMUValues* values);
 public:

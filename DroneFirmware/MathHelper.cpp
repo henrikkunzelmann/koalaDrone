@@ -1,5 +1,11 @@
 #include "MathHelper.h"
 
+void MathHelper::swap(float* a, float* b) {
+	float t = *a;
+	*a = *b;
+	*b = t;
+}
+
 float MathHelper::clampValue(float value, float min, float max) {
 	if(value <= min)
 		return min;

@@ -9,6 +9,8 @@
 class MathHelper
 {
  public:
+	 static void swap(float* a, float* b);
+
 	 static float clampValue(float value, float min, float max);
 	 static float fixValue(float value, float begin, float end);
 

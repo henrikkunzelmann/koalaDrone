@@ -102,13 +102,13 @@ bool Gyro6050::getValues(GyroValues* values) {
 	}
 	yield();
 
-	values->AccX = ay * accRes;
-	values->AccY = ax * accRes;
-	values->AccZ = -az * accRes;
+	values->AccX = ax * accRes;
+	values->AccY = ay * accRes;
+	values->AccZ = az * accRes;
 
-	values->GyroX = gy * gyroRes;
-	values->GyroY = gx * gyroRes;
-	values->GyroZ = -gz * gyroRes;
+	values->GyroX = gx * gyroRes;
+	values->GyroY = gy * gyroRes;
+	values->GyroZ = gz * gyroRes;
 
 	values->MagnetX = 0;
 	values->MagnetY = 0;

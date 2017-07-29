@@ -28,6 +28,10 @@ boolean Gyro::startCalibration(uint8_t* savedData, size_t length)
 
 boolean Gyro::runCalibration(uint32_t ticks) {
 	if (ticks > convertTimeToTicks(5000)) {
+		Log::debug("Gyro", "GyroCalibration:");
+		logCalibration(&gyroCalibration);
+		Log::debug("Gyro", "AccCalibration:");
+		logCalibration(&accCalibration);
 		// Calibrate IMU too, because gyro values have changed
 		if (hal->getIMU() != NULL)
 			hal->getIMU()->calibrate(NULL, 0);
@@ -40,30 +44,29 @@ boolean Gyro::runCalibration(uint32_t ticks) {
 }
 
 boolean Gyro::processData() {
-	values = rawValues;
-
 	// Apply config
 #if SWAP_GYRO_XY
-#define __SWAP(a, b) { float _f = a; a = b; b = _f; }
-	__SWAP(values.GyroX, values.GyroY);
-	__SWAP(values.AccX, values.AccY);
-	__SWAP(values.MagnetX, values.MagnetY);
+	MathHelper::swap(&rawValues.GyroX, &rawValues.GyroY);
+	MathHelper::swap(&rawValues.AccX, &rawValues.AccY);
+	MathHelper::swap(&rawValues.MagnetX, &rawValues.MagnetY);
 #endif
 #if NEGATE_GYRO_X
-	values.GyroX *= -1.0f;
-	values.AccX *= -1.0f;
-	values.MagnetX *= -1.0f;
+	rawValues.GyroX *= -1.0f;
+	rawValues.AccX *= -1.0f;
+	rawValues.MagnetX *= -1.0f;
 #endif
 #if NEGATE_GYRO_Y
-	values.GyroY *= -1.0f;
-	values.AccY *= -1.0f;
-	values.MagnetY *= -1.0f;
+	rawValues.GyroY *= -1.0f;
+	rawValues.AccY *= -1.0f;
+	rawValues.MagnetY *= -1.0f;
 #endif
 #if NEGATE_GYRO_Z
-	values.GyroZ *= -1.0f;
-	values.AccZ *= -1.0f;
-	values.MagnetZ *= -1.0f;
+	rawValues.GyroZ *= -1.0f;
+	rawValues.AccZ *= -1.0f;
+	rawValues.MagnetZ *= -1.0f;
 #endif
+
+	values = rawValues;
 
 	// Werte überprüfen
 	const float gyroRange = 300.0f;

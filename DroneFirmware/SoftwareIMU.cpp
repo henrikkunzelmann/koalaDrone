@@ -25,6 +25,7 @@ boolean SoftwareIMU::init()
 	this->roll = 0;
 	this->pitch = 0;
 	this->yaw = 0;
+	this->firstAccSample = true;
 	return true;
 }
 
@@ -55,8 +56,15 @@ bool SoftwareIMU::getValues(IMUValues* imuValues)
 		float accRoll = -MathHelper::toDegress(atan(values.AccY / sqrtf(values.AccX*values.AccX + values.AccZ*values.AccZ)));
 		float accPitch = MathHelper::toDegress(atan(values.AccX / sqrtf(values.AccY*values.AccY + values.AccZ*values.AccZ)));
 
-		roll = FILTER(roll, accRoll, 0.05f);
-		pitch = FILTER(pitch, accPitch, 0.05f);
+		if (firstAccSample) {
+			roll = accRoll;
+			pitch = accPitch;
+			firstAccSample = false;
+		}
+		else {
+			roll = FILTER(roll, accRoll, 0.05f);
+			pitch = FILTER(pitch, accPitch, 0.05f);
+		}
 	}
 	if (config->EnableImuMag && gyro->canUseMagneticData()) {
 		float magRoll = MathHelper::toDegress(atan(values.MagnetY / sqrtf(values.MagnetX*values.MagnetX + values.MagnetZ*values.MagnetZ)));

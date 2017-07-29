@@ -11,12 +11,15 @@ SensorIMU::~SensorIMU()
 boolean SensorIMU::startCalibration(uint8_t * savedData, size_t length)
 {
 	clearCalibrationData(&calibration);
+
+	// Clear any saved data about orientation
+	init();
 	return false;
 }
 
 boolean SensorIMU::runCalibration(uint32_t ticks)
 {
-	if (ticks > convertTimeToTicks(1000))
+	if (ticks > convertTimeToTicks(10000))
 		return true;
 
 	updateCalibrationData(&calibration, values.roll, values.pitch, values.yaw, false);
@@ -39,6 +42,10 @@ SensorUpdateError SensorIMU::collectData()
 		values.yaw -= calibration.average[2];
 	}
 
+	values.roll = MathHelper::fixValue(values.roll, -180, 180);
+	values.pitch = MathHelper::fixValue(values.pitch, -180, 180);
+	values.yaw = MathHelper::fixValue(values.yaw, 0, 360);
+	
 	return UpdateOK;
 }
 
