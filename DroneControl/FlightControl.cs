@@ -223,6 +223,9 @@ namespace DroneControl
         {
             try
             {
+                if (DesignMode)
+                    return;
+
                 SuspendLayout();
 
                 deviceErrorLabel.Visible = (InputManager.CurrentDevice != null && InputManager.CurrentDevice.HasError);
