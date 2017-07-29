@@ -22,14 +22,14 @@ namespace DroneControl
 
             UpdateSettings(Drone.Settings);
 
-            orientationGraphList.ValueMinimums = new double[] { -90, -90, 0 };
-            orientationGraphList.ValueMaximums = new double[] { 90, 90, 360 };
+            orientationGraphList.ValueMinimums = new double[] { -180, -180, 0 };
+            orientationGraphList.ValueMaximums = new double[] { 180, 180, 360 };
 
-            const double rotationRange = 25;
+            const double rotationRange = 500;
             rotationGraphList.ValueMinimums = new double[] { -rotationRange, -rotationRange, -rotationRange };
             rotationGraphList.ValueMaximums = new double[] { rotationRange, rotationRange, rotationRange };
 
-            const double accelerationRange = 2;
+            const double accelerationRange = 3;
             accelerationGraphList.ValueMinimums = new double[] { -accelerationRange, -accelerationRange, -accelerationRange };
             accelerationGraphList.ValueMaximums = new double[] { accelerationRange, accelerationRange, accelerationRange };
         }
@@ -73,7 +73,7 @@ namespace DroneControl
             UpdateGraph(servoGraph, e.Data.MotorValues);
 
             orientationGraphList.UpdateValue(e.Data.Sensor.Roll, e.Data.Sensor.Pitch, e.Data.Sensor.Yaw);
-            rotationGraphList.UpdateValue(e.Data.Sensor.Gyro.X, e.Data.Sensor.Gyro.X, e.Data.Sensor.Gyro.Z);
+            rotationGraphList.UpdateValue(e.Data.Sensor.Gyro.X, e.Data.Sensor.Gyro.Y, e.Data.Sensor.Gyro.Z);
             accelerationGraphList.UpdateValue(e.Data.Sensor.Acceleration.X, e.Data.Sensor.Acceleration.Y, e.Data.Sensor.Acceleration.Z);
         }
 

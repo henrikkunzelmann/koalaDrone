@@ -81,6 +81,7 @@
             this.servoGraph.RightBottomName = "Right bottom";
             this.servoGraph.RightTopName = "Right front";
             this.servoGraph.ShowBaseLine = true;
+            this.servoGraph.ShowHalfScaling = true;
             this.servoGraph.Size = new System.Drawing.Size(907, 491);
             this.servoGraph.TabIndex = 2;
             this.servoGraph.ValueMax = 0D;
@@ -155,13 +156,13 @@
             this.rotationGraphList.Size = new System.Drawing.Size(907, 491);
             this.rotationGraphList.TabIndex = 2;
             this.rotationGraphList.ValueMaximums = new double[] {
-        -1.7976931348623157E+308D,
-        -1.7976931348623157E+308D,
-        -1.7976931348623157E+308D};
+        400D,
+        400D,
+        400D};
             this.rotationGraphList.ValueMinimums = new double[] {
-        1.7976931348623157E+308D,
-        1.7976931348623157E+308D,
-        1.7976931348623157E+308D};
+        -400D,
+        -400D,
+        -400D};
             // 
             // accelerationTabPage
             // 
