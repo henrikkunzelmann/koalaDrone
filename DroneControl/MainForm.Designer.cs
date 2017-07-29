@@ -32,6 +32,7 @@
             System.Windows.Forms.TabPage infoTabPage;
             System.Windows.Forms.TabPage settingsTabPage;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.infoButton = new System.Windows.Forms.Button();
             this.settingsButton = new System.Windows.Forms.Button();
             this.wifiRssiLabel = new System.Windows.Forms.Label();
             this.graphsButton = new System.Windows.Forms.Button();
@@ -51,7 +52,6 @@
             this.droneInfoPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.droneSettingsPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.infoButton = new System.Windows.Forms.Button();
             dronePingSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsInfoSplitContainer = new System.Windows.Forms.SplitContainer();
             motorsSensorSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -107,6 +107,16 @@
             dronePingSplitContainer.Size = new System.Drawing.Size(1047, 737);
             dronePingSplitContainer.SplitterDistance = 51;
             dronePingSplitContainer.TabIndex = 18;
+            // 
+            // infoButton
+            // 
+            this.infoButton.Location = new System.Drawing.Point(426, 4);
+            this.infoButton.Name = "infoButton";
+            this.infoButton.Size = new System.Drawing.Size(60, 23);
+            this.infoButton.TabIndex = 22;
+            this.infoButton.Text = "Info";
+            this.infoButton.UseVisualStyleBackColor = true;
+            this.infoButton.Click += new System.EventHandler(this.infoButton_Click);
             // 
             // settingsButton
             // 
@@ -192,6 +202,7 @@
             this.statusArmedLabel.TabIndex = 14;
             this.statusArmedLabel.Text = "Status: {0}";
             this.statusArmedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.statusArmedLabel.Click += new System.EventHandler(this.statusArmedLabel_Click);
             // 
             // pingLabel
             // 
@@ -330,6 +341,7 @@
             // 
             this.droneInfoPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.droneInfoPropertyGrid.HelpVisible = false;
+            this.droneInfoPropertyGrid.LineColor = System.Drawing.SystemColors.ControlDark;
             this.droneInfoPropertyGrid.Location = new System.Drawing.Point(3, 3);
             this.droneInfoPropertyGrid.Name = "droneInfoPropertyGrid";
             this.droneInfoPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
@@ -351,6 +363,7 @@
             // 
             this.droneSettingsPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.droneSettingsPropertyGrid.HelpVisible = false;
+            this.droneSettingsPropertyGrid.LineColor = System.Drawing.SystemColors.ControlDark;
             this.droneSettingsPropertyGrid.Location = new System.Drawing.Point(3, 3);
             this.droneSettingsPropertyGrid.Name = "droneSettingsPropertyGrid";
             this.droneSettingsPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
@@ -361,16 +374,6 @@
             // timer
             // 
             this.timer.Enabled = true;
-            // 
-            // infoButton
-            // 
-            this.infoButton.Location = new System.Drawing.Point(426, 4);
-            this.infoButton.Name = "infoButton";
-            this.infoButton.Size = new System.Drawing.Size(60, 23);
-            this.infoButton.TabIndex = 22;
-            this.infoButton.Text = "Info";
-            this.infoButton.UseVisualStyleBackColor = true;
-            this.infoButton.Click += new System.EventHandler(this.infoButton_Click);
             // 
             // MainForm
             // 

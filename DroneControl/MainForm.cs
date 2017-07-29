@@ -340,5 +340,16 @@ namespace DroneControl
         {
             ShowForm(infoForm, () => (infoForm = new InfoForm()));
         }
+
+        private void statusArmedLabel_Click(object sender, EventArgs e)
+        {
+            if (drone.IsConnected && drone.Data.State.AreMotorsRunning())
+                return;
+            if (flyTimer.ElapsedMilliseconds == 0)
+                return;
+
+            if (MessageBox.Show("Do you want to reset the fly timer?", "Fly timer", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                flyTimer.Reset();
+        }
     }
 }
