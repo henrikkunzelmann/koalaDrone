@@ -47,6 +47,7 @@ namespace DroneControl
                 Bind(maxValueTextBox, "data.ServoMax");
 
                 Bind(safeMotorValueTextBox, "data.SafeServoValue");
+                Bind(ignoreSafeOrientationCheckBox, "data.IgnoreSafeOrientationWhileFlying");
                 Bind(safeTemperatureTextBox, "data.MaxTemperature");
                 Bind(safeRollTextBox, "data.SafeRoll");
                 Bind(safePitchTextBox, "data.SafePitch");
@@ -64,14 +65,21 @@ namespace DroneControl
                 Bind(yawKdTextBox, "data.YawPid.Kd");
 
                 Bind(enableStabilizationCheckBox, "data.EnableStabilization");
-                Bind(negativeMixingCheckBox, "data.NegativeMixing");
 
                 Bind(maxThrustForFlyingTextBox, "data.MaxThrustForFlying");
-                Bind(onlyArmWhenStillCheckBox, "data.OnlyArmWhenStill");
+                Bind(ignoreSafeOrientationCheckBox, "data.OnlyArmWhenStill");
 
-                Bind(angleKpTextBox, "data.AngleStabilization.Kp");
-                Bind(angleKiTextBox, "data.AngleStabilization.Ki");
-                Bind(angleKdTextBox, "data.AngleStabilization.Kd");
+                Bind(angleRollKpTextBox, "data.AngleRoll.Kp");
+                Bind(angleRollKiTextBox, "data.AngleRoll.Ki");
+                Bind(angleRollKdTextBox, "data.AngleRoll.Kd");
+
+                Bind(anglePitchKpTextBox, "data.AnglePitch.Kp");
+                Bind(anglePitchKiTextBox, "data.AnglePitch.Ki");
+                Bind(anglePitchKdTextBox, "data.AnglePitch.Kd");
+
+                Bind(angleYawKpTextBox, "data.AngleYaw.Kp");
+                Bind(angleYawKiTextBox, "data.AngleYaw.Ki");
+                Bind(angleYawKdTextBox, "data.AngleYaw.Kd");
 
                 Bind(rollTrim, "data.RollTrim");
                 Bind(pitchTrim, "data.PitchTrim");
@@ -248,9 +256,21 @@ namespace DroneControl
             v = v && CheckSetting("PID Yaw Ki", data.YawPid.Ki, originalData.YawPid.Ki);
             v = v && CheckSetting("PID Yaw Kd", data.YawPid.Kd, originalData.YawPid.Kd);
 
-            v = v && CheckSetting("PID Angle Kp", data.AngleStabilization.Kp, originalData.AngleStabilization.Kp);
-            v = v && CheckSetting("PID Angle Ki", data.AngleStabilization.Ki, originalData.AngleStabilization.Ki);
-            v = v && CheckSetting("PID Angle Kd", data.AngleStabilization.Kd, originalData.AngleStabilization.Kd);
+            v = v && CheckSetting("Acc Trim Roll", data.RollTrim, originalData.RollTrim);
+            v = v && CheckSetting("Acc Trim Pitch", data.PitchTrim, originalData.PitchTrim);
+            v = v && CheckSetting("Acc Trim Yaw", data.YawTrim, originalData.YawTrim);
+
+            v = v && CheckSetting("PID Angle Roll Kp", data.AngleRoll.Kp, originalData.AngleRoll.Kp);
+            v = v && CheckSetting("PID Angle Roll Ki", data.AngleRoll.Ki, originalData.AngleRoll.Ki);
+            v = v && CheckSetting("PID Angle Roll Kd", data.AngleRoll.Kd, originalData.AngleRoll.Kd);
+
+            v = v && CheckSetting("PID Angle Pitch Kp", data.AnglePitch.Kp, originalData.AnglePitch.Kp);
+            v = v && CheckSetting("PID Angle Pitch Ki", data.AnglePitch.Ki, originalData.AnglePitch.Ki);
+            v = v && CheckSetting("PID Angle Pitch Kd", data.AnglePitch.Kd, originalData.AnglePitch.Kd);
+
+            v = v && CheckSetting("PID Angle Yaw Kp", data.AngleYaw.Kp, originalData.AngleYaw.Kp);
+            v = v && CheckSetting("PID Angle Yaw Ki", data.AngleYaw.Ki, originalData.AngleYaw.Ki);
+            v = v && CheckSetting("PID Angle Yaw Kd", data.AngleYaw.Kd, originalData.AngleYaw.Kd);
             return v;
         }
 

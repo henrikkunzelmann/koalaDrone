@@ -146,6 +146,7 @@
     <ClCompile Include="BinaryHelper.cpp" />
     <ClCompile Include="CalibrationData.cpp" />
     <ClCompile Include="ConfigManager.cpp" />
+    <ClCompile Include="CustomSettings.cpp" />
     <ClCompile Include="DroneEngine.cpp" />
     <ClCompile Include="EEPROMMemoryAdapter.cpp" />
     <ClCompile Include="FlashMemoryAdapter.cpp" />

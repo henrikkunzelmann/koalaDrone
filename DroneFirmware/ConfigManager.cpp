@@ -132,26 +132,26 @@ Config ConfigManager::getDefault() {
 	config.ServoMax = DEFAULT_SERVO_MAX;
 	config.ServoIdle = DEFAULT_SERVO_IDLE;
 
-	config.RollPid.Kp = 0.8f;
-	config.RollPid.Ki = 0;
+	config.RollPid.Kp = 0.92f;
+	config.RollPid.Ki = 0.22f;
 	config.RollPid.Kd = 0;
 
-	config.PitchPid.Kp = 0.8f;
-	config.PitchPid.Ki = 0;
+	config.PitchPid.Kp = 0.92f;
+	config.PitchPid.Ki = 0.22f;
 	config.PitchPid.Kd = 0;
 
-	config.YawPid.Kp = 3.5f;
-	config.YawPid.Ki = 0;
+	config.YawPid.Kp = 3.9f;
+	config.YawPid.Ki = 0.15f;
 	config.YawPid.Kd = 0;
 
 	config.InputScale = 164.0f;
 
-	config.SafeRoll = 100;
-	config.SafePitch = 100;
+	config.IgnoreSafeOrientationWhileFlying = true;
+	config.SafeRoll = 60;
+	config.SafePitch = 60;
 	config.SafeServoValue = 1850;
 
-	config.EnableStabilization = false;
-	config.NegativeMixing = true;
+	config.EnableStabilization = true;
 
 	config.MaxThrustForFlying = 50;
 	config.OnlyArmWhenStill = false;
@@ -160,26 +160,32 @@ Config ConfigManager::getDefault() {
 	config.PitchTrim = 0;
 	config.YawTrim = 0;
 
-	config.AngleStabilization.Kp = 2.5f;
-	config.AngleStabilization.Ki = 0;
-	config.AngleStabilization.Kd = 0.15f;
+	config.AngleRoll.Kp = 2.5f;
+	config.AngleRoll.Ki = 0;
+	config.AngleRoll.Kd = 0.15f;
+
+	config.AnglePitch.Kp = 2.5f;
+	config.AnglePitch.Ki = 0;
+	config.AnglePitch.Kd = 0.15f;
+
+	config.AngleYaw.Kp = 2.0f;
+	config.AngleYaw.Ki = 0;
+	config.AngleYaw.Kd = 0.15f;
 
 	config.EnableImuAcc = true;
 	config.EnableImuMag = false;
 	config.GyroFilter = 0.6f;
 	config.AccFilter = 0.2f;
 
-	config.StabOnlyHelp = true;
 	config.StabInputScale = 40.0f;
-
-	config.YawCorrectionFactor = 2.0f;
-	config.YawMaxCorrection = 50.0f;
 
 	config.PassThroughSerialNMEA = false;
 	config.IgnoreGyroSelfTest = false;
 	
 	config.CalibrateServos = false;
 	memset(&config.SensorCalibrationData, 0, sizeof(SensorCalibration));
+
+	applyCustomSettings(&config);
 
 	Log::info("Config", "Using default config");
 	return config;

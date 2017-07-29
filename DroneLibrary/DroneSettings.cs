@@ -86,6 +86,10 @@ namespace DroneLibrary
         [Category("Flying")]
         public float InputScale;
 
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Flying")]
+        public bool IgnoreSafeOrientationWhileFlying;
+
         [Category("Flying")]
         public float SafePitch;
 
@@ -120,7 +124,13 @@ namespace DroneLibrary
         public float YawTrim;
 
         [Category("PID Flying")]
-        public PidSettings AngleStabilization;
+        public PidSettings AngleRoll;
+
+        [Category("PID Flying")]
+        public PidSettings AnglePitch;
+
+        [Category("PID Flying")]
+        public PidSettings AngleYaw;
 
         [MarshalAs(UnmanagedType.U1)]
         [Category("Debug")]
@@ -136,18 +146,8 @@ namespace DroneLibrary
         [Category("Debug")]
         public float AccFilter;
 
-        [MarshalAs(UnmanagedType.U1)]
-        [Category("Debug")]
-        public bool StabOnlyHelp;
-
         [Category("Debug")]
         public float StabInputScale;
-
-        [Category("Debug")]
-        public float YawCorrectionFactor;
-
-        [Category("Debug")]
-        public float YawMaxCorrection;
 
         [MarshalAs(UnmanagedType.U1)]
         [Category("Debug")]

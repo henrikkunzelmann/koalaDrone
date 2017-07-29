@@ -25,4 +25,6 @@ class ConfigManager
 	 static void saveConfig(MemoryAdapter* memory, const Config config);
 
 	 static Config getDefault();
+
+	 static void applyCustomSettings(Config* config);
 };

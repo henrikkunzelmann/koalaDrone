@@ -58,6 +58,7 @@ struct Config {
 
 	float InputScale;
 
+	bool IgnoreSafeOrientationWhileFlying;
 	float SafeRoll;
 	float SafePitch;
 	int32_t SafeServoValue;
@@ -72,7 +73,9 @@ struct Config {
 	float PitchTrim;
 	float YawTrim;
 
-	PIDSettings AngleStabilization;
+	PIDSettings AngleRoll;
+	PIDSettings AnglePitch;
+	PIDSettings AngleYaw;
 
 	// Debug Settings
 	bool EnableImuAcc;
@@ -80,11 +83,7 @@ struct Config {
 	float GyroFilter;
 	float AccFilter;
 
-	bool StabOnlyHelp;
 	float StabInputScale;
-
-	float YawCorrectionFactor;
-	float YawMaxCorrection;
 
 	bool PassThroughSerialNMEA;
 	bool IgnoreGyroSelfTest;
