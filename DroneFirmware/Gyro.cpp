@@ -69,7 +69,7 @@ boolean Gyro::processData() {
 	values = rawValues;
 
 	// Werte überprüfen
-	const float gyroRange = 300.0f;
+	const float gyroRange = 450.0f;
 	const float accRange = 10.0f;
 
 	boolean ok = true;
