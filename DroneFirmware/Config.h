@@ -80,6 +80,7 @@ struct Config {
 	// Debug Settings
 	bool EnableImuAcc;
 	bool EnableImuMag;
+	uint8_t GyroDLPF;
 	float GyroFilter;
 	float AccFilter;
 

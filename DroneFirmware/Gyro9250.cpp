@@ -62,7 +62,12 @@ bool Gyro9250::setSettings() {
 	mpu.setClockSource(MPU9250_CLOCK_PLL_ZGYRO);
 	mpu.setFullScaleAccelRange(MPU9250_ACCEL_FS_8);
 	mpu.setFullScaleGyroRange(MPU9250_GYRO_FS_1000);
-	mpu.setDLPFMode(MPU9250_DLPF_BW_98);
+	if (config->GyroDLPF > MPU9250_DLPF_BW_5) {
+		Log::error("Gyro9250", "Config.GyroDLPF is invalid (%d)", config->GyroDLPF);
+		mpu.setDLPFMode(MPU9250_DLPF_BW_42);
+	}
+	else
+		mpu.setDLPFMode(config->GyroDLPF);
 
 	double accRange[4] = { 2, 4, 8, 16 }; // g
 	double gyroRange[4] = { 250, 500, 1000, 2000 }; // degress/s

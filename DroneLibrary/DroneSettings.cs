@@ -140,6 +140,10 @@ namespace DroneLibrary
         [Category("Debug")]
         public bool EnableImuMag;
 
+        [MarshalAs(UnmanagedType.U1)]
+        [Category("Debug")]
+        public GyroDLPF GyroDLPF;
+
         [Category("Debug")]
         public float GyroFilter;
 

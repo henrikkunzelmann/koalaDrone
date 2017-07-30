@@ -132,16 +132,16 @@ Config ConfigManager::getDefault() {
 	config.ServoMax = DEFAULT_SERVO_MAX;
 	config.ServoIdle = DEFAULT_SERVO_IDLE;
 
-	config.RollPid.Kp = 0.92f;
-	config.RollPid.Ki = 0.22f;
+	config.RollPid.Kp = 0.75f;
+	config.RollPid.Ki = 0.11f;
 	config.RollPid.Kd = 0;
 
-	config.PitchPid.Kp = 0.92f;
-	config.PitchPid.Ki = 0.22f;
+	config.PitchPid.Kp = 0.8f;
+	config.PitchPid.Ki = 0.11f;
 	config.PitchPid.Kd = 0;
 
-	config.YawPid.Kp = 3.9f;
-	config.YawPid.Ki = 0.15f;
+	config.YawPid.Kp = 4.2f;
+	config.YawPid.Ki = 0.25f;
 	config.YawPid.Kd = 0;
 
 	config.InputScale = 164.0f;
@@ -160,13 +160,13 @@ Config ConfigManager::getDefault() {
 	config.PitchTrim = 0;
 	config.YawTrim = 0;
 
-	config.AngleRoll.Kp = 2.5f;
-	config.AngleRoll.Ki = 0;
-	config.AngleRoll.Kd = 0.15f;
+	config.AngleRoll.Kp = 1.8f;
+	config.AngleRoll.Ki = 0.03f;
+	config.AngleRoll.Kd = 0;
 
-	config.AnglePitch.Kp = 2.5f;
-	config.AnglePitch.Ki = 0;
-	config.AnglePitch.Kd = 0.15f;
+	config.AnglePitch.Kp = 1.8f;
+	config.AnglePitch.Ki = 0.03f;
+	config.AnglePitch.Kd = 0;
 
 	config.AngleYaw.Kp = 2.0f;
 	config.AngleYaw.Ki = 0;
@@ -174,10 +174,11 @@ Config ConfigManager::getDefault() {
 
 	config.EnableImuAcc = true;
 	config.EnableImuMag = false;
-	config.GyroFilter = 0.6f;
-	config.AccFilter = 0.2f;
+	config.GyroDLPF = 3; // 42 Hz
+	config.GyroFilter = 0.7f;
+	config.AccFilter = 0.3f;
 
-	config.StabInputScale = 40.0f;
+	config.StabInputScale = 160.0f;
 
 	config.PassThroughSerialNMEA = false;
 	config.IgnoreGyroSelfTest = false;
