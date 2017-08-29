@@ -49,9 +49,21 @@ boolean Gyro9250::init() {
 		FaultManager::fault(FaultHardware, "Gyro9250", "magCheckConnection()");
 	}
 
-	mpu.magGetAxisSensitivity(&sx, &sy, &sz);
-
 	setSettings();
+
+	Log::info("Gyro9250", "mpu.selfTest()");
+	float result[6];
+	if (mpu.selfTest(result))
+		Log::info("Gyro9250", "Self test: PASSED");
+	else {
+		Log::error("Gyro9250", "Self test: FAIL");
+		mpuOK = !config->IgnoreGyroSelfTest;
+	}
+	Log::debug("Gyro9250", "Self test result...");
+	Log::debug("Gyro9250", "ax: %.2f %%, ay: %.2f %%, az: %.2f %%", result[0], result[1], result[2]);
+	Log::debug("Gyro9250", "gx: %.2f %%, gy: %.2f %%, gz: %.2f %%", result[3], result[4], result[5]);
+
+	mpu.magGetAxisSensitivity(&sx, &sy, &sz);
 	Log::info("Gyro9250", "done with init");
 
 	mpuOK = true;

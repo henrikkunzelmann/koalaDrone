@@ -39,11 +39,10 @@ boolean Gyro6050::init() {
 	Log::debug("Gyro6050", "mpu.initialize()");
 	mpu.initialize();
 
+	setSettings();
+
 	Log::info("Gyro6050", "mpu.selfTest()");
 	float result[6];
-	for (int i = 0; i < 6; i++)
-		result[i] = 0;
-
 	if (mpu.selfTest(result))
 		Log::info("Gyro6050", "Self test: PASSED");
 	else {
@@ -53,8 +52,6 @@ boolean Gyro6050::init() {
 	Log::debug("Gyro6050", "Self test result...");
 	Log::debug("Gyro6050", "ax: %.2f %%, ay: %.2f %%, az: %.2f %%", result[0], result[1], result[2]);
 	Log::debug("Gyro6050", "gx: %.2f %%, gy: %.2f %%, gz: %.2f %%", result[3], result[4], result[5]);
-
-	setSettings();
 
 	Log::info("Gyro6050", "done with init");
 	return mpuOK;
