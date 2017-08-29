@@ -5,7 +5,7 @@ void WiFiCompat::initSettings() {
 }
 
 void WiFiCompat::setHostname(const char* hostname) {
-	WiFi.setHostname(hostname);
-	WiFi.softAPsetHostname(hostname);
+	//WiFi.setHostname(hostname);
+	//WiFi.softAPsetHostname(hostname);
 }
 #endif
